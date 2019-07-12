@@ -1,0 +1,72 @@
+import Vue from 'vue'
+import router from './router'
+import Vuex from 'vuex'
+Vue.use(Vuex)
+
+//MODULOS
+import auth from '@/modules/auth';
+import user from '@/modules/user';
+
+const store = new Vuex.Store({
+  state: {
+    processing: false,
+    warning: null,
+    error: null
+  },
+  getters:{
+
+  },
+  mutations: {
+    startProcessing (state) {
+      state.processing = true;
+    },
+    stopProcessing (state) {
+      state.processing = false;
+    },
+    setError (state, responseApi) {
+      if(responseApi.data){
+        let data = responseApi.data
+        if(data.error){
+          if(data.error.message){
+            if(data.error.name && data.error.name=='InvalidJwtToken'){
+              state.error = 'Acceso no autorizado. Debe autenticarse nuevamente.';
+              this.dispatch('auth/logout')
+              router.push('/login')
+            }else{
+              state.error = data.error.message;  
+            }
+            
+          }else{
+            state.error = data.error;
+          }  
+        }else{
+          state.error = data;
+        }
+      }else{
+        state.error = responseApi;
+      }
+      
+      setTimeout(() => {
+        state.error = null
+      },3000)
+    }
+  },
+  actions: {
+    setWarning ({state}, value) {
+      state.warning = value
+      return new Promise((resolve) => {
+        setTimeout(function () {
+          state.warning = null
+          resolve()
+        }, 2000)
+      })
+    }
+  },
+  modules: {
+    auth,
+    user,
+  }
+})
+
+
+export default store;

@@ -1,0 +1,164 @@
+<template>
+  <v-container>
+    <v-layout align-center justify-center>
+      <v-flex xs12 sm8 md10>
+        <v-card class="elevation-12">
+          <v-toolbar dark color="primary">
+            <v-toolbar-title>{{titleText}}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn v-if="edit != 0" color="success" @click="redirect(true)">Cancelar</v-btn>
+            <v-btn v-if="edit == 0" color="success" @click="redirect(false)">Cancelar</v-btn>
+          </v-toolbar>
+          <v-card-text>
+            <v-form>
+                <v-combobox v-model="user.id_type" prepend-icon="email" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
+                <v-text-field v-model="user.id_description" prepend-icon="email" name="id_description" label="Número de identificación" type="text"></v-text-field>
+                <v-text-field v-model="user.name" prepend-icon="email" name="name" label="Nombres" type="text"></v-text-field>
+                <v-text-field v-model="user.last_name" prepend-icon="email" name="last_mame" label="Apellidos" type="text"></v-text-field>
+                <v-text-field v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
+                <v-combobox v-if="edit" v-model="phone.status" :items="status" prepend-icon="email" label="Estado"></v-combobox>
+                <v-text-field v-model="user.password" prepend-icon="email" name="password" label="Contraseña" type="password"></v-text-field>
+                <h2>Teléfonos</h2><br>
+                <div v-if="phones.length > 0">
+                  <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
+                </div>
+                <br>
+                <div class="row col-md-8">
+                  <v-card  style="height: 100%;width: 84%; padding: 31px;">
+                    <!--TELEFONOS-->
+                    <label style="font-size: 18px;">Nuevo teléfono</label><hr>
+                    <v-text-field v-model="phone.title" prepend-icon="title" name="title" label="Titulo" type="text"></v-text-field>
+                    <v-text-field v-model="phone.number" prepend-icon="email" name="number" label="Número" type="number"></v-text-field>
+                    <v-combobox v-model="phone.type" :items="typesPhone" prepend-icon="email" label="Tipo de número"></v-combobox>
+                    <v-text-field v-model="phone.extension" prepend-icon="extension" name="extension" label="Extensión" type="text"></v-text-field>
+                    <v-text-field v-model="phone.code" prepend-icon="code" name="code" label="Código postal" type="text"></v-text-field>
+                    <v-switch v-model="phone.principal"
+                      :label="'Principal'"
+                    ></v-switch>
+                    <v-btn color="primary" @click="addPhone()">Agregar</v-btn>
+                    <!--TELEFONOS-->
+                  </v-card><br>
+                </div>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" @click="processUser()">Guardar</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+  import {mapActions,mapGetters,mapState} from 'vuex';
+  
+  export default {
+    
+    name: 'user-manage',
+    data () {
+      return {
+        user: {},
+        phone:{},
+        phones:[],
+        typesPhone: [
+          {text: 'Fijo', value:'fijo'},
+          {text: 'Celular', value:'movil'}
+        ],
+        typesIdentification: [
+          {text: 'Tarjeta de identidad', value:'ti'},
+          {text: 'Cedula de ciudadania', value:'cc'},
+          {text: 'Cedula de extranjeria', value:'ce'}
+        ],
+        status:[
+          {text: 'Activo', value:'enabled'},
+          {text: 'Inactivo', value:'disabled'},
+        ],
+        edit:"",
+        titleText:""
+      }
+    },
+    mounted () {
+        this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
+        if(this.edit!=""){
+            this.titleText="Editar usuario"
+            this.getUser(this.edit);
+            this.getPhones(this.edit);
+        }else{
+          this.titleText="Nuevo usuario"
+        }
+    },
+    methods: {
+      ...mapActions({
+        create: 'user/create',
+        update: 'user/update',
+        setWarning: 'setWarning',
+      }),
+      ...mapGetters({
+        getUser: 'user/getUser', 
+        getPhones: 'user/getPhones', 
+      }),
+      addPhone(){
+          this.phones.push(this.phone);
+          this.phone = {};
+      },
+      removePhone(idx){
+        this.phones.splice(idx,1);
+        this.phone = {};
+      },
+      formatPhones(){
+        for(var s = 0; s < this.phones.length; s++){
+          this.phones[s].type = this.phones[s].type.value;
+        }
+        return this.phones;
+      },
+      buildUser(){
+        this.user.telephones = this.formatPhones();
+        this.user.id_type = this.user.id_type.value;
+        return this.user;
+      },
+      processUser () {
+        this.user = this.buildUser();
+        console.log(this.user);
+        if(this.edit){
+            this.update(this.user).then(
+                data => {
+                    this.setWarning(data.message, { root: true }).then(()=>{
+                        this.$router.push('/userDetail/')
+                    })
+                },
+                error => {
+            })
+        }else{
+            this.create(this.user).then(
+                data => {
+                    this.setWarning(data.message, { root: true }).then(()=>{
+                        this.$router.push('/login')
+                    })
+                },
+                error => {
+            })
+        }
+      },
+      redirect(page){
+        if(!this.logged){
+          this.$router.push('/login')
+        }else{
+          if(page){
+            this.$router.push('/userDetail/'+this.edit)
+          }else{
+            this.$router.push('/userList')
+          }
+        }
+      }
+    },
+    computed:{
+      ...mapState({
+        warning: state => state.warning,
+        logged: state => state.auth.logged
+      }),
+    },
+  }
+</script>
+

@@ -1,0 +1,16 @@
+const dev_enviroment = {
+    ROOT_API: 'http://192.168.1.195:52000/api/'
+  };
+  const production_enviroment = {
+    ROOT_API: 'khe onda'
+  };
+  
+  let enviroment;
+  
+  if(process.env.NODE_ENV === 'production'){
+      enviroment = production_enviroment;	
+  }else{
+    enviroment = dev_enviroment;	
+  }
+  
+  export default enviroment;
