@@ -6,6 +6,11 @@ Vue.use(Vuex)
 //MODULOS
 import auth from '@/modules/auth';
 import user from '@/modules/user';
+import role from '@/modules/role';
+import permission from '@/modules/permission';
+import productAttribute from '@/modules/productAttribute';
+import productClass from '@/modules/productClass';
+import product from '@/modules/product';
 
 const store = new Vuex.Store({
   state: {
@@ -65,6 +70,11 @@ const store = new Vuex.Store({
   modules: {
     auth,
     user,
+    role,
+    permission,
+    productAttribute,
+    productClass,
+    product,
   }
 })
 

@@ -1,17 +1,17 @@
 import Vue from 'vue';
 
 const state = {
-  users : [],
-  user: ""
+  permissions: [],
+  permission: ""
 };
 
 const actions = {
-    getUser:({commit}, id) => {
+    getPermission:({commit}, id) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('users/'+id).then(
+        Vue.http.post('permissions/'+id).then(
             response =>{
-            commit('setUser',response.data);
+            commit('setPermission',response.data);
             resolve(response.data)
             }
         ).catch(error=>{
@@ -22,12 +22,12 @@ const actions = {
         })
         });
     },
-    fetchUsers:({commit}) => {
+    fetchPermissions:({commit}) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('users').then(
+        Vue.http.post('permissions').then(
             response =>{
-            commit('setUsers',response.data);
+            commit('setPermissions',response.data);
             resolve(response.data)
             }
         ).catch(error=>{
@@ -41,7 +41,7 @@ const actions = {
     create:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('register_user',data).then(
+        Vue.http.post('register_permission',data).then(
             response =>{
             resolve(response.data)
             }
@@ -57,7 +57,7 @@ const actions = {
     update:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('edit_user',data).then(
+        Vue.http.post('edit_permission',data).then(
             response =>{
             resolve(response.data)
             }
@@ -76,11 +76,11 @@ const getters = {
 };
 
 const mutations = {
-    setUsers: (state, list) => {
-        state.users = list
+    setPermissions: (state, list) => {
+        state.permissions = list
     },
-    setUser: (state, us) => {
-        state.user = us
+    setPermission: (state, per) => {
+        state.permission = per
     },
 
 };

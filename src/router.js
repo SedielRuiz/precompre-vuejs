@@ -5,6 +5,9 @@ import store from './store'
 //COMPONENTES
 import Login from '@/components/Auth/Login';
 import Principal from '@/components/Welcome';
+/**Permisos**/
+import PermissionList from '@/components/Permissions/permission-list';
+import PermissionDetail from '@/components/Permissions/permission-detail';
 /**Roles**/
 import RoleList from '@/components/Roles/role-list';
 import RoleManage from '@/components/Roles/role-manage';
@@ -13,6 +16,18 @@ import RoleDetail from '@/components/Roles/role-detail';
 import UserList from '@/components/Users/user-list';
 import UserManage from '@/components/Users/user-manage';
 import UserDetail from '@/components/Users/user-detail';
+/**Atributos de producto**/
+import AtributeList from '@/components/ProductAttributes/product-attribute-list';
+import AtributeManage from '@/components/ProductAttributes/product-attribute-manage';
+import AtributeDetail from '@/components/ProductAttributes/product-attribute-detail';
+/**Clases de producto**/
+import ClassList from '@/components/ProductClass/product-class-list';
+import ClassManage from '@/components/ProductClass/product-class-manage';
+import ClassDetail from '@/components/ProductClass/product-class-detail';
+/**Productos**/
+import ProductList from '@/components/Products/product-list';
+import ProductManage from '@/components/Products/product-manage';
+import ProductDetail from '@/components/Products/product-detail';
 
 const router = new Router({
   routes: [
@@ -35,6 +50,19 @@ const router = new Router({
             }
         }
     },
+    /**Permisos**/
+    {
+        path: '/permissionList',
+        name: 'permissionList',
+        component: PermissionList,
+        meta: { Auth: true, title: 'Permisos' },
+    },
+    {
+        path: '/permissionDetail/:id',
+        name: 'permissionDetail',
+        component: PermissionDetail,
+        meta: { Auth: true, title: 'Permiso' },
+    },
     /**Roles**/
     {
         path: '/roleList',
@@ -43,7 +71,7 @@ const router = new Router({
         meta: { Auth: true, title: 'Roles' },
     },
     {
-        path: '/roleDetail',
+        path: '/roleDetail/:id',
         name: 'roleDetail',
         component: RoleDetail,
         meta: { Auth: true, title: 'Rol' },
@@ -85,6 +113,81 @@ const router = new Router({
         component: UserManage,
         meta: { Auth: true, title: 'Editar usuario' },
     },
+    /**Atributos de producto**/
+    {
+        path: '/atributesProductList',
+        name: 'atributesProductList',
+        component: AtributeList,
+        meta: { Auth: true, title: 'Atributos' },
+    },
+    {
+        path: '/atributesProductDetail/:id',
+        name: 'atributesProductDetail',
+        component: AtributeDetail,
+        meta: { Auth: true, title: 'Atributo' },
+    },
+    {
+        path: '/atributesProductManage',
+        name: 'atributesProductManageCreate',
+        component: AtributeManage,
+        meta: { Auth: true, title: 'Crear atributo' },
+    },
+    {
+        path: '/atributesProductManage/:id',
+        name: 'atributesProductManageUpdate',
+        component: AtributeManage,
+        meta: { Auth: true, title: 'Editar atributo' },
+    },
+    /**Clases de atributos**/
+    {
+        path: '/classProductList',
+        name: 'classProductList',
+        component: ClassList,
+        meta: { Auth: true, title: 'Clases de atributos' },
+    },
+    {
+        path: '/classProductDetail/:id',
+        name: 'classProductDetail',
+        component: ClassDetail,
+        meta: { Auth: true, title: 'Clase' },
+    },
+    {
+        path: '/classProductManage',
+        name: 'classProductManageCreate',
+        component: ClassManage,
+        meta: { Auth: true, title: 'Crear clase' },
+    },
+    {
+        path: '/classProductManage/:id',
+        name: 'classProductManageUpdate',
+        component: ClassManage,
+        meta: { Auth: true, title: 'Editar clase' },
+    },
+    /**Productos**/
+    {
+        path: '/productList',
+        name: 'productList',
+        component: ProductList,
+        meta: { Auth: true, title: 'Productos' },
+    },
+    {
+        path: '/productDetail/:id',
+        name: 'productDetail',
+        component: ProductDetail,
+        meta: { Auth: true, title: 'Producto' },
+    },
+    {
+        path: '/productManage',
+        name: 'productManageCreate',
+        component: ProductManage,
+        meta: { Auth: true, title: 'Crear producto' },
+    },
+    {
+        path: '/productManage/:id',
+        name: 'productManageUpdate',
+        component: ProductManage,
+        meta: { Auth: true, title: 'Editar producto' },
+    },
   ]
 })
 
@@ -94,8 +197,8 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title;
-  if (!store.state.auth.logged) {
-    next(/*{path: '/login'}*/);
+  if (to.meta.Auth && !store.state.auth.logged) {
+    next({path: '/login'});
   }else {
     if (store.state.auth.logged) {
       store.commit('auth/setUser');

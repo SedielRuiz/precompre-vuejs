@@ -18,21 +18,74 @@
 
             <v-divider></v-divider>
 
-            <v-list-tile @click="dirigir('/roleList')">
-                <v-list-tile-action>
-                <v-icon>assignment</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                <v-list-tile-title>Roles</v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
+            <v-list-group prepend-icon="assignment" value="true">
+              <template v-slot:activator>
+                <v-list-tile>
+                  <v-list-tile-title>Control de acceso</v-list-tile-title>
+                </v-list-tile>
+              </template>
+
+              <v-list-tile @click="dirigir('/permissionList')">
+                  <v-list-tile-action>
+                  <v-icon>assignment</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Permisos</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+
+              <v-list-tile @click="dirigir('/roleList')">
+                  <v-list-tile-action>
+                  <v-icon>assignment</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Roles</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+            </v-list-group>
 
             <v-list-tile @click="dirigir('/userList')">
                 <v-list-tile-action>
-                <v-icon>assignment</v-icon>
+                <v-icon>account_circle</v-icon>
                 </v-list-tile-action>
                 <v-list-tile-content>
                 <v-list-tile-title>Usuarios</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+
+            <v-divider></v-divider>
+
+            <v-list-group prepend-icon="assignment" value="true">
+              <template v-slot:activator>
+                <v-list-tile>
+                  <v-list-tile-title>Control de productos</v-list-tile-title>
+                </v-list-tile>
+              </template>
+
+              <v-list-tile @click="dirigir('/atributesProductList')">
+                  <v-list-tile-action>
+                  <v-icon>assignment</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Atributos de producto</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile @click="dirigir('/classProductList')">
+                  <v-list-tile-action>
+                  <v-icon>assignment</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Clases de atributos</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+            </v-list-group>
+
+            <v-list-tile @click="dirigir('/productList')">
+                <v-list-tile-action>
+                <v-icon>assignment</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                <v-list-tile-title>Productos</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
 

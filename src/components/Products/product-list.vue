@@ -2,7 +2,7 @@
   <v-container>
     <div class="row col-md-10">
         <div class="col-md-8">
-            <h1>Usuarios</h1>
+            <h1>Productos</h1>
         </div>
         <div class="col-md-2">
             <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
@@ -14,10 +14,11 @@
         :items="rows"
         class="elevation-1">
         <template v-slot:items="props">
-        <td>{{ props.item.id_description }}</td>
         <td>{{ props.item.name }}</td>
-        <td>{{ props.item.last_name }}</td>
-        <td>{{ props.item.email }}</td>
+        <td v-if="props.item.product_class">{{ props.item.product_class[0].title }}</td>
+        <td v-else></td>
+        <td v-if="props.item.attributes">{{ props.item.attributes[0].title }}</td>
+        <td v-else></td>
         <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo" }}</td>
         <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
         </template>
@@ -34,35 +35,34 @@
     data () {
       return {
         headers: [
-            {text:"Documento", value:"id_description"},
-            {text:"Nombres", value:"name"},
-            {text:"Apellidos", value:"last_name"},
-            {text:"Correo", value:"email"},
+            {text:"Nombre", value:"name"},
+            {text:"Clases", value:"product_class"},
+            {text:"Atributos", value:"attributes"},
             {text:"Estado", value:"status"},
             {text:"Acciones", value:"actons"}
         ]
       }
     },
     mounted () {
-        this.fetchUsers()
+        this.fetchProducts()
     },
     methods: {
       ...mapActions({
-        fetchUsers: 'user/fetchUsers',
+        fetchProducts: 'product/fetchProducts',
         setWarning: 'setWarning',
       }),
       redirect(page,id){
         if(!page){
-            this.$router.push('/userManage')
+            this.$router.push('/productManage')
         }else{
-            this.$router.push('/userDetail/'+id)
+            this.$router.push('/productDetail/'+id)
         }
       }
     },
     computed:{
       ...mapState({
         warning: state => state.warning,
-        rows: state => state.user.users
+        rows: state => state.product.products
       }),
     },
   }

@@ -17,7 +17,9 @@
                 <v-text-field :disabled="true" v-model="user.last_ame" prepend-icon="email" name="last_ame" label="Apellidos" type="text"></v-text-field>
                 <v-text-field :disabled="true" v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
                 <h2>Teléfonos</h2><br>
-                <v-chip v-for="(p, index) in phones">{{p.number}}</v-chip>
+                <div v-if="phones">
+                  <v-chip v-for="(p, index) in phones" :key="index">{{p.number}}</v-chip>
+                </div>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -30,11 +32,11 @@
 </template>
 
 <script>
-  import {mapActions,mapGetters,mapState} from 'vuex';
+  import {mapActions,mapState} from 'vuex';
   
   export default {
     
-    name: 'user-manage',
+    name: 'user-detail',
     data () {
       return {
         user: {},
@@ -52,19 +54,20 @@
         edit:"",
       }
     },
+    watch:{
+        us(val){
+            this.user = val;
+            this.phones = val.telephones;
+        },
+    },
     mounted () {
         this.edit = this.$route.params.id;
         this.getUser(this.edit);
-        this.getPhones(this.edit);
     },
     methods: {
       ...mapActions({
-        create: 'user/create',
         setWarning: 'setWarning',
-      }),
-      ...mapGetters({
         getUser: 'user/getUser', 
-        getPhones: 'user/getPhones', 
       }),
       redirect(page){
           if(page){
@@ -76,7 +79,8 @@
     },
     computed:{
       ...mapState({
-        warning: state => state.warning
+        warning: state => state.warning,
+        us: state => state.user.user, 
       }),
     },
   }

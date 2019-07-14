@@ -1,17 +1,17 @@
 import Vue from 'vue';
 
 const state = {
-  users : [],
-  user: ""
+  products: [],
+  product: ""
 };
 
 const actions = {
-    getUser:({commit}, id) => {
+    getProduct:({commit}, id) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('users/'+id).then(
+        Vue.http.post('products/'+id).then(
             response =>{
-            commit('setUser',response.data);
+            commit('setProduct',response.data);
             resolve(response.data)
             }
         ).catch(error=>{
@@ -22,12 +22,12 @@ const actions = {
         })
         });
     },
-    fetchUsers:({commit}) => {
+    fetchProducts:({commit}) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('users').then(
+        Vue.http.post('products').then(
             response =>{
-            commit('setUsers',response.data);
+            commit('setProducts',response.data);
             resolve(response.data)
             }
         ).catch(error=>{
@@ -41,9 +41,9 @@ const actions = {
     create:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('register_user',data).then(
+        Vue.http.post('register_product',data).then(
             response =>{
-            resolve(response.data)
+                resolve(response.data)
             }
         ).catch(error=>{
             commit('setError', error, { root: true });
@@ -57,7 +57,7 @@ const actions = {
     update:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('edit_user',data).then(
+        Vue.http.post('edit_product',data).then(
             response =>{
             resolve(response.data)
             }
@@ -76,11 +76,11 @@ const getters = {
 };
 
 const mutations = {
-    setUsers: (state, list) => {
-        state.users = list
+    setProducts: (state, list) => {
+        state.products = list
     },
-    setUser: (state, us) => {
-        state.user = us
+    setProduct: (state, pr) => {
+        state.product = pr
     },
 
 };

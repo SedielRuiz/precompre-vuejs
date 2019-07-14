@@ -18,9 +18,9 @@
                 <v-text-field v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
                 <v-combobox v-if="edit!=''" v-model="user.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="email" label="Estado"></v-combobox>
                 <v-text-field v-if="edit==''" v-model="user.password" prepend-icon="email" name="password" label="Contraseña" type="password"></v-text-field>
-                <h2>Teléfonos</h2><br>
-                <div v-if="phones.length > 0">
-                  <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
+                <h2>Atributos</h2><br>
+                <div v-if="attributes.length > 0">
+                  <v-chip v-for="(attr, index) in attributes" :key="index">{{attr.description}} <v-icon medium @click="removeAttribute(index)">close</v-icon></v-chip>
                 </div>
                 <br>
                 <div class="row col-md-8">
@@ -33,7 +33,7 @@
                     <v-text-field v-model="phone.extension" prepend-icon="extension" name="extension" label="Extensión" type="text"></v-text-field>
                     <v-text-field v-model="phone.code" prepend-icon="code" name="code" label="Código postal" type="text"></v-text-field>
                     <v-switch v-model="phone.principal" :label="'Principal'"></v-switch>
-                    <v-btn color="primary" @click="addPhone()">Agregar</v-btn>
+                    <v-btn color="primary" @click="addAttribute()">Agregar</v-btn>
                     <!--TELEFONOS-->
                   </v-card><br>
                 </div>
@@ -41,7 +41,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="processUser()">Guardar</v-btn>
+            <v-btn color="primary" @click="processProduct()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -57,9 +57,10 @@
     name: 'user-manage',
     data () {
       return {
-        user: {},
-        phone:{},
-        phones:[],
+        product: {},
+        productClasss:[],
+        attribute:{},
+        attributes:[],
         typesPhone: [
           {text: 'Fijo', value:'fijo'},
           {text: 'Celular', value:'movil'}
@@ -78,9 +79,9 @@
       }
     },
     watch:{
-        us(val){
+        pro(val){
           if(val){
-            this.user = val;
+            this.product = val;
             this.phones = val.telephones;
           }
         },
@@ -88,81 +89,68 @@
     mounted () {
         this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
         if(this.edit!=""){
-            this.titleText="Editar usuario"
-            this.getUser(this.edit);
+            this.titleText="Editar producto"
+            this.getProduct(this.edit);
         }else{
-          this.titleText="Nuevo usuario"
+          this.titleText="Nuevo producto"
         }
     },
     methods: {
-      ...mapActions({
-        create: 'user/create',
-        update: 'user/update',
-        getUser: 'user/getUser', 
-        setWarning: 'setWarning',
-      }),
-      addPhone(){
-          this.phones.push(this.phone);
-          this.phone = {};
-      },
-      removePhone(idx){
-        this.phones.splice(idx,1);
-        this.phone = {};
-      },
-      formatPhones(){
-        for(var s = 0; s < this.phones.length; s++){
-          if(this.phones[s].type)
-            this.phones[s].type = this.phones[s].type.value;
+        ...mapActions({
+            create: 'product/create',
+            update: 'product/update',
+            getProduct: 'product/getProduct', 
+            setWarning: 'setWarning',
+        }),
+        addAttribute(){
+          this.attributes.push(this.attribute);
+          this.attribute = {};
+        },
+        removeAttribute(idx){
+            this.attributes.splice(idx,1);
+            this.attribute = {};
+        },
+        buildProduct(){
+            this.product.product_class = this.productClasss;
+            this.product.attributes = this.attributes;
+            if(this.edit)
+                this.product.status = this.product.status.value;
+            return this.product;
+        },
+        processProduct () {
+            this.product = this.buildProduct();
+            if(this.edit){
+                this.update(this.product).then(
+                    data => {
+                        this.setWarning(data.message, { root: true }).then(()=>{
+                            this.$router.push('/productDetail/'+this.edit)
+                        })
+                    },
+                    error => {
+                })
+            }else{
+                this.create(this.product).then(
+                    data => {
+                        this.setWarning(data.message, { root: true }).then(()=>{
+                            this.$router.push('/productList')
+                        })
+                    },
+                    error => {
+                })
+            }
+        },
+        redirect(page){
+            if(page){
+                this.$router.push('/productDetail/'+this.edit)
+            }else{
+                this.$router.push('/productList')
+            }
         }
-        return this.phones;
-      },
-      buildUser(){
-        this.user.telephones = this.formatPhones();
-        this.user.id_type = this.user.id_type.value;
-        if(this.edit)
-          this.user.status = this.user.status.value;
-        return this.user;
-      },
-      processUser () {
-        this.user = this.buildUser();
-        console.log(this.user);
-        if(this.edit){
-            this.update(this.user).then(
-                data => {
-                    this.setWarning(data.message, { root: true }).then(()=>{
-                        this.$router.push('/userDetail/'+this.edit)
-                    })
-                },
-                error => {
-            })
-        }else{
-            this.create(this.user).then(
-                data => {
-                    this.setWarning(data.message, { root: true }).then(()=>{
-                        this.$router.push('login')
-                    })
-                },
-                error => {
-            })
-        }
-      },
-      redirect(page){
-        if(!this.logged){
-          this.$router.push('/login')
-        }else{
-          if(page){
-            this.$router.push('/userDetail/'+this.edit)
-          }else{
-            this.$router.push('/userList')
-          }
-        }
-      }
     },
     computed:{
       ...mapState({
         warning: state => state.warning,
-        logged: state => state.auth.logged,
-        us: state => state.user.user, 
+        pro: state => state.product.product, 
       }),
     },
   }

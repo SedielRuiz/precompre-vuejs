@@ -1,17 +1,17 @@
 import Vue from 'vue';
 
 const state = {
-  users : [],
-  user: ""
+  attributes: [],
+  attribute: ""
 };
 
 const actions = {
-    getUser:({commit}, id) => {
+    getAttribute:({commit}, id) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('users/'+id).then(
+        Vue.http.post('product_attributes/'+id).then(
             response =>{
-            commit('setUser',response.data);
+            commit('setAttribute',response.data);
             resolve(response.data)
             }
         ).catch(error=>{
@@ -22,12 +22,12 @@ const actions = {
         })
         });
     },
-    fetchUsers:({commit}) => {
+    fetchAttributes:({commit}) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('users').then(
+        Vue.http.post('product_attributes').then(
             response =>{
-            commit('setUsers',response.data);
+            commit('setAttributes',response.data);
             resolve(response.data)
             }
         ).catch(error=>{
@@ -41,7 +41,7 @@ const actions = {
     create:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('register_user',data).then(
+        Vue.http.post('register_product_attribute',data).then(
             response =>{
             resolve(response.data)
             }
@@ -57,7 +57,7 @@ const actions = {
     update:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('edit_user',data).then(
+        Vue.http.post('edit_product_attribute',data).then(
             response =>{
             resolve(response.data)
             }
@@ -76,11 +76,11 @@ const getters = {
 };
 
 const mutations = {
-    setUsers: (state, list) => {
-        state.users = list
+    setAttributes: (state, list) => {
+        state.attributes = list
     },
-    setUser: (state, us) => {
-        state.user = us
+    setAttribute: (state, att) => {
+        state.attribute = att
     },
 
 };
