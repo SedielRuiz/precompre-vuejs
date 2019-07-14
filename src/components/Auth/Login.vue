@@ -6,7 +6,7 @@
           <v-toolbar dark color="primary">
             <v-toolbar-title>Inicio sesion</v-toolbar-title>
             <v-spacer></v-spacer>
-            <!--v-btn color="success" @click="redirect()">Registrar</v-btn-->
+            <v-btn color="success" @click="redirect()">Registrar</v-btn>
           </v-toolbar>
           <v-card-text>
             <v-form>
@@ -59,8 +59,7 @@
         processLogin () {
             this.login(this.user).then(
                 user => {
-                    console.log('logged')
-                    this.$router.push('/');
+                    this.$router.push('/login');
                 },
                 error => {
             })

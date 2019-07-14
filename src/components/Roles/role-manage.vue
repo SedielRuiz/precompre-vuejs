@@ -12,7 +12,7 @@
           <v-card-text>
             <v-form>
                 <v-text-field v-model="rol.title" prepend-icon="email" name="title" label="Titulo" type="text"></v-text-field>
-                <v-combobox v-if="edit" v-model="rol.status" :items="status" prepend-icon="email" label="Estado"></v-combobox>
+                <v-combobox v-if="edit" v-model="rol.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="email" label="Estado"></v-combobox>
                 <h2>Permisos</h2><br>
                 <div class="row col-md-8">
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-  import {mapActions,mapState} from 'vuex';
+  import {mapActions,mapState, mapGetters} from 'vuex';
   
   export default {
     
@@ -74,6 +74,7 @@
             {text:"Estado", value:"status"}
         ],
         rol: {},
+        permissionsId:[],
         permissions:[],
         status:[
           {text: 'Activo', value:'enabled'},
@@ -87,9 +88,12 @@
         rl(val){
             if(val){
                 this.rol = val;
-                this.permissions = val.telephones;
+                this.permissionsId = val.permissions;
             }
         },
+        permissionsObj(val){
+            this.permissions = val;
+        }
     },
     mounted () {
         this.fetchPermissions();
@@ -122,6 +126,7 @@
             }
         },
         buildRol(){
+            console.log(this.permissions);
             var per = [];
             for(var s = 0; s < this.permissions.length; s++){
                 per.push(this.permissions[s]._id);
@@ -133,7 +138,6 @@
         },
         processRol () {
             this.rol = this.buildRol();
-            console.log(this.rol);
             if(this.edit){
                 this.update(this.rol).then(
                     data => {
@@ -168,6 +172,19 @@
             rl: state => state.role.role, 
             rows: state => state.permission.permissions, 
         }),
+        ...mapGetters({
+            getPermissions: 'permission/getPermissions', 
+        }),
+        permissionsObj(){
+            var permiss = [];
+            if(this.permissionsId){
+                for(var s in this.permissionsId){
+                    if(this.permissionsId[s])
+                        permiss.push(this.getPermissions(this.permissionsId[s]));
+                }
+                return permiss;
+            }
+        },
     },
   }
 </script>

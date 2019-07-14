@@ -73,6 +73,12 @@ const actions = {
 };
 
 const getters = {
+    getProductClass: (state) => (id) =>{
+        let classs = state.classs.find(element=>{
+          return element._id == id
+        })
+        return classs;
+    }
 };
 
 const mutations = {

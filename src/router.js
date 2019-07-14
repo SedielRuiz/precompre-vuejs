@@ -105,7 +105,7 @@ const router = new Router({
         path: '/userManage',
         name: 'userManageCreate',
         component: UserManage,
-        meta: { Auth: true, title: 'Crear usuario' },
+        meta: { Auth: false, title: 'Crear usuario' },
     },
     {
         path: '/userManage/:id',

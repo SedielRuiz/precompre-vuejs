@@ -2,10 +2,27 @@ import Vue from 'vue';
 
 const state = {
   products: [],
-  product: ""
+  product: "",
+  attrClass:""
 };
 
 const actions = {
+    getProductClassAttribute:({commit}, id) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+        Vue.http.post('product_class_attributes/'+id).then(
+            response =>{
+            commit('ProductClassAttribute',response.data);
+            resolve(response.data)
+            }
+        ).catch(error=>{
+            commit('setError', error, { root: true });
+            reject(error)
+        }).finally(()=>{
+            commit('stopProcessing', null, { root: true });
+        })
+        });
+    },
     getProduct:({commit}, id) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
@@ -82,7 +99,9 @@ const mutations = {
     setProduct: (state, pr) => {
         state.product = pr
     },
-
+    ProductClassAttribute(state, attr){
+        state.attrClass = attr
+    }
 };
 
 export default {

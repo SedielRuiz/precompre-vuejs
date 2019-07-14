@@ -73,6 +73,12 @@ const actions = {
 };
 
 const getters = {
+    getAttributes: (state) => (id) =>{
+        let attributesObj = state.attributes.find(element=>{
+          return element._id == id
+        })
+        return attributesObj;
+    }
 };
 
 const mutations = {

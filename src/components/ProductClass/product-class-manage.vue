@@ -12,17 +12,19 @@
           <v-card-text>
             <v-form>
                 <v-text-field v-model="classs.code" prepend-icon="email" name="title" label="Nombre" type="text"></v-text-field>
+                <v-combobox  v-model="classs.parent" :items="classes" prepend-icon="email" label="Clase parent"></v-combobox>
                 <h2>Atributos</h2><br>
+                <v-alert :value="msgErrorN" type="error">Ya tiene este atributo como atributo personalizable</v-alert> <br>
                 <div class="row col-md-8">
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--ATRIBUTOS-->
-                    <v-data-table v-model="attributes" :headers="headers" :items="attrN" :pagination.sync="paginationAttr" select-all item-key="code" class="elevation-1">
+                    <v-data-table v-model="attributes" :headers="headers" :items="attrN" :pagination.sync="paginationAttr" select-all item-key="_id" class="elevation-1">
                         <template v-slot:headers="props">
                             <tr>
                                 <th>
                                     <v-checkbox :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details  @click.stop="removeAttr"></v-checkbox>
                                 </th>
-                                <th v-for="header in props.headers" :key="header.text" :class="['column sortable', paginationAttr.descending ? 'desc' : 'asc', header.value === paginationAttr.sortBy ? 'active' : '']" @click="changeSort(header.value)">
+                                <th v-for="header in props.headers" :key="header.text" :class="['column sortable', paginationAttr.descending ? 'desc' : 'asc', header.value === paginationAttr.sortBy ? 'active' : '']" @click="changeSortAttr(header.value)">
                                     <v-icon small>arrow_upward</v-icon>
                                     {{ header.text }}
                                 </th>
@@ -35,7 +37,7 @@
                                 </td>
                                 <td class="text-xs-right">{{ props.item.code }}</td>
                                 <td class="text-xs-right">{{ props.item.type }}</td>
-                                <td class="text-xs-right">{{ props.item.required }}</td>
+                                <td class="text-xs-right">{{ props.item.required ? 'Si' : 'No'}}</td>
                             </tr>
                         </template>
                     </v-data-table>
@@ -43,29 +45,30 @@
                   </v-card><br>
                 </div><br>
                 <h2>Atributos personalizables</h2><br>
+                <v-alert :value="msgErrorC" type="error">Ya tiene este atributo como atributo no personalizable</v-alert> <br>
                 <div class="row col-md-8">
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--ATRIBUTOS PERSONALIZABLES-->
                     <v-data-table v-model="attributesCustomisable" :headers="headers" :items="attrC" :pagination.sync="paginationAttrCustom" select-all item-key="code" class="elevation-1">
-                        <template v-slot:headers="props">
+                        <template v-slot:headers="propsC">
                             <tr>
                                 <th>
-                                    <v-checkbox :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details  @click.stop="removeAttrCustom"></v-checkbox>
+                                    <v-checkbox :input-value="propsC.all" :indeterminate="propsC.indeterminate" primary hide-details  @click.stop="removeAttrCustom"></v-checkbox>
                                 </th>
-                                <th v-for="header in props.headers" :key="header.text" :class="['column sortable', paginationAttrCustom.descending ? 'desc' : 'asc', header.value === paginationAttrCustom.sortBy ? 'active' : '']" @click="changeSort(header.value)">
+                                <th v-for="header in propsC.headers" :key="header.text" :class="['column sortable', paginationAttrCustom.descending ? 'desc' : 'asc', header.value === paginationAttrCustom.sortBy ? 'active' : '']" @click="changeSortAttrCustom(header.value)">
                                     <v-icon small>arrow_upward</v-icon>
                                     {{ header.text }}
                                 </th>
                             </tr>
                         </template>
-                        <template v-slot:items="props">
-                            <tr :active="props.selected" @click="props.selected = !props.selected">
+                        <template v-slot:items="propsC">
+                            <tr :active="propsC.selected" @click="propsC.selected = !propsC.selected">
                                 <td>
-                                    <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
+                                    <v-checkbox :input-value="propsC.selected" primary hide-details></v-checkbox>
                                 </td>
-                                <td class="text-xs-right">{{ props.item.code }}</td>
-                                <td class="text-xs-right">{{ props.item.type }}</td>
-                                <td class="text-xs-right">{{ props.item.required }}</td>
+                                <td class="text-xs-right">{{ propsC.item.code }}</td>
+                                <td class="text-xs-right">{{ propsC.item.type }}</td>
+                                <td class="text-xs-right">{{ propsC.item.required ? 'Si' : 'No'}}</td>
                             </tr>
                         </template>
                     </v-data-table>
@@ -85,7 +88,8 @@
 </template>
 
 <script>
-  import {mapActions,mapState} from 'vuex';
+var auxArr = ""
+  import {mapActions,mapState, mapGetters} from 'vuex';
   
   export default {
     
@@ -106,35 +110,52 @@
         classs: {},
         attributes:[],
         attributesCustomisable:[],
+        attributesId:[],
+        attributesCustomisableId:[],
         edit:"",
         titleText:"",
+        classes:[],
         attrN:[],
-        attrC:[]
+        attrC:[],
+        msgErrorC :false,
+        msgErrorN : false,
+        auxA:""
       }
     },
     watch:{
         cl(val){
             if(val){
                 this.classs = val;
-                this.attributes = val.attributes;
-                this.attributesCustomisable = val.attributesCustomisable;
+                this.attributesId = val.attributes;
+                this.attributesCustomisableId = val.order_attributes;
             }
         },
         attr(val){
-            this.attrN = val;
-            this.attrC = val;
+            this.attrN=val;
+            this.attrC=val;
         },
-        attributes(val){
-            if(val.length > 0)
-                this.alternateAttr("c");
+        attributesObj(val){
+            this.attributes = val;
+        },
+        attributesCustomisablesObj(val){
+            this.attributesCustomisable = val;
+        },
+        classess(val){
+            console.log(val);
+            for(var s = 0; s < val.length; s++){
+                this.classes.push({"text":val[s].code, "value":val[s]._id});
+            }
+        }
+        /*attributes(val){
+            this.alternateAttr("c");
         },
         attributesCustomisable(val){
-            if(val.length > 0)
-                this.alternateAttr("n");
-        },
+            this.alternateAttr("n");
+        },*/
     },
     mounted () {
         this.fetchAttributes();
+        this.fetchClasss();
         this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
         if(this.edit!=""){
             this.titleText="Editar clase"
@@ -148,35 +169,74 @@
             create: 'productClass/create',
             update: 'productClass/update',
             getClass: 'productClass/getClass', 
+            fetchClasss: 'productClass/fetchClasss',
             fetchAttributes: 'productAttribute/fetchAttributes',
             setWarning: 'setWarning',
         }),
         removeAlternate(arr1, arr2){
-            console.log(this.attrC)
             var p = 0;
             var code = "";
             var idx = 0;
             p = this[arr1].length;
             if(p > 0){
                 p = p == 0 ? p : p-1;
-                code = this[arr1][p].code;
+                code = this[arr1][p]._id;
+                console.log(this[arr1][p]);
                 for(var s in this[arr2]){
-                    if(this[arr2] == code){
+                    if(this[arr2][s]._id === code){
                         idx = s;
                         break;
                     }
                 }
-                console.log("vuelo code:" + code +"y posicion :"+idx);
-                this[arr2].splice(idx,1);
+                //this[arr2].splice(idx,1);
+            }
+        },
+        validateAlternate(arr1, arr2){
+            console.log("1 "+this.auxA+" 2: "+arr1)
+            if(this.auxA!=arr1){
+                console.log("entro " + arr1 +" y aux "+ this.auxA);
+                this.auxA = arr1
+                auxArr = this[arr1];
+                this.msgErrorC = false;
+                this.msgErrorN = false;
+            }else{
+                this[arr1] = auxArr;
+                if(arr1 == "attributes"){
+                    this.msgErrorN = true;
+                    this.msgErrorC = false;
+                }else{
+                    this.msgErrorC = true;
+                    this.msgErrorN = false;
+                }
+            }
+            console.log(auxArr);
+            var p = 0;
+            var code = "";
+            var idx = "";
+            p = this[arr1].length;
+            if(p > 0){
+                p = p == 0 ? p : p-1;
+                code = this[arr1][p]._id;
+                for(var s in this[arr2]){
+                    if(this[arr2][s]._id === code){
+                        idx = s;
+                        break;
+                    }
+                }
+                if(idx != ""){
+                    console.log(auxArr);
+                    //this[arr1] = auxArr;
+                    this[arr1].splice(idx,1);
+                }
             }
         },
         alternateAttr(arr){
             if(arr=="c"){
-                if(this.attributes.length > 0)
-                    this.removeAlternate("attributes", "attrC")
+                //if(this.attributes.length > 0)
+                  //  this.validateAlternate("attributes", "attributesCustomisable")
             }else{
-                if(this.attributesCustomisable.length > 0)
-                    this.removeAlternate("attributesCustomisable", "attrN")
+                //if(this.attributesCustomisable.length > 0)
+                    //this.validateAlternate("attributesCustomisable", "attributes")
             }
         },
         /**Tabla atributos**/ 
@@ -209,15 +269,17 @@
             /**Atributos**/
             var attr = [];
             for(var s = 0; s < this.attributes.length; s++){
-                attr.push(this.attributes[s].code);
+                attr.push(this.attributes[s]._id);
             }
             this.classs.attributes = attr;
             /**Atributos personalizables**/
             var attrCustom = [];
             for(var s = 0; s < this.attributesCustomisable.length; s++){
-                attrCustom.push(this.attributesCustomisable[s].code);
+                attrCustom.push(this.attributesCustomisable[s]._id);
             }
-            this.classs.attributesCustomisable = attrCustom;
+            this.classs.order_attributes = attrCustom;
+            if(this.classs.parent)
+                this.classs.parent = this.classs.parent.value;
             return this.classs;
         },
         processClass () {
@@ -254,8 +316,32 @@
         ...mapState({
             warning: state => state.warning,
             cl: state => state.productClass.class, 
-            attr: state => state.productAttribute.attributes
+            attr: state => state.productAttribute.attributes,
+            classess: state => state.productClass.classs, 
         }),
+        ...mapGetters({
+            getAttributes: 'productAttribute/getAttributes', 
+        }),
+        attributesObj(){
+            var attrs = [];
+            if(this.attributesId){
+                for(var s in this.attributesId){
+                    if(this.attributesId[s])
+                        attrs.push(this.getAttributes(this.attributesId[s]));
+                }
+                return attrs;
+            }
+        },
+        attributesCustomisablesObj(){
+            var attrCs = [];
+            if(this.attributesCustomisableId){
+                for(var s in this.attributesCustomisableId){
+                    if(this.attributesCustomisableId[s])
+                        attrCs.push(this.getAttributes(this.attributesCustomisableId[s]));
+                }
+                return attrCs;
+            }
+        }
     },
   }
 </script>

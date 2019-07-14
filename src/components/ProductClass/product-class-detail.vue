@@ -12,6 +12,7 @@
           <v-card-text>
             <v-form>
                 <v-text-field :disabled="true" v-model="classs.code" prepend-icon="email" name="code" label="Nombre" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-if="classParent" v-model="classParent.code" prepend-icon="email" name="code" label="Parent clase" type="text"></v-text-field>
                 <h2>Atributos</h2><br>
                 <div class="row col-md-8">
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
@@ -44,7 +45,7 @@
 </template>
 
 <script>
-  import {mapActions,mapState} from 'vuex';
+  import {mapActions,mapState,mapGetters} from 'vuex';
   
   export default {
     
@@ -52,17 +53,17 @@
     data () {
       return {
         classs: {},
-        attributes:[],
-        attributesCustomisables:[],
+        attributesId:[],
+        attributesCustomisablesId:[],
         edit:""
       }
     },
     watch:{
         cl(val){
             if(val){
-                this.calss = val;
-                this.attributes = val.attributes;
-                this.attributesCustomisables = val.attributesCustomisables;
+                this.classs = val;
+                this.attributesId = val.attributes;
+                this.attributesCustomisablesId = val.order_attributes;
             }
         }
     },
@@ -90,6 +91,34 @@
             warning: state => state.warning,
             cl: state => state.productClass.class, 
         }),
+        ...mapGetters({
+            getAttributes: 'productAttribute/getAttributes', 
+            getProductClass: 'productClass/getProductClass', 
+        }),
+        classParent(){
+            if(this.classs)
+                return this.getProductClass(this.classs.parent);
+        },
+        attributes(){
+            var attrs = [];
+            if(this.attributesId){
+                for(var s in this.attributesId){
+                    if(this.attributesId[s])
+                        attrs.push(this.getAttributes(this.attributesId[s]));
+                }
+                return attrs;
+            }
+        },
+        attributesCustomisables(){
+            var attrsC = [];
+            if(this.attributesCustomisablesId){
+                for(var s in this.attributesCustomisablesId){
+                    if(this.attributesCustomisablesId[s])
+                        attrsC.push(this.getAttributes(this.attributesCustomisablesId[s]));
+                }
+                return attrsC;
+            }
+        }
     },
   }
 </script>

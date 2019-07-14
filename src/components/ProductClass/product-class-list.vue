@@ -15,9 +15,9 @@
         class="elevation-1">
         <template v-slot:items="props">
         <td>{{ props.item.code }}</td>
-        <td v-if="props.item.attributes">{{ props.item.attributes[0].code }}</td>
+        <td v-if="props.item.attributes">{{ props.item.attributes[0] }}</td>
         <td v-else></td>
-        <td v-if="props.item.attributes_customisables">{{ props.item.attributes_customisables[0].code }}</td>
+        <td v-if="props.item.order_attributes">{{ props.item.order_attributes[0] }}</td>
         <td v-else></td>
         <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
         </template>

@@ -7,7 +7,7 @@
             <v-toolbar-title>Detalle de atributo</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn color="success" @click="redirect(true)">Editar</v-btn>
-            <v-btn color="success" @click="redirect(false)">Cancelar</v-btn>
+            <v-btn color="success" @click="redirect(false)">Volver</v-btn>
           </v-toolbar>
           <v-card-text>
             <v-form>
@@ -31,7 +31,6 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="processAttribute()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>

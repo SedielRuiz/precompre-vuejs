@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import {mapActions,mapState} from 'vuex';
+  import {mapActions,mapState, mapGetters} from 'vuex';
   
   export default {
     
@@ -43,7 +43,7 @@
     data () {
       return {
         rol: {},
-        permissions:[],
+        permissionsId:[],
         status:[
           {text: 'Activo', value:'enabled'},
           {text: 'Inactivo', value:'disabled'},
@@ -55,7 +55,7 @@
         rl(val){
             if(val){
                 this.rol = val;
-                this.permissions = val.permissions;
+                this.permissionsId = val.permissions;
             }
         }
     },
@@ -81,6 +81,19 @@
             warning: state => state.warning,
             rl: state => state.role.role, 
         }),
+        ...mapGetters({
+            getPermissions: 'permission/getPermissions', 
+        }),
+        permissions(){
+            var permiss = [];
+            if(this.permissionsId){
+                for(var s in this.permissionsId){
+                    if(this.permissionsId[s])
+                        permiss.push(this.getPermissions(this.permissionsId[s]));
+                }
+                return permiss;
+            }
+        },
     },
   }
 </script>

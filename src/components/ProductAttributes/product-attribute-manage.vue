@@ -13,11 +13,14 @@
             <v-form>
                 <v-text-field v-model="attribute.code" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
                 <v-combobox v-model="attribute.type" :items="types" prepend-icon="email" label="Tipo"></v-combobox>
-                <div v-if="attribute.type && attribute.type.value == 'text' || attribute.type == 'text'">
+                <div v-if="attribute.type && attribute.type.value === 'boolean' || attribute.type === 'boolean'">
+                    <v-switch v-model="attribute.default_value" :label="'Valor por defecto'"></v-switch>
+                </div>
+                <div v-else>
                     <v-combobox v-model="attribute.size" :items="sizes" prepend-icon="email" label="Tamaño de la caja de texto"></v-combobox>
                     <v-text-field v-model="attribute.length_text" prepend-icon="email" name="length_text" label="Longitud" type="text"></v-text-field>
+                    <v-text-field v-model="attribute.default_value" prepend-icon="email" name="name" label="Valor por defecto" type="text"></v-text-field>
                 </div>
-                <v-text-field v-model="attribute.default_value" prepend-icon="email" name="name" label="Valor por defecto" type="text"></v-text-field>
                 <v-switch v-model="attribute.required" :label="'Requerido'"></v-switch>
                 <v-switch v-model="attribute.visible" :label="'Visible'"></v-switch>
                 <v-switch v-model="attribute.wysiwyg" :label="'Wysiwyg'"></v-switch>
@@ -60,9 +63,9 @@
         options:[],
         option:{},
         types:[
-            {text: 'String', value:'text'},
+            {text: 'Texto', value:'text'},
             {text: 'Numerico', value:'number'},
-            {text: 'Booleano', value:'bool'},
+            {text: 'Booleano', value:'boolean'},
             {text: 'Precio', value:'decimal'}
         ],
         sizes:[

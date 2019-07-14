@@ -73,6 +73,12 @@ const actions = {
 };
 
 const getters = {
+    getPermissions: (state) => (id) =>{
+        let permissionObj = state.permissions.find(element=>{
+          return element._id == id
+        })
+        return permissionObj;
+    }
 };
 
 const mutations = {

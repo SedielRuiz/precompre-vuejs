@@ -16,8 +16,6 @@
         <template v-slot:items="props">
         <td>{{ props.item.title }}</td>
         <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo"}}</td>
-        <td v-if="props.item.permissions">{{ props.item.permissions[0].title }}</td>
-        <td v-else></td>
         <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
         </template>
     </v-data-table>
@@ -35,7 +33,6 @@
         headers: [
             {text:"Titulo", value:"title"},
             {text:"Estado", value:"status"},
-            {text:"Permisos", value:"permissions"},
             {text:"Acciones", value:"actons"}
         ],
       }
