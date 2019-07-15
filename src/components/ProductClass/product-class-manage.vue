@@ -6,8 +6,8 @@
           <v-toolbar dark color="primary">
             <v-toolbar-title>{{titleText}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn v-if="edit != 0" color="success" @click="redirect(true)">Cancelar</v-btn>
-            <v-btn v-if="edit == 0" color="success" @click="redirect(false)">Cancelar</v-btn>
+            <v-btn v-if="edit != 0" color="error" @click="redirect(true)">Cancelar</v-btn>
+            <v-btn v-if="edit == 0" color="error" @click="redirect(false)">Cancelar</v-btn>
           </v-toolbar>
           <v-card-text>
             <v-form>
@@ -35,7 +35,7 @@
                                 <td>
                                     <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
                                 </td>
-                                <td class="text-xs-right">{{ props.item.code }}</td>
+                                <td class="text-xs-right">{{ props.item.code.split('_').join(' ') }}</td>
                                 <td class="text-xs-right">{{ props.item.type }}</td>
                                 <td class="text-xs-right">{{ props.item.required ? 'Si' : 'No'}}</td>
                             </tr>
@@ -66,7 +66,7 @@
                                 <td>
                                     <v-checkbox :input-value="propsC.selected" primary hide-details></v-checkbox>
                                 </td>
-                                <td class="text-xs-right">{{ propsC.item.code }}</td>
+                                <td class="text-xs-right">{{ propsC.item.code.split('_').join(' ') }}</td>
                                 <td class="text-xs-right">{{ propsC.item.type }}</td>
                                 <td class="text-xs-right">{{ propsC.item.required ? 'Si' : 'No'}}</td>
                             </tr>

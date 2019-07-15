@@ -6,70 +6,73 @@
           <v-toolbar dark color="primary">
             <v-toolbar-title>{{titleText}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn v-if="edit != ''" color="success" @click="redirect(true)">Cancelar</v-btn>
-            <v-btn v-if="edit == 0" color="success" @click="redirect(false)">Cancelar</v-btn>
+            <v-btn v-if="edit != ''" color="error" @click="redirect(true)">Cancelar</v-btn>
+            <v-btn v-if="edit == 0" color="error" @click="redirect(false)">Cancelar</v-btn>
           </v-toolbar>
           <v-card-text>
             <v-form>
                 <v-text-field v-model="product.name" prepend-icon="email" name="name" label="Nombre del producto" type="text"></v-text-field>
                 <v-combobox  v-model="class_id" :items="classes" prepend-icon="email" label="Clase de producto"></v-combobox>
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="email" label="Estado"></v-combobox>
-                <h2>Atributos</h2><br>
-                <div v-for="(attr, index) in attributes" :key="index" class="row col-md-8">
-                  <v-card  style="height: 100%;width: 84%; padding: 31px;">
+                <h2>Atributos</h2><hr><br>
+                <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
+                <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
+                  <v-card  style="height: 100%;width: 84%; padding: 10px;">
                     <!--ATRIBUTOS-->
-                    <v-text-field v-if="attr.type != 'boolean'" :disabled="true" v-model="attr.code" prepend-icon="title" name="title" label="" type="text"></v-text-field>
+                    <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
+                    <v-text-field v-if="attr.type != 'boolean'" :disabled="true" v-model="attr.code.split('_').join(' ')" prepend-icon="title" name="title" label="" type="text"></v-text-field>
                     <div v-if="attr.options.length > 0">
-                        <v-combobox  :key="index" v-model="attr.value" :items="attr.options" prepend-icon="email" label="Opciones"></v-combobox>
+                        <v-combobox  :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="attr.options" prepend-icon="email" label="Opciones"></v-combobox>
                     </div>
                     <div v-else>
                         <div v-if="attr.type == 'boolean'">
-                            <v-switch v-model="attr.value" :value="attr.default_value" :label="attr.code"></v-switch>
+                            <v-switch prepend-icon="title" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :label="attr.code"></v-switch>
                         </div>
                         <div v-else>
                             <div v-if="attr.size == 'short'">
-                                <v-text-field :key="index" v-model="attr.value" prepend-icon="title" name="title" label="Valor" type="text"></v-text-field>
+                                <v-text-field :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="title" name="title" label="Valor" type="text"></v-text-field>
                             </div>
                             <div v-else-if="attr.size == 'medium'">
-                                <v-textarea :key="index" v-model="attr.value" prepend-icon="title" height="77px" solo name="mediumText" label="Escriba un valor" :value="attr.default_value"></v-textarea>
+                                <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="title" height="77px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..."></v-textarea>
                             </div>
                             <div v-else>
-                                <v-textarea :key="index" v-model="attr.value" prepend-icon="title" height="135px" solo name="mediumText" label="Escriba un valor" :value="attr.default_value"></v-textarea>
+                                <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="title" height="135px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..."></v-textarea>
                             </div>
                         </div>
                     </div>
-                    <v-switch v-if="!attr.required" v-model="attr.add" :label="'Agregar'"></v-switch>
+                    <!--v-switch v-if="!attr.required" v-model="attr.add" :label="'Agregar'"></v-switch-->
                     <!--ATRIBUTOS-->
                   </v-card><br>
                 </div><br>
-                <h2>Atributos personalizados</h2><br>
+                <h2>Atributos personalizados</h2><hr><br>
                 <!--div v-if="attributes.length > 0">
-                  <v-chip v-for="(attr, index) in attributes" :key="index">{{attr.description}} <v-icon medium @click="removeAttribute(index)">close</v-icon></v-chip>
+                  <v-chip v-for="(attr, index) in attributes" :key="index+'_'+attr.code">{{attr.description}} <v-icon medium @click="removeAttribute(index)">close</v-icon></v-chip>
                 </div-->
-                <div v-for="(attrc, index) in attributesCustomisable" :key="index" class="row col-md-8">
-                  <v-card  style="height: 100%;width: 84%; padding: 31px;">
+                <div v-for="(attrc, index) in attributesCustomisable" :key="index+'_'+attr.code" class="row col-md-8">
+                  <v-card  style="height: 100%;width: 84%; padding: 10px;">
                     <!--ATRIBUTOS Personalizables-->
-                    <v-text-field :disabled="true" v-if="attr.type != 'boolean'" v-model="attrc.code" prepend-icon="title" name="title" label="" type="text"></v-text-field>
+                    <v-alert :value="attrc.msgError ? true : false" type="error">{{attrc.msgError}}</v-alert>
+                    <v-text-field :disabled="true" v-if="attr.type != 'boolean'" v-model="attrc.code.split('_').join(' ')" prepend-icon="title" name="title" label="" type="text"></v-text-field>
                     <div v-if="attrc.options.length > 0">
-                        <v-combobox  :key="index" v-model="attrc.value" :items="attrc.options" prepend-icon="email" label="Opciones"></v-combobox>
+                        <v-combobox  :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value" :value="attrc.default_value" :items="attrc.options" prepend-icon="email" label="Opciones"></v-combobox>
                     </div>
                     <div v-else>
                         <div v-if="attrc.type == 'boolean'">
-                            <v-switch v-model="attrc.value" :value="attr.default_value" :label="attrc.code"></v-switch>
+                            <v-switch prepend-icon="title" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value" :label="attrc.code"></v-switch>
                         </div>
                         <div v-else>
                             <div v-if="attrc.size == 'short'">
-                                <v-text-field :key="index" v-model="attrc.value" :maxlength="attrc.length_text ? length_text : 99999999 " prepend-icon="title" name="title" label="Valor" type="text"></v-text-field>
+                                <v-text-field :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value"  :maxlength="attrc.length_text ? length_text : 99999999 " prepend-icon="title" name="title" label="Valor" type="text"></v-text-field>
                             </div>
                             <div v-else-if="attrc.size == 'medium'">
-                                <v-textarea :key="index" v-model="attrc.value" prepend-icon="title" height="77px" solo name="mediumText" label="Escriba un valor" :value="attrc.default_value" :maxlength="attrc.length_text != '' ? length_text : 99999999 "></v-textarea>
+                                <v-textarea :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value"  prepend-icon="title" height="77px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..." :maxlength="attrc.length_text != '' ? length_text : 99999999 "></v-textarea>
                             </div>
                             <div v-else>
-                                <v-textarea :key="index" v-model="attrc.value" prepend-icon="title" height="135px" solo name="mediumText" label="Escriba un valor" :value="attrc.default_value" :maxlength="attrc.length_text != '' ? length_text : 99999999 "></v-textarea>
+                                <v-textarea :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value"  prepend-icon="title" height="135px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..." :maxlength="attrc.length_text != '' ? length_text : 99999999 "></v-textarea>
                             </div>
                         </div>
                     </div>
-                    <v-switch v-if="!attrc.required" v-model="attrc.add" :label="'Agregar'"></v-switch>
+                    <!--v-switch v-if="!attrc.required" v-model="attrc.add" :label="'Agregar'"></v-switch-->
                     <!--ATRIBUTOS Personalizables-->
                   </v-card><br>
                 </div>
@@ -84,7 +87,6 @@
     </v-layout>
   </v-container>
 </template>
-
 <script>
     var attrs = [];
     import {mapActions,mapState} from 'vuex';
@@ -105,7 +107,8 @@
             ],
             edit:"",
             titleText:"",
-            class_id:""
+            class_id:"",
+            msgError:false
         }
         },
         watch:{
@@ -131,7 +134,6 @@
                 this.formatAttributes("attributes");
                 this.attributesCustomisable = val.order_attributes;
                 this.formatAttributes("attributesCustomisable");
-                console.log(this.attributes);
             }
         },
         mounted () {
@@ -141,7 +143,7 @@
                 this.titleText="Editar producto"
                 this.getProduct(this.edit);
             }else{
-            this.titleText="Nuevo producto"
+                this.titleText="Nuevo producto"
             }
         },
         methods: {
@@ -162,16 +164,37 @@
                     this[arr][s].options = opc
                 }
             },
+            valAttrRequired(attr){
+                var next = false;
+                var val = attr.options.length > 0 && attr.value.value ? attr.value.value : attr.value;
+                if(val != "" && val != undefined && val.trim() != "")
+                    next = true;
+                return next;
+            },
+            valAttrNoRequired(val){
+                var next = true;
+                if(val == "" || val == undefined || val.trim() == "")
+                    next = false;
+                return next;
+            },
             buildAttr(attr){
                 var obj = {};
-                console.log(this[attr]);
+                this.msgError = false;
                 for(var s = 0; s < this[attr].length; s++){
-                    if(this[attr][s].required || (!this[attr][s].required && this[attr][s].add)){
+                    var val  = this[attr][s].options.length > 0 && this[attr][s].value.value ? this[attr][s].value.value : this[attr][s].value;
+                    if((this[attr][s].required && this.valAttrRequired(this[attr][s])) || (!this[attr][s].required && this.valAttrNoRequired(val))){
+                        this[attr][s].msgError = "";
                         obj = {};
                         obj.code = this[attr][s]._id;
-                        obj.value =  this[attr][s].options.length > 0 ? this[attr][s].value.value : this[attr][s].value;
+                        obj.value = val;
                         obj.customizable = attr == 'attributes' ? false : true;
                         attrs.push(obj);
+                    }else{
+                        if(this[attr][s].required){
+                            this.msgError = true;
+                            this[attr][s].msgError = "Este atributo es obligatorio";
+                            break;
+                        }
                     }
                 }
             },
@@ -180,7 +203,8 @@
                 //Armo atributos no personalizables
                 this.buildAttr("attributes");
                 //Armo atributos personalizables
-                this.buildAttr("attributesCustomisable");
+                if(!this.msgError)
+                    this.buildAttr("attributesCustomisable");
                 console.log(attrs);
             },
             buildProduct(){
@@ -204,14 +228,16 @@
                         error => {
                     })
                 }else{
-                    this.create(this.product).then(
-                        data => {
-                            this.setWarning(data.message, { root: true }).then(()=>{
-                                this.$router.push('/productList')
-                            })
-                        },
-                        error => {
-                    })
+                    if(!this.msgError){
+                        this.create(this.product).then(
+                            data => {
+                                this.setWarning(data.message, { root: true }).then(()=>{
+                                    this.$router.push('/productList')
+                                })
+                            },
+                            error => {
+                        })
+                    }
                 }
             },
             redirect(page){

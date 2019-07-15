@@ -6,7 +6,7 @@
           <v-toolbar dark color="primary">
             <v-toolbar-title>{{titleText}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn color="success" @click="closeModal()">Cancelar</v-btn>
+            <v-btn color="error" @click="closeModal()">Cancelar</v-btn>
           </v-toolbar>
           <v-card-text>
             <v-form>

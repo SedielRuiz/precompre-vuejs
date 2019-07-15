@@ -2,7 +2,7 @@
   <v-container>
     <div class="row col-md-10">
         <div class="col-md-8">
-            <h1>Productos</h1>
+            <h1>Lugares de entrega</h1>
         </div>
         <div class="col-md-2">
             <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
@@ -15,11 +15,8 @@
         class="elevation-1">
         <template v-slot:items="props">
             <td>{{ props.item.name }}</td>
-            <td v-if="props.item.product_class">{{ props.item.product_class.code }}</td>
-            <td v-else></td>
-            <td v-if="props.item.attributes">{{ props.item.attributes[0].value.charAt(0).toUpperCase() + props.item.attributes[0].value.slice(1) }}</td>
-            <td v-else></td>
-            <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo" }}</td>
+            <td>{{ props.item.address }}</td>
+            <td>{{ props.item.city }}</td>
             <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
         </template>
     </v-data-table>
@@ -31,38 +28,37 @@
   
   export default {
     
-    name: 'user-list',
+    name: 'place-delivery-list',
     data () {
       return {
         headers: [
             {text:"Nombre", value:"name"},
-            {text:"Clases", value:"product_class"},
-            {text:"Atributos", value:"attributes"},
-            {text:"Estado", value:"status"},
-            {text:"Acciones", value:"actons"}
+            {text:"Dirección", value:"address"},
+            {text:"Ciudad", value:"city"},
+            {text:"Acciones", value:"actions"}
         ]
       }
     },
     mounted () {
-        this.fetchProducts()
+        this.fetchPlaceDelivery();
     },
     methods: {
       ...mapActions({
-        fetchProducts: 'product/fetchProducts',
+        fetchPlaceDelivery: 'placeDelivery/fetchPlaces',
         setWarning: 'setWarning',
       }),
       redirect(page,id){
         if(!page){
-            this.$router.push('/productManage')
+            this.$router.push('/placeDeliveryManage')
         }else{
-            this.$router.push('/productDetail/'+id)
+            this.$router.push('/placeDeliveryDetail/'+id)
         }
       }
     },
     computed:{
       ...mapState({
         warning: state => state.warning,
-        rows: state => state.product.products
+        rows: state => state.placeDelivery.places
       }),
     },
   }

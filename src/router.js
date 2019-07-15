@@ -28,6 +28,14 @@ import ClassDetail from '@/components/ProductClass/product-class-detail';
 import ProductList from '@/components/Products/product-list';
 import ProductManage from '@/components/Products/product-manage';
 import ProductDetail from '@/components/Products/product-detail';
+/**Luegares de entrega**/
+import PlaceDeliveryList from '@/components/PlacesDelivery/place-delivery-list';
+import PlaceDeliveryManage from '@/components/PlacesDelivery/place-delivery-manage';
+import PlaceDeliveryDetail from '@/components/PlacesDelivery/place-delivery-detail';
+/**Clientes**/
+import CustomerList from '@/components/Customers/customer-list';
+import CustomerManage from '@/components/Customers/customer-manage';
+import CustomerDetail from '@/components/Customers/customer-detail';
 
 const router = new Router({
   routes: [
@@ -187,6 +195,56 @@ const router = new Router({
         name: 'productManageUpdate',
         component: ProductManage,
         meta: { Auth: true, title: 'Editar producto' },
+    },
+    /**Lugares de entrega**/
+    {
+        path: '/placeDeliveryList',
+        name: 'placeDeliveryList',
+        component: PlaceDeliveryList,
+        meta: { Auth: true, title: 'Lugares de entrega' },
+    },
+    {
+        path: '/placeDeliveryDetail/:id',
+        name: 'placeDeliveryDetail',
+        component: PlaceDeliveryDetail,
+        meta: { Auth: true, title: 'Lugar de entrega' },
+    },
+    {
+        path: '/placeDeliveryManage',
+        name: 'placeDeliveryManageCreate',
+        component: PlaceDeliveryManage,
+        meta: { Auth: true, title: 'Crear lugar de entrega' },
+    },
+    {
+        path: '/placeDeliveryManage/:id',
+        name: 'placeDeliveryManageUpdate',
+        component: PlaceDeliveryManage,
+        meta: { Auth: true, title: 'Editar lugar de entrega' },
+    },
+    /**Clientes**/
+    {
+        path: '/customerList',
+        name: 'customerList',
+        component: CustomerList,
+        meta: { Auth: true, title: 'Clientes' },
+    },
+    {
+        path: '/customerDetail/:id',
+        name: 'customerDetail',
+        component: CustomerDetail,
+        meta: { Auth: true, title: 'Cliente' },
+    },
+    {
+        path: '/customerManage/',
+        name: 'customerManageCreate',
+        component: CustomerManage,
+        meta: { Auth: true, title: 'Crear cliente' },
+    },
+    {
+        path: '/customerManage/:id/:custommer',
+        name: 'customerManageUpdate',
+        component: CustomerManage,
+        meta: { Auth: true, title: 'Editar cliente' },
     },
   ]
 })

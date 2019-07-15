@@ -2,7 +2,7 @@
   <v-container>
     <div class="row col-md-10">
         <div class="col-md-8">
-            <h1>{{titleText}}</h1>
+            <h1>Clientes</h1>
         </div>
         <div class="col-md-2">
             <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
@@ -33,8 +33,6 @@
     name: 'user-list',
     data () {
       return {
-        titleText:"",
-        customer:"",
         headers: [
             {text:"Documento", value:"id_description"},
             {text:"Nombres", value:"name"},
@@ -46,31 +44,25 @@
       }
     },
     mounted () {
-      this.customer = this.$route.params.custommer;
-      console.log(this.customer)
-      if(this.customer)
-        this.titleText = "Clientes";
-      else
-        this.titleText = "Usuario";
-      this.fetchUsers()
+        this.fetchCustomers()
     },
     methods: {
       ...mapActions({
-        fetchUsers: 'user/fetchUsers',
+        fetchCustomers: 'customer/fetchCustomers',
         setWarning: 'setWarning',
       }),
       redirect(page,id){
         if(!page){
-            this.$router.push('/userManage')
+            this.$router.push('/customerManage')
         }else{
-            this.$router.push('/userDetail/'+id)
+            this.$router.push('/customerDetail/'+id)
         }
       }
     },
     computed:{
       ...mapState({
         warning: state => state.warning,
-        rows: state => state.user.users
+        rows: state => state.customer.customers
       }),
     },
   }

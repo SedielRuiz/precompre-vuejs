@@ -88,6 +88,31 @@
                 <v-list-tile-title>Productos</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
+            <v-divider></v-divider>
+            <v-list-group prepend-icon="assignment" value="true">
+              <template v-slot:activator>
+                <v-list-tile>
+                  <v-list-tile-title>Control de clientes</v-list-tile-title>
+                </v-list-tile>
+              </template>
+
+              <v-list-tile @click="dirigir('/placeDeliveryList')">
+                  <v-list-tile-action>
+                  <v-icon>assignment</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Lugares de entrega</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+            </v-list-group>
+            <v-list-tile @click="dirigir('/customerList')">
+                <v-list-tile-action>
+                <v-icon>assignment</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                <v-list-tile-title>Clientes</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
 
             <v-divider></v-divider>
             <v-list-tile @click.prevent="processLogout()">

@@ -6,8 +6,8 @@
           <v-toolbar dark color="primary">
             <v-toolbar-title>{{titleText}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn v-if="edit != ''" color="success" @click="redirect(true)">Cancelar</v-btn>
-            <v-btn v-if="edit == 0" color="success" @click="redirect(false)">Cancelar</v-btn>
+            <v-btn v-if="edit != ''" color="error" @click="redirect(true)">Cancelar</v-btn>
+            <v-btn v-if="edit == 0" color="error" @click="redirect(false)">Cancelar</v-btn>
           </v-toolbar>
           <v-card-text>
             <v-form>

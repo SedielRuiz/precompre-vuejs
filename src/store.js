@@ -11,6 +11,8 @@ import permission from '@/modules/permission';
 import productAttribute from '@/modules/productAttribute';
 import productClass from '@/modules/productClass';
 import product from '@/modules/product';
+import placeDelivery from '@/modules/placeDelivery';
+import customer from '@/modules/customer';
 
 const store = new Vuex.Store({
   state: {
@@ -75,6 +77,8 @@ const store = new Vuex.Store({
     productAttribute,
     productClass,
     product,
+    placeDelivery,
+    customer,
   }
 })
 

@@ -4,18 +4,18 @@
       <v-flex xs12 sm8 md10>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
-            <v-toolbar-title>Detalle usuario</v-toolbar-title>
+            <v-toolbar-title>Detalle cliente</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn color="success" @click="redirect(true)">Editar</v-btn>
             <v-btn color="success" @click="redirect(false)">Volver</v-btn>
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-combobox :disabled="true" v-model="user.id_type" prepend-icon="email" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
-                <v-text-field :disabled="true" v-model="user.id_description" prepend-icon="email" name="id_description" label="Número de identificación" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-model="user.name" prepend-icon="email" name="name" label="Nombres" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-model="user.last_ame" prepend-icon="email" name="last_ame" label="Apellidos" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
+                <v-combobox :disabled="true" v-model="customer.id_type" prepend-icon="email" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
+                <v-text-field :disabled="true" v-model="customer.id_description" prepend-icon="email" name="id_description" label="Número de identificación" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-model="customer.name" prepend-icon="email" name="name" label="Nombres" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-model="customer.last_ame" prepend-icon="email" name="last_ame" label="Apellidos" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
                 <h2>Teléfonos</h2><br>
                 <div v-if="phones">
                   <v-chip v-for="(p, index) in phones" :key="index">{{p.number}}</v-chip>
@@ -39,7 +39,7 @@
     name: 'user-detail',
     data () {
       return {
-        user: {},
+        customer: {},
         phone:{},
         phones:[],
         typesPhone: [
@@ -55,32 +55,32 @@
       }
     },
     watch:{
-        us(val){
-            this.user = val;
+        cu(val){
+            this.customer = val;
             this.phones = val.telephones;
         },
     },
     mounted () {
         this.edit = this.$route.params.id;
-        this.getUser(this.edit);
+        this.getCustomer(this.edit);
     },
     methods: {
       ...mapActions({
         setWarning: 'setWarning',
-        getUser: 'user/getUser', 
+        getCustomer: 'customer/getCustomer', 
       }),
       redirect(page){
           if(page){
-              this.$router.push('/userManage/'+this.edit)
+              this.$router.push('/customerManage/'+this.edit)
           }else{
-              this.$router.push('/userList')
+              this.$router.push('/customerList')
           }
       },
     },
     computed:{
       ...mapState({
         warning: state => state.warning,
-        us: state => state.user.user, 
+        cu: state => state.customer.customer, 
       }),
     },
   }
