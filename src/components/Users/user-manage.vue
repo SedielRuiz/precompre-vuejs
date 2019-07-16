@@ -18,13 +18,13 @@
                 <v-text-field v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
                 <v-combobox v-if="edit!=''" v-model="user.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="email" label="Estado"></v-combobox>
                 <v-text-field v-if="edit==''" v-model="user.password" prepend-icon="email" name="password" label="Contraseña" type="password"></v-text-field>
-                <h2>Teléfonos</h2><br>
+                <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">event</v-icon></h2><br>
                 <div v-if="phones.length > 0">
                   <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
                 </div>
                 <br>
-                <div class="row col-md-8">
-                  <v-card  style="height: 100%;width: 84%; padding: 31px;">
+                <div v-if="addNumber" class="row col-md-8">
+                  <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--TELEFONOS-->
                     <label style="font-size: 18px;">Nuevo teléfono</label><hr>
                     <v-text-field v-model="phone.title" prepend-icon="title" name="title" label="Titulo" type="text"></v-text-field>
@@ -32,7 +32,7 @@
                     <v-combobox v-model="phone.type" :items="typesPhone" prepend-icon="email" label="Tipo de número"></v-combobox>
                     <v-text-field v-model="phone.extension" prepend-icon="extension" name="extension" label="Extensión" type="text"></v-text-field>
                     <v-text-field v-model="phone.code" prepend-icon="code" name="code" label="Código postal" type="text"></v-text-field>
-                    <v-switch v-model="phone.principal" :label="'Principal'"></v-switch>
+                    <v-switch v-model="phone.main" :label="'Principal'"></v-switch>
                     <v-btn color="primary" @click="addPhone()">Agregar</v-btn>
                     <!--TELEFONOS-->
                   </v-card><br>
@@ -60,6 +60,7 @@
         user: {},
         phone:{},
         phones:[],
+        addNumber:false,
         typesPhone: [
           {text: 'Fijo', value:'fijo'},
           {text: 'Celular', value:'movil'}
@@ -104,6 +105,7 @@
       addPhone(){
           this.phones.push(this.phone);
           this.phone = {};
+          this.addNumber = false;
       },
       removePhone(idx){
         this.phones.splice(idx,1);
@@ -112,13 +114,13 @@
       formatPhones(){
         for(var s = 0; s < this.phones.length; s++){
           if(this.phones[s].type)
-            this.phones[s].type = this.phones[s].type.value;
+            this.phones[s].type = this.phones[s].type && this.phones[s].type.value ? this.phones[s].type.value : this.phones[s].type;
         }
         return this.phones;
       },
       buildUser(){
         this.user.telephones = this.formatPhones();
-        this.user.id_type = this.user.id_type.value;
+        this.customer.id_type = this.customer.id_type && this.customer.id_type.value ? this.customer.id_type.value : this.customer.id_type;
         if(this.edit)
           this.user.status = this.user.status.value;
         return this.user;

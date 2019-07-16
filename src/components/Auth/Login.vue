@@ -59,7 +59,7 @@
         processLogin () {
             this.login(this.user).then(
                 user => {
-                    this.$router.push('/login');
+                    this.$router.push('/');
                 },
                 error => {
             })

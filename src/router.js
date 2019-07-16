@@ -36,6 +36,10 @@ import PlaceDeliveryDetail from '@/components/PlacesDelivery/place-delivery-deta
 import CustomerList from '@/components/Customers/customer-list';
 import CustomerManage from '@/components/Customers/customer-manage';
 import CustomerDetail from '@/components/Customers/customer-detail';
+/**Grupos**/
+import GroupList from '@/components/Groups/group-list';
+import GroupManage from '@/components/Groups/group-manage';
+import GroupDetail from '@/components/Groups/group-detail';
 
 const router = new Router({
   routes: [
@@ -241,10 +245,34 @@ const router = new Router({
         meta: { Auth: true, title: 'Crear cliente' },
     },
     {
-        path: '/customerManage/:id/:custommer',
+        path: '/customerManage/:id',
         name: 'customerManageUpdate',
         component: CustomerManage,
         meta: { Auth: true, title: 'Editar cliente' },
+    },/**Grupos**/
+    {
+        path: '/groupList',
+        name: 'groupList',
+        component: GroupList,
+        meta: { Auth: true, title: 'Grupos' },
+    },
+    {
+        path: '/groupDetail/:id',
+        name: 'groupDetail',
+        component: GroupDetail,
+        meta: { Auth: true, title: 'Grupo' },
+    },
+    {
+        path: '/groupManage/',
+        name: 'groupManageCreate',
+        component: GroupManage,
+        meta: { Auth: true, title: 'Crear grupo' },
+    },
+    {
+        path: '/groupManage/:id/',
+        name: 'groupManageUpdate',
+        component: GroupManage,
+        meta: { Auth: true, title: 'Editar grupo' },
     },
   ]
 })

@@ -18,13 +18,13 @@
                 <v-text-field v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
                 <v-combobox v-if="edit!=''" v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="email" label="Estado"></v-combobox>
                 <v-text-field v-if="edit==''" v-model="customer.password" prepend-icon="email" name="password" label="Contraseña" type="password"></v-text-field>
-                <h2>Teléfonos</h2><br>
+                <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">event</v-icon></h2><br>
                 <div v-if="phones.length > 0">
                   <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
                 </div>
                 <br>
-                <div class="row col-md-8">
-                  <v-card  style="height: 100%;width: 84%; padding: 31px;">
+                <div v-if="addNumber" class="row col-md-8">
+                  <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--TELEFONOS-->
                     <label style="font-size: 18px;">Nuevo teléfono</label><hr>
                     <v-text-field v-model="phone.title" prepend-icon="title" name="title" label="Titulo" type="text"></v-text-field>
@@ -32,12 +32,12 @@
                     <v-combobox v-model="phone.type" :items="typesPhone" prepend-icon="email" label="Tipo de número"></v-combobox>
                     <v-text-field v-model="phone.extension" prepend-icon="extension" name="extension" label="Extensión" type="text"></v-text-field>
                     <v-text-field v-model="phone.code" prepend-icon="code" name="code" label="Código postal" type="text"></v-text-field>
-                    <v-switch v-model="phone.principal" :label="'Principal'"></v-switch>
+                    <v-switch v-model="phone.main" :label="'Principal'"></v-switch>
                     <v-btn color="primary" @click="addPhone()">Agregar</v-btn>
                     <!--TELEFONOS-->
                   </v-card><br>
                 </div>
-                <h2>Lugares de entrega <v-icon medium @click="addPlace=true">event</v-icon></h2><br>
+                <h2>Lugares de entrega <v-icon medium @click="addPlace ? addPlace = false : addPlace = true">event</v-icon></h2><br>
                 <div v-if="placesSelected.length > 0">
                   <v-chip v-for="(p, index) in placesSelected" :key="index">{{p.name}} <v-icon medium @click="removePlace(index)">close</v-icon></v-chip>
                 </div>
@@ -81,6 +81,7 @@
         typesPlaces:[],
         units:[],
         addPlace:false,
+        addNumber:false,
         suggestions:[
           {text: 'Hogar', value:'home'},
           {text: 'Trabajo', value:'work'}  
@@ -110,28 +111,36 @@
           if(val){
             this.customer = val;
             this.phones = val.telephones;
+            this.placesSelected = val.delivery_places;
           }
         },
         places(val){
-            for(var s = 0; s < val.length; s++){
-                this.placesDelivery.push({"text":val[s].name, "value":val[s]._id});
+            if(val){
+                for(var s = 0; s < val.length; s++){
+                    this.placesDelivery.push({"text":val[s].name, "value":val[s]._id});
+                }
             }
         },
         placeDelivery(val){
-            val = val.value;
-            this.typesPlaces = [];
-            for(var s = 0; s < this.places.length; s++){
-                if(this.places[s]._id == val){
-                    for(var r = 0; r < this.places[s].unities.length; r++){
-                        this.typesPlaces.push({"text":this.places[s].unities[r]._type, "value":this.places[s].unities[r]._type, "list":this.places[s].unities[r].list});
+            if(val){
+                val = val.value;
+                this.typesPlaces = [];
+                for(var s = 0; s < this.places.length; s++){
+                    if(this.places[s]._id == val){
+                        for(var r = 0; r < this.places[s].unities.length; r++){
+                            this.typesPlaces.push({"text":this.places[s].unities[r]._type, "value":this.places[s].unities[r]._type, "list":this.places[s].unities[r].list});
+                        }
                     }
                 }
             }
         },
         typeSeleted(val){
-            this.units = [];
-            for(var s = 0; s < val.list.length; s++){
-                this.units.push({"text":val.list[s], "value":val.list[s]});
+            if(val){
+                console.log(val);
+                this.units = [];
+                for(var s = 0; s < val.list.length; s++){
+                    this.units.push({"text":val.list[s].unit_name, "value":val.list[s]._id});
+                }
             }
         },
     },
@@ -167,11 +176,11 @@
             this.place = {};
             this.typeSeleted = "";
             this.addPlace = false;
-            console.log(this.placesSelected);
         },
         addPhone(){
             this.phones.push(this.phone);
             this.phone = {};
+            this.addNumber = false;
         },
         removePhone(idx){
             this.phones.splice(idx,1);
@@ -180,13 +189,13 @@
         formatPhones(){
             for(var s = 0; s < this.phones.length; s++){
                 if(this.phones[s].type)
-                    this.phones[s].type = this.phones[s].type.value;
+                    this.phones[s].type = this.phones[s].type && this.phones[s].type.value ? this.phones[s].type.value : this.phones[s].type;
             }
             return this.phones;
         },
         buildCustomer(){
             this.customer.telephones = this.formatPhones();
-            this.customer.id_type = this.customer.id_type.value;
+            this.customer.id_type = this.customer.id_type && this.customer.id_type.value ? this.customer.id_type.value : this.customer.id_type;
             if(this.edit)
             this.customer.status = this.customer.status.value;
             this.customer.delivery_places = this.placesSelected;

@@ -13,7 +13,7 @@
             <v-form>
                 <v-text-field v-model="classs.code" prepend-icon="email" name="title" label="Nombre" type="text"></v-text-field>
                 <v-combobox  v-model="classs.parent" :items="classes" prepend-icon="email" label="Clase parent"></v-combobox>
-                <h2>Atributos</h2><br>
+                <h2>Atributos</h2><hr><br>
                 <v-alert :value="msgErrorN" type="error">Ya tiene este atributo como atributo personalizable</v-alert> <br>
                 <div class="row col-md-8">
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
@@ -44,7 +44,7 @@
                     <!--ATRIBUTOS-->
                   </v-card><br>
                 </div><br>
-                <h2>Atributos personalizables</h2><br>
+                <h2>Atributos personalizables</h2><hr><br>
                 <v-alert :value="msgErrorC" type="error">Ya tiene este atributo como atributo no personalizable</v-alert> <br>
                 <div class="row col-md-8">
                   <v-card style="height: 100%;width: 84%; padding: 31px;">

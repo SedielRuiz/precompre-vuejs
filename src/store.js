@@ -13,6 +13,7 @@ import productClass from '@/modules/productClass';
 import product from '@/modules/product';
 import placeDelivery from '@/modules/placeDelivery';
 import customer from '@/modules/customer';
+import group from '@/modules/group';
 
 const store = new Vuex.Store({
   state: {
@@ -79,6 +80,7 @@ const store = new Vuex.Store({
     product,
     placeDelivery,
     customer,
+    group,
   }
 })
 

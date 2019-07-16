@@ -16,9 +16,13 @@
                 <v-text-field :disabled="true" v-model="customer.name" prepend-icon="email" name="name" label="Nombres" type="text"></v-text-field>
                 <v-text-field :disabled="true" v-model="customer.last_ame" prepend-icon="email" name="last_ame" label="Apellidos" type="text"></v-text-field>
                 <v-text-field :disabled="true" v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
-                <h2>Teléfonos</h2><br>
+                <h2>Teléfonos</h2><hr><br>
                 <div v-if="phones">
                   <v-chip v-for="(p, index) in phones" :key="index">{{p.number}}</v-chip>
+                </div>
+                <h2>Lugares de entrega</h2><hr><br>
+                <div v-if="deliveryPlaces">
+                  <v-chip v-for="(l, index) in deliveryPlaces" height="40px" width="115px" :key="index">Tipo - {{l._type}} <br>  Nombre - {{l.name}}</v-chip>
                 </div>
             </v-form>
           </v-card-text>
@@ -42,6 +46,7 @@
         customer: {},
         phone:{},
         phones:[],
+        deliveryPlaces:[],
         typesPhone: [
             {text: 'Fijo', value:'fijo'},
             {text: 'Celular', value:'movil'}
@@ -58,6 +63,7 @@
         cu(val){
             this.customer = val;
             this.phones = val.telephones;
+            this.deliveryPlaces = val.delivery_places;
         },
     },
     mounted () {

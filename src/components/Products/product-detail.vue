@@ -79,7 +79,12 @@
                 for(var s = 0; s < arr.length; s++){
                     for(var r = 0; r < this.product.product_class[varArr].length; r++){
                         if(arr[s].code == this.product.product_class[varArr][r]._id){
-                            attrs.push({"name": this.product.product_class[varArr][r].code, "value": arr[s].value});
+                            var val = arr[s].value;
+                            if(this.product.product_class[varArr][r].type == "boolean")
+                                val = val ? 'Si' : 'No';
+                            else
+                                val = arr[s].value;
+                            attrs.push({"name": this.product.product_class[varArr][r].code, "value": val});
                         }
                     }
                 }

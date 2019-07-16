@@ -101,6 +101,7 @@
             attributes:[],
             attributeCustomisable:{},
             attributesCustomisable:[],
+            attributesP:[],
             status:[
                 {text: 'Activo', value:'enabled'},
                 {text: 'Inactivo', value:'disabled'},
@@ -115,8 +116,9 @@
             pro(val){
             if(val){
                 this.product = val;
-                this.attributes = val.attributes;
-                this.attributesCustomisable = val.order_attributes;
+                this.class_id = {"text":val.product_class.code, "value":val.product_class._id};
+                this.attributesP = val.attributes;
+                //this.attributesCustomisable = val.order_attributes;
             }
             },
             classess(val){
@@ -134,6 +136,10 @@
                 this.formatAttributes("attributes");
                 this.attributesCustomisable = val.order_attributes;
                 this.formatAttributes("attributesCustomisable");
+                if(this.edit){
+                    this.formatAttributeEdit("attributes");
+                    this.formatAttributeEdit("attributesCustomisable");
+                }   
             }
         },
         mounted () {
@@ -155,6 +161,15 @@
                 getProductClassAttribute: 'product/getProductClassAttribute', 
                 setWarning: 'setWarning',
             }),
+            formatAttributeEdit(arr1){
+                for(var s = 0; s < this[arr1].length; s++){
+                    for(var r = 0; r < this.attributesP.length; r++){
+                        if(this[arr1][s]._id == this.attributesP[r].code){
+                            this[arr1][s].value = this.attributesP[r].value;
+                        }
+                    }
+                }
+            },
             formatAttributes(arr){
                 for(var s = 0; s < this[arr].length; s++){
                     var opc = []
@@ -205,7 +220,6 @@
                 //Armo atributos personalizables
                 if(!this.msgError)
                     this.buildAttr("attributesCustomisable");
-                console.log(attrs);
             },
             buildProduct(){
                 this.buildAttributes();
@@ -213,7 +227,6 @@
                 this.product.attributes = attrs;
                 if(this.edit)
                     this.product.status = this.product.status.value;
-                console.log(this.product)
                 return this.product;
             },
             processProduct () {

@@ -104,6 +104,15 @@
                   <v-list-tile-title>Lugares de entrega</v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
+              <v-list-tile @click="dirigir('/groupList')">
+                  <v-list-tile-action>
+                  <v-icon>assignment</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Grupo</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+              
             </v-list-group>
             <v-list-tile @click="dirigir('/customerList')">
                 <v-list-tile-action>

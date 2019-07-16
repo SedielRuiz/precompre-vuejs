@@ -19,7 +19,7 @@
                 <div v-if="unities">
                   <div v-for="(u, index) in unities">
                     <h3>{{u._type}} - {{u.qty}}</h3>
-                    <v-chip v-for="(lst, index) in u.list" :key="index">{{lst}}</v-chip>
+                    <v-chip v-for="(lst, index) in u.list" :key="index">{{lst.unit_name}}</v-chip>
                   </div><br>
                 </div>  
             </v-form>
