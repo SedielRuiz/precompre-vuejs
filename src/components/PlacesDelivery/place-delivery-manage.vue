@@ -12,12 +12,12 @@
           <v-card-text>
             <v-form>
                 <v-text-field v-model="place.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
-                <v-text-field v-model="place.address" prepend-icon="email" name="address" label="Dirección" type="text"></v-text-field>
+                <!--v-icon medium style="font-size:25px;">email</v-icon--><div v-if="(edit && place && place.address) || (!edit)"><google-map :title="'Dirección'" :direct="place.address" :coords="place.coords" @setAddress="setAddress"/></div><br>
                 <v-combobox v-model="place.country" prepend-icon="email" :items="countries" label="País"></v-combobox>
                 <v-combobox v-model="place.city" prepend-icon="email" :items="cities" label="Ciudad"></v-combobox>
                 <div v-if="unities">
                   <div v-for="(u, index) in unities">
-                    <h3>{{u.text}}</h3><br>
+                    <h2>{{u.text}}</h2><br>
                     <v-alert :value="u.msgError ? true : false" type="error">{{u.msgError}}</v-alert>
                     <div v-if="u.list">
                       <v-chip v-for="(lst, index) in getList(index)" :key="index">{{lst.name}} <v-icon medium @click="removeUnity(index+'_'+lst.name)">close</v-icon></v-chip>
@@ -41,10 +41,13 @@
 
 <script>
   import {mapActions,mapState} from 'vuex';
+  import GoogleMap from "@/components/GoogleMap";
   
   export default {
-    
-    name: 'user-manage',
+    name: 'place-manage',
+    components: {
+      GoogleMap
+    },
     data () {
       return {
         place: {},
@@ -99,6 +102,10 @@
         getPlace: 'placeDelivery/getPlace', 
         setWarning: 'setWarning',
       }),
+      setAddress(obj){
+        this.place.address = obj.name;
+        this.place.coords = {"lat":obj.position.lat, "long":obj.position.lng}
+      },
       getList(idx, type){
         var lst = [];
         for(var s = 0; s < this.units.length; s++){

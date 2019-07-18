@@ -19,10 +19,10 @@
                 <h2>Teléfonos</h2><hr><br>
                 <div v-if="phones">
                   <v-chip v-for="(p, index) in phones" :key="index">{{p.number}}</v-chip>
-                </div>
+                </div>  
                 <h2>Lugares de entrega</h2><hr><br>
                 <div v-if="deliveryPlaces">
-                  <v-chip v-for="(l, index) in deliveryPlaces" height="40px" width="115px" :key="index">Tipo - {{l._type}} <br>  Nombre - {{l.name}}</v-chip>
+                  <v-chip v-for="(l, index) in deliveryPlaces" height="40px" width="115px" :key="index">{{l.name}} - {{l.unit_name}}</v-chip>
                 </div>
             </v-form>
           </v-card-text>
@@ -52,9 +52,9 @@
             {text: 'Celular', value:'movil'}
         ],
         typesIdentification: [
-            {text: 'Tarjeta de identidad', value:'tarjetadeidentidad'},
-            {text: 'Cedula de ciudadania', value:'ceduladeciudadania'},
-            {text: 'Cedula de extranjeria', value:'ceduladeextranjeria'}
+            {text: 'Tarjeta de identidad', value:'ti'},
+            {text: 'Cedula de ciudadania', value:'cc'},
+            {text: 'Cedula de extranjeria', value:'ce'}
         ],
         edit:"",
       }
@@ -62,6 +62,7 @@
     watch:{
         cu(val){
             this.customer = val;
+            this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
             this.phones = val.telephones;
             this.deliveryPlaces = val.delivery_places;
         },

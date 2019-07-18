@@ -46,9 +46,6 @@
             {text:"Estado", value:"status"},
             {text:"Acciones", value:"actons"}
         ],
-        /*rows:[
-            {title:"uno", code:"ssrp123", description:"Es este we", status:"Activo"},
-        ]*/
       }
     },
     mounted () {

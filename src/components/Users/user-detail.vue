@@ -47,9 +47,9 @@
             {text: 'Celular', value:'movil'}
         ],
         typesIdentification: [
-            {text: 'Tarjeta de identidad', value:'tarjetadeidentidad'},
-            {text: 'Cedula de ciudadania', value:'ceduladeciudadania'},
-            {text: 'Cedula de extranjeria', value:'ceduladeextranjeria'}
+            {text: 'Tarjeta de identidad', value:'ti'},
+            {text: 'Cedula de ciudadania', value:'cc'},
+            {text: 'Cedula de extranjeria', value:'ce'}
         ],
         edit:"",
       }
@@ -57,6 +57,7 @@
     watch:{
         us(val){
             this.user = val;
+            this.user.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
             this.phones = val.telephones;
         },
     },

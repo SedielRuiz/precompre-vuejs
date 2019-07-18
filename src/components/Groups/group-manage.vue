@@ -86,8 +86,9 @@
     watch:{
         grp(val){
           if(val){
+            this.group = val;
             this.group._type = this.types.find(element=>{return element.value == val._type });
-            this.customersId = val.community;
+            this.customers = val.community;
             if(this.edit){
                 for(var s = 0; s < this.customersId.length; s++){
                     for(var r = 0; r < this.rows.length; r++){

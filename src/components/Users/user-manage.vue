@@ -13,6 +13,8 @@
             <v-form>
                 <v-combobox v-model="user.id_type" prepend-icon="email" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
                 <v-text-field v-model="user.id_description" prepend-icon="email" name="id_description" label="Número de identificación" type="text"></v-text-field>
+                <label style="font-size: 19px;">Fecha de nacimiento.</label><br>
+                <v-date-picker v-model="user.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker>
                 <v-text-field v-model="user.name" prepend-icon="email" name="name" label="Nombres" type="text"></v-text-field>
                 <v-text-field v-model="user.last_name" prepend-icon="email" name="last_mame" label="Apellidos" type="text"></v-text-field>
                 <v-text-field v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
@@ -82,6 +84,7 @@
         us(val){
           if(val){
             this.user = val;
+            this.user.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type });
             this.phones = val.telephones;
           }
         },
@@ -120,7 +123,7 @@
       },
       buildUser(){
         this.user.telephones = this.formatPhones();
-        this.customer.id_type = this.customer.id_type && this.customer.id_type.value ? this.customer.id_type.value : this.customer.id_type;
+        this.user.id_type = this.user.id_type && this.user.id_type.value ? this.user.id_type.value : this.user.id_type;
         if(this.edit)
           this.user.status = this.user.status.value;
         return this.user;

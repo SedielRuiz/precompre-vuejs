@@ -73,8 +73,37 @@
                         </div>
                     </div>
                     <!--v-switch v-if="!attrc.required" v-model="attrc.add" :label="'Agregar'"></v-switch-->
-                    <!--ATRIBUTOS Personalizables-->
                   </v-card><br>
+                </div>
+                <!--ATRIBUTOS Personalizables-->
+                <h2>Categorias</h2><hr><br>
+                <div class="row col-md-8">
+                    <v-card style="height: 100%;width: 84%; padding: 31px;">
+                        <!--CATEGORIAS-->
+                        <v-data-table v-model="categories" :headers="headers" :items="rows" :pagination.sync="pagination" select-all item-key="title" class="elevation-1">
+                            <template v-slot:headers="props">
+                                <tr>
+                                    <th>
+                                        <v-checkbox :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details  @click.stop="removeCategories"></v-checkbox>
+                                    </th>
+                                    <th v-for="header in props.headers" :key="header.text" :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']" @click="changeSort(header.value)">
+                                        <v-icon small>arrow_upward</v-icon>
+                                        {{ header.text }}
+                                    </th>
+                                </tr>
+                            </template>
+                            <template v-slot:items="props">
+                                <tr :active="props.selected" @click="props.selected = !props.selected">
+                                    <td>
+                                        <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
+                                    </td>
+                                    <td class="text-xs-right">{{ props.item.title }}</td>
+                                    <td class="text-xs-right">{{ props.item.name }}</td>
+                                </tr>
+                            </template>
+                        </v-data-table>
+                        <!--CATEGORIAS-->
+                    </v-card><br>
                 </div>
             </v-form>
           </v-card-text>
@@ -92,16 +121,23 @@
     import {mapActions,mapState} from 'vuex';
     
     export default {
-        
         name: 'product-manage',
         data () {
         return {
+            pagination: {
+                sortBy: 'name'
+            },
+            headers: [
+                {text:"Titulo", value:"title"},
+                {text:"Nombre", value:"name"}
+            ],
             product: {},
             classes:[],
             attributes:[],
             attributeCustomisable:{},
             attributesCustomisable:[],
             attributesP:[],
+            categories:[],
             status:[
                 {text: 'Activo', value:'enabled'},
                 {text: 'Inactivo', value:'disabled'},
@@ -118,6 +154,7 @@
                 this.product = val;
                 this.class_id = {"text":val.product_class.code, "value":val.product_class._id};
                 this.attributesP = val.attributes;
+                this.categories = val.categories;
                 //this.attributesCustomisable = val.order_attributes;
             }
             },
@@ -144,6 +181,7 @@
         },
         mounted () {
             this.fetchClasss();
+            this.fetchCategories();
             this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
             if(this.edit!=""){
                 this.titleText="Editar producto"
@@ -158,9 +196,22 @@
                 update: 'product/update',
                 getProduct: 'product/getProduct', 
                 fetchClasss: 'productClass/fetchClasss', 
+                fetchCategories: 'category/fetchCategories', 
                 getProductClassAttribute: 'product/getProductClassAttribute', 
                 setWarning: 'setWarning',
             }),
+            removeCategories () {
+                if (this.categories.length) this.categories = []
+                else this.categories = this.rows.slice()
+            },
+            changeSort (column) {
+                if (this.pagination.sortBy === column) {
+                    this.pagination.descending = !this.pagination.descending
+                } else {
+                    this.pagination.sortBy = column
+                    this.pagination.descending = false
+                }
+            },
             formatAttributeEdit(arr1){
                 for(var s = 0; s < this[arr1].length; s++){
                     for(var r = 0; r < this.attributesP.length; r++){
@@ -221,10 +272,18 @@
                 if(!this.msgError)
                     this.buildAttr("attributesCustomisable");
             },
+            formatCategories(){
+                var ct = [];
+                for(var s = 0; s < this.categories.length; s++){
+                    ct.push(this.categories[s]._id);
+                }
+                return ct;
+            },
             buildProduct(){
                 this.buildAttributes();
                 this.product.product_class = this.class_id.value;
                 this.product.attributes = attrs;
+                this.product.categories = this.formatCategories();
                 if(this.edit)
                     this.product.status = this.product.status.value;
                 return this.product;
@@ -267,6 +326,7 @@
                 pro: state => state.product.product, 
                 classess: state => state.productClass.classs,
                 attr: state => state.product.attrClass, 
+                rows: state => state.category.categories, 
             }),
         },
     }

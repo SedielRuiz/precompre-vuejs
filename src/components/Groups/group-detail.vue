@@ -14,7 +14,7 @@
                 <v-text-field :disabled="true" v-model="group._type" prepend-icon="email" name="name" label="Tipo" type="text"></v-text-field>
                 <h2>Clientes</h2><hr><br>
                 <div v-if="customers">
-                    <v-chip v-for="(c, index) in customers" :key="index">{{c}}</v-chip>
+                    <v-chip v-for="(c, index) in customers" :key="index" class="custom" >{{c.id_type.toUpperCase()}} {{c.id_description}} - {{c.name}} {{c.last_name}}</v-chip>
                   <!--div v-for="(c, index) in customers">
                   </div--><br>
                 </div>  
@@ -28,7 +28,11 @@
     </v-layout>
   </v-container>
 </template>
-
+<style>
+  .custom{
+    font-size:15px;
+  }
+</style>
 <script>
   import {mapActions,mapState} from 'vuex';
   

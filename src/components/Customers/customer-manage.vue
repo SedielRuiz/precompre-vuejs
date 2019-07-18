@@ -13,6 +13,8 @@
             <v-form>
                 <v-combobox v-model="customer.id_type" prepend-icon="email" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
                 <v-text-field v-model="customer.id_description" prepend-icon="email" name="id_description" label="Número de identificación" type="text"></v-text-field>
+                <label style="font-size: 19px;">Fecha de nacimiento.</label><br>
+                <v-date-picker v-model="customer.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker>
                 <v-text-field v-model="customer.name" prepend-icon="email" name="name" label="Nombres" type="text"></v-text-field>
                 <v-text-field v-model="customer.last_name" prepend-icon="email" name="last_mame" label="Apellidos" type="text"></v-text-field>
                 <v-text-field v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
@@ -110,6 +112,7 @@
         cu(val){
           if(val){
             this.customer = val;
+            this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type });
             this.phones = val.telephones;
             this.placesSelected = val.delivery_places;
           }

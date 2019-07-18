@@ -24,6 +24,8 @@ import AtributeDetail from '@/components/ProductAttributes/product-attribute-det
 import ClassList from '@/components/ProductClass/product-class-list';
 import ClassManage from '@/components/ProductClass/product-class-manage';
 import ClassDetail from '@/components/ProductClass/product-class-detail';
+/**Categorias**/
+import CategoryList from '@/components/Categories/category-list';
 /**Productos**/
 import ProductList from '@/components/Products/product-list';
 import ProductManage from '@/components/Products/product-manage';
@@ -40,6 +42,10 @@ import CustomerDetail from '@/components/Customers/customer-detail';
 import GroupList from '@/components/Groups/group-list';
 import GroupManage from '@/components/Groups/group-manage';
 import GroupDetail from '@/components/Groups/group-detail';
+/**Listas de productos**/
+import ProductListList from '@/components/ProductList/product-list-list';
+import ProductListManage from '@/components/ProductList/product-list-manage';
+import ProductListDetail from '@/components/ProductList/product-list-detail';
 
 const router = new Router({
   routes: [
@@ -175,6 +181,13 @@ const router = new Router({
         component: ClassManage,
         meta: { Auth: true, title: 'Editar clase' },
     },
+    /**Categorias**/
+    {
+        path: '/categoryList',
+        name: 'categoryList',
+        component: CategoryList,
+        meta: { Auth: true, title: 'Categorias' },
+    },
     /**Productos**/
     {
         path: '/productList',
@@ -249,7 +262,8 @@ const router = new Router({
         name: 'customerManageUpdate',
         component: CustomerManage,
         meta: { Auth: true, title: 'Editar cliente' },
-    },/**Grupos**/
+    },
+    /**Grupos**/
     {
         path: '/groupList',
         name: 'groupList',
@@ -273,6 +287,31 @@ const router = new Router({
         name: 'groupManageUpdate',
         component: GroupManage,
         meta: { Auth: true, title: 'Editar grupo' },
+    },
+    /**Listas de productos**/
+    {
+        path: '/productListList',
+        name: 'productListList',
+        component: ProductListList,
+        meta: { Auth: true, title: 'Listas de productos' },
+    },
+    {
+        path: '/productListDetail/:id',
+        name: 'productListDetail',
+        component: ProductListDetail,
+        meta: { Auth: true, title: 'Lista' },
+    },
+    {
+        path: '/productListManage/',
+        name: 'productListManageCreate',
+        component: ProductListManage,
+        meta: { Auth: true, title: 'Crear lista' },
+    },
+    {
+        path: '/productListManage/:id/',
+        name: 'productListManageUpdate',
+        component: ProductListManage,
+        meta: { Auth: true, title: 'Editar lista' },
     },
   ]
 })

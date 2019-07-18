@@ -22,11 +22,14 @@
                 <div v-if="order_attributes">
                     <v-chip v-for="(attrc, index) in order_attributes" :key="index">{{attrc.name.charAt(0).toUpperCase() + attrc.name.slice(1)}} - {{attrc.value.charAt(0).toUpperCase() + attrc.value.slice(1)}}</v-chip>
                 </div><br>
+                <h2>Categorias</h2><br>
+                <div v-if="categories">
+                    <v-chip v-for="(ct, index) in categories" :key="index">{{ct.name}}</v-chip>
+                </div><br>
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="processProduct()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -46,6 +49,7 @@
             product: {},
             attributes:[],
             order_attributes:[],
+            categories:[],
             status:[
                 {text: 'Activo', value:'enabled'},
                 {text: 'Inactivo', value:'disabled'},
@@ -58,6 +62,7 @@
             pro(val){
                 if(val){
                     this.product = val;
+                    this.categories = val.categories;
                     this.formatAttributes("attributes", val.attributes);
                     this.formatAttributes("order_attributes", val.attributes);
                 }

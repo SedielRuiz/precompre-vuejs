@@ -13,6 +13,14 @@
             <v-form>
                 <v-text-field :disabled="true" v-model="place.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
                 <v-text-field :disabled="true" v-model="place.address" prepend-icon="email" name="address" label="Dirección" type="text"></v-text-field>
+                <gmap-map v-if="place.coords"
+                    :center="center" :zoom="12"
+                    style="width:100%;  height: 400px;">
+                    <gmap-marker
+                        :position="place.coords"
+                        @click="center=place.coords">
+                    </gmap-marker>
+                </gmap-map><br>
                 <v-text-field :disabled="true" v-model="place.country" prepend-icon="email" name="country" label="País" type="text"></v-text-field>
                 <v-text-field :disabled="true" v-model="place.city" prepend-icon="email" name="city" label="ciudad" type="text"></v-text-field>
                 <h2>Unidades</h2><hr><br>
@@ -41,6 +49,7 @@
     name: 'user-manage',
     data () {
       return {
+        center: {},
         place: {},
         unities:[],
         edit:"",
@@ -50,6 +59,9 @@
         pl(val){
           if(val){
             this.place = val;
+            if(this.place.coords)
+              this.place.coords = {"lat":Number(this.place.coords.lat), "lng":Number(this.place.coords.long)};
+            this.center = this.place.coords;
             this.unities = val.unities;
           }
         },
