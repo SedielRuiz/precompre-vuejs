@@ -2,16 +2,35 @@ import Vue from 'vue';
 
 const state = {
   productLists: [],
-  productList: ""
+  productList: "",
+  listFilter:[],
+  listAttribute:[],
+  products:[]
 };
 
 const actions = {
-    getProductList:({commit}, id) => {
+    searchProducts:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('product_list/'+id).then(
+            Vue.http.post('search_product',data).then(
+                response =>{
+                    commit('setProducts',response.data);
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    consultAttributes:({commit},data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+        Vue.http.post('search_product_attribute_schema',data).then(
             response =>{
-                commit('setProductList',response.data);
+                commit('setAttributes',response.data);
                 resolve(response.data)
             }
         ).catch(error=>{
@@ -20,6 +39,38 @@ const actions = {
         }).finally(()=>{
             commit('stopProcessing', null, { root: true });
         })
+        });
+    },
+    consultModel:({commit},data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+        Vue.http.post('consult_model_list_schema/product',data).then(
+            response =>{
+                commit('setModel',response.data);
+                resolve(response.data)
+            }
+        ).catch(error=>{
+            commit('setError', error, { root: true });
+            reject(error)
+        }).finally(()=>{
+            commit('stopProcessing', null, { root: true });
+        })
+        });
+    },
+    getProductList:({commit}, id) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+        Vue.http.post('product_list/'+id).then(
+            response =>{
+                commit('setProductList',response.data);
+                resolve(response.data)
+            }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
         });
     },
     fetchProductLists:({commit}) => {
@@ -86,7 +137,15 @@ const mutations = {
     setProductList: (state, lst) => {
         state.productList = lst
     },
-
+    setModel: (state, mdl) => {
+        state.listFilter = mdl
+    },
+    setAttributes: (state, att) => {
+        state.listAttribute = att
+    },
+    setProducts: (state, pro) => {
+        state.products = pro
+    },
 };
 
 export default {
