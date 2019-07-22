@@ -11,8 +11,8 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-text-field :disabled="true" v-model="rol.title" prepend-icon="email" name="title" label="Titulo" type="text"></v-text-field>
-                <v-combobox :disabled="true" v-model="rol.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="email" label="Estado"></v-combobox>
+                <v-text-field :disabled="true" v-model="rol.title" prepend-icon="title" name="title" label="Titulo" type="text"></v-text-field>
+                <v-combobox :disabled="true" v-model="rol.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <h2>Permisos</h2><br>
                 <div class="row col-md-8">
                   <v-card style="height: 100%;width: 84%; padding: 31px;">

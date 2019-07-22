@@ -15,7 +15,7 @@
                 <div v-for="(f, index) in filters">
                   <v-layout align-center justify-center row wra>
                       <v-flex xs4 md4>
-                        <v-combobox :disabled="true" @change="updateFilter('name', f.name, index, false, false)" v-model="f.name" :items="itemsFilter" prepend-icon="email" label="Filtro"></v-combobox>
+                        <v-combobox :disabled="true" @change="updateFilter('name', f.name, index, false, false)" v-model="f.name" :items="itemsFilter" prepend-icon="filter_list" label="Filtro"></v-combobox>
                       </v-flex>
                       <v-flex xs4 md4>
                         <v-combobox @change="updateFilter('operator', f.operator, index, false, false)" v-model="f.operator" :items="f.operators " prepend-icon="email" label="Operador"></v-combobox>
@@ -44,7 +44,7 @@
               </div>
               <v-layout align-center justify-center row wra>
                 <v-flex xs4 md4>
-                  <v-combobox v-model="itemFilter" :items="itemsFilter" prepend-icon="email" label="Filtro"></v-combobox>
+                  <v-combobox v-model="itemFilter" :items="itemsFilter" prepend-icon="filter_list" label="Filtro"></v-combobox>
                 </v-flex>
                 <v-flex xs4 md4>
                   <v-combobox v-model="filter.operator" :items="operators" prepend-icon="email" label="Operador"></v-combobox>

@@ -11,9 +11,9 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-text-field :disabled="true" v-model="product.name" prepend-icon="email" name="name" label="Nombre del producto" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-if="product.product_class" v-model="product.product_class.code" prepend-icon="email" name="name" label="Clase del producto" type="text"></v-text-field>
-                <v-combobox :disabled="true" v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="email" label="Estado"></v-combobox>
+                <v-text-field :disabled="true" v-model="product.name" prepend-icon="person" name="name" label="Nombre del producto" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-if="product.product_class" v-model="product.product_class.code" prepend-icon="featured_play_list" name="name" label="Clase del producto" type="text"></v-text-field>
+                <v-combobox :disabled="true" v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <h2>Atributos</h2><br>
                 <div v-if="attributes"> 
                     <v-chip v-for="(attr, index) in attributes" :key="index">{{attr.name.charAt(0).toUpperCase() + attr.name.slice(1)}} - {{attr.value.charAt(0).toUpperCase() + attr.value.slice(1)}}</v-chip>

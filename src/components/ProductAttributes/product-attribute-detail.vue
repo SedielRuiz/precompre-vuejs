@@ -11,15 +11,15 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-text-field :disabled="true" v-model="attribute.code" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
-                <v-combobox :disabled="true" v-model="attribute.type" :items="types" prepend-icon="email" label="Tipo"></v-combobox>
-                <v-text-field :disabled="true" v-model="attribute.size" prepend-icon="email" name="size" label="Tamaño" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-model="attribute.length_text" prepend-icon="email" name="length_text" label="Longitud" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-model="attribute.code" prepend-icon="person" name="name" label="Nombre" type="text"></v-text-field>
+                <v-combobox :disabled="true" v-model="attribute.type" :items="types" prepend-icon="reorder" label="Tipo"></v-combobox>
+                <v-text-field :disabled="true" v-model="attribute.size" prepend-icon="high_quality" name="size" label="Tamaño" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-model="attribute.length_text" prepend-icon="view_module" name="length_text" label="Longitud" type="text"></v-text-field>
                 <div v-if="attribute.type && attribute.type.value == 'text'">
-                    <v-combobox :disabled="true" v-model="attribute.size" :items="sizes" prepend-icon="email" label="Tamaño de la caja de texto"></v-combobox>
-                    <v-text-field :disabled="true" v-model="attribute.length_text" prepend-icon="email" name="length_text" label="Longitud" type="text"></v-text-field>
+                    <v-combobox :disabled="true" v-model="attribute.size" :items="sizes" prepend-icon="high_quality" label="Tamaño de la caja de texto"></v-combobox>
+                    <v-text-field :disabled="true" v-model="attribute.length_text" prepend-icon="view_module" name="length_text" label="Longitud" type="text"></v-text-field>
                 </div>
-                <v-text-field :disabled="true" v-model="attribute.default_value" prepend-icon="email" name="name" label="Valor por defecto" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-model="attribute.default_value" prepend-icon="speaker_notes" name="name" label="Valor por defecto" type="text"></v-text-field>
                 <v-switch :disabled="true" v-model="attribute.required" :label="'Requerido'"></v-switch>
                 <v-switch :disabled="true" v-model="attribute.visible" :label="'Visible'"></v-switch>
                 <v-switch :disabled="true" v-model="attribute.wysiwyg" :label="'Wysiwyg'"></v-switch>

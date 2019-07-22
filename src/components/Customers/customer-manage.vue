@@ -11,16 +11,16 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-combobox v-model="customer.id_type" prepend-icon="email" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
-                <v-text-field v-model="customer.id_description" prepend-icon="email" name="id_description" label="Número de identificación" type="text"></v-text-field>
+                <v-combobox v-model="customer.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
+                <v-text-field v-model="customer.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
                 <label style="font-size: 19px;">Fecha de nacimiento.</label><br>
                 <v-date-picker v-model="customer.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker>
-                <v-text-field v-model="customer.name" prepend-icon="email" name="name" label="Nombres" type="text"></v-text-field>
-                <v-text-field v-model="customer.last_name" prepend-icon="email" name="last_mame" label="Apellidos" type="text"></v-text-field>
+                <v-text-field v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
+                <v-text-field v-model="customer.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
                 <v-text-field v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
-                <v-combobox v-if="edit!=''" v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="email" label="Estado"></v-combobox>
-                <v-text-field v-if="edit==''" v-model="customer.password" prepend-icon="email" name="password" label="Contraseña" type="password"></v-text-field>
-                <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">event</v-icon></h2><br>
+                <v-combobox v-if="edit!=''" v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
+                <v-text-field v-if="edit==''" v-model="customer.password" prepend-icon="lock" name="password" label="Contraseña" type="password"></v-text-field>
+                <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
                 <div v-if="phones.length > 0">
                   <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
                 </div>
@@ -30,8 +30,8 @@
                     <!--TELEFONOS-->
                     <label style="font-size: 18px;">Nuevo teléfono</label><hr>
                     <v-text-field v-model="phone.title" prepend-icon="title" name="title" label="Titulo" type="text"></v-text-field>
-                    <v-text-field v-model="phone.number" prepend-icon="email" name="number" label="Número" type="number"></v-text-field>
-                    <v-combobox v-model="phone.type" :items="typesPhone" prepend-icon="email" label="Tipo de número"></v-combobox>
+                    <v-text-field v-model="phone.number" prepend-icon="call" name="number" label="Número" type="number"></v-text-field>
+                    <v-combobox v-model="phone.type" :items="typesPhone" prepend-icon="call" label="Tipo de número"></v-combobox>
                     <v-text-field v-model="phone.extension" prepend-icon="extension" name="extension" label="Extensión" type="text"></v-text-field>
                     <v-text-field v-model="phone.code" prepend-icon="code" name="code" label="Código postal" type="text"></v-text-field>
                     <v-switch v-model="phone.main" :label="'Principal'"></v-switch>
@@ -39,7 +39,7 @@
                     <!--TELEFONOS-->
                   </v-card><br>
                 </div>
-                <h2>Lugares de entrega <v-icon medium @click="addPlace ? addPlace = false : addPlace = true">event</v-icon></h2><br>
+                <h2>Lugares de entrega <v-icon medium @click="addPlace ? addPlace = false : addPlace = true">add</v-icon></h2><br>
                 <div v-if="placesSelected.length > 0">
                   <v-chip v-for="(p, index) in placesSelected" :key="index">{{p.name}} <v-icon medium @click="removePlace(index)">close</v-icon></v-chip>
                 </div>
@@ -47,10 +47,10 @@
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <label style="font-size: 18px;">Nuevo lugar de entrega</label><hr>
                     <!--LUGARES DE ENTREGA-->
-                    <v-combobox v-model="place.name" :items="suggestions" prepend-icon="email" label="Nombre"></v-combobox>
-                    <v-combobox v-model="placeDelivery" :items="placesDelivery" prepend-icon="email" label="Lugar de entrega"></v-combobox>
-                    <v-combobox v-if="typesPlaces.length > 0" v-model="typeSeleted" :items="typesPlaces" prepend-icon="email" label="Tipo de domicilio"></v-combobox>
-                    <v-combobox v-if="units.length > 0" v-model="place.unit" :items="units" prepend-icon="email" label="Unidad"></v-combobox>
+                    <v-combobox v-model="place.name" :items="suggestions" prepend-icon="receipt" label="Nombre"></v-combobox>
+                    <v-combobox v-model="placeDelivery" :items="placesDelivery" prepend-icon="location_on" label="Lugar de entrega"></v-combobox>
+                    <v-combobox v-if="typesPlaces.length > 0" v-model="typeSeleted" :items="typesPlaces" prepend-icon="list_alt" label="Tipo de domicilio"></v-combobox>
+                    <v-combobox v-if="units.length > 0" v-model="place.unit" :items="units" prepend-icon="create" label="Unidad"></v-combobox>
                     <v-btn color="primary" @click="selectedPlace()">Agregar</v-btn>
                     <!--LUGARES DE ENTREGA-->
                   </v-card><br>

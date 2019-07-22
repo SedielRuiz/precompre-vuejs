@@ -11,8 +11,8 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-text-field :disabled="true" v-model="classs.code" prepend-icon="email" name="code" label="Nombre" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-if="classParent" v-model="classParent.code" prepend-icon="email" name="code" label="Parent clase" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-model="classs.code" prepend-icon="person" name="code" label="Nombre" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-if="classParent" v-model="classParent.code" prepend-icon="ballot" name="code" label="Parent clase" type="text"></v-text-field>
                 <h2>Atributos</h2><hr><br>
                 <div class="row col-md-8">
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
