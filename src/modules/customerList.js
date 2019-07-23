@@ -1,20 +1,20 @@
 import Vue from 'vue';
 
 const state = {
-  productLists: [],
-  productList: "",
+  customerLists: [],
+  customerList: "",
   listFilter:[],
   listAttribute:[],
-  products:[]
+  customers:[]
 };
 
 const actions = {
-    searchProducts:({commit},data) => {
+    searchCustomers:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-            Vue.http.post('register_model_list',data).then(
+            Vue.http.post('search_customer',data).then(
                 response =>{
-                    commit('setProducts',response.data);
+                    commit('setCustomers',response.data);
                     resolve(response.data)
                 }
             ).catch(error=>{
@@ -44,7 +44,7 @@ const actions = {
     consultModel:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('consult_model_list_schema/product',data).then(
+        Vue.http.post('consult_model_list_schema/customer',data).then(
             response =>{
                 commit('setModel',response.data);
                 resolve(response.data)
@@ -57,12 +57,12 @@ const actions = {
         })
         });
     },
-    getProductList:({commit}, id) => {
+    getCustomerList:({commit}, id) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('product_list/'+id).then(
+        Vue.http.post('customer_list/'+id).then(
             response =>{
-                commit('setProductList',response.data);
+                commit('setCustomerList',response.data);
                 resolve(response.data)
             }
             ).catch(error=>{
@@ -73,12 +73,12 @@ const actions = {
             })
         });
     },
-    fetchProductLists:({commit}) => {
+    fetchCustomerLists:({commit}) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
         Vue.http.post('product_list').then(
             response =>{
-                commit('setProductLists',response.data);
+                commit('setCustomerLists',response.data);
                 resolve(response.data)
             }).catch(error=>{
                 commit('setError', error, { root: true });
@@ -91,7 +91,7 @@ const actions = {
     create:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('register_model_list',data).then(
+        Vue.http.post('register_customer_list',data).then(
             response =>{
                 resolve(response.data)
             }).catch(error=>{
@@ -106,7 +106,7 @@ const actions = {
     update:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('edit_model_list',data).then(
+        Vue.http.post('edit_customer_list',data).then(
             response =>{
             resolve(response.data)
             }
@@ -131,11 +131,11 @@ const getters = {
 };
 
 const mutations = {
-    setProductLists: (state, list) => {
-        state.productLists = list
+    setCustomerLists: (state, list) => {
+        state.customerLists = list
     },
-    setProductList: (state, lst) => {
-        state.productList = lst
+    setCustomerList: (state, lst) => {
+        state.customerList = lst
     },
     setModel: (state, mdl) => {
         state.listFilter = mdl
@@ -143,8 +143,8 @@ const mutations = {
     setAttributes: (state, att) => {
         state.listAttribute = att
     },
-    setProducts: (state, pro) => {
-        state.products = pro
+    setCustomers: (state, cs) => {
+        state.customers = cs
     },
 };
 

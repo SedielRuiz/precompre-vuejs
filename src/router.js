@@ -42,10 +42,15 @@ import CustomerDetail from '@/components/Customers/customer-detail';
 import GroupList from '@/components/Groups/group-list';
 import GroupManage from '@/components/Groups/group-manage';
 import GroupDetail from '@/components/Groups/group-detail';
+/***LISTAS*/
 /**Listas de productos**/
-import ProductListList from '@/components/ProductList/product-list-list';
-import ProductListManage from '@/components/ProductList/product-list-manage';
-import ProductListDetail from '@/components/ProductList/product-list-detail';
+import ProductListList from '@/components/Lists/ProductList/product-list-list';
+import ProductListManage from '@/components/Lists/ProductList/product-list-manage';
+import ProductListDetail from '@/components/Lists/ProductList/product-list-detail';
+/**Listas de clientes**/
+import CustomerListList from '@/components/Lists/CustomerList/customer-list-list';
+import CustomerListManage from '@/components/Lists/CustomerList/customer-list-manage';
+import CustomerListDetail from '@/components/Lists/CustomerList/customer-list-detail';
 
 const router = new Router({
   routes: [
@@ -313,6 +318,32 @@ const router = new Router({
         component: ProductListManage,
         meta: { Auth: true, title: 'Editar lista' },
     },
+    /**Listas de clientes**/
+    {
+        path: '/customerListList',
+        name: 'customerListList',
+        component: CustomerListList,
+        meta: { Auth: true, title: 'Listas de productos' },
+    },
+    {
+        path: '/customerListDetail/:id',
+        name: 'customerListDetail',
+        component: CustomerListDetail,
+        meta: { Auth: true, title: 'Lista' },
+    },
+    {
+        path: '/customerListManage/',
+        name: 'customerListManageCreate',
+        component: CustomerListManage,
+        meta: { Auth: true, title: 'Crear lista' },
+    },
+    {
+        path: '/customerListManage/:id/',
+        name: 'customerListManageUpdate',
+        component: CustomerListManage,
+        meta: { Auth: true, title: 'Editar lista' },
+    },
+    
   ]
 })
 

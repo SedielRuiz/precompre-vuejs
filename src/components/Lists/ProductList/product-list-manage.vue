@@ -247,8 +247,8 @@
           }
         },
         preview(){
-          this.filters = this.buildProductList();
-          this.searchProducts(this.filters).then(
+          var filterView = this.buildProductList();
+          this.searchProducts(filterView).then(
             data => {
                 console.log(data);
             },
@@ -259,18 +259,18 @@
             console.log(this.filters);
             var filtersP = [];
             for(var s = 0; s < this.filters.length; s++){
-              var val = "";
+              var val = [];
               if(this.filters[s].type == "Array"){
                 for(var r = 0; r < this.filters[s].value.length; r++){
-                  val.push(this.filters[s].value[r.value])
+                  val.push(this.filters[s].value[r].value)
                 }
               }else{
-                val = this.filters[s].value;
+                val = this.filters[s].value && this.filters[s].value.value ? this.filters[s].value.value : this.filters[s].value;
               }
-              filtersP.push({"name":this.filters[s].name, "type":this.filters[s].type, "value":val});
+              filtersP.push({"name":this.filters[s].name, "type":this.filters[s].type =="Select" ? "String" : this.filters[s].type, "operator":this.filters[s].operator.value, "value":val});
             }
             console.log(filtersP);
-            return filtersP;
+            return {"filter":filtersP};
         },
         processProductList () {
             this.filters = this.buildProductList();
