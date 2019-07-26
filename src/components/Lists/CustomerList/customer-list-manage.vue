@@ -67,7 +67,7 @@
                     </div>
                   </div>
                 </v-flex>
-                <v-icon medium @click="addFilter()">event</v-icon>
+                <v-icon medium @click="addFilter()">add</v-icon>
               </v-layout>
             </v-form>
             <v-btn color="primary" @click="preview()">Vista previa</v-btn>

@@ -18,7 +18,7 @@
                         <v-combobox :disabled="true" @change="updateFilter('name', f.name, index, false, false)" v-model="f.name" :items="itemsFilter" prepend-icon="filter_list" label="Filtro"></v-combobox>
                       </v-flex>
                       <v-flex xs4 md4>
-                        <v-combobox @change="updateFilter('operator', f.operator, index, false, false)" v-model="f.operator" :items="f.operators " prepend-icon="email" label="Operador"></v-combobox>
+                        <v-combobox @change="updateFilter('operator', f.operator, index, false, false)" v-model="f.operator" :items="f.operators " prepend-icon="group_work" label="Operador"></v-combobox>
                       </v-flex>
                       <v-flex v-if="f.type=='Array'" xs4 md4>
                         <v-combobox v-model="f.selected" :items="f.list" @change="updateFilter('selected', f.selected, index, false, true)" prepend-icon="email" label="Opciones"></v-combobox>
@@ -47,7 +47,7 @@
                   <v-combobox v-model="itemFilter" :items="itemsFilter" prepend-icon="filter_list" label="Filtro"></v-combobox>
                 </v-flex>
                 <v-flex xs4 md4>
-                  <v-combobox v-model="filter.operator" :items="operators" prepend-icon="email" label="Operador"></v-combobox>
+                  <v-combobox v-model="filter.operator" :items="operators" prepend-icon="group_work" label="Operador"></v-combobox>
                 </v-flex>
                 <v-flex v-if="itemFilter.type=='Array'" xs4 md4>
                   <v-combobox v-model="filter.selected" :items="list" @change="addList(filter.selected)" prepend-icon="email" label="Opciones"></v-combobox>
@@ -67,7 +67,7 @@
                     </div>
                   </div>
                 </v-flex>
-                <v-icon medium @click="addFilter()">event</v-icon>
+                <v-icon medium @click="addFilter()">add</v-icon>
               </v-layout>
             </v-form>
             <v-btn color="primary" @click="preview()">Vista previa</v-btn>
@@ -90,7 +90,7 @@
 </template>
 
 <script>
-  import {mapActions,mapState} from 'vuex';
+  import {mapActions,mapState, mapMutations} from 'vuex';
   
   export default {
     
@@ -160,14 +160,17 @@
     },
     methods: {
         ...mapActions({
-            create: 'ProductList/create',
-            update: 'ProductList/update',
-            searchProducts: 'productList/searchProducts',             
-            getProductList: 'productList/getProductList', 
-            consultModel: 'productList/consultModel', 
-            consultAttributes: 'productList/consultAttributes', 
-            fetchCategories: 'category/fetchCategories', 
-            setWarning: 'setWarning',
+          create: 'ProductList/create',
+          update: 'ProductList/update',
+          searchProducts: 'productList/searchProducts',             
+          getProductList: 'productList/getProductList', 
+          consultModel: 'productList/consultModel', 
+          consultAttributes: 'productList/consultAttributes', 
+          fetchCategories: 'category/fetchCategories', 
+          setWarning: 'setWarning',
+        }),
+        ...mapMutations({
+          setPublicity: 'user/setPublicity',             
         }),
         addList(obj){
           if(obj){
@@ -250,7 +253,8 @@
           var filterView = this.buildProductList();
           this.searchProducts(filterView).then(
             data => {
-                console.log(data);
+              console.log(data);
+              this.setPublicity(data);
             },
             error => {
           });
@@ -310,6 +314,9 @@
           att: state => state.productList.listAttribute, 
           cat: state => state.category.categories, 
           products: state => state.productList.products, 
+      }),
+      ...mapGetters({
+        getPublicity: 'user/getPublicity', 
       }),
     },
   }

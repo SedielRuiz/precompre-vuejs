@@ -63,7 +63,7 @@ const router = new Router({
     {
         path: '/login',
         name: 'login',
-        component: Login,
+        component: ProductListManage,
         meta: { Auth: false, title: 'Iniciar sesión' },
         beforeEnter: (to, from, next) => {
             if(store.state.auth.logged) {

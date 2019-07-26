@@ -2,7 +2,8 @@ import Vue from 'vue';
 
 const state = {
   users : [],
-  user: ""
+  user: "",
+  publicity:[],
 };
 
 const actions = {
@@ -73,14 +74,24 @@ const actions = {
 };
 
 const getters = {
+    getPublicity: (state) => (code) =>{
+        let publicity = state.publicity.find(element=>{
+          return element.code == code
+        })
+        return publicity;
+    }
 };
 
 const mutations = {
     setUsers: (state, list) => {
-        state.users = list
+        state.users = list;
     },
     setUser: (state, us) => {
-        state.user = us
+        state.user = us;
+    },
+    setPublicity: (state, pb) => {
+        if(!getters.getPublicity(pb.code))
+            state.publicity.push(pb);
     },
 
 };
