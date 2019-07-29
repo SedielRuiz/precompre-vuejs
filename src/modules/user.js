@@ -1,9 +1,17 @@
 import Vue from 'vue';
+import store from '@/store';
 
 const state = {
   users : [],
   user: "",
+  //Paginación
+  page_number:"",
+  page_size:"",
+  total_items:"",
+  total_pages:"",
+  //Publicidad
   publicity:[],
+  noPublicity:[],
 };
 
 const actions = {
@@ -12,8 +20,9 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('users/'+id).then(
             response =>{
-            commit('setUser',response.data);
-            resolve(response.data)
+                var data = actions.processResponse(response.data, false);
+                commit('setUser',data);
+                resolve(data)
             }
         ).catch(error=>{
             commit('setError', error, { root: true });
@@ -28,8 +37,9 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('users').then(
             response =>{
-            commit('setUsers',response.data);
-            resolve(response.data)
+                var data = actions.processResponse(response.data, true);
+                commit('setUsers', data);
+                resolve(data)
             }
         ).catch(error=>{
             commit('setError', error, { root: true });
@@ -44,7 +54,8 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('register_user',data).then(
             response =>{
-            resolve(response.data)
+                var data = actions.processResponse(response.data, true);
+                resolve(data)
             }
         ).catch(error=>{
             commit('setError', error, { root: true });
@@ -60,7 +71,8 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('edit_user',data).then(
             response =>{
-            resolve(response.data)
+                var data = actions.processResponse(response.data, true);
+                resolve(data)
             }
         ).catch(error=>{
             commit('setError', error, { root: true });
@@ -70,21 +82,44 @@ const actions = {
         })
         });
     },
+
+    processResponse:(body, pag) => {
+        console.log(body);
+        if(body){
+            if(body.warning){
+                store.setWarning(body.warning);
+            }
+            if(body.info){
+                actions.setPublicity(body.info);
+            }
+        }
+        if(pag){
+            return {"result_set":body.result_set, "page_number":body.page_number, "page_size":body.page_size, "total_items":body.total_items, "total_pages":body.total_pages};
+        }else{return body.result_set[0];}
+    },
+
+    setPublicity:({state}, pbl) => {
+        console.log(pbl);
+        for(var s = 0; s < pbl.length; s++){
+            let publicity = state.noPublicity.find(element=>{return element.code == pbl[s].code})
+            if(!publicity){
+                state.publicity.push(pbl[s]);
+            }
+        }
+        for(var s = 0; s < state.publicity.length; s++){state.noPublicity.push(state.publicity[s]);}
+    }
   
 };
-
 const getters = {
-    getPublicity: (state) => (code) =>{
-        let publicity = state.publicity.find(element=>{
-          return element.code == code
-        })
-        return publicity;
-    }
 };
 
 const mutations = {
     setUsers: (state, list) => {
-        state.users = list;
+        state.users = list.result_set;
+        state.page_number = list.page_number;
+        state.page_size = list.page_size;
+        state.total_pages = list.total_pages;
+        state.total_items = list.total_items;
     },
     setUser: (state, us) => {
         state.user = us;

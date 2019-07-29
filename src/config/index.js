@@ -1,7 +1,7 @@
 const dev_enviroment = {
-    //ROOT_API: 'http://192.168.1.195:52000/api/'
+    ROOT_API: 'http://192.168.1.195:52000/api/'
     //ROOT_API: 'http://35.243.232.48/api/'
-    ROOT_API: 'http://localhost:52000/api/'
+    //ROOT_API: 'http://localhost:52000/api/'
   };
   const production_enviroment = {
     ROOT_API: 'khe onda'

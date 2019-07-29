@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import User from '@/modules/user';
 
 const state = {
   user: null,
@@ -11,7 +12,7 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('login', user)
             .then(user => {
-                window.localStorage.setItem('_token', user.body);
+                window.localStorage.setItem('_token', User.actions.processResponse(user.body));
                 commit('setUser');
                 resolve(user);
             })

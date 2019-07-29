@@ -315,9 +315,6 @@
           cat: state => state.category.categories, 
           products: state => state.productList.products, 
       }),
-      ...mapGetters({
-        getPublicity: 'user/getPublicity', 
-      }),
     },
   }
 </script>

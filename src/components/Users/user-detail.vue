@@ -52,14 +52,18 @@
             {text: 'Cedula de ciudadania', value:'cc'},
             {text: 'Cedula de extranjeria', value:'ce'}
         ],
+        status:[
+          {text: 'Activo', value:'enabled'},
+          {text: 'Inactivo', value:'disabled'},
+        ],
         edit:"",
       }
     },
     watch:{
         us(val){
-            this.user = val;
-            this.user.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
-            this.phones = val.telephones;
+          this.user = val;
+          this.user.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
+          this.phones = val.telephones;
         },
     },
     mounted () {
