@@ -54,9 +54,13 @@
     methods: {
         updateRegister(){
             if(this.rows){
-                if(this.rows > this.total_items){this.rows = this.until;}else{this.until = this.rows;}
-                this.page_size = this.rows;
-                this.buildPag(this.page);
+                if(this.rows > this.total_items){
+                    this.rows = this.until;
+                }else{
+                    this.until = this.rows;
+                    this.page_size = this.rows;
+                    this.buildPag(this.page);
+                }
             }
         },
         buildPag(val){
