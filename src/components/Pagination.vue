@@ -46,8 +46,11 @@
     },
     watch:{
         rows(val){
-            this.page_size = val;
-            this.buildPag(this.page);
+            if(val){
+                if(val > this.total_items){this.rows = this.until;}
+                this.page_size = val;
+                this.buildPag(this.page);
+            }
         },
         page(val){
             this.buildPag(val);
