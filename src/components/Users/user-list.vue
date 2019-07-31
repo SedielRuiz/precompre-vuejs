@@ -12,8 +12,6 @@
     <v-data-table
         :headers="headers"
         :items="rows"
-        :pagination.sync="pagination"
-        :page-size="page_size"
         :total-items="total_items"
         class="elevation-1">
         <template v-slot:items="props">
@@ -25,25 +23,22 @@
           <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
         </template>
     </v-data-table>
+    <div class="text-center">
+      <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
+    </div>
   </v-container>
 </template>
-
 <script>
   import {mapActions,mapState} from 'vuex';
-  
+  import pagination from '@/components/Pagination';
+
   export default {
-    
     name: 'user-list',
+    components:{
+      pagination,
+    },
     data () {
       return {
-        pagination: {
-          descending: true,
-          page: page_number,
-          rowsPerPage: page_size,
-          sortBy: 'fat',
-          totalItems: total_items,
-          rowsPerPageItems: [1, 2, 4, 8, 16]
-        },
         headers: [
             {text:"Documento", value:"id_description"},
             {text:"Nombres", value:"name"},
@@ -51,22 +46,20 @@
             {text:"Correo", value:"email"},
             {text:"Estado", value:"status"},
             {text:"Acciones", value:"actons"}
-        ]
-      }
-    },
-    watch:{
-      page_size(val){
-        console.log(val);
+        ],
       }
     },
     mounted () {
-      this.fetchUsers()
+      this.fetchUsers();
     },
     methods: {
       ...mapActions({
         fetchUsers: 'user/fetchUsers',
         setWarning: 'setWarning',
       }),
+      search(pagination){
+        this.fetchUsers(pagination);
+      },
       redirect(page,id){
         if(!page){
             this.$router.push('/userManage')

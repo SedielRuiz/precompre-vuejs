@@ -12,7 +12,7 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('login', user)
             .then(user => {
-                window.localStorage.setItem('_token', User.actions.processResponse(user.body));
+                window.localStorage.setItem('_token', User.actions.processResponse(user.body, false));
                 commit('setUser');
                 resolve(user);
             })

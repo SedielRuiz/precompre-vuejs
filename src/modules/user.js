@@ -32,21 +32,20 @@ const actions = {
         })
         });
     },
-    fetchUsers:({commit}) => {
-        commit('startProcessing', null, { root: true });
+    fetchUsers:({commit}, data) => {
+        //commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('users').then(
+        Vue.http.post('users', data).then(
             response =>{
                 var data = actions.processResponse(response.data, true);
                 commit('setUsers', data);
                 resolve(data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                //commit('stopProcessing', null, { root: true });
+            })
         });
     },
     create:({commit},data) => {
@@ -84,7 +83,6 @@ const actions = {
     },
 
     processResponse:(body, pag) => {
-        console.log(body);
         if(body){
             if(body.warning){
                 store.setWarning(body.warning);
@@ -95,7 +93,7 @@ const actions = {
         }
         if(pag){
             return {"result_set":body.result_set, "page_number":body.page_number, "page_size":body.page_size, "total_items":body.total_items, "total_pages":body.total_pages};
-        }else{return body.result_set[0];}
+        }else{return !Array.isArray(body.result_set) ? body.result_set : body.result_set[0];}
     },
 
     setPublicity:({state}, pbl) => {
