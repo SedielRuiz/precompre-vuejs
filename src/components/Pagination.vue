@@ -9,7 +9,7 @@
         <v-layout align-center justify-center row wra>
             <v-flex xs12 md1></v-flex>
             <v-flex xs12 md1>
-                <v-text-field v-model="rows" name="row" label="Registros" type="number"></v-text-field>
+                <v-text-field v-model="rows" @change="updateRegister()" name="row" label="Registros" type="number"></v-text-field>
             </v-flex>
             <v-flex xs4 md2>{{since}} - {{until}} de {{total_items}}</v-flex>
             <v-flex xs12 md1></v-flex>
@@ -45,13 +45,6 @@
       this.until = this.page_size;
     },
     watch:{
-        rows(val){
-            if(val){
-                if(val > this.total_items){this.rows = this.until;}
-                this.page_size = val;
-                this.buildPag(this.page);
-            }
-        },
         page(val){
             this.buildPag(val);
             this.until = val * this.page_size;
@@ -59,6 +52,13 @@
         },
     },
     methods: {
+        updateRegister(){
+            if(this.rows){
+                if(this.rows > this.total_items){this.rows = this.until;}else{this.until = this.rows;}
+                this.page_size = this.rows;
+                this.buildPag(this.page);
+            }
+        },
         buildPag(val){
             this.pagination.page_number = val - 1;
             this.pagination.page_size = this.page_size; 
