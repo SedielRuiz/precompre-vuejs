@@ -1,8 +1,13 @@
 import Vue from 'vue';
+import User from '@/modules/user';
 
 const state = {
   attributes: [],
-  attribute: ""
+  attribute: "",
+  //Paginación
+  page_size:"",
+  total_items:"",
+  total_pages:"",
 };
 
 const actions = {
@@ -11,31 +16,29 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('product_attributes/'+id).then(
             response =>{
-            commit('setAttribute',response.data);
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, false);
+                commit('setAttribute',data);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
         });
     },
-    fetchAttributes:({commit}) => {
-        commit('startProcessing', null, { root: true });
+    fetchAttributes:({commit}, data) => {
         return new Promise((resolve, reject) => {
-        Vue.http.post('product_attributes').then(
+        Vue.http.post('product_attributes', data).then(
             response =>{
-            commit('setAttributes',response.data);
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, true);
+                commit('setAttributes',data);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+            })
         });
     },
     create:({commit},data) => {
@@ -43,14 +46,14 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('register_product_attribute',data).then(
             response =>{
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, false);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
         });
     },
     
@@ -59,14 +62,14 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('edit_product_attribute',data).then(
             response =>{
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, false);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
         });
     },
   
@@ -83,7 +86,10 @@ const getters = {
 
 const mutations = {
     setAttributes: (state, list) => {
-        state.attributes = list
+        state.attributes = list.result_set;
+        state.page_size = list.page_size;
+        state.total_pages = list.total_pages;
+        state.total_items = list.total_items;
     },
     setAttribute: (state, att) => {
         state.attribute = att

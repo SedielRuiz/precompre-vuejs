@@ -43,6 +43,13 @@
       this.page_size = 10;
       this.rows = this.page_size;
       this.until = this.page_size;
+      console.log(this.total_items);
+      if(this.total_items == "" && this.total_items == undefined){
+        this.total_items = 0;
+        this.rows = 0;
+        this.until = 0;
+        this.since = 0;
+      }
     },
     watch:{
         page(val){
@@ -54,9 +61,10 @@
     methods: {
         updateRegister(){
             if(this.rows){
-                if(this.rows > this.total_items){
+                if(this.rows > this.total_items || this.rows < 1){
                     this.rows = this.until;
                 }else{
+                    this.rows = Math.round(this.rows);
                     this.until = this.rows;
                     this.page_size = this.rows;
                     this.buildPag(this.page);

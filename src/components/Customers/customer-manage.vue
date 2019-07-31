@@ -210,7 +210,7 @@
             if(this.edit){
                 this.update(this.customer).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                             this.$router.push('/customerDetail/'+this.edit)
                         })
                     },
@@ -219,7 +219,7 @@
             }else{
                 this.create(this.customer).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                             this.$router.push('/customerList')
                         })
                     },

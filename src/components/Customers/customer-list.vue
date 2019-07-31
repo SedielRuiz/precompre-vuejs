@@ -22,15 +22,19 @@
         <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
         </template>
     </v-data-table>
+    <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
   </v-container>
 </template>
 
 <script>
   import {mapActions,mapState} from 'vuex';
+  import pagination from '@/components/Pagination';
   
   export default {
-    
-    name: 'user-list',
+    name: 'customer-list',
+    components: {
+      pagination,
+    },
     data () {
       return {
         headers: [
@@ -51,6 +55,9 @@
         fetchCustomers: 'customer/fetchCustomers',
         setWarning: 'setWarning',
       }),
+      search(pagination){
+        this.fetchCustomers(pagination);
+      },
       redirect(page,id){
         if(!page){
             this.$router.push('/customerManage')
@@ -62,7 +69,10 @@
     computed:{
       ...mapState({
         warning: state => state.warning,
-        rows: state => state.customer.customers
+        rows: state => state.customer.customers,
+        page_size: state => state.customer.page_size,
+        total_items: state => state.customer.total_items,
+        total_pages: state => state.customer.total_pages,
       }),
     },
   }

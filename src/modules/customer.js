@@ -1,8 +1,13 @@
 import Vue from 'vue';
+import User from '@/modules/user';
 
 const state = {
   customers: [],
-  customer: ""
+  customer: "",
+  //Paginación
+  page_size:"",
+  total_items:"",
+  total_pages:"",
 };
 
 const actions = {
@@ -11,10 +16,10 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('customers/'+id).then(
             response =>{
-                commit('setCustomer',response.data);
-                resolve(response.data)
-            }
-            ).catch(error=>{
+                var data = User.actions.processResponse(response.data, false);
+                commit('setCustomer',data);
+                resolve(data)
+            }).catch(error=>{
                 commit('setError', error, { root: true });
                 reject(error)
             }).finally(()=>{
@@ -23,19 +28,17 @@ const actions = {
         });
     },
     fetchCustomers:({commit}) => {
-        commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
         Vue.http.post('customers').then(
             response =>{
-            commit('setCustomers',response.data);
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, true);
+                commit('setCustomers',data);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+            })
         });
     },
     create:({commit},data) => {
@@ -43,14 +46,14 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('register_customer',data).then(
             response =>{
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, false);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
         });
     },
     
@@ -59,14 +62,14 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('edit_customer',data).then(
             response =>{
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, false);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
         });
     },
   
@@ -83,7 +86,10 @@ const getters = {
 
 const mutations = {
     setCustomers: (state, list) => {
-        state.customers = list
+        state.customers = list.result_set;
+        state.page_size = list.page_size;
+        state.total_pages = list.total_pages;
+        state.total_items = list.total_items;
     },
     setCustomer: (state, cus) => {
         state.customer = cus

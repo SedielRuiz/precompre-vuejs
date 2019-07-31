@@ -277,7 +277,7 @@
             if(this.edit){
                 this.update(this.filters).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                             this.$router.push('/productListDetail/'+this.edit)
                         })
                     },
@@ -286,7 +286,7 @@
             }else{
                 this.create(this.filters).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                             this.$router.push('/productListList')
                         })
                     },

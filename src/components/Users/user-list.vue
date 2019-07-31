@@ -23,9 +23,7 @@
           <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
         </template>
     </v-data-table>
-    <div class="text-center">
-      <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
-    </div>
+    <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
   </v-container>
 </template>
 <script>
@@ -72,7 +70,6 @@
       ...mapState({
         warning: state => state.warning,
         rows: state => state.user.users,
-        page_number: state => state.user.page_number,
         page_size: state => state.user.page_size,
         total_items: state => state.user.total_items,
         total_pages: state => state.user.total_pages,

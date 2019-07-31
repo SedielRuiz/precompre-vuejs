@@ -136,7 +136,7 @@
             if(this.edit){
                 this.update(this.group).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                             this.$router.push('/groupDetail/'+this.edit)
                         })
                     },
@@ -145,7 +145,7 @@
             }else{
                 this.create(this.group).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                             this.$router.push('/groupList')
                         })
                     },

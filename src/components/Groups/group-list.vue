@@ -19,15 +19,19 @@
         <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
         </template>
     </v-data-table>
+    <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
   </v-container>
 </template>
 
 <script>
   import {mapActions,mapState} from 'vuex';
+  import pagination from '@/components/Pagination';
   
   export default {
-    
-    name: 'user-list',
+    name: 'group-list',
+    components: {
+      pagination,
+    },
     data () {
       return {
         headers: [
@@ -45,6 +49,9 @@
         fetchGroups: 'group/fetchGroups',
         setWarning: 'setWarning',
       }),
+      search(pagination){
+        this.fetchGroups(pagination);
+      },
       redirect(page,id){
         if(!page){
             this.$router.push('/groupManage')
@@ -56,7 +63,10 @@
     computed:{
       ...mapState({
         warning: state => state.warning,
-        rows: state => state.group.groups
+        rows: state => state.group.groups,
+        page_size: state => state.group.page_size,
+        total_items: state => state.group.total_items,
+        total_pages: state => state.group.total_pages,
       }),
     },
   }

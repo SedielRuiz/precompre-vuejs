@@ -287,7 +287,7 @@ var auxArr = ""
             if(this.edit){
                 this.update(this.classs).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                             this.$router.push('/classProductDetail/'+this.edit)
                         })
                     },
@@ -296,7 +296,7 @@ var auxArr = ""
             }else{
                 this.create(this.classs).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                             this.$router.push('/classProductList')
                         })
                     },

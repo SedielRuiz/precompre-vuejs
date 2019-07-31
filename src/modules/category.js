@@ -1,8 +1,13 @@
 import Vue from 'vue';
+import User from '@/modules/user';
 
 const state = {
     categories: [],
-    category: ""
+    category: "",
+    //Paginación
+    page_size:"",
+    total_items:"",
+    total_pages:"",
 };
 
 const actions = {
@@ -11,31 +16,29 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('categories/'+id).then(
             response =>{
-                commit('setCategory',response.data);
-                resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, false);
+                commit('setCategory',data);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
         });
     },
-    fetchCategories:({commit}) => {
-        commit('startProcessing', null, { root: true });
+    fetchCategories:({commit}, data) => {
         return new Promise((resolve, reject) => {
-        Vue.http.post('categories').then(
+        Vue.http.post('categories', data).then(
             response =>{
-                commit('setCategories',response.data);
-                resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, true);
+                commit('setCategories',data);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+            })
         });
     },
     create:({commit},data) => {
@@ -43,14 +46,14 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('register_category',data).then(
             response =>{
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, false);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
         });
     },
     
@@ -59,14 +62,14 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('edit_category',data).then(
             response =>{
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, false);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
         });
     },
   
@@ -83,7 +86,10 @@ const getters = {
 
 const mutations = {
     setCategories: (state, list) => {
-        state.categories = list
+        state.categories = list.result_set;
+        state.page_size = list.page_size;
+        state.total_pages = list.total_pages;
+        state.total_items = list.total_items;
     },
     setCategory: (state, ct) => {
         state.category = ct

@@ -5,7 +5,6 @@ const state = {
   users : [],
   user: "",
   //Paginación
-  page_number:"",
   page_size:"",
   total_items:"",
   total_pages:"",
@@ -92,7 +91,7 @@ const actions = {
             }
         }
         if(pag){
-            return {"result_set":body.result_set, "page_number":body.page_number, "page_size":body.page_size, "total_items":body.total_items, "total_pages":body.total_pages};
+            return {"result_set":body.result_set, "page_size":body.page_size, "total_items":body.total_items, "total_pages":body.total_pages};
         }else{return !Array.isArray(body.result_set) ? body.result_set : body.result_set[0];}
     },
 
@@ -114,7 +113,6 @@ const getters = {
 const mutations = {
     setUsers: (state, list) => {
         state.users = list.result_set;
-        state.page_number = list.page_number;
         state.page_size = list.page_size;
         state.total_pages = list.total_pages;
         state.total_items = list.total_items;

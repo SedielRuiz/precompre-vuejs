@@ -19,6 +19,7 @@
         <td><v-btn color="primary" @click="redirect(true, props.item._id)">Editar</v-btn></td>
         </template>
     </v-data-table>
+    <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
     <v-dialog v-if="create" v-model="create" persistent>
         <categoryManage @redirect = "redirect" :edit="false"></categoryManage>
     </v-dialog>
@@ -31,11 +32,13 @@
 <script>
     import {mapActions,mapState} from 'vuex';
     import categoryManage from '@/components/Categories/category-manage';
+    import pagination from '@/components/Pagination';
 
   export default {
     name: 'category-list',
     components: {
       categoryManage,
+      pagination,
     },
     data () {
       return {
@@ -57,6 +60,9 @@
         fetchCategories: 'category/fetchCategories',
         setWarning: 'setWarning',
       }),
+      search(pagination){
+        this.fetchCategories(pagination);
+      },
       redirect(page,id){
         if(page == "close"){
             this.update = false;
@@ -77,7 +83,10 @@
     computed:{
       ...mapState({
         warning: state => state.warning,
-        rows: state => state.category.categories
+        rows: state => state.category.categories,
+        page_size: state => state.category.page_size,
+        total_items: state => state.category.total_items,
+        total_pages: state => state.category.total_pages,
       }),
     },
   }

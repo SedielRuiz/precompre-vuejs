@@ -36,19 +36,19 @@ const store = new Vuex.Store({
     },
     setError (state, responseApi) {
       if(responseApi.data){
-        let data = responseApi.data
+        let data = responseApi.data;
         if(data.error){
+          console.log(data.error.dev);
           if(data.error.message){
             if(data.error.name && data.error.name=='InvalidJwtToken'){
               state.error = 'Acceso no autorizado. Debe autenticarse nuevamente.';
               this.dispatch('auth/logout')
               router.push('/login')
             }else{
-              state.error = data.error.message;  
+              state.error = data.error.user;  
             }
-            
           }else{
-            state.error = data.error;
+            state.error = data.error.user;
           }  
         }else{
           state.error = data;
@@ -56,7 +56,6 @@ const store = new Vuex.Store({
       }else{
         state.error = responseApi;
       }
-      
       setTimeout(() => {
         state.error = null
       },3000)

@@ -177,7 +177,7 @@
         if(this.edit){
             this.update(this.place).then(
                 data => {
-                    this.setWarning(data.message, { root: true }).then(()=>{
+                    this.setWarning(data, { root: true }).then(()=>{
                         this.$router.push('/placeDeliveryDetail/'+this.edit)
                     })
                 },
@@ -186,7 +186,7 @@
         }else{
             this.create(this.place).then(
                 data => {
-                    this.setWarning(data.message, { root: true }).then(()=>{
+                    this.setWarning(data, { root: true }).then(()=>{
                         this.$router.push('/placeDeliveryList')
                     })
                 },

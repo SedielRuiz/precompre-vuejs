@@ -21,6 +21,7 @@
         <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
         </template>
     </v-data-table>
+    <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
     <v-dialog v-model="manage" persistent>
         <permissionManage @redirect = "redirect" :edit="false"></permissionManage>
     </v-dialog>
@@ -30,11 +31,13 @@
 <script>
     import {mapActions,mapState} from 'vuex';
     import permissionManage from '@/components/Permissions/permission-manage';
+    import pagination from '@/components/Pagination';
 
   export default {
     name: 'permission-list',
     components: {
       permissionManage,
+      pagination,
     },
     data () {
       return {
@@ -56,6 +59,9 @@
         fetchPermissions: 'permission/fetchPermissions',
         setWarning: 'setWarning',
       }),
+      search(pagination){
+        this.fetchPermissions(pagination);
+      },
       redirect(page,id){
         if(!page){
             if(this.manage)
@@ -70,7 +76,10 @@
     computed:{
       ...mapState({
         warning: state => state.warning,
-        rows: state => state.permission.permissions
+        rows: state => state.permission.permissions,
+        page_size: state => state.permission.page_size,
+        total_items: state => state.permission.total_items,
+        total_pages: state => state.permission.total_pages,
       }),
     },
   }

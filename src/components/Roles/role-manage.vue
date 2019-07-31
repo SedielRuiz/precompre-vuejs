@@ -141,7 +141,7 @@
             if(this.edit){
                 this.update(this.rol).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                             this.$router.push('/roleDetail/'+this.edit)
                         })
                     },
@@ -150,7 +150,7 @@
             }else{
                 this.create(this.rol).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                             this.$router.push('/roleList')
                         })
                     },

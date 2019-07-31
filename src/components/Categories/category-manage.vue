@@ -62,7 +62,7 @@
             if(this.edit){
                 this.update(this.category).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                           this.closeModal();
                         })
                     },
@@ -71,7 +71,7 @@
             }else{
                 this.create(this.category).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                           this.closeModal();
                         })
                     },

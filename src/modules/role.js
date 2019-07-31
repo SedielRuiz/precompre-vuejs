@@ -1,8 +1,13 @@
 import Vue from 'vue';
+import User from '@/modules/user';
 
 const state = {
   roles: [],
-  role: ""
+  role: "",
+  //Paginación
+  page_size:"",
+  total_items:"",
+  total_pages:"",
 };
 
 const actions = {
@@ -11,31 +16,29 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('roles/'+id).then(
             response =>{
-            commit('setRole',response.data);
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, false);
+                commit('setRole',data);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
         });
     },
-    fetchRoles:({commit}) => {
-        commit('startProcessing', null, { root: true });
+    fetchRoles:({commit}, data) => {
         return new Promise((resolve, reject) => {
-        Vue.http.post('roles').then(
+        Vue.http.post('roles', data).then(
             response =>{
-            commit('setRoles',response.data);
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, true);
+                commit('setRoles',data);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+            })
         });
     },
     create:({commit},data) => {
@@ -43,14 +46,14 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('register_role',data).then(
             response =>{
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, false);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
         });
     },
     
@@ -59,14 +62,14 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('edit_role',data).then(
             response =>{
-            resolve(response.data)
-            }
-        ).catch(error=>{
-            commit('setError', error, { root: true });
-            reject(error)
-        }).finally(()=>{
-            commit('stopProcessing', null, { root: true });
-        })
+                var data = User.actions.processResponse(response.data, false);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
         });
     },
   
@@ -77,7 +80,10 @@ const getters = {
 
 const mutations = {
     setRoles: (state, list) => {
-        state.roles = list
+        state.roles = list.result_set;
+        state.page_size = list.page_size;
+        state.total_pages = list.total_pages;
+        state.total_items = list.total_items;
     },
     setRole: (state, rl) => {
         state.role = rl

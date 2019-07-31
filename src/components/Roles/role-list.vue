@@ -19,15 +19,19 @@
         <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
         </template>
     </v-data-table>
+    <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
   </v-container>
 </template>
 
 <script>
   import {mapActions,mapState} from 'vuex';
-  
+  import pagination from '@/components/Pagination';
+
   export default {
-    
     name: 'role-list',
+    components: {
+      pagination,
+    },
     data () {
       return {
         headers: [
@@ -38,13 +42,16 @@
       }
     },
     mounted () {
-        this.fetchRoles();
+      this.fetchRoles();
     },
     methods: {
       ...mapActions({
         fetchRoles: 'role/fetchRoles',
         setWarning: 'setWarning',
       }),
+      search(pagination){
+        this.fetchRoles(pagination);
+      },
       redirect(page,id){
         if(!page){
             this.$router.push('/roleManage')
@@ -56,7 +63,10 @@
     computed:{
       ...mapState({
         warning: state => state.warning,
-        rows: state => state.role.roles
+        rows: state => state.role.roles,
+        page_size: state => state.role.page_size,
+        total_items: state => state.role.total_items,
+        total_pages: state => state.role.total_pages,
       }),
     },
   }

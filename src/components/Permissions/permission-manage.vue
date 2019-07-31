@@ -70,7 +70,7 @@
             if(this.edit){
                 this.update(this.permission).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                           this.closeModal();
                           this.$router.push('/permissionDetail/'+this.edit)
                         })
@@ -80,7 +80,7 @@
             }else{
                 this.create(this.permission).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
+                        this.setWarning(data, { root: true }).then(()=>{
                           this.closeModal();
                           this.$router.push('/permissionList')
                         })

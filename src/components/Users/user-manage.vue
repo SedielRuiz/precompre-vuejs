@@ -134,7 +134,7 @@
         if(this.edit){
             this.update(this.user).then(
                 data => {
-                    this.setWarning(data.message, { root: true }).then(()=>{
+                    this.setWarning(data, { root: true }).then(()=>{
                         this.$router.push('/userDetail/'+this.edit)
                     })
                 },
@@ -143,7 +143,7 @@
         }else{
             this.create(this.user).then(
                 data => {
-                    this.setWarning(data.message, { root: true }).then(()=>{
+                    this.setWarning(data, { root: true }).then(()=>{
                         this.$router.push('/login')
                     })
                 },

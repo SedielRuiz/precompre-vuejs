@@ -124,18 +124,19 @@
             if(this.edit){
                 this.update(this.attribute).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
-                            this.$router.push('/atributesProductDetail/'+this.edit)
-                        })
+                      this.setWarning(data, { root: true }).then(()=>{
+                          this.$router.push('/atributesProductDetail/'+this.edit)
+                      })
                     },
                     error => {
-                })
+                      console.log(error);
+                    })
             }else{
                 this.create(this.attribute).then(
                     data => {
-                        this.setWarning(data.message, { root: true }).then(()=>{
-                            this.$router.push('/atributesProductList')
-                        })
+                      this.setWarning(data, { root: true }).then(()=>{
+                          this.$router.push('/atributesProductList')
+                      })
                     },
                     error => {
                 })
