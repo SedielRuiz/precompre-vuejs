@@ -14,7 +14,7 @@
         :items="rows"
         class="elevation-1">
         <template v-slot:items="props">
-        <td>{{ props.item.name }}</td>
+        <td>{{ props.item.title }}</td>
         <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
         </template>
     </v-data-table>
@@ -34,7 +34,7 @@
     data () {
       return {
         headers: [
-            {text:"Nombres", value:"name"},
+            {text:"Nombres", value:"title"},
             {text:"Acciones", value:"actons"}
         ]
       }

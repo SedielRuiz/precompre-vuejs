@@ -44,7 +44,7 @@
       this.rows = this.page_size;
       this.until = this.page_size;
       console.log(this.total_items);
-      if(this.total_items == "" && this.total_items == undefined){
+      if(this.total_items == undefined){
         this.total_items = 0;
         this.rows = 0;
         this.until = 0;

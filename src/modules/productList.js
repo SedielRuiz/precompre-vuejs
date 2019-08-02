@@ -17,7 +17,7 @@ const actions = {
     searchProducts:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('register_model_list',data).then(
+        Vue.http.post('consult_list_result_set',data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 commit('setProducts',data);
@@ -35,9 +35,9 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('search_product_attribute_schema',data).then(
             response =>{
-                var data = User.actions.processResponse(response.data, false);
-                commit('setAttributes',data);
-                resolve(data)
+                var data = User.actions.processResponse(response.data, true);
+                commit('setAttributes',data.result_set);
+                resolve(data.result_set)
             }).catch(error=>{
                 commit('setError', error, { root: true });
                 reject(error)
@@ -46,10 +46,10 @@ const actions = {
             })
         });
     },
-    consultModel:({commit},data) => {
+    consultModel:({commit}) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('consult_model_list_schema/product',data).then(
+        Vue.http.post('consult_model_list_schema/product').then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 commit('setModel',data);
@@ -65,7 +65,7 @@ const actions = {
     getProductList:({commit}, id) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('product_list/'+id).then(
+        Vue.http.post('model_lists/'+id).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 commit('setProductList',data);
@@ -78,9 +78,9 @@ const actions = {
             })
         });
     },
-    fetchProductLists:({commit}) => {
+    fetchProductLists:({commit}, data) => {
         return new Promise((resolve, reject) => {
-        Vue.http.post('product_list').then(
+        Vue.http.post('model_lists', data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, true);
                 commit('setProductLists',data);
@@ -95,7 +95,7 @@ const actions = {
     create:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('register_model_list',data).then(
+        Vue.http.post('register_product_list',data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)
@@ -152,7 +152,10 @@ const mutations = {
         state.listAttribute = att
     },
     setProducts: (state, pro) => {
-        state.products = pro
+        state.products = pro.result_set;
+        state.page_size = pro.page_size;
+        state.total_pages = pro.total_pages;
+        state.total_items = pro.total_items;
     },
 };
 
