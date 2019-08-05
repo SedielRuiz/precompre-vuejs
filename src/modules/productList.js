@@ -19,7 +19,7 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('consult_list_result_set',data).then(
             response =>{
-                var data = User.actions.processResponse(response.data, false);
+                var data = User.actions.processResponse(response.data, true);
                 commit('setProducts',data);
                 resolve(data)
             }).catch(error=>{

@@ -198,9 +198,12 @@
     watch:{
         pl(val){
           if(val){
-            this.nameFilter = val.title;
-            if(val.filter)
-              this.searchProducts({"filter":val.filter});
+            this.nameFilter = val.model_list[0].title;
+            if(val.model_list[0].filter){
+              this.searchProducts({"filter":val.model_list[0].filter});
+              this.formatFilters(val.model_list[0].filter);
+              this.filters.id = val.model_list[0]._id;
+            }
           }
         },
         itemFilter(val){
@@ -250,6 +253,46 @@
         fetchCategories: 'category/fetchCategories', 
         setWarning: 'setWarning',
       }),
+      formatFilters(filters){
+        var f = [];
+        for(var s = 0; s < filters.length; s++){
+          //Operadores por filtro
+          if(filters[s].name == "status"){
+            filters[s].type = "Select";
+            this.getOperators({"type":"Select"});
+            filters[s].value = this.status.find(element=>{return element.value == filters[s].value });
+          }else{
+            this.getOperators({"type":filters[s].type});
+          }
+          filters[s].operators = this.operators;
+          filters[s].operator = this.operators.find(element=>{return element.value == filters[s].operator });
+          //Listas
+          this.fillList(filters[s].name);
+          filters[s].lists = this.list;
+          //Selected
+          filters[s].selected = "";
+          console.log(filters[s]);
+          if(filters[s].type == "Array"){
+            if(filters[s].name == "attributes"){
+              filters[s].optionsAttributes = this.list.find(element=>{return element.value == filters[s].value[0].name });
+              filters[s].optionsAttributes.attr = this.list.find(element=>{return element.value == filters[s].value[0].name }).code;
+              for(var r = 0; r < filters[s].value.length; r++){
+                filters[s].value[r] = {"text":filters[s].value[r].value, "value":filters[s].value[r].value};
+              }
+            }else{
+              for(var r = 0; r < filters[s].value.length; r++){
+                console.log(filters[s].value);
+                filters[s].value[r] = {"text":this.list.find(element=>{return element.value == filters[s].value[r]}).text, "value":filters[s].value[r]};
+              }
+            }
+          }
+          f.push(filters[s]);
+        }
+        this.filters = f;
+        this.operators = [];
+        this.list = [];
+        console.log(this.filters);
+      },
       search(pagination){
         this.fetchProductLists(pagination);
       },
@@ -290,7 +333,6 @@
         var code = "";
         var size = "";
         for(var s = 0; s < arr.length; s++){
-          console.log(arr[s]);
           opc = arr[s].options ? arr[s].options : opc;
           type = arr[s].type ? arr[s].type : type;
           code = arr[s].code ? arr[s].code : code;
@@ -393,10 +435,10 @@
             }else{
               val = this.filters[s].value && this.filters[s].value.value ? this.filters[s].value.value : this.filters[s].value;
             }
-            filtersP.push({"name":this.filters[s].name, "type":this.filters[s].type =="Select" ? "String" : this.filters[s].type, "operator":this.filters[s].operator.value, "value":val});
+            filtersP.push({"name":this.filters[s].name, "type":this.filters[s].type =="Select" ? "String" : this.filters[s].type, "operator":this.filters[s].operator && this.filters[s].operator.value ? this.filters[s].operator.value : this.filters[s].operator, "value":val});
           }
           console.log(filtersP);
-          return {"title":this.nameFilter, "filter":filtersP};
+          return {"_id":this.filters["id"], "title":this.nameFilter, "filter":filtersP};
       },
       processProductList () {
           var filterFin = this.buildProductList();

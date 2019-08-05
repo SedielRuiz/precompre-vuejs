@@ -12,37 +12,6 @@
           <v-card-text>
             <v-form>
                 <v-text-field :disabled="true" v-model="filter.title" prepend-icon="title" name="title" label="Nombre" type="text"></v-text-field>
-                {{filters}}
-              <div v-if="filters">
-                <div v-for="(f, index) in filters">
-                  <v-layout align-center justify-center row wra>
-                      <v-flex xs4 md4>
-                        <v-combobox :disabled="true" @change="updateFilter('name', f.name, index, false, false)" v-model="f.name" :items="itemsFilter" prepend-icon="filter_list" label="Filtro"></v-combobox>
-                      </v-flex>
-                      <v-flex xs4 md4>
-                        <v-combobox @change="updateFilter('operator', f.operator, index, false, false)" v-model="f.operator" :items="f.operators " prepend-icon="group_work" label="Operador"></v-combobox>
-                      </v-flex>
-                      <v-flex v-if="f.type=='Array'" xs4 md4>
-                        <v-combobox v-model="f.selected" :items="f.list" @change="updateFilter('selected', f.selected, index, false, true)" prepend-icon="email" label="Opciones"></v-combobox>
-                      </v-flex>
-                      <v-flex xs4 md4>
-                        <div v-if="f && f.type"> 
-                          <div v-if="f.type=='String' || f.type=='Number'">
-                            <v-text-field @change="updateFilter('value', f.value, index, false, false)" v-model="f.value" prepend-icon="email" name="name" label="Valor" :type="f.type=='String' ? 'text': 'number'"></v-text-field>
-                          </div>
-                          <div v-else-if="f.type=='Array'">
-                            <div v-if="f.value">
-                              <v-chip v-for="lst in f.value" :key="lst.value">{{lst.text}} <v-icon medium @click="updateFilter('value', lst.value, index, true, false)">close</v-icon></v-chip>
-                            </div>
-                          </div>
-                          <div v-else-if="f.type=='Select'">
-                            <v-combobox v-model="f.value" :items="status" prepend-icon="email" label="Valor"></v-combobox>
-                          </div>
-                        </div>
-                      </v-flex>
-                  </v-layout>  
-                </div>
-              </div>
             </v-form>
             <v-data-table :headers="headers" :items="products" class="elevation-1">
             <template v-slot:items="props">
@@ -83,8 +52,8 @@
     watch:{
         pl(val){
           if(val){
-            this.filter = val;
-            this.searchProducts({"filter":val.filter});
+            this.filter = val.model_list[0];
+            this.searchProducts({"filter":val.model_list[0].filter});
           }
         },
         itemFilter(val){
