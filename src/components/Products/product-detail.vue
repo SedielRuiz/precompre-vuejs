@@ -13,6 +13,7 @@
             <v-form>
                 <v-text-field :disabled="true" v-model="product.name" prepend-icon="person" name="name" label="Nombre del producto" type="text"></v-text-field>
                 <v-text-field :disabled="true" v-if="product.product_class" v-model="product.product_class.code" prepend-icon="featured_play_list" name="name" label="Clase del producto" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-model="product.price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
                 <v-combobox :disabled="true" v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <h2>Atributos</h2><br>
                 <div v-if="attributes"> 

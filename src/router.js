@@ -51,6 +51,11 @@ import ProductListDetail from '@/components/Lists/ProductList/product-list-detai
 import CustomerListList from '@/components/Lists/CustomerList/customer-list-list';
 import CustomerListManage from '@/components/Lists/CustomerList/customer-list-manage';
 import CustomerListDetail from '@/components/Lists/CustomerList/customer-list-detail';
+/***Shopping*/
+/**Pre ordenes**/
+import PreOrder from '@/components/Shopping/PreOrders/pre-order-manage';
+/**Ordenes**/
+import Orders from '@/components/Shopping/Orders/orders-list';
 
 const router = new Router({
   routes: [
@@ -342,6 +347,21 @@ const router = new Router({
         name: 'customerListManageUpdate',
         component: CustomerListManage,
         meta: { Auth: true, title: 'Editar lista' },
+    },
+
+    /**Pre ordenes**/
+    {
+        path: '/preOrder/:id',
+        name: 'preOrder',
+        component: PreOrder,
+        meta: { Auth: true, title: 'Listasde pre ordenes' },
+    },
+    /**Ordenes**/
+    {
+        path: '/orders/:id',
+        name: 'order',
+        component: Orders,
+        meta: { Auth: true, title: 'Lista de ordenes' },
     },
     
   ]

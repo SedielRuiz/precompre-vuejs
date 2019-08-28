@@ -6,8 +6,10 @@
           <v-toolbar dark color="primary">
             <v-toolbar-title>Detalle cliente</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn color="success" @click="redirect(true)">Editar</v-btn>
-            <v-btn color="success" @click="redirect(false)">Volver</v-btn>
+            <v-btn color="success" @click="redirect('pre')">Pre ordenes</v-btn>
+            <v-btn color="success" @click="redirect('order')">Ordenes</v-btn>
+            <v-btn color="success" @click="redirect('edit')">Editar</v-btn>
+            <v-btn color="success" @click="redirect('back')">Volver</v-btn>
           </v-toolbar>
           <v-card-text>
             <v-form>
@@ -78,11 +80,22 @@
         getCustomer: 'customer/getCustomer', 
       }),
       redirect(page){
-          if(page){
-              this.$router.push('/customerManage/'+this.edit)
-          }else{
-              this.$router.push('/customerList')
-          }
+
+        switch(page){
+          case "edit":
+            this.$router.push('/customerManage/'+this.edit)
+            break;
+          case "back":
+            this.$router.push('/customerList')
+            break;
+          case "pre":
+            this.$router.push('/preOrder/'+this.edit)
+            break;
+          case "order":
+            this.$router.push('/orders/'+this.edit)
+            break;
+        }
+
       },
     },
     computed:{

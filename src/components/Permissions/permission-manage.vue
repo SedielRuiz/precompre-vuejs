@@ -1,29 +1,23 @@
 <template>
-  <v-container>
-    <v-layout align-center justify-center>
-      <v-flex xs12 sm8 md10>
-        <v-card class="elevation-12">
-          <v-toolbar dark color="primary">
-            <v-toolbar-title>{{titleText}}</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn color="error" @click="closeModal()">Cancelar</v-btn>
-          </v-toolbar>
-          <v-card-text>
-            <v-form>
-                <v-text-field v-model="permission.title" prepend-icon="title" name="title" label="Titulo" type="text"></v-text-field>
-                <v-text-field v-if="edit" :disabled="true" v-model="permission.code" prepend-icon="code" name="code" label="Código" type="text"></v-text-field>
-                <v-text-field v-model="permission.description" prepend-icon="library_books" name="description" label="Descripción" type="text"></v-text-field>
-                <v-combobox v-if="edit" v-model="permission.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" @click="processPermission()">Guardar</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <v-card class="elevation-12">
+    <v-toolbar dark color="primary">
+      <v-toolbar-title>{{titleText}}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn color="error" @click="closeModal()">Cancelar</v-btn>
+    </v-toolbar>
+    <v-card-text>
+      <v-form>
+          <v-text-field v-model="permission.title" prepend-icon="title" name="title" label="Titulo" type="text"></v-text-field>
+          <v-text-field v-if="edit" :disabled="true" v-model="permission.code" prepend-icon="code" name="code" label="Código" type="text"></v-text-field>
+          <v-text-field v-model="permission.description" prepend-icon="library_books" name="description" label="Descripción" type="text"></v-text-field>
+          <v-combobox v-if="edit" v-model="permission.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="primary" @click="processPermission()">Guardar</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
