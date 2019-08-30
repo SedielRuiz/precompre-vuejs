@@ -2,7 +2,7 @@
   <v-container>
     <div class="row col-md-10">
         <div class="col-md-8">
-            <h1>Ordenes</h1>
+            <h1>Facturas</h1>
         </div>
         <div class="col-md-2">
             <v-btn color="success" @click="redirect(true)">Volver</v-btn>
@@ -15,7 +15,7 @@
         class="elevation-1">
         <template v-slot:items="props">
         <td>{{ props.item._id }}</td>
-        <td>{{ props.item.delivey_place }}</td>
+        <td>{{ props.item.delivery_place }}</td>
         <td>{{ props.item.status }}</td>
         <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
         </template>
@@ -29,7 +29,7 @@
   import pagination from '@/components/Pagination';
   
   export default {
-    name: 'orders-list',
+    name: 'bill-list',
     components: {
       pagination,
     },
@@ -46,15 +46,15 @@
     },
     mounted () {
       this.customer_id = this.$route.params.id == undefined ? 0 : this.$route.params.id;
-      this.fetchOrders(this.customer_id);
+      this.fetchBills(this.customer_id);
     },
     methods: {
       ...mapActions({
-        fetchOrders: 'order/fetchOrders',
+        fetchBills: 'order/fetchBills',
         setWarning: 'setWarning',
       }),
       search(pagination){
-        this.fetchOrders(pagination);
+        this.fetchBills(pagination);
       },
       redirect(page,id){
         if(page){
@@ -67,7 +67,7 @@
     computed:{
       ...mapState({
         warning: state => state.warning,
-        rows: state => state.order.orders,
+        rows: state => state.order.bills,
         page_size: state => state.order.page_size,
         total_items: state => state.order.total_items,
         total_pages: state => state.order.total_pages,

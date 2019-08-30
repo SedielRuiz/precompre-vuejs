@@ -2,9 +2,8 @@ import Vue from 'vue';
 import User from '@/modules/user';
 
 const state = {
-  orders: [],
-  order: "",
-  bills:[],
+  preOrders: [],
+  preOrder: "",
   //Paginación
   page_size:"",
   total_items:"",
@@ -12,13 +11,13 @@ const state = {
 };
 
 const actions = {
-    getOrder:({commit}, id) => {
+    getPreOrder:({commit}, id) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('orders/'+id).then(
+        Vue.http.post('pre_orders/'+id).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
-                commit('setOrder',data);
+                commit('setPreOrder',data);
                 resolve(data)
             }).catch(error=>{
                 commit('setError', error, { root: true });
@@ -28,12 +27,12 @@ const actions = {
             })
         });
     },
-    fetchOrdersCustomer:({commit}, id) => {
+    fetchPreOrders:({commit}) => {
         return new Promise((resolve, reject) => {
-        Vue.http.post('orders_customer/'+ id).then(
+        Vue.http.post('pre_orders').then(
             response =>{
                 var data = User.actions.processResponse(response.data, true);
-                commit('setOrders',data);
+                commit('setPreOrders',data);
                 resolve(data)
             }).catch(error=>{
                 commit('setError', error, { root: true });
@@ -42,12 +41,12 @@ const actions = {
             })
         });
     },
-    fetchOrders:({commit}, data) => {
+    fetchPreOrdersCustomer:({commit}, id) => {
         return new Promise((resolve, reject) => {
-        Vue.http.post('orders', data).then(
+        Vue.http.post('pre_orders_customer/'+id).then(
             response =>{
                 var data = User.actions.processResponse(response.data, true);
-                commit('setOrders',data);
+                commit('setPreOrders',data);
                 resolve(data)
             }).catch(error=>{
                 commit('setError', error, { root: true });
@@ -59,7 +58,7 @@ const actions = {
     create:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('register_order',data).then(
+        Vue.http.post('register_pre_order',data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)
@@ -75,7 +74,7 @@ const actions = {
     update:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('edit_order',data).then(
+        Vue.http.post('edit_pre_order',data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)
@@ -84,21 +83,6 @@ const actions = {
                 reject(error)
             }).finally(()=>{
                 commit('stopProcessing', null, { root: true });
-            })
-        });
-    },
-    /*****************Facturas**************/
-    fetchBills:({commit}, data) => {
-        return new Promise((resolve, reject) => {
-        Vue.http.post('bills', data).then(
-            response =>{
-                var data = User.actions.processResponse(response.data, true);
-                commit('setBills',data);
-                resolve(data)
-            }).catch(error=>{
-                commit('setError', error, { root: true });
-                reject(error)
-            }).finally(()=>{
             })
         });
     },
@@ -115,20 +99,14 @@ const getters = {
 };
 
 const mutations = {
-    setOrders: (state, list) => {
-        state.orders = list.result_set;
+    setPreOrders: (state, list) => {
+        state.preOrders = list.result_set;
         state.page_size = list.page_size;
         state.total_pages = list.total_pages;
         state.total_items = list.total_items;
     },
-    setBills: (state, list) => {
-        state.bills = list.result_set;
-        state.page_size = list.page_size;
-        state.total_pages = list.total_pages;
-        state.total_items = list.total_items;
-    },
-    setOrder: (state, ord) => {
-        state.order = ord
+    setPreOrder: (state, ord) => {
+        state.preOrder = ord
     },
 
 };

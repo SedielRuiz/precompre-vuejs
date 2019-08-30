@@ -30,7 +30,7 @@
                                             <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code">
                                                 <div v-if="attr.options && attr.options.length > 0">
                                                     <v-flex xs12 md12>
-                                                        <v-combobox :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', '_id')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
+                                                        <v-combobox :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
                                                     </v-flex>
                                                 </div>
                                                 <div v-else>
@@ -68,7 +68,7 @@
                                 </v-flex>
                             </v-layout>
                         </v-card><br>
-                        <v-card class="pa-2" outlined tile>
+                        <v-card class="pa-2" outlined tile v-if="shoppingCart.length > 0">
                             <h1>Pre compra</h1><hr><br>
                             <div v-for="(sc, index) in shoppingCart">
                                 <v-layout row wra>
@@ -77,27 +77,30 @@
                                     </v-flex> 
                                     <v-flex xs12 md2>
                                         <v-combobox :disabled="true" prepend-icon="filter_list" v-model="sc.text" label="Producto"></v-combobox>
-                                        <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code" class="row col-md-8">
-                                            <div v-if="attr.options && attr.options.length > 0">
-                                                <v-combobox  :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', '_id')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
-                                            </div>
-                                            <div v-else>
-                                                <div v-if="attr.type == 'boolean'">
-                                                    <v-switch :disabled="attr.custom" :key="index+'_'+attr.code" prepend-icon="title" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :label="attr.code"></v-switch>
+                                        Caracteristicas <v-icon medium @click="sc.viewAtt ? sc.viewAtt = false : sc.viewAtt = true">add</v-icon>
+                                        {{sc.viewAtt}}
+                                        <div v-if="sc.viewAtt">
+                                            <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code" class="row col-md-8">
+                                                <div v-if="attr.options && attr.options.length > 0">
+                                                    <v-combobox  :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
                                                 </div>
                                                 <div v-else>
-                                                    <div v-if="attr.size == 'short'">
-                                                        <v-text-field :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" :label="attr.code" type="text"></v-text-field>
-                                                    </div>
-                                                    <div v-else-if="attr.size == 'medium'">
-                                                        <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="77px" name="mediumText" :label="attr.code"></v-textarea>
+                                                    <div v-if="attr.type == 'boolean'">
+                                                        <v-switch :disabled="attr.custom" :key="index+'_'+attr.code" prepend-icon="title" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :label="attr.code"></v-switch>
                                                     </div>
                                                     <div v-else>
-                                                        <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="135px" name="mediumText" :label="attr.code"></v-textarea>
+                                                        <div v-if="attr.size == 'short'">
+                                                            <v-text-field :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" :label="attr.code" type="text"></v-text-field>
+                                                        </div>
+                                                        <div v-else-if="attr.size == 'medium'">
+                                                            <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="77px" name="mediumText" :label="attr.code"></v-textarea>
+                                                        </div>
+                                                        <div v-else>
+                                                            <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="135px" name="mediumText" :label="attr.code"></v-textarea>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </v-flex>
                                     <v-flex xs12 md10>
@@ -130,23 +133,29 @@
                                     </v-flex>
                                 </v-layout>
                                 <v-layout row wra>
-                                    <v-combobox prepend-icon="filter_list" v-model="sc.delivery_place" :items="formatList(customer.delivery_places, 'name', '_id', 'unit_name')" label="Lugares de entrega"></v-combobox>
+                                    <v-combobox prepend-icon="filter_list" v-model="sc.delivery_place" :items="formatList(customer.delivery_places, 'name', 'id', 'unit_name')" label="Lugares de entrega"></v-combobox>
                                 </v-layout><hr><br>
                             </div>
                         </v-card><br>
-                        <v-layout row wra>
-                            <v-flex v-for="day in days" xs12 sm12 md2>
-                                <v-card class="mx-auto">
-                                    <v-card-title><h3>{{day.day}}</h3></v-card-title>
-                                    <v-card-text>
-                                        <div>Productos</div>
-                                    </v-card-text>
-                                    <v-card-actions>
-                                        <v-btn text color="primary">Editar</v-btn>
-                                    </v-card-actions>
-                                </v-card>
-                            </v-flex>
-                        </v-layout>
+                        <v-card class="pa-2" outlined tile v-if="preOrders.length > 0">
+                            <v-layout row wra>
+                                <v-flex v-for="(day, index) in preOrders" :key="index" xs12 sm12 md2>
+                                    <v-card class="mx-auto">
+                                        <v-card-title><h1>{{formarDay(day.pre_orders[0].days)}}</h1></v-card-title>
+                                        <v-card-text>
+                                            <h2>Productos </h2><hr><br>
+                                            <div v-for="prd in day.pre_orders">
+                                                <label>Nombre: {{prd.item.product.name}}</label><br>
+                                                <label>Precio: $ {{prd.item.product.price ? prd.item.product.price : 0}} </label><br>
+                                                <label>Catidad: {{prd.item.quantity}}</label><br>
+                                                <label>Lugar de entrega : {{day.delivery_place}}</label><hr><br>
+                                            </div>
+                                            <v-btn text color="primary" @click="editPreOrder(index, day)" >Editar</v-btn>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-flex>
+                            </v-layout>
+                        </v-card><br>
                     </v-form>   
                 </v-card-text>
                 <v-card-actions>
@@ -176,15 +185,6 @@
             quantity:0,
             shoppingCart:[],
             week:[],
-            days:[
-                {"day":"Lunes"},
-                {"day":"Martes"},
-                {"day":"Miercoles"},
-                {"day":"Jueves"},
-                {"day":"Viernes"},
-                {"day":"Sabado"},
-                {"day":"Domingo"},
-            ],
             product:"",
             products:[],
             attributes:[],
@@ -214,16 +214,35 @@
     mounted () {
         this.fetchProducts();
         this.customer_id = this.$route.params.id == undefined ? 0 : this.$route.params.id;
-        if(!this.customer)
+        if(!this.customer){
             this.getCustomer(this.customer_id);
+        }
+        this.fetchPreOrdersCustomer(this.customer_id);
     },
     methods: {
         ...mapActions({
-            create: 'order/create',
+            create: 'preOrder/create',
+            fetchPreOrdersCustomer: 'preOrder/fetchPreOrdersCustomer',
             fetchProducts: 'product/fetchProducts',
             getCustomer: 'customer/getCustomer', 
             setWarning: 'setWarning',
         }),
+        editPreOrder(idx, product){
+            this.product = product;
+        },
+        formarDay(day){
+            var name = "";
+            switch(day){
+                case 0: name = "Domingo"; break;
+                case 1: name = "Lunes"; break;
+                case 2: name = "Martes"; break;
+                case 3: name = "Miercoles"; break;
+                case 4: name = "Jueves"; break;
+                case 5: name = "Viernes"; break;
+                case 6: name = "Sabado"; break;
+            }
+            return name == "" ? "No hay" : name;
+        },
         updateArray(idx, val){
             var days = [];
             days = this.shoppingCart[idx].days;
@@ -253,6 +272,7 @@
                     case "p":
                         this.product.attributes = this.attributes;
                         this.product.days = [];
+                        this.product.viewAtt = false;
                         this.shoppingCart.push(this.product);
                         this.product = "";
                         this.attributes = [];
@@ -292,7 +312,7 @@
                 console.log(this.shoppingCart[r]);
                 var item = {
                     "product": this.shoppingCart[r].product_id,
-                    "product_attributes": this.formatAttributes(this.shoppingCart[r].attributes),
+                    "attributes": this.formatAttributes(this.shoppingCart[r].attributes),
                     "unit_value": this.shoppingCart[r].unit_value,
                     "quantity": this.shoppingCart[r].quantity,
                 };
@@ -324,6 +344,7 @@
         prds: state => state.product.products,
         warning: state => state.warning,
         customer: state => state.customer.customer,
+        preOrders: state => state.preOrder.preOrders,
       }),
     },
   }

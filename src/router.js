@@ -56,6 +56,10 @@ import CustomerListDetail from '@/components/Lists/CustomerList/customer-list-de
 import PreOrder from '@/components/Shopping/PreOrders/pre-order-manage';
 /**Ordenes**/
 import Orders from '@/components/Shopping/Orders/orders-list';
+/**Facturas**/
+import Bills from '@/components/Shopping/Bills/bill-list';
+/**Comanda**/
+import Comanda from '@/components/Comanda';
 
 const router = new Router({
   routes: [
@@ -354,7 +358,7 @@ const router = new Router({
         path: '/preOrder/:id',
         name: 'preOrder',
         component: PreOrder,
-        meta: { Auth: true, title: 'Listasde pre ordenes' },
+        meta: { Auth: true, title: 'Listas de pre ordenes' },
     },
     /**Ordenes**/
     {
@@ -362,6 +366,20 @@ const router = new Router({
         name: 'order',
         component: Orders,
         meta: { Auth: true, title: 'Lista de ordenes' },
+    },
+    /**Facturas**/
+    {
+        path: '/bills/:id',
+        name: 'bills',
+        component: Bills,
+        meta: { Auth: true, title: 'Lista de facturas' },
+    },
+    /**Comanda**/
+    {
+        path: '/comanda',
+        name: 'comanda',
+        component: Comanda,
+        meta: { Auth: true, title: 'Comanda' },
     },
     
   ]

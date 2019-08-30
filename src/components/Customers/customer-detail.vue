@@ -8,6 +8,7 @@
             <v-spacer></v-spacer>
             <v-btn color="success" @click="redirect('pre')">Pre ordenes</v-btn>
             <v-btn color="success" @click="redirect('order')">Ordenes</v-btn>
+            <v-btn color="success" @click="redirect('bill')">Facturas</v-btn>
             <v-btn color="success" @click="redirect('edit')">Editar</v-btn>
             <v-btn color="success" @click="redirect('back')">Volver</v-btn>
           </v-toolbar>
@@ -93,6 +94,9 @@
             break;
           case "order":
             this.$router.push('/orders/'+this.edit)
+            break;
+          case "bill":
+            this.$router.push('/bills/'+this.edit)
             break;
         }
 
