@@ -30,11 +30,14 @@ Vue.http.interceptors.push((request, next) => {
 //blockui
 import BlockUI from 'vue-blockui';
 Vue.use(BlockUI);
+
 //.blockui
 
 
 //vee-validate
 import VeeValidate, {Validator} from 'vee-validate';
+
+import './registerServiceWorker'
 Vue.use(VeeValidate);
 //.vee-validate
 
