@@ -87,6 +87,15 @@
                   </v-list-tile-content>
               </v-list-tile>
             </v-list-group>
+            <v-list-tile @click="dirigir('/inputList')">
+                  <v-list-tile-action>
+                  <v-icon>assignment</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Insumos</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+            </v-list-group>
 
             <v-list-tile @click="dirigir('/productList')">
                 <v-list-tile-action>

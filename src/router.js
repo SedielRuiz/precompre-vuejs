@@ -51,6 +51,7 @@ import ProductListDetail from '@/components/Lists/ProductList/product-list-detai
 import CustomerListList from '@/components/Lists/CustomerList/customer-list-list';
 import CustomerListManage from '@/components/Lists/CustomerList/customer-list-manage';
 import CustomerListDetail from '@/components/Lists/CustomerList/customer-list-detail';
+/******FIN LISTAS*****/
 /***Shopping*/
 /**Pre ordenes**/
 import PreOrder from '@/components/Shopping/PreOrders/pre-order-manage';
@@ -60,6 +61,8 @@ import Orders from '@/components/Shopping/Orders/orders-list';
 import Bills from '@/components/Shopping/Bills/bill-list';
 /**Comanda**/
 import Comanda from '@/components/Comanda';
+/**Insumos**/
+import InputList from '@/components/Inputs/input-list';
 
 const router = new Router({
   routes: [
@@ -380,6 +383,13 @@ const router = new Router({
         name: 'comanda',
         component: Comanda,
         meta: { Auth: true, title: 'Comanda' },
+    },
+    /**Insumos**/
+    {
+        path: '/inputList',
+        name: 'inputList',
+        component: InputList,
+        meta: { Auth: true, title: 'Insumos' },
     },
     
   ]

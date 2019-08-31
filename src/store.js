@@ -20,6 +20,7 @@ import customerList from '@/modules/customerList';
 import order from '@/modules/order';
 import preOrder from '@/modules/preOrder';
 import comanda from '@/modules/comanda';
+import input from '@/modules/input';
 
 const store = new Vuex.Store({
   state: {
@@ -92,6 +93,7 @@ const store = new Vuex.Store({
     order,
     preOrder,
     comanda,
+    input,
   }
 })
 

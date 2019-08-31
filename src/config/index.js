@@ -4,7 +4,7 @@ const dev_enviroment = {
     //ROOT_API: 'http://localhost:52000/api/'
   };
   const production_enviroment = {
-    ROOT_API: 'khe onda'
+    ROOT_API: 'api/admin'
   };
   
   let enviroment;

@@ -13,9 +13,44 @@
             <v-form>
                 <v-text-field v-model="product.name" prepend-icon="person" name="name" label="Nombre del producto" type="text"></v-text-field>
                 <v-combobox  v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
-                <v-text-field v-model="product.price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
+                <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-                <h2>Atributos</h2><hr><br>
+                
+                <div v-if="class_id">
+                    <v-card class="pa-2" outlined tile>
+                        <v-layout row wra>
+                            <v-flex xs12 md12>
+                                <h2>Sub productos <v-icon medium @click="addSub ? addSub = false : addSub = true">add</v-icon></h2>
+                                <div row wra v-if="addSub">
+                                    <v-layout row wra>                    
+                                        <v-flex xs12 md4>
+                                            <v-combobox prepend-icon="filter_list" v-model="sub" :items="pivots" label="Variaciones"></v-combobox>
+                                        </v-flex>  
+                                        <v-flex xs12 md2>
+                                            <v-combobox prepend-icon="filter_list" v-model="sub.option" :items="sub.options" label="Opciones"></v-combobox>
+                                        </v-flex>
+                                        <v-flex xs12 md2>
+                                            <v-text-field v-model="sub.price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
+                                        </v-flex>
+                                        <v-flex xs12 md2>
+                                            <v-combobox prepend-icon="filter_list" v-model="sub.option" :items="ingredients" label="Opciones"></v-combobox>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wra>
+                                        
+                                    </v-layout>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="primary" @click="addArray('p')">Agregar sub producto</v-btn>
+                                    </v-card-actions>
+                                    
+                                </div>
+                            </v-flex>
+                        </v-layout>
+                    </v-card><br>
+                </div>
+                
+                <h2 v-if="class_id">Atributos <hr><br></h2>
                 <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
                   <v-card  style="height: 100%;width: 84%; padding: 10px;">
@@ -44,8 +79,8 @@
                     <!--v-switch v-if="!attr.required" v-model="attr.add" :label="'Agregar'"></v-switch-->
                     <!--ATRIBUTOS-->
                   </v-card><br>
-                </div><br>
-                <h2>Atributos personalizados</h2><hr><br>
+                </div>
+                <h2 v-if="class_id">Atributos personalizados <hr><br></h2>
                 <!--div v-if="attributes.length > 0">
                   <v-chip v-for="(attr, index) in attributes" :key="index+'_'+attr.code">{{attr.description}} <v-icon medium @click="removeAttribute(index)">close</v-icon></v-chip>
                 </div-->
@@ -77,6 +112,7 @@
                   </v-card><br>
                 </div>
                 <!--ATRIBUTOS Personalizables-->
+
                 <h2>Categorias</h2><hr><br>
                 <div class="row col-md-8">
                     <v-card style="height: 100%;width: 84%; padding: 31px;">
@@ -125,6 +161,10 @@
         name: 'product-manage',
         data () {
         return {
+            ingredients:[],
+            pivots:[],
+            sub:"",
+            addSub:"",
             pagination: {
                 sortBy: 'name'
             },
@@ -151,13 +191,13 @@
         },
         watch:{
             pro(val){
-            if(val){
-                this.product = val;
-                this.class_id = {"text":val.product_class.code, "value":val.product_class._id};
-                this.attributesP = val.attributes;
-                this.categories = val.categories;
-                //this.attributesCustomisable = val.order_attributes;
-            }
+                if(val){
+                    this.product = val;
+                    this.class_id = {"text":val.product_class.code, "value":val.product_class._id};
+                    this.attributesP = val.attributes;
+                    this.categories = val.categories;
+                    //this.attributesCustomisable = val.order_attributes;
+                }
             },
             classess(val){
                 for(var s = 0; s < val.length; s++){
@@ -178,6 +218,8 @@
                     this.formatAttributeEdit("attributes");
                     this.formatAttributeEdit("attributesCustomisable");
                 }   
+                this.pivots = this.attributesCustomisable;
+                this.pivots = this.formatPivots();
             }
         },
         mounted () {
@@ -201,6 +243,13 @@
                 getProductClassAttribute: 'product/getProductClassAttribute', 
                 setWarning: 'setWarning',
             }),
+            formatPivots(){
+                var pv = [];
+                for(var s = 0; s < this.pivots.length; s++){
+                    pv.push({"text":this.pivots[s].code, "value":this.pivots[s].code, "options":this.pivots[s].options});
+                }
+                return pv;
+            },
             removeCategories () {
                 if (this.categories.length) this.categories = []
                 else this.categories = this.rows.slice()
