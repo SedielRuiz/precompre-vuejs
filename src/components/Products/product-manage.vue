@@ -11,6 +11,7 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
+                <v-select v-model="product.type" :items="typesProduct" prepend-icon="featured_play_list" label="Tipo de producto"></v-select>
                 <v-text-field v-model="product.name" prepend-icon="person" name="name" label="Nombre del producto" type="text"></v-text-field>
                 <v-combobox  v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
                 <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
@@ -26,23 +27,77 @@
                                         <v-flex xs12 md4>
                                             <v-combobox prepend-icon="filter_list" v-model="sub" :items="pivots" label="Variaciones"></v-combobox>
                                         </v-flex>  
-                                        <v-flex xs12 md2>
+                                        <v-flex xs12 md4>
                                             <v-combobox prepend-icon="filter_list" v-model="sub.option" :items="sub.options" label="Opciones"></v-combobox>
+                                        </v-flex>
+                                        <v-flex xs12 md1>
+                                            <v-icon medium @click="addArray('p')">add</v-icon>
                                         </v-flex>
                                         <v-flex xs12 md2>
                                             <v-text-field v-model="sub.price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
                                         </v-flex>
-                                        <v-flex xs12 md2>
-                                            <v-combobox prepend-icon="filter_list" v-model="sub.option" :items="ingredients" label="Opciones"></v-combobox>
-                                        </v-flex>
                                     </v-layout>
+                                    <div v-if="addPivots">
+                                        <v-layout row wra v-for="(pv, index) in addPivots">
+                                            <v-flex xs12 md5>
+                                                <v-combobox :disabled="true" prepend-icon="filter_list" :value="viewNamePivot(pv.pivot)" :items="pivots" label="Variaciones"></v-combobox>
+                                            </v-flex>  
+                                            <v-flex xs12 md5>
+                                                <v-combobox :disabled="true" prepend-icon="filter_list" v-model="pv.option" :items="sub.options" label="Opciones"></v-combobox>
+                                            </v-flex>
+                                            <v-flex xs12 md2>
+                                                <v-icon medium @click="removeArray('p', index)">close</v-icon>
+                                            </v-flex>
+                                        </v-layout>
+                                    </div>
                                     <v-layout row wra>
-                                        
+                                        <v-flex xs12 md4>
+                                            <v-combobox prepend-icon="filter_list" v-model="sub.input" :items="inputs" label="Ingredientes"></v-combobox>
+                                        </v-flex>
+                                        <v-flex xs12 md2>
+                                            <v-text-field v-model="sub.quantity" prepend-icon="featured_play_list" name="quantity" label="Cantidad" type="number"></v-text-field>
+                                        </v-flex>
+                                        <v-flex xs12 md2>
+                                            <v-layout row wra>
+                                                <v-icon medium @click="addArray('i')">add</v-icon>
+                                                <v-chip v-for="(i, index) in ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip>
+                                            </v-layout>
+                                        </v-flex>
                                     </v-layout>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="primary" @click="addArray('p')">Agregar sub producto</v-btn>
+                                        <v-btn color="primary" @click="addArray('s')">Agregar sub producto</v-btn>
                                     </v-card-actions>
+                                    <v-layout row wra v-for="(sub, index) in subs">
+                                        <v-flex xs12 md12>
+                                            <v-card class="pa-2" outlined tile :key="index">
+                                                <h2>{{product.name}} - $ {{sub.price}}</h2>
+                                                <v-layout row wra>
+                                                    <v-flex  xs12 md4>
+                                                        <v-layout row wra v-for="p in sub.pivots">
+                                                            <v-flex xs12 m12>
+                                                                <label>Variación: {{viewNamePivot(p.pivot)}}</label>
+                                                            </v-flex>
+                                                            <v-flex xs12 md12>
+                                                                <label>Cantidad: {{p.option}}</label>
+                                                            </v-flex>
+                                                        </v-layout>
+                                                    </v-flex>
+                                                    <v-flex  xs12 md8>
+                                                        <v-layout row wra>
+                                                            <v-flex xs12 md11>
+                                                                <v-layout align-center row wra>
+                                                                    Ingredientes
+                                                                    <v-chip v-for="(i, index) in sub.ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}}</v-chip>
+                                                                </v-layout>
+                                                            </v-flex>
+                                                        <v-icon medium @click="removeArray('s', index)">close</v-icon>
+                                                        </v-layout><br>
+                                                    </v-flex>
+                                                </v-layout>
+                                            </v-card>
+                                        </v-flex>
+                                    </v-layout>
                                     
                                 </div>
                             </v-flex>
@@ -162,8 +217,11 @@
         data () {
         return {
             ingredients:[],
+            inputs:[],
             pivots:[],
+            addPivots:[],
             sub:"",
+            subs:[],
             addSub:"",
             pagination: {
                 sortBy: 'name'
@@ -171,6 +229,10 @@
             headers: [
                 {text:"Titulo", value:"title"},
                 {text:"Nombre", value:"name"}
+            ],
+            typesProduct:[  
+                {text:"Simple", value:"simple"},
+                {text:"Complejo", value:"complejo"}
             ],
             product: {},
             classes:[],
@@ -196,7 +258,15 @@
                     this.class_id = {"text":val.product_class.code, "value":val.product_class._id};
                     this.attributesP = val.attributes;
                     this.categories = val.categories;
+                    this.subs = this.editSubProducts(val.sub_products);
+                    if(this.subs.length > 0)this.addSub = true;
                     //this.attributesCustomisable = val.order_attributes;
+                }
+            },
+            sub(val){
+                if(val){
+                    this.sub.price = this.product.default_price;
+                    this.sub.options = val.options;
                 }
             },
             classess(val){
@@ -220,11 +290,19 @@
                 }   
                 this.pivots = this.attributesCustomisable;
                 this.pivots = this.formatPivots();
+            },
+            inp(val){
+                if(val){
+                    for(var s = 0; s < val.length; s++){
+                        this.inputs.push({"text":val[s].name +" - "+ val[s].metric, "value":val[s]._id});
+                    }
+                }
             }
         },
         mounted () {
             this.fetchClasss();
             this.fetchCategories();
+            this.fetchInputs();
             this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
             if(this.edit!=""){
                 this.titleText="Editar producto"
@@ -240,13 +318,77 @@
                 getProduct: 'product/getProduct', 
                 fetchClasss: 'productClass/fetchClasss', 
                 fetchCategories: 'category/fetchCategories', 
+                fetchInputs: 'input/fetchInputs', 
                 getProductClassAttribute: 'product/getProductClassAttribute', 
                 setWarning: 'setWarning',
             }),
+            viewNamePivot(id){
+                return this.pivots.find(element=>{return element.id == id}).text;
+            },
+            editSubProducts(subs){
+                var lst = [];
+                if(subs){
+                    for(var s = 0; s < subs.length; s++){
+                        subs[s].pivot = this.attributesCustomisable.find(element=>{return element._id == subs[s].pivot})
+                        subs[s].pivots = subs[s].options;
+                        for(var r = 0; r < subs[s].ingredients.length; r++){
+                            var ing = {};
+                            ing = this.inputs.find(element=>{return element.value == subs[s].ingredients[r].input});
+                            if(ing){
+                                ing.id = ing.value;
+                                ing.quantity = subs[s].ingredients[r].quantity
+                                ing.name = ing.text.split("-")[0];
+                                ing.metric = ing.text.split("-")[1];
+                                subs[s].ingredients[r] = ing;
+                            }
+                        }
+                        lst.push(subs[s]);
+                    }
+                }
+                return lst;
+            },
+            addArray(arr){
+                switch(arr) {
+                    case "p":
+                        this.addPivots.push({"pivot":this.sub.id, "option":this.sub.option.value});
+                        break;
+                    case "s":
+                        this.sub.ingredients = this.ingredients;
+                        this.sub.pivots = this.addPivots;
+                        this.subs.push(this.sub);
+                        this.sub = "";
+                        this.addPivots = [];
+                        this.ingredients = [];
+                        console.log(this.subs);
+                        break;
+                    case "i":
+                        var obj = {
+                            "id": this.sub.input.value,
+                            "quantity":this.sub.quantity,
+                            "name": this.sub.input.text.split("-")[0], 
+                            "metric": this.sub.input.text.split("-")[1],
+                        }
+                        this.ingredients.push(obj);
+                        break;
+                }
+            },
+            removeArray(arr, idx, val = ""){
+                switch(arr) {
+                    case "p":
+                        this.addPivots.splice(idx,1);
+                        break;
+                    case "s":
+                        this.subs.splice(idx,1);
+                        break;
+                    case "i":
+                        this.ingredients.splice(idx,1);
+                        break;
+                }
+            },
             formatPivots(){
                 var pv = [];
                 for(var s = 0; s < this.pivots.length; s++){
-                    pv.push({"text":this.pivots[s].code, "value":this.pivots[s].code, "options":this.pivots[s].options});
+                    pv.push({"text":this.pivots[s].code, "value":this.pivots[s].code, "id":this.pivots[s]._id, "options":this.pivots[s].options});
                 }
                 return pv;
             },
@@ -329,7 +471,22 @@
                 }
                 return ct;
             },
+            formatIngredients(arr){
+                var lst = [];
+                for(var s = 0; s < arr.length; s++){
+                    lst.push({"input":arr[s].id, "quantity":arr[s].quantity});
+                }
+                return lst;
+            },
+            buildSubProducts(){
+                var subP = [];
+                for(var s = 0; s < this.subs.length; s++){
+                    subP.push({"price":this.subs[s].price, "photo":this.subs[s].photo, "options":this.subs[s].pivots, "ingredients":this.formatIngredients(this.subs[s].ingredients)});
+                }
+                return subP;
+            },
             buildProduct(){
+                this.product.sub_products = this.buildSubProducts();
                 this.buildAttributes();
                 this.product.product_class = this.class_id.value;
                 this.product.attributes = attrs;
@@ -340,6 +497,7 @@
             },
             processProduct () {
                 this.product = this.buildProduct();
+                console.log(this.product);
                 if(this.edit){
                     this.update(this.product).then(
                         data => {
@@ -376,6 +534,7 @@
                 pro: state => state.product.product, 
                 classess: state => state.productClass.classs,
                 attr: state => state.product.attrClass, 
+                inp: state => state.input.inputs, 
                 rows: state => state.category.categories, 
             }),
         },

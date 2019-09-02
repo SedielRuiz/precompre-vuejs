@@ -58,14 +58,11 @@
             setWarning: 'setWarning',
         }),
         processInput() {
-            if(this.edit)
-                this.input.status = this.input.status.value;
             if(this.edit){
                 this.update(this.input).then(
                     data => {
                         this.setWarning(data, { root: true }).then(()=>{
                           this.closeModal();
-                          this.$router.push('/inputDetail/'+this.edit)
                         })
                     },
                     error => {

@@ -18,10 +18,35 @@
                 <h2>Atributos</h2><br>
                 <div v-if="attributes"> 
                     <v-chip v-for="(attr, index) in attributes" :key="index">{{attr.name.charAt(0).toUpperCase() + attr.name.slice(1)}} - {{attr.value.charAt(0).toUpperCase() + attr.value.slice(1)}}</v-chip>
-                </div><br>
+                </div><hr><br>
                 <h2>Atributos personalizados</h2><br>
                 <div v-if="order_attributes">
                     <v-chip v-for="(attrc, index) in order_attributes" :key="index">{{attrc.name.charAt(0).toUpperCase() + attrc.name.slice(1)}} - {{attrc.value.charAt(0).toUpperCase() + attrc.value.slice(1)}}</v-chip>
+                </div><hr><br>
+                <h2>Sub productos</h2><br>
+                <div v-if="subProducts"> 
+                    <v-layout row wra v-for="sub in subProducts">
+                        <v-flex  xs12 md4>
+                            <v-layout row wra v-for="p in sub.options">
+                                <v-flex xs12 m12>
+                                    <label>Variación: {{viewNamePivot(p.pivot)}}</label>
+                                </v-flex>
+                                <v-flex xs12 md12>
+                                    <label>Cantidad: {{p.option}}</label>
+                                </v-flex>
+                            </v-layout>
+                        </v-flex>
+                        <v-flex  xs12 md8>
+                            <v-layout row wra>
+                                <v-flex xs12 md8>
+                                    <v-layout align-center row wra>
+                                        Ingredientes
+                                        <v-chip v-for="(i, index) in sub.ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}}</v-chip>
+                                    </v-layout>
+                                </v-flex>
+                            </v-layout><br>
+                        </v-flex>
+                    </v-layout><hr>
                 </div><br>
                 <h2>Categorias</h2><br>
                 <div v-if="categories">
@@ -50,7 +75,10 @@
             product: {},
             attributes:[],
             order_attributes:[],
+            subProducts:[],
+            pivots:[],
             categories:[],
+            inputs:[],
             status:[
                 {text: 'Activo', value:'enabled'},
                 {text: 'Inactivo', value:'disabled'},
@@ -66,10 +94,20 @@
                     this.categories = val.categories;
                     this.formatAttributes("attributes", val.attributes);
                     this.formatAttributes("order_attributes", val.attributes);
+                    this.subProducts = val.sub_products;
+                    if(this.inputs){this.formatInputs()};
+                    this.pivots = val.attributes;
+                    this.pivots = this.formatPivots();
+                }
+            },
+            inp(val){
+                if(val){
+                    this.inputs = val;
                 }
             },
         },
         mounted () {
+            this.fetchInputs();
             this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
             if(this.edit!=""){
                 this.getProduct(this.edit);
@@ -78,8 +116,31 @@
         methods: {
             ...mapActions({
                 getProduct: 'product/getProduct', 
+                fetchInputs: 'input/fetchInputs', 
                 setWarning: 'setWarning',
             }),
+            formatPivots(){
+                var pv = [];
+                console.log(this.pivots);
+                for(var s = 0; s < this.pivots.length; s++){
+                    pv.push({"id":this.pivots[s].code, "value":this.pivots[s].value});
+                }
+                return pv;
+            },
+            viewNamePivot(id){
+                console.log(id);
+                return this.pivots.find(element=>{return element.id == id}).value;
+            },
+            formatInputs(){
+                for(var s = 0; s < this.subProducts.length; s++){
+                    for(var r = 0; r < this.subProducts[s].ingredients.length; r++){
+                        var ing = {};
+                        ing = this.inputs.find(element=>{return element._id == this.subProducts[s].ingredients[r].input});
+                        ing.quantity = this.subProducts[s].ingredients[r].quantity
+                        this.subProducts[s].ingredients[r] = ing;
+                    }
+                }
+            },
             formatAttributes(varArr, arr){
                 var attrs = [];
                 for(var s = 0; s < arr.length; s++){
@@ -108,6 +169,7 @@
         computed:{
             ...mapState({
                 warning: state => state.warning,
+                inp: state => state.input.inputs, 
                 pro: state => state.product.product,
             }),
         },
