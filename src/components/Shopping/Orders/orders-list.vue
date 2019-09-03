@@ -14,10 +14,10 @@
         :items="rows"
         class="elevation-1">
         <template v-slot:items="props">
-        <td>{{ props.item._id }}</td>
-        <td>{{ props.item.delivey_place }}</td>
-        <td>{{ props.item.status }}</td>
-        <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
+          <td>{{ props.item.delivery_date.split("T")[0] }}</td>
+          <td>{{ props.item.delivery_place.name }} {{ props.item.delivery_place.unit_name }}</td>
+          <td>{{ props.item.state }}</td>
+          <td><v-btn color="primary" @click="redirect(false, props.item._id)">Detalle</v-btn></td>
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
@@ -37,30 +37,30 @@
       return {
         customer_id:"",
         headers: [
-            {text:"Código", value:"_id"},
+            {text:"Fecha", value:"delivery_date"},
             {text:"Lugar de estrega", value:"delivery_place"},
-            {text:"Estado", value:"status"},
+            {text:"Estado", value:"state"},
             {text:"Acciones", value:"actons"}
         ]
       }
     },
     mounted () {
       this.customer_id = this.$route.params.id == undefined ? 0 : this.$route.params.id;
-      this.fetchOrders(this.customer_id);
+      this.fetchOrdersCustomer(this.customer_id);
     },
     methods: {
       ...mapActions({
-        fetchOrders: 'order/fetchOrders',
+        fetchOrdersCustomer: 'order/fetchOrdersCustomer',
         setWarning: 'setWarning',
       }),
       search(pagination){
-        this.fetchOrders(pagination);
+        this.fetchOrdersCustomer(pagination);
       },
       redirect(page,id){
         if(page){
           this.$router.push('/customerDetail/'+this.customer_id)
         }else{
-          this.$router.push('/customerList')
+          this.$router.push('/orderDetail/'+id)
         }
       }
     },

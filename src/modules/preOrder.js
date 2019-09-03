@@ -87,10 +87,10 @@ const actions = {
         });
     },
 
-    delete:({commit},data) => {
+    delete:({commit},id) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('delete_pre_order',data).then(
+        Vue.http.post('delete_pre_order/'+id).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)

@@ -206,15 +206,22 @@
             if(val){
                 this.products = [];
                 for(var s = 0; s < val.length; s++){
-                    if(val[s].status == "enable")
-                        this.products.push({"text":val[s].name, "value":val[s]._id, "attributes":val[s].attributes, "categories":val[s].categories, "class":val[s].product_class, "price":val[s].default_price});
+                    if(val[s].status == "enable"){
+                        for(var r = 0; r < val[s].sub_products.length; r++){
+                            if(val[s].sub_products[r].state == "avilable"){
+                                var name = this.buildNameProduct(val[s].name, val[s], val[s].sub_products[r]);
+                                this.products.push({"text":name, "sub_value":val[s].sub_products[r]._id, "principal_value":val[s]._id, "attributes":val[s].attributes, "categories":val[s].categories, "class":val[s].product_class, "price":val[s].default_price});
+                            }
+                        }
+                    }
                 }
             }
         },
         product(val){
             if(val){
                 console.log(val);
-                this.product.product_id = val.value;
+                this.product.product_id = val.principal_value;
+                this.product.sub_product = val.sub_value;
                 this.product.unit_value = val.price;
                 this.attributes = [];
                 this.attributes = val.class.attributes;
@@ -241,8 +248,19 @@
             getCustomer: 'customer/getCustomer', 
             setWarning: 'setWarning',
         }),
+        buildNameProduct(base, product, sub){
+            var name = base;
+            for(var s = 0; s < sub.options.length; s++){
+                for(var r = 0; r < product.product_class.order_attributes.length; r++){
+                    if(sub.options[s].pivot == product.product_class.order_attributes[r]._id){
+                        name += ", "+product.product_class.order_attributes[r].code+" "+sub.options[s].option;
+                    }
+                }
+            }
+            return name;
+        },
         deletePreOrder(id){
-            this.delete({"_id":id}).then(
+            this.delete(id).then(
                 data => {
                     this.setWarning(data, { root: true }).then(()=>{
                         this.redirect(true);
@@ -281,6 +299,7 @@
                 this.shoppingCart[r].text = this.shoppingCart[r].pre_orders[0].item.product.name;
                 this.shoppingCart[r].delivery_place = this.formatList(this.customer.delivery_places, 'name', 'id', 'unit_name').find(element=>{return element.value == this.shoppingCart[r].pre_orders[0].delivery_place.id});
                 this.shoppingCart[r].product_id = this.shoppingCart[r].pre_orders[0].item.product._id;
+                this.shoppingCart[r].sub_product = this.shoppingCart[r].pre_orders[0].item.sub_product;
                 this.shoppingCart[r].customer_id = this.customer._id;
             }
         },
@@ -416,7 +435,7 @@
                 console.log(this.shoppingCart[r]);
                 var item = {
                     "product": this.shoppingCart[r].product_id,
-                    "sub_products": [],
+                    "sub_product": this.shoppingCart[r].sub_product,
                     "attributes": this.formatAttributes(this.shoppingCart[r].attributes),
                     "unit_value": this.shoppingCart[r].unit_value,
                     "quantity": this.shoppingCart[r].quantity,
@@ -428,7 +447,7 @@
             return json;
         },
         processPreOrder () {
-            if(this.preOrders){
+            if(this.preOrders.length > 0){
                 this.update(this.buildPreOrder()).then(
                     data => {
                         this.setWarning(data, { root: true }).then(()=>{
