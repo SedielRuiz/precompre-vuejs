@@ -40,13 +40,17 @@
                             <v-layout row wra>
                                 <v-flex xs12 md8>
                                     <v-layout align-center row wra>
+                                        <v-flex xs12 md4>
+                                            <label>Precio: $ {{sub.price}}</label>
+                                        </v-flex>
                                         Ingredientes
                                         <v-chip v-for="(i, index) in sub.ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}}</v-chip>
                                     </v-layout>
                                 </v-flex>
                             </v-layout><br>
                         </v-flex>
-                    </v-layout><hr>
+                        <hr>
+                    </v-layout>
                 </div><br>
                 <h2>Categorias</h2><br>
                 <div v-if="categories">
@@ -96,8 +100,7 @@
                     this.formatAttributes("order_attributes", val.attributes);
                     this.subProducts = val.sub_products;
                     if(this.inputs){this.formatInputs()};
-                    this.pivots = val.attributes;
-                    this.pivots = this.formatPivots();
+                    this.pivots = val.product_class.order_attributes;
                 }
             },
             inp(val){
@@ -119,17 +122,11 @@
                 fetchInputs: 'input/fetchInputs', 
                 setWarning: 'setWarning',
             }),
-            formatPivots(){
-                var pv = [];
-                console.log(this.pivots);
-                for(var s = 0; s < this.pivots.length; s++){
-                    pv.push({"id":this.pivots[s].code, "value":this.pivots[s].value});
-                }
-                return pv;
-            },
             viewNamePivot(id){
-                console.log(id);
-                return this.pivots.find(element=>{return element.id == id}).value;
+                if(id){
+                    var p = this.pivots.find(element=>{return element._id == id});
+                    return p && p.code ? p.code : "";
+                }
             },
             formatInputs(){
                 for(var s = 0; s < this.subProducts.length; s++){

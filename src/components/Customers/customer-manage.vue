@@ -17,6 +17,7 @@
                 <v-date-picker v-model="customer.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker>
                 <v-text-field v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
                 <v-text-field v-model="customer.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
+                <v-select v-model="customer.gender" prepend-icon="account_box" :items="genders" label="Genero"></v-select>
                 <v-text-field v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
                 <v-combobox v-if="edit!=''" v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <v-text-field v-if="edit==''" v-model="customer.password" prepend-icon="lock" name="password" label="Contraseña" type="password"></v-text-field>
@@ -87,6 +88,10 @@
         suggestions:[
           {text: 'Hogar', value:'home'},
           {text: 'Trabajo', value:'work'}  
+        ],
+        genders:[
+          {text: 'Masculino', value:'m'},
+          {text: 'Femenino', value:'f'}  
         ],
         placesSelected:[],
         placeDelivery:"",

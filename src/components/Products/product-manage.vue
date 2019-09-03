@@ -323,7 +323,10 @@
                 setWarning: 'setWarning',
             }),
             viewNamePivot(id){
-                return this.pivots.find(element=>{return element.id == id}).text;
+                if(id){
+                    var p = this.pivots.find(element=>{return element.id == id});
+                    return p && p.text ? p.text : "";
+                }
             },
             editSubProducts(subs){
                 var lst = [];

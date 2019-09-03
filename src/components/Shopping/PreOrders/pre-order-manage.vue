@@ -75,7 +75,7 @@
                                     <v-flex xs12 md1>
                                         <v-text-field :disabled="true" v-model="sc.quantity" name="quantity" label="Cantidad" type="number"></v-text-field>
                                     </v-flex> 
-                                    <v-flex xs12 md2>
+                                    <v-flex xs12 md3>
                                         <v-combobox :disabled="true" prepend-icon="filter_list" v-model="sc.text" label="Producto"></v-combobox>
                                     </v-flex>
                                     <v-flex xs12 md10>
@@ -104,7 +104,9 @@
                                         </v-layout>
                                     </v-flex>
                                     <v-flex xs12 md1>
-                                        <v-icon medium @click="removeArray('shoppingCart', index)">close</v-icon></v-chip>
+                                        <v-layout justify-center row wra>
+                                            <v-icon medium @click="removeArray('shoppingCart', index)">close</v-icon></v-chip>
+                                        </v-layout>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout justify-center row wra>
@@ -146,7 +148,7 @@
                             <v-layout row wra>
                                 <v-flex v-for="(day, index) in preOrders" :key="index" xs12 sm12 md2>
                                     <v-card class="mx-auto">
-                                        <v-card-title><h1>{{formarDay(day.pre_orders[0].days)}}</h1></v-card-title>
+                                        <v-card-title><h1>{{formarDay(day.pre_orders)}}</h1></v-card-title>
                                         <v-card-text>
                                             <h2>Productos </h2><hr><br>
                                             <div v-for="prd in day.pre_orders">
@@ -154,7 +156,8 @@
                                                 <label>Precio: $ {{prd.item.product.price ? prd.item.product.price : 0}} </label><br>
                                                 <label>Catidad: {{prd.item.quantity}}</label><br>
                                                 <label>Lugar de entrega : {{prd.delivery_place.name}} {{prd.delivery_place.unit_name}}</label>
-                                                <v-btn text small @click="editPreOrder(index, prd)">Editar</v-btn><hr><br>
+                                                <v-btn text small class="primary" @click="editPreOrder(index, prd)">Editar</v-btn>
+                                                <v-btn text small class="primary" @click="deletePreOrder(prd._id._id)">Eliminar</v-btn><hr><br>
                                             </div>
                                         </v-card-text>
                                     </v-card>
@@ -204,7 +207,7 @@
                 this.products = [];
                 for(var s = 0; s < val.length; s++){
                     if(val[s].status == "enable")
-                        this.products.push({"text":val[s].name, "value":val[s]._id, "attributes":val[s].attributes, "categories":val[s].categories, "class":val[s].product_class, "price":val[s].price});
+                        this.products.push({"text":val[s].name, "value":val[s]._id, "attributes":val[s].attributes, "categories":val[s].categories, "class":val[s].product_class, "price":val[s].default_price});
                 }
             }
         },
@@ -231,17 +234,79 @@
     methods: {
         ...mapActions({
             create: 'preOrder/create',
+            update: 'preOrder/update',
+            delete: 'preOrder/delete',
             fetchPreOrdersCustomer: 'preOrder/fetchPreOrdersCustomer',
             fetchProducts: 'product/fetchProducts',
             getCustomer: 'customer/getCustomer', 
             setWarning: 'setWarning',
         }),
+        deletePreOrder(id){
+            this.delete({"_id":id}).then(
+                data => {
+                    this.setWarning(data, { root: true }).then(()=>{
+                        this.redirect(true);
+                    })
+                },
+                error => {
+            });
+        },
         editPreOrder(idx, product){
-            console.log(product);
-            //this.product = product;
+            for(var s = 0; s < this.preOrders.length; s++){
+                for(var r = 0; r < this.preOrders[s].pre_orders.length; r++){
+                    if( (this.preOrders[s].pre_orders[r].item.product._id == product.item.product._id) ){
+                        var p = this.groupDay(this.preOrders[s].pre_orders[r], product);
+                        if(p){
+                            this.shoppingCart[p.pos].days = p.days;
+                        }
+                        this.preOrders[s].pre_orders.splice(r, 1);
+                        if(this.preOrders[s].pre_orders.length == 0){
+                            this.preOrders.splice(s, 1);
+                        }
+                    }
+                }
+            }
+            this.formatShopping(); 
+        },
+        formatShopping(){
+            for(var r = 0; r < this.shoppingCart.length; r++){
+                var attributes = [];
+                for(var a = 0; a < this.shoppingCart[r].pre_orders[0].item.attributes.length; a++){
+                    var at = this.shoppingCart[r].pre_orders[0].item.attributes[a].attribute[0];
+                    at.value = this.shoppingCart[r].pre_orders[0].item.attributes[a].value;
+                    attributes.push(at);
+                }
+                this.shoppingCart[r].attributes = attributes;
+                this.shoppingCart[r].quantity = this.shoppingCart[r].pre_orders[0].item.quantity;
+                this.shoppingCart[r].text = this.shoppingCart[r].pre_orders[0].item.product.name;
+                this.shoppingCart[r].delivery_place = this.formatList(this.customer.delivery_places, 'name', 'id', 'unit_name').find(element=>{return element.value == this.shoppingCart[r].pre_orders[0].delivery_place.id});
+                this.shoppingCart[r].product_id = this.shoppingCart[r].pre_orders[0].item.product._id;
+                this.shoppingCart[r].customer_id = this.customer._id;
+            }
+        },
+        groupDay(obj, product){
+            var re = false;
+            var days = [];
+            var  idx = 0;
+            for(var r = 0; r < this.shoppingCart.length; r++){
+                if(this.shoppingCart[r].pre_orders[0].item.product._id == obj.item.product._id){
+                    idx = r;
+                    Array.isArray(this.shoppingCart[r].pre_orders[0].days) ? days = this.shoppingCart[r].pre_orders[0].days : days.push(this.shoppingCart[r].pre_orders[0].days);
+                    days.push(obj.days);
+                    re = true;
+                    break;
+                }
+
+            }
+            if(!re){
+                this.shoppingCart.push({"pre_orders":[obj]});
+            }else{
+                return {"pos":idx, "days":days};
+            }
         },
         formarDay(day){
             var name = "";
+            day = day && day[0].days || day[0].days == 0 ? day[0].days : "";
             switch(day){
                 case 0: name = "Domingo"; break;
                 case 1: name = "Lunes"; break;
@@ -314,6 +379,7 @@
                         }
                         this.product = "";
                         this.attributes = [];
+                        console.log(this.shoppingCart);
                         break;
                     case "d":
                         this.deliveryPlaces.push(this[obj]);
@@ -350,24 +416,37 @@
                 console.log(this.shoppingCart[r]);
                 var item = {
                     "product": this.shoppingCart[r].product_id,
+                    "sub_products": [],
                     "attributes": this.formatAttributes(this.shoppingCart[r].attributes),
                     "unit_value": this.shoppingCart[r].unit_value,
                     "quantity": this.shoppingCart[r].quantity,
                 };
-                json.push({"days":this.shoppingCart[r].days, "item":item, "delivery_place":this.shoppingCart[r].delivery_place.value, "customer":this.shoppingCart[r].customer_id});
+                var place = this.shoppingCart[r].delivery_place && this.shoppingCart[r].delivery_place.value ? this.shoppingCart[r].delivery_place.value : this.shoppingCart[r].delivery_place;
+                json.push({"days":this.shoppingCart[r].days, "item":item, "delivery_place":place, "customer":this.shoppingCart[r].customer_id});
             }
             console.log(json)
             return json;
         },
         processPreOrder () {
-            this.create(this.buildPreOrder()).then(
-                data => {
-                    this.setWarning(data, { root: true }).then(()=>{
-                        this.redirect(true);
-                    })
-                },
-                error => {
-            })
+            if(this.preOrders){
+                this.update(this.buildPreOrder()).then(
+                    data => {
+                        this.setWarning(data, { root: true }).then(()=>{
+                            this.redirect(true);
+                        })
+                    },
+                    error => {
+                });
+            }else{
+                this.create(this.buildPreOrder()).then(
+                    data => {
+                        this.setWarning(data, { root: true }).then(()=>{
+                            this.redirect(true);
+                        })
+                    },
+                    error => {
+                });
+            }
         },
         redirect(page){
             if(page){
