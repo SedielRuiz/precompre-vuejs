@@ -16,18 +16,18 @@
                      <v-layout row wra v-for="(prd, index) in order.products">
                         <v-flex xs12 md12>
                             <v-card class="pa-2" outlined tile :key="index">
-                                <h2>{{order.products[0]}}</h2><br>
+                                <h2>{{prd.product.name}}</h2><br>
                                 <v-layout row wra>
-                                    <v-flex  xs12 md6>
+                                    <v-flex  xs12 md8>
                                         <v-layout row wra >
-                                            <v-flex xs12 m12>
-                                                <label>Variación: </label>
+                                            <v-flex xs12 m12 v-for="opc in prd.sub_product.options">
+                                                <label>{{buildNameProduct(prd.product, opc)}}</label>
+                                            </v-flex><br>
+                                            <v-flex xs12 md12>
+                                                <label>Cantidad: {{prd.quantity}}</label>
                                             </v-flex>
                                             <v-flex xs12 md12>
-                                                <label>Cantidad: </label>
-                                            </v-flex>
-                                            <v-flex xs12 md12>
-                                                <label>Precio: </label>
+                                                <label>Precio: $ {{prd.sub_product.price}}</label>
                                             </v-flex>
                                         </v-layout>
                                     </v-flex>
@@ -60,41 +60,48 @@
       pagination,
     },
     data () {
-      return {
-        order_id:"",
-        order:{},
-      }
+        return {
+            order_id:"",
+            order:{},
+        }
     },
     watch:{
         ord(val){
             if(val){
                 this.order = val;
-                console.log(val);
+                this.order.products = val.items;
             }
         },
     },
     mounted () {
-        this.order.products = ["hola mundo"];
-      this.order_id = this.$route.params.id == undefined ? 0 : this.$route.params.id;
-      this.getOrder(this.order_id);
+        this.order_id = this.$route.params.id == undefined ? 0 : this.$route.params.id;
+        this.getOrder(this.order_id);
     },
     methods: {
-      ...mapActions({
-        getOrder: 'order/getOrder',
-        setWarning: 'setWarning',
-      }),
-      redirect(){
-        this.$router.push('/orders/'+this.order.customer)
-      }
+        ...mapActions({
+            getOrder: 'order/getOrder',
+            setWarning: 'setWarning',
+        }),
+        buildNameProduct(product, sub){
+            for(var r = 0; r < product.pivot_attributes.length; r++){
+                if(sub.pivot == product.pivot_attributes[r]._id){
+                    var name = product.pivot_attributes[r].code+" "+sub.option;
+                }
+            }
+            return name;
+        },
+        redirect(){
+            this.$router.push('/orders/'+this.order.customer)
+        }
     },
     computed:{
-      ...mapState({
-        warning: state => state.warning,
-        ord: state => state.order.order,
-        page_size: state => state.order.page_size,
-        total_items: state => state.order.total_items,
-        total_pages: state => state.order.total_pages,
-      }),
+        ...mapState({
+            warning: state => state.warning,
+            ord: state => state.order.order,
+            page_size: state => state.order.page_size,
+            total_items: state => state.order.total_items,
+            total_pages: state => state.order.total_pages,
+        }),
     },
   }
 </script>

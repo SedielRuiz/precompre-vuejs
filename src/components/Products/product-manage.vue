@@ -220,6 +220,7 @@
             inputs:[],
             pivots:[],
             addPivots:[],
+            pivotAttributes:[],
             sub:"",
             subs:[],
             addSub:"",
@@ -493,6 +494,7 @@
                 this.buildAttributes();
                 this.product.product_class = this.class_id.value;
                 this.product.attributes = attrs;
+                this.product.pivot_attributes = this.pivotAttributes;
                 this.product.categories = this.formatCategories();
                 if(this.edit)
                     this.product.status = this.product.status.value;
