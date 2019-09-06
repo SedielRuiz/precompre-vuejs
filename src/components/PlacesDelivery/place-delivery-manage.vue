@@ -151,17 +151,21 @@
         var unt = {};
         var unts = [];
         var listUnts = [];
-        for(var s = 0; s < this.unities.length; s++){
-          unt = {};
-          listUnts = []
-          unt._type = this.unities[s].value;
-          unt.qty = this.unities[s].quantity;
-          for(var r = 0; r < this.unities[s].list.length; r++){
-            if(this.unities[s].list[r].type == this.unities[s].value)
-              listUnts.push({"unit_name":this.unities[s].list[r].name});
+        if(this.unities.length > 0){
+          for(var s = 0; s < this.unities.length; s++){
+            unt = {};
+            listUnts = []
+            unt._type = this.unities[s].value;
+            unt.qty = this.unities[s].quantity;
+            if(this.unities[s].list.length > 0){
+              for(var r = 0; r < this.unities[s].list.length; r++){
+                if(this.unities[s].list[r].type == this.unities[s].value)
+                  listUnts.push({"unit_name":this.unities[s].list[r].name});
+              }
+            }
+            unt.list = listUnts;
+            unts.push(unt)
           }
-          unt.list = listUnts;
-          unts.push(unt)
         }
         return unts;
       },
