@@ -12,7 +12,7 @@
           <v-card-text>
             <v-form>
                 <v-text-field v-model="place.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
-                <!--v-icon medium style="font-size:25px;">email</v-icon--><div v-if="(edit && place && place.address) || (!edit)"><google-map :title="'Dirección'" :direct="place.address" :coords="place.coords" @setAddress="setAddress"/></div><br>
+                <div v-if="(edit && place && place.address) || (!edit)"><google-map :title="'Dirección'" :direct="place.address" :coords="place.coords" @setAddress="setAddress"/></div><br><!--v-icon medium style="font-size:25px;">email</v-icon-->
                 <v-combobox v-model="place.country" prepend-icon="email" :items="countries" label="País"></v-combobox>
                 <v-combobox v-model="place.city" prepend-icon="email" :items="cities" label="Ciudad"></v-combobox>
                 <div v-if="unities">
