@@ -61,7 +61,7 @@
                                         </v-layout>
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
-                                            <v-btn color="primary" @click="addArray('p')">Agregar al carrito</v-btn>
+                                            <v-btn color="primary" @click="addArray('p')">Agregar producto</v-btn>
                                         </v-card-actions>
                                         
                                     </div>
@@ -81,25 +81,32 @@
                                     <v-flex xs12 md10>
                                         <v-layout justify-center row wra>
                                             <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                                <v-checkbox @click="updateArray(index, 1,)" label="Lunes"></v-checkbox>
+                                                <label>Lunes</label>{{sc.lunes}}
+                                                <v-checkbox v-model="sc.lunes"></v-checkbox>
                                             </v-flex>
                                             <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                                <v-checkbox @click="updateArray(index, 2,)" label="Martes"></v-checkbox>
+                                                <label>Martes</label>
+                                                <v-checkbox v-model="sc.martes"></v-checkbox>
                                             </v-flex>
                                             <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                                <v-checkbox @click="updateArray(index, 3,)" label="Miercoles"></v-checkbox>
+                                                <label>Miercoles</label>
+                                                <v-checkbox v-model="sc.miercoles"></v-checkbox>
                                             </v-flex>
                                             <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                                <v-checkbox @click="updateArray(index, 4,)" label="Jueves"></v-checkbox>
+                                                <label>Jueves</label>
+                                                <v-checkbox v-model="sc.jueves"></v-checkbox>
                                             </v-flex>
                                             <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                                <v-checkbox @click="updateArray(index, 5,)" label="Viernes"></v-checkbox>
+                                                <label>Viernes</label>
+                                                <v-checkbox v-model="sc.viernes"></v-checkbox>
                                             </v-flex>
                                             <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                                <v-checkbox @click="updateArray(index, 6,)" label="Sabados"></v-checkbox>
+                                                <label>Sabados</label>
+                                                <v-checkbox v-model="sc.sabado"></v-checkbox>
                                             </v-flex>
                                             <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                                <v-checkbox @click="updateArray(index, 0,)" label="Domingos"></v-checkbox>
+                                                <label>Domingos</label>
+                                                <v-checkbox v-model="sc.domingo"></v-checkbox>
                                             </v-flex>
                                         </v-layout>
                                     </v-flex>
@@ -141,7 +148,7 @@
                                 </v-layout>
                                 <v-layout row wra>
                                     <v-combobox prepend-icon="filter_list" v-model="sc.delivery_place" :items="formatList(customer.delivery_places, 'name', 'id', 'unit_name')" label="Lugares de entrega"></v-combobox>
-                                </v-layout><hr><br>
+                                </v-layout>
                             </div>
                         </v-card><br>
                         <v-card class="pa-2" outlined tile v-if="preOrders.length > 0">
@@ -183,6 +190,11 @@
     }
     .subTitle{
         font-size:20px;
+    }
+    .v-input--selection-controls {
+        margin-top: 3px;
+        padding-top: 0px;
+        padding:8px;
     }
 </style>
 <script>
@@ -361,17 +373,6 @@
             }
             return name == "" ? "No hay" : name;
         },
-        updateArray(idx, val){
-            var days = [];
-            days = this.shoppingCart[idx].days;
-            var p = days.indexOf(val);
-            if(p < 0){
-                days.push(val);
-            }else{
-                days.splice(p, 1); 
-            }
-            this.shoppingCart[idx].days = days;
-        },
         formatList(list, name, code, secondName = ""){
             var lst = [];
             if(list){
@@ -453,9 +454,33 @@
             }
             return list;
         },
+        day(name){
+            var r = "";
+            switch(name){
+                case "lunes": r = 1; break;
+                case "martes": r = 2; break;
+                case "miercoles": r = 3; break;
+                case "jueves": r = 4; break;
+                case "viernes": r = 5; break;
+                case "sabado": r = 6; break;
+                case "domingo": r = 0; break;
+            }
+            return r;
+        },
         buildPreOrder(){
             var json = [];
             for(var r = 0; r < this.shoppingCart.length; r++){
+                //Recupero días
+                var days = [];
+                var week = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];  
+                for(var s = 0; s < week.length; s++){
+                    if(this.shoppingCart[r][week[s]] && this.shoppingCart[r][week[s]] == true){
+                        var d = this.day(week[s]);
+                        if(d != "")
+                            days.push(d);
+                    }
+                }
+
                 var item = {
                     "product": this.shoppingCart[r].product_id,
                     "sub_product": this.shoppingCart[r].sub_product,
@@ -464,7 +489,7 @@
                     "quantity": this.shoppingCart[r].quantity,
                 };
                 var place = this.shoppingCart[r].delivery_place && this.shoppingCart[r].delivery_place.value ? this.shoppingCart[r].delivery_place.value : this.shoppingCart[r].delivery_place;
-                json.push({"days":this.shoppingCart[r].days, "item":item, "delivery_place":place, "customer":this.shoppingCart[r].customer_id});
+                json.push({"days":days, "item":item, "delivery_place":place, "customer":this.shoppingCart[r].customer_id});
             }
             console.log(json)
             return json;
