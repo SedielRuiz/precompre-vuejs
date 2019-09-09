@@ -247,7 +247,7 @@
         places: state => state.placeDelivery.places
       }),
       trySend(){
-        if(this.customer && this.customer.id_type && this.customer.id_description && this.customer.email && this.customer.password && this.customer.name){
+        if(this.customer && this.customer.id_type && this.customer.id_description && this.customer.email && this.customer.name){
           return false; 
         }
         return true;

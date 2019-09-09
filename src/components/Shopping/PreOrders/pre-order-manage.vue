@@ -275,14 +275,16 @@
             return name;
         },
         deletePreOrder(id){
-            this.delete(id).then(
-                data => {
-                    this.setWarning(data, { root: true }).then(()=>{
-                        this.fetchPreOrdersCustomer(this.customer_id);
-                    })
-                },
-                error => {
-            });
+            if(confirm('Seguro dese eliminar esta pre orden ? ')){
+                this.delete(id).then(
+                    data => {
+                        this.setWarning(data, { root: true }).then(()=>{
+                            this.fetchPreOrdersCustomer(this.customer_id);
+                        })
+                    },
+                    error => {
+                });
+            }
         },
         editPreOrder(idx, product){
             for(var s = 0; s < this.preOrders.length; s++){
