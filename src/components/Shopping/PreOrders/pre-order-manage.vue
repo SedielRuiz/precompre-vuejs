@@ -251,7 +251,6 @@
     methods: {
         ...mapActions({
             create: 'preOrder/create',
-            update: 'preOrder/update',
             delete: 'preOrder/delete',
             fetchPreOrdersCustomer: 'preOrder/fetchPreOrdersCustomer',
             fetchProducts: 'product/fetchProducts',
