@@ -60,7 +60,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="processCustomer()">Guardar</v-btn>
+            <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processCustomer()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -246,6 +246,12 @@
         cu: state => state.customer.customer, 
         places: state => state.placeDelivery.places
       }),
+      trySend(){
+        if(this.customer && this.customer.id_type && this.customer.id_description && this.customer.email && this.customer.password && this.customer.name){
+          return false; 
+        }
+        return true;
+      }
     },
   }
 </script>

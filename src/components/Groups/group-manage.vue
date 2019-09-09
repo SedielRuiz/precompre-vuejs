@@ -47,7 +47,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="processGroup()">Guardar</v-btn>
+            <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processGroup()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -167,6 +167,12 @@
             grp: state => state.group.group, 
             rows: state => state.customer.customers, 
         }),
+        trySend(){
+            if(this.group && this.group._type && this.customers.length > 0){
+            return false; 
+            }
+            return true;
+        }
     },
   }
 </script>

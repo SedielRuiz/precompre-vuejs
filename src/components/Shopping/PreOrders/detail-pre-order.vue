@@ -1,20 +1,87 @@
 <template>
   <v-card class="elevation-12">
     <v-toolbar dark color="primary">
-      <v-toolbar-title>Pre orden</v-toolbar-title>
+      <v-toolbar-title>Pre compra</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn color="error" @click="closeModal()">Cerrar</v-btn>
     </v-toolbar>
     <v-card-text>
         <v-form>
-            <v-switch prepend-icon="title" v-model="all" :label="'Todos los '+ info.day"></v-switch>
-            <v-select prepend-icon="title" :disabled="all" :items="days" v-model="date" label="Fecha" ></v-select>
-            <v-select prepend-icon="title" :items="info.stripes" v-model="info.stripe" label="Hora" ></v-select>
+            <v-card class="pa-2" outlined tile v-if="sc">
+                <v-layout row wra>
+                    <v-flex xs12 md1>
+                        <v-text-field v-model="sc[0].quantity" name="quantity" label="Cantidad" type="number"></v-text-field>
+                    </v-flex> 
+                    <v-flex xs12 md3>
+                        <v-combobox :disabled="true" prepend-icon="filter_list" v-model="sc[0].text" label="Producto"></v-combobox>
+                    </v-flex>
+                    <v-flex xs12 md10>
+                        <v-layout justify-center row wra>
+                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                <v-checkbox v-model="sc[0].lunes" label="Lunes"></v-checkbox>
+                            </v-flex>
+                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                <v-checkbox v-model="sc[0].martes" label="Martes"></v-checkbox>
+                            </v-flex>
+                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                <v-checkbox v-model="sc[0].miercoles" label="Miercoles"></v-checkbox>
+                            </v-flex>
+                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                <v-checkbox v-model="sc[0].jueves" label="Jueves"></v-checkbox>
+                            </v-flex>
+                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                <v-checkbox v-model="sc[0].viernes" label="Viernes"></v-checkbox>
+                            </v-flex>
+                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                <v-checkbox v-model="sc[0].sabado" label="Sabados"></v-checkbox>
+                            </v-flex>
+                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                <v-checkbox v-model="sc[0].domingo" label="Domingos"></v-checkbox>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+                    <v-flex xs12 md1>
+                    </v-flex>
+                </v-layout>
+                <v-layout justify-center row wra>
+                    <v-flex xs12 md12>
+                        <label class="subTitle">Caracteristicas</label><v-icon medium @click="attrs ? attrs = false : attrs = true">add</v-icon>
+                        <div v-if="attrs">
+                            <v-layout row wra>
+                                <div v-for="(attr, index) in sc[0].attributes" :key="index+'_'+attr.code" class="row col-md-8">
+                                    <div v-if="attr.options && attr.options.length > 0">
+                                        <v-combobox  :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
+                                    </div>
+                                    <div v-else>
+                                        <div v-if="attr.type == 'boolean'">
+                                            <v-switch :disabled="attr.custom" :key="index+'_'+attr.code" prepend-icon="title" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :label="attr.code"></v-switch>
+                                        </div>
+                                        <div v-else>
+                                            <div v-if="attr.size == 'short'">
+                                                <v-text-field :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" :label="attr.code" type="text"></v-text-field>
+                                            </div>
+                                            <div v-else-if="attr.size == 'medium'">
+                                                <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="77px" name="mediumText" :label="attr.code"></v-textarea>
+                                            </div>
+                                            <div v-else>
+                                                <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="135px" name="mediumText" :label="attr.code"></v-textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </v-layout>
+                        </div>
+                    </v-flex>
+                </v-layout>
+                <v-layout row wra>
+                    <v-combobox prepend-icon="filter_list" v-model="sc[0].delivery_place" :items="formatList(customer.delivery_places, 'name', 'id', 'unit_name')" label="Lugares de entrega"></v-combobox>
+                </v-layout><hr><br>
+            </v-card>
         </v-form>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <!--v-btn color="primary" @click="processPermission()">Guardar</v-btn-->
+      <v-btn color="primary" style="width:100%" @click="processPreOrder()">Guardar</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -24,68 +91,112 @@
   
   export default {
     name: 'detail-pre-order',
-    props:['info'],
+    props:['sc', 'customer'],
     data () {
       return {
         preOrder:{},
-        all:true,
-        date:"",
+        info:{},
         days:[],
+        attrs:false,
       }
     },
     watch:{
-        info(val){
+        sc(val){
             if(val){
-                this.calculateNextWeek(true, val.date_order);
-                this.all = val.all_day;
-                this.info.stripe = this.info.stripes ? this.info.stripes[0].value : this.info.stripes = "";
+                for(var r = 0; r < val[0].days.length; r++){
+
+                    if(val[0].days[r] == 0)
+                        val[0].domingo = true;
+
+                    if(val[0].days[r]){
+                        switch(val[0].days[r]){
+                            case 1: val[0].lunes = true; break;
+                            case 2: val[0].martes = true; break;
+                            case 3: val[0].miercoles = true; break;
+                            case 4: val[0].jueves = true; break;
+                            case 5: val[0].viernes = true; break;
+                            case 6: val[0].sabado = true; break;
+                        }
+                    }
+                }
+                this.sc = val;
             }
         },
-        all(val){
-            this.info.all_day = val;
-            if(val){
-                this.calculateNextWeek(false);
-            }else{
-                this.date = this.info.date_order ? this.info.date_order : "";
-                this.info.date_order = this.info.date_order ? this.info.date_order : "";
-            }
-        }
     },
     mounted () {
     },
     methods: {
         ...mapActions({
-            create: 'permission/create',
-            update: 'permission/update',
+            update: 'preOrder/update',
             setWarning: 'setWarning',
         }),
-        calculateNextWeek(days, date){
-            var firstDay = new Date();
-            var res = firstDay.getDay() == 0 ? 1 : firstDay.getDay();
-            var so = res - this.info.code;
-            var nextWeek = new Date( firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
-            nextWeek = new Date(nextWeek.getTime() - so * 24 * 60 * 60 * 1000 );
-            var dateForm = (nextWeek.getDate() < 10 ? "0"+nextWeek.getDate() : nextWeek.getDate()) + "/" + ((nextWeek.getMonth()+1) < 10 ? "0"+(nextWeek.getMonth()+1) : (nextWeek.getMonth()+1)) + "/" + nextWeek.getFullYear();
-            if(days){
-                this.calculateDays(nextWeek, dateForm);
+        formatList(list, name, code, secondName = ""){
+            var lst = [];
+            if(list){
+                for(var s = 0; s < list.length; s++){
+                    var text = list[s][name];
+                    if(secondName!="")text+= " "+list[s][secondName];
+                    lst.push({"text":text, "value":list[s][code]});
+                }
             }
-            this.date = date ? date : dateForm;
-            this.info.date_order = this.date;
-        },
-        calculateDays(dayStart, dateInit){
-            this.days = [];
-            var nextWeek = dayStart;
-            this.days.push({"text":this.info.day+" "+dateInit, "value":dateInit});
-            for(var s = 0; s < 5; s++){
-                nextWeek = new Date(nextWeek.getTime() + 7 * 24 * 60 * 60 * 1000 );
-                var date = (nextWeek.getDate() < 10 ? "0"+nextWeek.getDate() : nextWeek.getDate()) + "/" + ((nextWeek.getMonth()+1) < 10 ? "0"+(nextWeek.getMonth()+1) : (nextWeek.getMonth()+1)) + "/" + nextWeek.getFullYear();
-                this.days.push({"text":this.info.day+" "+date, "value":date});
-            }
+            return lst;
         },
         closeModal(){
-            this.info.date_order = this.date && this.date.value ? this.date.value : this.date;
-            this.$emit('closeModal', this.info);
-        }
+            this.$emit('closeModal', false);
+        },
+        day(name){
+            var r = "";
+            switch(name){
+                case "lunes": r = 1; break;
+                case "martes": r = 2; break;
+                case "miercoles": r = 3; break;
+                case "jueves": r = 4; break;
+                case "viernes": r = 5; break;
+                case "sabado": r = 6; break;
+                case "domingo": r = 0; break;
+            }
+            return r;
+        },
+        formatAttributes(lst){
+            var list = [];
+            for(var r = 0; r < lst.length; r++){
+                list.push({"attribute":lst[r]._id, "value":lst[r].value && lst[r].value.value ? lst[r].value.value : lst[r].value });
+            }
+            return list;
+        },
+        buildPreOrder(){
+            var days = [];
+            var week = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];  
+            for(var s = 0; s < week.length; s++){
+                if(this.sc[0][week[s]] && this.sc[0][week[s]] == true){
+                    var d = this.day(week[s]);
+                    if(d != "")
+                        days.push(d);
+                }
+            }
+
+            var json = [];
+            var item = {
+                "product": this.sc[0].product_id,
+                "sub_product": this.sc[0].sub_product,
+                "attributes": this.formatAttributes(this.sc[0].attributes),
+                "unit_value": this.sc[0].unit_value,
+                "quantity": this.sc[0].quantity,
+            };
+            var place = this.sc[0].delivery_place && this.sc[0].delivery_place.value ? this.sc[0].delivery_place.value : this.sc[0].delivery_place;
+            json.push({"days":days, "item":item, "delivery_place":place, "customer":this.sc[0].customer_id, "_id":this.sc[0]._id});
+            return json;
+        },
+        processPreOrder(){
+            this.update(this.buildPreOrder()).then(
+                data => {
+                    this.setWarning(data, { root: true }).then(()=>{
+                        this.closeModal();
+                    })
+                },
+                error => {
+            });
+        },
     },
     computed:{
         ...mapState({

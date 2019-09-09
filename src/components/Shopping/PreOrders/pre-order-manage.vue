@@ -159,6 +159,9 @@
                                                 <v-btn text small class="primary" @click="editPreOrder(index, prd)">Editar</v-btn>
                                                 <v-btn text small class="primary" @click="deletePreOrder(prd._id._id)">Eliminar</v-btn><hr><br>
                                             </div>
+                                            <v-dialog v-model="detail" persistent>
+                                                <detailPreOrder @closeModal = "closeModal" :sc="info" :customer="customer"></detailPreOrder>
+                                            </v-dialog>
                                         </v-card-text>
                                     </v-card>
                                 </v-flex>
@@ -167,7 +170,7 @@
                     </v-form>   
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="primary" style="width:100%" @click="processPreOrder()">Guardar</v-btn>
+                    <v-btn color="primary" :disabled="trySend" style="width:100%" @click="processPreOrder()">Guardar</v-btn>
                 </v-card-actions>
                 </v-card>
             </v-flex>
@@ -184,9 +187,13 @@
 </style>
 <script>
   import {mapActions,mapState} from 'vuex';
-  
+  import detailPreOrder from '@/components/Shopping/PreOrders/detail-pre-order';
+
   export default {
     name: 'preo-order',
+    components: {
+      detailPreOrder,
+    },
     data () {
         return {
             deliveryPlace:"",
@@ -195,10 +202,13 @@
             addProduct:false,
             quantity:0,
             shoppingCart:[],
+            shoppingCartEdit:[],
             week:[],
             product:"",
             products:[],
             attributes:[],
+            detail:false,
+            info:"",
         }
     },
     watch:{
@@ -248,6 +258,11 @@
             getCustomer: 'customer/getCustomer', 
             setWarning: 'setWarning',
         }),
+        closeModal(info){
+            this.info = "";
+            this.detail = false;
+            this.fetchPreOrdersCustomer(this.customer_id);
+        },
         buildNameProduct(base, product, sub){
             var name = base;
             for(var s = 0; s < sub.options.length; s++){
@@ -263,7 +278,7 @@
             this.delete(id).then(
                 data => {
                     this.setWarning(data, { root: true }).then(()=>{
-                        this.redirect(true);
+                        this.fetchPreOrdersCustomer(this.customer_id);
                     })
                 },
                 error => {
@@ -271,69 +286,77 @@
         },
         editPreOrder(idx, product){
             for(var s = 0; s < this.preOrders.length; s++){
-                for(var r = 0; r < this.preOrders[s].pre_orders.length; r++){
-                    if( (this.preOrders[s].pre_orders[r].item.product._id == product.item.product._id) ){
-                        var p = this.groupDay(this.preOrders[s].pre_orders[r], product);
-                        if(p){
-                            this.shoppingCart[p.pos].days = p.days;
-                        }
-                        this.preOrders[s].pre_orders.splice(r, 1);
-                        if(this.preOrders[s].pre_orders.length == 0){
-                            this.preOrders.splice(s, 1);
+                if(this.preOrders[s].pre_orders.length > 0){
+                    for(var r = 0; r < this.preOrders[s].pre_orders.length; r++){
+                        if( (this.preOrders[s].pre_orders[r].item.product._id == product.item.product._id) ){
+                            var p = this.groupDay(this.preOrders[s].pre_orders[r], product);
+                            if(p){
+                                this.shoppingCartEdit[p.pos].days = p.days;
+                            }
                         }
                     }
                 }
             }
-            this.formatShopping(); 
+            this.formatShopping();
+            this.info = {};
+            this.info = this.shoppingCartEdit;
+            this.shoppingCartEdit = [];
+            this.detail = true;
+
         },
         formatShopping(){
-            for(var r = 0; r < this.shoppingCart.length; r++){
+            for(var r = 0; r < this.shoppingCartEdit.length; r++){
                 var attributes = [];
-                for(var a = 0; a < this.shoppingCart[r].pre_orders[0].item.attributes.length; a++){
-                    var at = this.shoppingCart[r].pre_orders[0].item.attributes[a].attribute[0];
-                    at.value = this.shoppingCart[r].pre_orders[0].item.attributes[a].value;
+                for(var a = 0; a < this.shoppingCartEdit[r].pre_orders[0].item.attributes.length; a++){
+                    var at = this.shoppingCartEdit[r].pre_orders[0].item.attributes[a].attribute[0];
+                    at.value = this.shoppingCartEdit[r].pre_orders[0].item.attributes[a].value;
                     attributes.push(at);
                 }
-                this.shoppingCart[r].attributes = attributes;
-                this.shoppingCart[r].quantity = this.shoppingCart[r].pre_orders[0].item.quantity;
-                this.shoppingCart[r].text = this.shoppingCart[r].pre_orders[0].item.product.name;
-                this.shoppingCart[r].delivery_place = this.formatList(this.customer.delivery_places, 'name', 'id', 'unit_name').find(element=>{return element.value == this.shoppingCart[r].pre_orders[0].delivery_place.id});
-                this.shoppingCart[r].product_id = this.shoppingCart[r].pre_orders[0].item.product._id;
-                this.shoppingCart[r].sub_product = this.shoppingCart[r].pre_orders[0].item.sub_product;
-                this.shoppingCart[r].customer_id = this.customer._id;
+                this.shoppingCartEdit[r].attributes = attributes;
+                this.shoppingCartEdit[r].quantity = this.shoppingCartEdit[r].pre_orders[0].item.quantity;
+                this.shoppingCartEdit[r].text = this.shoppingCartEdit[r].pre_orders[0].item.product.name;
+                this.shoppingCartEdit[r].delivery_place = this.formatList(this.customer.delivery_places, 'name', 'id', 'unit_name').find(element=>{return element.value == this.shoppingCartEdit[r].pre_orders[0].delivery_place.id});
+                this.shoppingCartEdit[r].product_id = this.shoppingCartEdit[r].pre_orders[0].item.product._id;
+                this.shoppingCartEdit[r].sub_product = this.shoppingCartEdit[r].pre_orders[0].item.sub_product;
+                this.shoppingCartEdit[r].customer_id = this.customer._id;
+                this.shoppingCartEdit[r]._id = this.shoppingCartEdit[r].pre_orders[0]._id;
             }
         },
         groupDay(obj, product){
             var re = false;
             var days = [];
-            var  idx = 0;
-            for(var r = 0; r < this.shoppingCart.length; r++){
-                if(this.shoppingCart[r].pre_orders[0].item.product._id == obj.item.product._id){
-                    idx = r;
-                    Array.isArray(this.shoppingCart[r].pre_orders[0].days) ? days = this.shoppingCart[r].pre_orders[0].days : days.push(this.shoppingCart[r].pre_orders[0].days);
+            var  idx = "";
+            for(var r = 0; r < this.shoppingCartEdit.length; r++){
+                if(this.shoppingCartEdit[r].pre_orders && this.shoppingCartEdit[r].pre_orders[0].item.product._id == obj.item.product._id){
+                    days = this.shoppingCartEdit[r].pre_orders[0].days;
                     days.push(obj.days);
                     re = true;
+                    idx = r;
                     break;
                 }
 
             }
             if(!re){
-                this.shoppingCart.push({"pre_orders":[obj]});
+                obj.days = [obj.days];
+                obj._id = obj._id._id;
+                this.shoppingCartEdit.push({"pre_orders":[obj]});
             }else{
                 return {"pos":idx, "days":days};
             }
         },
         formarDay(day){
             var name = "";
-            day = day && day[0].days || day[0].days == 0 ? day[0].days : "";
-            switch(day){
-                case 0: name = "Domingo"; break;
-                case 1: name = "Lunes"; break;
-                case 2: name = "Martes"; break;
-                case 3: name = "Miercoles"; break;
-                case 4: name = "Jueves"; break;
-                case 5: name = "Viernes"; break;
-                case 6: name = "Sabado"; break;
+            if(day.length > 0){
+                day = day && day[0].days || day[0].days == 0 ? day[0].days : "";
+                switch(day){
+                    case 0: name = "Domingo"; break;
+                    case 1: name = "Lunes"; break;
+                    case 2: name = "Martes"; break;
+                    case 3: name = "Miercoles"; break;
+                    case 4: name = "Jueves"; break;
+                    case 5: name = "Viernes"; break;
+                    case 6: name = "Sabado"; break;
+                }
             }
             return name == "" ? "No hay" : name;
         },
@@ -432,7 +455,6 @@
         buildPreOrder(){
             var json = [];
             for(var r = 0; r < this.shoppingCart.length; r++){
-                console.log(this.shoppingCart[r]);
                 var item = {
                     "product": this.shoppingCart[r].product_id,
                     "sub_product": this.shoppingCart[r].sub_product,
@@ -447,25 +469,15 @@
             return json;
         },
         processPreOrder () {
-            if(this.preOrders.length > 0){
-                this.update(this.buildPreOrder()).then(
-                    data => {
-                        this.setWarning(data, { root: true }).then(()=>{
-                            this.redirect(true);
-                        })
-                    },
-                    error => {
-                });
-            }else{
-                this.create(this.buildPreOrder()).then(
-                    data => {
-                        this.setWarning(data, { root: true }).then(()=>{
-                            this.redirect(true);
-                        })
-                    },
-                    error => {
-                });
-            }
+            this.create(this.buildPreOrder()).then(
+                data => {
+                    this.setWarning(data, { root: true }).then(()=>{
+                        this.shoppingCart = [];
+                        this.fetchPreOrdersCustomer(this.customer_id);
+                    })
+                },
+                error => {
+            });
         },
         redirect(page){
             if(page){
@@ -476,12 +488,18 @@
         }
     },
     computed:{
-      ...mapState({
-        prds: state => state.product.products,
-        warning: state => state.warning,
-        customer: state => state.customer.customer,
-        preOrders: state => state.preOrder.preOrders,
-      }),
+        ...mapState({
+            prds: state => state.product.products,
+            warning: state => state.warning,
+            customer: state => state.customer.customer,
+            preOrders: state => state.preOrder.preOrders,
+        }),
+        trySend(){
+            if(this.shoppingCart.length > 0 || this.preOrders.length > 0){
+                return false; 
+            }
+            return true;
+        }
     },
   }
 </script>
