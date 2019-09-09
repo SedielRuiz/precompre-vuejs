@@ -79,7 +79,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="processClass()">Guardar</v-btn>
+            <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processClass()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -322,6 +322,12 @@ var auxArr = ""
         ...mapGetters({
             getAttributes: 'productAttribute/getAttributes', 
         }),
+        trySend(){
+            if(this.classs && this.classs.code && this.classs.parent && this.attributesCustomisable && this.attributes){
+                return false; 
+            }
+            return true;
+        },
         attributesObj(){
             var attrs = [];
             if(this.attributesId){

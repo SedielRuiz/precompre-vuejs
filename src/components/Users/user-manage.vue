@@ -43,7 +43,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="processUser()">Guardar</v-btn>
+            <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processUser()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -169,6 +169,12 @@
         logged: state => state.auth.logged,
         us: state => state.user.user, 
       }),
+      trySend(){
+        if(this.user && this.user.id_type && this.user.id_description && this.user.email && this.user.password && this.user.name){
+          return false; 
+        }
+        return true;
+      }
     },
   }
 </script>

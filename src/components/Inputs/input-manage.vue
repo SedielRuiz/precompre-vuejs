@@ -13,7 +13,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="primary" @click="processInput()">Guardar</v-btn>
+      <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processInput()">Guardar</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -84,10 +84,16 @@
         }
     },
     computed:{
-        ...mapState({
-            warning: state => state.warning,
-            inp: state => state.input.input 
-        }),
+      ...mapState({
+          warning: state => state.warning,
+          inp: state => state.input.input 
+      }),
+      trySend(){
+        if(this.input && this.input.name && this.input.metric){
+          return false; 
+        }
+        return true;
+      }
     },
   }
 </script>

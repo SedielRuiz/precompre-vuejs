@@ -154,7 +154,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="processProductList()">Guardar</v-btn>
+            <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processProductList()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -482,6 +482,12 @@
           total_items: state => state.productList.total_items,
           total_pages: state => state.productList.total_pages,
       }),
+      trySend(){
+        if(this.nameFilter && this.filters.length > 0){
+          return false; 
+        }
+        return true;
+      }
     },
   }
 </script>

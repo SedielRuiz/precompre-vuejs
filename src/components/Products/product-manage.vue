@@ -201,7 +201,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="processProduct()">Guardar</v-btn>
+            <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processProduct()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -542,6 +542,12 @@
                 inp: state => state.input.inputs, 
                 rows: state => state.category.categories, 
             }),
+            trySend(){
+                if(this.product && this.product.name && this.product.type && this.product.default_price && this.class_id){
+                return false; 
+                }
+                return true;
+            }
         },
     }
 </script>

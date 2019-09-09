@@ -13,7 +13,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="primary" @click="processCategory()">Guardar</v-btn>
+      <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processCategory()">Guardar</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -78,10 +78,16 @@
         }
     },
     computed:{
-        ...mapState({
-            warning: state => state.warning,
-            ct: state => state.category.category 
-        }),
+      ...mapState({
+          warning: state => state.warning,
+          ct: state => state.category.category 
+      }),
+      trySend(){
+        if(this.category && this.category.title && this.category.name){
+          return false; 
+        }
+        return true;
+      }
     },
   }
 </script>

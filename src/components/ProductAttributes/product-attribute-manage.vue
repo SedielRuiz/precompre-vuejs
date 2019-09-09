@@ -43,7 +43,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="processAttribute()">Guardar</v-btn>
+            <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processAttribute()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -151,10 +151,16 @@
         }
     },
     computed:{
-        ...mapState({
-            warning: state => state.warning,
-            att: state => state.productAttribute.attribute, 
-        }),
+      ...mapState({
+          warning: state => state.warning,
+          att: state => state.productAttribute.attribute, 
+      }),
+      trySend(){
+        if(this.attribute && this.attribute.type && this.attribute.code && this.attribute.required != "" && this.attribute.visible != ""){
+          return false; 
+        }
+        return true;
+      }
     },
   }
 </script>

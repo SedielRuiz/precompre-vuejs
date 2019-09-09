@@ -31,7 +31,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="processPlace()">Guardar</v-btn>
+            <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processPlace()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -207,6 +207,12 @@
         warning: state => state.warning,
         pl: state => state.placeDelivery.place, 
       }),
+      trySend(){
+        if(this.place && this.place.country && this.place.city && this.place.address){
+          return false; 
+        }
+        return true;
+      }
     },
   }
 </script>
