@@ -7,9 +7,13 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@ddder/template-compiler": "^2.5.0-ddder.22",
+    "@vue/cli-service": "^3.11.0",
     "jwt-decode": "^2.2.0",
     "register-service-worker": "^1.6.2",
     "vee-validate": "^2.2.12",
@@ -20,11 +24,16 @@
     "vue-i18n": "^8.12.0",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.7",
+    "vue-storybook": "^1.1.0",
     "vue2-google-maps": "^0.10.7",
     "vuetify": "^1.5.18",
     "vuex": "^3.1.1"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^5.1.11",
+    "@storybook/addon-links": "^5.1.11",
+    "@storybook/addons": "^5.1.11",
+    "@storybook/vue": "^5.1.11",
     "@vue/cli-plugin-pwa": "^3.11.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -34,7 +43,7 @@
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
     "vue-loader": "^15.7.1",
-    "vue-template-compiler": "^2.4.4",
+    "vue-template-compiler": "^2.6.10",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
   },

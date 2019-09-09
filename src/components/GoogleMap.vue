@@ -3,7 +3,7 @@
         <div>
             <label class="lbl">{{title}}</label>
             <label>
-                <gmap-autocomplete v-model="placeDir != '' ? placeDir : placeN" class="form-control" @place_changed="setPlace" @change="addMarker"></gmap-autocomplete>
+                <gmap-autocomplete v-model="placeDir != '' ? placeDir : placeDir" class="form-control" @place_changed="setPlace" @change="addMarker"></gmap-autocomplete>
                 <!--v-text-field v-model="place.name" prepend-icon="email" name="name" label="Dirección" type="text"></v-text-field-->
             </label>
             <br/>
@@ -33,7 +33,13 @@ export default {
             placeN:""
         };
     },
-
+    watch:{
+        placeDir(val){
+            if(val && val.data){
+                this.placeDir = val.data;
+            }
+        }
+    },
     mounted() {
         this.geolocate();
         if(this.coords){
