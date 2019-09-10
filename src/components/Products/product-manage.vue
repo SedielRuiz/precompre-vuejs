@@ -52,7 +52,7 @@
                                     </div>
                                     <v-layout row wra>
                                         <v-flex xs12 md4>
-                                            <v-combobox prepend-icon="filter_list" v-model="sub.input" :items="inputs" label="Ingredientes"></v-combobox>
+                                            <v-combobox prepend-icon="filter_list" v-model="sub.input" :items="inputs" label="Insumos"></v-combobox>
                                         </v-flex>
                                         <v-flex xs12 md2>
                                             <v-text-field v-model="sub.quantity" prepend-icon="featured_play_list" name="quantity" label="Cantidad" type="number"></v-text-field>
@@ -76,14 +76,11 @@
                                                     <v-flex  xs12 md4>
                                                         <v-layout row wra v-for="p in sub.pivots">
                                                             <v-flex xs12 m12>
-                                                                <label>Variación: {{viewNamePivot(p.pivot)}}</label>
-                                                            </v-flex>
-                                                            <v-flex xs12 md12>
-                                                                <label>Cantidad: {{p.option}}</label>
+                                                                <label>{{viewNamePivot(p.pivot)}} {{p.option}}</label>
                                                             </v-flex>
                                                         </v-layout>
                                                     </v-flex>
-                                                    <v-flex  xs12 md8>
+                                                    <v-flex  xs12 md8 v-if="sub.ingredients">
                                                         <v-layout row wra>
                                                             <v-flex xs12 md11>
                                                                 <v-layout align-center row wra>
