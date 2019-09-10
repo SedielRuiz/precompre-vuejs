@@ -74,7 +74,7 @@
                                                 <h2>{{product.name}} - $ {{sub.price}}</h2>
                                                 <v-layout row wra>
                                                     <v-flex  xs12 md4>
-                                                        <v-layout row wra v-for="p in sub.pivots">
+                                                        <v-layout row wra v-for="(p, index) in sub.pivots" :key="index">
                                                             <v-flex xs12 m12>
                                                                 <label>{{viewNamePivot(p.pivot)}} {{p.option}}</label>
                                                             </v-flex>
