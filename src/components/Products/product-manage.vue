@@ -263,7 +263,7 @@
             },
             sub(val){
                 if(val){
-                    this.sub.price = this.product.default_price;
+                    this.sub.price = !this.sub.price ? this.product.default_price : this.sub.price;
                     this.sub.options = val.options;
                 }
             },
