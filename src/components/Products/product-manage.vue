@@ -38,7 +38,7 @@
                                         </v-flex>
                                     </v-layout>
                                     <div v-if="addPivots">
-                                        <v-layout row wra v-for="(pv, index) in addPivots">
+                                        <v-layout row wra v-for="(pv, index) in addPivots" :key="index">
                                             <v-flex xs12 md5>
                                                 <v-combobox :disabled="true" prepend-icon="filter_list" :value="viewNamePivot(pv.pivot)" :items="pivots" label="Variaciones"></v-combobox>
                                             </v-flex>  
@@ -68,7 +68,7 @@
                                         <v-spacer></v-spacer>
                                         <v-btn color="primary" @click="addArray('s')">Agregar sub producto</v-btn>
                                     </v-card-actions>
-                                    <v-layout row wra v-for="(sub, index) in subs">
+                                    <v-layout row wra v-for="(sub, index) in subs" :key="index">
                                         <v-flex xs12 md12>
                                             <v-card class="pa-2" outlined tile :key="index">
                                                 <h2>{{product.name}} - $ {{sub.price}}</h2>
@@ -218,7 +218,7 @@
             pivots:[],
             addPivots:[],
             pivotAttributes:[],
-            sub:"",
+            sub:{},
             subs:[],
             addSub:"",
             pagination: {
@@ -357,7 +357,7 @@
                         this.sub.ingredients = this.ingredients;
                         this.sub.pivots = this.addPivots;
                         this.subs.push(this.sub);
-                        this.sub = "";
+                        this.sub = {};
                         this.addPivots = [];
                         this.ingredients = [];
                         console.log(this.subs);
