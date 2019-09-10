@@ -74,7 +74,7 @@ const actions = {
     update:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('edit_pre_orders',data).then(
+        Vue.http.post('edit_pre_order',data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)

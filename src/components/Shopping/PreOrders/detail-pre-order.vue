@@ -182,7 +182,7 @@
                 }
             }
 
-            var json = [];
+            var json = {};
             var item = {
                 "product": this.sc[0].product_id,
                 "sub_product": this.sc[0].sub_product,
@@ -191,7 +191,7 @@
                 "quantity": this.sc[0].quantity,
             };
             var place = this.sc[0].delivery_place && this.sc[0].delivery_place.value ? this.sc[0].delivery_place.value : this.sc[0].delivery_place;
-            json.push({"days":days, "item":item, "delivery_place":place, "customer":this.sc[0].customer_id, "_id":this.sc[0]._id});
+            json = {"days":days, "item":item, "delivery_place":place, "customer":this.sc[0].customer_id, "_id":this.sc[0]._id};
             return json;
         },
         processPreOrder(){
