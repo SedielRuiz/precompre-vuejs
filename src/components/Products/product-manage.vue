@@ -218,7 +218,7 @@
             pivots:[],
             addPivots:[],
             pivotAttributes:[],
-            sub:{},
+            sub:"",
             subs:[],
             addSub:"",
             pagination: {
@@ -265,6 +265,8 @@
                 if(val){
                     this.sub.price = !this.sub.price ? this.product.default_price : this.sub.price;
                     this.sub.options = val.options;
+                }else{
+                    this.sub = "";
                 }
             },
             classess(val){
@@ -354,9 +356,13 @@
                         this.addPivots.push({"pivot":this.sub.id, "option":this.sub.option.value});
                         break;
                     case "s":
+                        console.log("entre");
                         this.sub.ingredients = this.ingredients;
                         this.sub.pivots = this.addPivots;
-                        this.subs.push(this.sub);
+                        console.log(this.sub);
+                        this.subs.push({"id":this.sub.id, "ingredients":this.ingredients, "input":this.sub.input, "option":this.sub.option, 
+                                        "options":this.sub.options, "pivots":this.sub.pivots, "price":this.sub.price, "quantity":this.sub.quantity,
+                                        "text":this.sub.text, "value":this.sub.value});
                         this.sub = {};
                         this.addPivots = [];
                         this.ingredients = [];
