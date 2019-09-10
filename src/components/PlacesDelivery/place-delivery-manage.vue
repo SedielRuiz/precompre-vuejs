@@ -70,12 +70,11 @@
         pl(val){
           if(val){
             this.place = val;
-            console.log("hago esto");
             for(var s = 0; s < this.unities.length; s++){
               for(var r = 0; r < val.unities.length; r++){
                 for(var p = 0; p < val.unities[r].list.length; p++){
                   if(this.unities[s].value == val.unities[r]._type){
-                    this.units.push({"id":s, "type":val.unities[r]._type, "code":s+"_"+val.unities[r].list[p].unit_name, "name":val.unities[r].list[p].unit_name});
+                    this.units.push({"id":s, "type":val.unities[r]._type, "code":s+"_"+val.unities[r].list[p].unit_name.split(" ").join(""), "name":val.unities[r].list[p].unit_name});
                   }
                 }
                 this.unities[s].type = val.unities[r]._type;
@@ -126,18 +125,21 @@
         return next;
       },
       addUnity(idx, type){
-        if(this.verifyUnities(type, this.unities[idx].quantity)){
-          this.units.push({"id":idx, "type":type, "code":idx+"_"+this.unities[idx].unity, "name":this.unities[idx].unity});
-          this.unities[idx].list = this.units;
-          this.unities[idx].msgError = "";
-        }
-        else{
-          this.unities[idx].msgError = "Cantidad maxima de unidades para la unidad "+ this.unities[idx].text;
-        }
-        this.unities[idx].unity = "";
+        //if(this.unities[idx].unity != ""){
+          if(this.verifyUnities(type, this.unities[idx].quantity)){
+            this.units.push({"id":idx, "type":type, "code":idx+"_"+this.unities[idx].unity.split(" ").join(""), "name":this.unities[idx].unity});
+            this.unities[idx].list = this.units;
+            this.unities[idx].msgError = "";
+          }
+          else{
+            this.unities[idx].msgError = "Cantidad maxima de unidades para la unidad "+ this.unities[idx].text;
+          }
+          this.unities[idx].unity = "";
+       // }
       },
       removeUnity(code){
         var key = code.split("_");
+        code = key[0]+"_"+key[1].split(" ").join("");
         var idx = 0;
         for(var s = 0; s < this.units.length; s++){
           if(this.units[s].code == code){

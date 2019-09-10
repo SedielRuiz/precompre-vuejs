@@ -2,7 +2,7 @@
   <v-container>
     <div class="row col-md-10">
         <div class="col-md-8">
-            <h1>Clases de atributos</h1>
+            <h1>Clases de producto</h1>
         </div>
         <div class="col-md-2">
             <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>

@@ -323,7 +323,7 @@ var auxArr = ""
             getAttributes: 'productAttribute/getAttributes', 
         }),
         trySend(){
-            if(this.classs && this.classs.code && this.classs.parent && this.attributesCustomisable && this.attributes){
+            if(this.classs && this.classs.code && this.attributesCustomisable && this.attributes){
                 return false; 
             }
             return true;
