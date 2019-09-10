@@ -49,7 +49,8 @@
                                                 <v-icon medium @click="removeArray('p', index)">close</v-icon>
                                             </v-flex>
                                         </v-layout>
-                                    </div>
+                                    </div><br>
+                                    <h2>Insumos del sub producto</h2><hr>
                                     <v-layout row wra>
                                         <v-flex xs12 md4>
                                             <v-combobox prepend-icon="filter_list" v-model="sub.input" :items="inputs" label="Insumos"></v-combobox>
@@ -66,7 +67,7 @@
                                     </v-layout>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="primary" @click="addArray('s')">Agregar sub producto</v-btn>
+                                        <v-btn color="primary" :disabled="addPivots.length > 0 ? false : true" @click="addArray('s')">Agregar sub producto</v-btn>
                                     </v-card-actions>
                                     <v-layout row wra v-for="(subp, index) in subs" :key="index">
                                         <v-flex xs12 md12>
@@ -80,10 +81,10 @@
                                                             </v-flex>
                                                         </v-layout>
                                                     </v-flex>
-                                                    <v-flex  xs12 md8 v-if="subp.ingredients">
+                                                    <v-flex  xs12 md8>
                                                         <v-layout row wra>
                                                             <v-flex xs12 md11>
-                                                                <v-layout align-center row wra>
+                                                                <v-layout v-if="subp.ingredients.length > 0" align-center row wra>
                                                                     Ingredientes
                                                                     <v-chip v-for="(i, index) in subp.ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}}</v-chip>
                                                                 </v-layout>
@@ -356,14 +357,13 @@
                         this.addPivots.push({"pivot":this.sub.id, "option":this.sub.option.value});
                         break;
                     case "s":
-                        console.log("entre");
                         this.sub.ingredients = this.ingredients;
                         this.sub.pivots = this.addPivots;
                         console.log(this.sub);
                         this.subs.push({"id":this.sub.id, "ingredients":this.ingredients, "input":this.sub.input, "option":this.sub.option, 
                                         "options":this.sub.options, "pivots":this.sub.pivots, "price":this.sub.price, "quantity":this.sub.quantity,
                                         "text":this.sub.text, "value":this.sub.value});
-                        this.sub = {};
+                        this.sub = "";
                         this.addPivots = [];
                         this.ingredients = [];
                         console.log(this.subs);
