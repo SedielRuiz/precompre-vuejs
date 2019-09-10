@@ -68,24 +68,24 @@
                                         <v-spacer></v-spacer>
                                         <v-btn color="primary" @click="addArray('s')">Agregar sub producto</v-btn>
                                     </v-card-actions>
-                                    <v-layout row wra v-for="(sub, index) in subs" :key="index">
+                                    <v-layout row wra v-for="(subp, index) in subs" :key="index">
                                         <v-flex xs12 md12>
                                             <v-card class="pa-2" outlined tile :key="index">
-                                                <h2>{{product.name}} - $ {{sub.price}}</h2>
+                                                <h2>{{product.name}} - $ {{subp.price}}</h2>
                                                 <v-layout row wra>
                                                     <v-flex  xs12 md4>
-                                                        <v-layout row wra v-for="(p, index) in sub.pivots" :key="index">
+                                                        <v-layout row wra v-for="(p, index) in subp.pivots" :key="index">
                                                             <v-flex xs12 m12>
                                                                 <label>{{viewNamePivot(p.pivot)}} {{p.option}}</label>
                                                             </v-flex>
                                                         </v-layout>
                                                     </v-flex>
-                                                    <v-flex  xs12 md8 v-if="sub.ingredients">
+                                                    <v-flex  xs12 md8 v-if="subp.ingredients">
                                                         <v-layout row wra>
                                                             <v-flex xs12 md11>
                                                                 <v-layout align-center row wra>
                                                                     Ingredientes
-                                                                    <v-chip v-for="(i, index) in sub.ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}}</v-chip>
+                                                                    <v-chip v-for="(i, index) in subp.ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}}</v-chip>
                                                                 </v-layout>
                                                             </v-flex>
                                                         <v-icon medium @click="removeArray('s', index)">close</v-icon>
