@@ -14,10 +14,13 @@
         :items="rows"
         class="elevation-1">
         <template v-slot:items="props">
-        <td>{{ props.item.code }}</td>
-        <td>{{ props.item.type }}</td>
-        <td>{{ props.item.required ? 'Si' : 'No'}}</td>
-        <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
+          <td>{{ props.item.code }}</td>
+          <td>{{ props.item.type }}</td>
+          <td>{{ props.item.required ? 'Si' : 'No'}}</td>
+          <td>
+            <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
+            <v-btn color="error" @click="deteleAttribute(props.item._id)">Eliminar</v-btn>
+          </td>
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
@@ -44,13 +47,25 @@
       }
     },
     mounted () {
-        this.fetchAttributes();
+      this.fetchAttributes();
     },
     methods: {
       ...mapActions({
         fetchAttributes: 'productAttribute/fetchAttributes',
+        delete: 'productAttribute/delete',
         setWarning: 'setWarning',
       }),
+      deteleAttribute(id){
+        this.delete(id).then(
+          data => {
+            this.setWarning(data, { root: true }).then(()=>{
+                this.fetchAttributes();
+            })
+          },
+          error => {
+            console.log(error);
+          });
+      },
       search(pagination){
         this.fetchAttributes(pagination);
       },

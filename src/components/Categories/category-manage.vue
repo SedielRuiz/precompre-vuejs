@@ -7,7 +7,7 @@
     </v-toolbar>
     <v-card-text>
       <v-form>
-          <v-text-field :disabled="edit ? true : false" v-model="category.title" prepend-icon="email" name="title" label="Titulo" type="text"></v-text-field>
+          <v-text-field :disabled="edit ? true : false" v-model="category.title" prepend-icon="email" name="title" label="Código" type="text"></v-text-field>
           <v-text-field v-model="category.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
       </v-form>
     </v-card-text>

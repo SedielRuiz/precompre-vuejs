@@ -17,7 +17,7 @@
             <td>{{ props.item.name }}</td>
             <td v-if="props.item.product_class">{{ props.item.product_class.code }}</td>
             <td v-else></td>
-            <td v-if="props.item.attributes">{{ props.item.attributes[0].value.charAt(0).toUpperCase() + props.item.attributes[0].value.slice(1) }}</td>
+            <td v-if="props.item.attributes.length > 0">{{ props.item.attributes[0].value.charAt(0).toUpperCase() + props.item.attributes[0].value.slice(1) }}</td>
             <td v-else></td>
             <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo" }}</td>
             <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>

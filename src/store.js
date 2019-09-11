@@ -22,7 +22,7 @@ import preOrder from '@/modules/preOrder';
 import comanda from '@/modules/comanda';
 import input from '@/modules/input';
 
-const store = new Vuex.Store({
+const store = new Vuex.Store({  
   state: {
     processing: false,
     warning: null,

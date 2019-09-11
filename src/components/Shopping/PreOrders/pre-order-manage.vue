@@ -421,7 +421,11 @@
                         this.product.days = [];
                         this.product.viewAtt = false;
                         if(!this.validateRepeat()){
-                            this.shoppingCart.push(Object.assign(this.product));
+                            console.log(this.product);
+                            this.shoppingCart.push({"attributes":this.product.attributes, "categories":this.product.categories, "class":this.product.class, "customer_id":this.product.customer_id,
+                                                    "days":this.product.days, "price":this.product.price, "principal_value":this.product.principal_value, "product_id":this.product.product_id,
+                                                    "quantity":this.product.quantity, "sub_product":this.product.sub_product, "sub_value":this.product.sub_value, "text":this.product.text,
+                                                    "unit_value":this.product.unit_value, "viewAtt":this.product.viewAtt});
                         }
                         this.product = "";
                         this.attributes = [];
