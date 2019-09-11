@@ -235,7 +235,7 @@
             if(this.edit)
             this.customer.status = this.customer.status.value;
             this.customer.delivery_places = this.placesSelected;
-            this.customer.password = this.generatePassword(8);
+            this.customer.password = "admin123"//this.generatePassword(8);
             return this.customer;
         },
         processCustomer () {

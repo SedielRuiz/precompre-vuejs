@@ -151,7 +151,7 @@
         this.user.id_type = this.user.id_type && this.user.id_type.value ? this.user.id_type.value : this.user.id_type;
         if(this.edit)
           this.user.status = this.user.status.value;
-        this.user.password = this.generatePassword(8);
+        this.user.password = "admin123"//this.generatePassword(8);
         return this.user;
       },
       processUser () {
