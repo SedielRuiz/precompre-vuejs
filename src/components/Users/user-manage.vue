@@ -36,8 +36,9 @@
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--TELEFONOS-->
                     <label style="font-size: 18px;">Nuevo teléfono</label><hr>
+                    <v-alert :value="phone.error != ''? true : false" type="error">{{phone.error}}</v-alert>
                     <v-text-field v-model="phone.number" prepend-icon="call" name="number" label="Número" type="number"></v-text-field>
-                    <v-combobox v-model="phone.type" :items="typesPhone" prepend-icon="call" label="Tipo de número"></v-combobox>
+                    <v-combobox v-model="!phone.type ? phone.type = 'Movil' : phone.type" :items="typesPhone" prepend-icon="call" label="Tipo de número"></v-combobox>
                     <v-switch v-model="phones.length == 0 ? phone.main = true : phone.main" :label="'Principal'"></v-switch>
                     <v-btn color="primary" @click="addPhone()">Agregar</v-btn>
                     <!--TELEFONOS-->
@@ -109,9 +110,19 @@
         setWarning: 'setWarning',
       }),
       addPhone(){
+        for(var s = 0; s < this.phones.length; s++){
+          if(this.phone.main && this.phones[s].main){
+            this.phone.error = "Ya tiene un teléfono principal.";
+            break;
+          }else{
+            this.phone.error = "";
+          }
+        }
+        if(!this.phone.error){
           this.phones.push(this.phone);
           this.phone = {};
           this.addNumber = false;
+        }
       },
       removePhone(idx){
         this.phones.splice(idx,1);
