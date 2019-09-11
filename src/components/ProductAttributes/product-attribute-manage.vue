@@ -24,7 +24,7 @@
                 <v-switch v-model="attribute.required" :label="'Requerido'"></v-switch>
                 <v-switch v-model="attribute.visible" :label="'Visible'"></v-switch>
                 <v-switch v-model="attribute.wysiwyg" :label="'Wysiwyg'"></v-switch>
-                <h2>Vista previa opciones</h2>
+                <h2>Opciones personalizables</h2>
                 <div v-if="options.length > 0">
                   <v-chip v-for="(opc, index) in options" :key="index">{{opc.code}} <v-icon medium @click="removeOption(index)">close</v-icon></v-chip>
                 </div>
@@ -32,7 +32,6 @@
                 <div class="row col-md-8">
                   <v-card  style="height: 100%;width: 84%; padding: 31px;">
                     <!--OPCIONES-->
-                    <label style="font-size: 18px;">Opciones personalizables</label><hr>
                     <v-text-field v-model="option.code" prepend-icon="title" name="title" label="Opción" type="text"></v-text-field>
                     <v-switch v-if="!option.validate ? option.validated = true : option.validated" v-model="option.validated" :label="'Validado'"></v-switch>
                     <v-btn color="primary" @click="addOption()">Agregar</v-btn>
