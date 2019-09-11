@@ -17,11 +17,28 @@
             </v-list-tile>
 
             <v-divider></v-divider>
-
+            <v-list-tile @click="dirigir('/placeDeliveryList')">
+                <v-list-tile-action>
+                <v-icon>assignment</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                <v-list-tile-title>Lugares de entrega</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+            <v-divider></v-divider>
+            <v-list-tile @click="dirigir('/categoryList')">
+                <v-list-tile-action>
+                <v-icon>assignment</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                <v-list-tile-title>Categorias</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+            <v-divider></v-divider>
             <v-list-group prepend-icon="assignment" value="true">
               <template v-slot:activator>
-                <v-list-tile>
-                  <v-list-tile-title>Control de acceso</v-list-tile-title>
+                <v-list-tile @click="dirigir('/userList')">
+                  <v-list-tile-title>Usuarios</v-list-tile-title>
                 </v-list-tile>
               </template>
 
@@ -44,21 +61,12 @@
               </v-list-tile>
             </v-list-group>
 
-            <v-list-tile @click="dirigir('/userList')">
-                <v-list-tile-action>
-                <v-icon>account_circle</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                <v-list-tile-title>Usuarios</v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
-
             <v-divider></v-divider>
 
             <v-list-group prepend-icon="assignment" value="true">
               <template v-slot:activator>
-                <v-list-tile>
-                  <v-list-tile-title>Control de productos</v-list-tile-title>
+                <v-list-tile @click="dirigir('/productList')">
+                  <v-list-tile-title>Productos</v-list-tile-title>
                 </v-list-tile>
               </template>
 
@@ -78,57 +86,25 @@
                   <v-list-tile-title>Clases de productos</v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile @click="dirigir('/categoryList')">
-                  <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-content>
-                  <v-list-tile-title>Categorias</v-list-tile-title>
-                  </v-list-tile-content>
-              </v-list-tile>
-            </v-list-group>
-            <v-list-tile @click="dirigir('/inputList')">
-                  <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-content>
-                  <v-list-tile-title>Insumos</v-list-tile-title>
-                  </v-list-tile-content>
-              </v-list-tile>
-            </v-list-group>
+                <v-list-tile @click="dirigir('/productListList')">
+                    <v-list-tile-action>
+                    <v-icon>assignment</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                    <v-list-tile-title>Filtros de productos</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+              </v-list-group>
 
-            <v-list-tile @click="dirigir('/productList')">
-                <v-list-tile-action>
-                <v-icon>assignment</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                <v-list-tile-title>Productos</v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile @click="dirigir('/productListList')">
-                <v-list-tile-action>
-                <v-icon>assignment</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                <v-list-tile-title>Listas de productos</v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
+            </v-list-group>
+            <v-divider></v-divider>
             <v-divider></v-divider>
             <v-list-group prepend-icon="assignment" value="true">
               <template v-slot:activator>
-                <v-list-tile>
-                  <v-list-tile-title>Control de clientes</v-list-tile-title>
+                <v-list-tile @click="dirigir('/customerList')">
+                  <v-list-tile-title>Clientes</v-list-tile-title>
                 </v-list-tile>
               </template>
-
-              <v-list-tile @click="dirigir('/placeDeliveryList')">
-                  <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-content>
-                  <v-list-tile-title>Lugares de entrega</v-list-tile-title>
-                  </v-list-tile-content>
-              </v-list-tile>
               <v-list-tile @click="dirigir('/groupList')">
                   <v-list-tile-action>
                   <v-icon>assignment</v-icon>
@@ -137,33 +113,33 @@
                   <v-list-tile-title>Grupo</v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
-              
+              <v-list-tile @click="dirigir('/customerListList')">
+                  <v-list-tile-action>
+                  <v-icon>assignment</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Filtros de clientes</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
             </v-list-group>
-            <v-list-tile @click="dirigir('/customerList')">
-                <v-list-tile-action>
-                <v-icon>assignment</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                <v-list-tile-title>Clientes</v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile @click="dirigir('/customerListList')">
-                <v-list-tile-action>
-                <v-icon>assignment</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                <v-list-tile-title>Listas de clientes</v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
+
             <v-divider></v-divider>
-            <v-list-tile @click="dirigir('/customerListList')">
+            <v-list-group prepend-icon="assignment" value="true">
+              <template v-slot:activator>
+                <v-list-tile>
+                  <v-list-tile-title>Compras</v-list-tile-title>
+                </v-list-tile>
+              </template>
+
+              <v-list-tile @click="dirigir('/inputList')">
                 <v-list-tile-action>
                 <v-icon>assignment</v-icon>
                 </v-list-tile-action>
                 <v-list-tile-content>
-                <v-list-tile-title>Compras</v-list-tile-title>
+                <v-list-tile-title>Insumos</v-list-tile-title>
                 </v-list-tile-content>
-            </v-list-tile>
+              </v-list-tile>
+            </v-list-group> 
             <v-divider></v-divider>
               <v-list-tile @click="dirigir('/comanda')">
                 <v-list-tile-action>

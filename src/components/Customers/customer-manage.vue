@@ -11,12 +11,22 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-combobox v-model="customer.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
-                <v-text-field v-model="customer.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
-                <label style="font-size: 19px;">Fecha de nacimiento.</label><br>
-                <v-date-picker v-model="customer.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker>
-                <v-text-field v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
-                <v-text-field v-model="customer.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
+              <v-layout row wra>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field v-model="customer.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
+                </v-flex>
+              </v-layout>
+              <v-layout row wra>
+                <v-flex xs12 sm12 md6>
+                  <v-combobox v-model="customer.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field v-model="customer.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
+                </v-flex>
+              </v-layout>
                 <v-select v-model="customer.gender" prepend-icon="account_box" :items="genders" label="Genero"></v-select>
                 <v-text-field v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
                 <v-combobox v-if="edit!=''" v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
@@ -33,7 +43,8 @@
                     <v-text-field v-model="phone.number" prepend-icon="call" name="number" label="Número" type="number"></v-text-field>
                     <v-combobox v-model="phone.type" :items="typesPhone" prepend-icon="call" label="Tipo de número"></v-combobox>
                     <v-switch v-model="phones.length == 0 ? phone.main = true : phone.main" :label="'Principal'"></v-switch>
-                    <v-btn color="primary" @click="addPhone()">Agregar</v-btn>
+                    {{phone.error}}
+                    <v-btn color="primary" :disabled="phone.number ? false : true" @click="addPhone()">Agregar</v-btn>
                     <!--TELEFONOS-->
                   </v-card><br>
                 </div>
@@ -53,6 +64,8 @@
                     <!--LUGARES DE ENTREGA-->
                   </v-card><br>
                 </div>
+              <label style="font-size: 19px;">Fecha de nacimiento.</label><br>
+              <v-date-picker v-model="customer.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -183,9 +196,21 @@
             this.addPlace = false;
         },
         addPhone(){
-            this.phones.push(this.phone);
-            this.phone = {};
-            this.addNumber = false;
+          if(this.phone.number){
+            for(var s = 0; s < this.phones.length; s++){
+              if(this.phone.main == true && this.phones[s].main == true){
+                this.phone.error = "Ya tiene un teléfono principal.";
+                break;
+              }else{
+                this.phone.error = "";
+              }
+            }
+            if(!this.phone.error){
+              this.phones.push(this.phone);
+              this.phone = {};
+              this.addNumber = false;
+            }
+          }
         },
         removePhone(idx){
             this.phones.splice(idx,1);
