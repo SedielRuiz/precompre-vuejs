@@ -76,7 +76,7 @@ const actions = {
     delete:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('delete_product_attribute',data).then(
+        Vue.http.post('delete_product_attribute/'+data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)

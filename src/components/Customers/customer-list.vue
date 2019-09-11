@@ -60,15 +60,17 @@
         setWarning: 'setWarning',
       }),
       deleteCustomer(id){
-        this.delete(id).then(
-          data => {
-            this.setWarning(data, { root: true }).then(()=>{
-                this.fetchCustomers();
-            })
-          },
-          error => {
-            console.log(error);
-          });
+        if(confirm("¿ Seguro que desea eliminar este registro ? ")){
+          this.delete(id).then(
+            data => {
+              this.setWarning(data, { root: true }).then(()=>{
+                  this.fetchCustomers();
+              })
+            },
+            error => {
+              console.log(error);
+            });
+        }
       },
       search(pagination){
         this.fetchCustomers(pagination);

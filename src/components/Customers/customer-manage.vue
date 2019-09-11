@@ -20,7 +20,7 @@
                 <v-select v-model="customer.gender" prepend-icon="account_box" :items="genders" label="Genero"></v-select>
                 <v-text-field v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
                 <v-combobox v-if="edit!=''" v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-                <v-text-field v-if="edit==''" v-model="customer.password" prepend-icon="lock" name="password" label="Contraseña" type="password"></v-text-field>
+                <v-text-field v-show="false" v-model="customer.password" prepend-icon="lock" name="password" label="Contraseña" type="password"></v-text-field>
                 <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
                 <div v-if="phones.length > 0">
                   <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>

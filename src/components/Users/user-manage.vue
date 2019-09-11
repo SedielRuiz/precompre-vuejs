@@ -1,7 +1,5 @@
 <template>
   <v-container>
-    <v-layout align-center justify-center>
-      <v-flex xs12 sm8 md10>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
             <v-toolbar-title>{{titleText}}</v-toolbar-title>
@@ -10,16 +8,25 @@
             <v-btn v-if="edit == 0" color="error" @click="redirect(false)">Cancelar</v-btn>
           </v-toolbar>
           <v-card-text>
-            <v-form>
-                <v-combobox v-model="user.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
-                <v-text-field v-model="user.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
-                <label style="font-size: 19px;">Fecha de nacimiento.</label><br>
-                <v-date-picker v-model="user.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker>
-                <v-text-field v-model="user.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
-                <v-text-field v-model="user.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
+              <v-layout row wra>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field class="col-xs-12 col-sm-12 col-md-6" v-model="user.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field v-model="user.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
+                </v-flex>
+              </v-layout>
+              <v-layout row wra>
+                <v-flex xs12 sm12 md6>
+                  <v-combobox v-model="user.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field v-model="user.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
+                </v-flex>
+              </v-layout>
                 <v-text-field v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
                 <v-combobox v-if="edit!=''" v-model="user.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-                <v-text-field v-if="edit==''" v-model="user.password" prepend-icon="lock" name="password" label="Contraseña" type="password"></v-text-field>
+                <!--v-text-field v-if="edit==''" v-model="user.password" prepend-icon="lock" name="password" label="Contraseña" type="password"></v-text-field-->
                 <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
                 <div v-if="phones.length > 0">
                   <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
@@ -36,15 +43,14 @@
                     <!--TELEFONOS-->
                   </v-card><br>
                 </div>
-            </v-form>
+                <label style="font-size: 19px;">Fecha de nacimiento.</label><br>
+                <v-date-picker v-model="user.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processUser()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
-      </v-flex>
-    </v-layout>
   </v-container>
 </template>
 
@@ -123,6 +129,7 @@
         this.user.id_type = this.user.id_type && this.user.id_type.value ? this.user.id_type.value : this.user.id_type;
         if(this.edit)
           this.user.status = this.user.status.value;
+        this.user.password = "admin123";
         return this.user;
       },
       processUser () {

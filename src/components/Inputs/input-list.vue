@@ -65,15 +65,17 @@
         setWarning: 'setWarning',
       }),
       deleteInput(id){
-        this.delete(id).then(
-          data => {
-            this.setWarning(data, { root: true }).then(()=>{
-                this.fetchInputs();
-            })
-          },
-          error => {
-            console.log(error);
-          });
+        if(confirm("¿ Seguro que desea eliminar este registro ? ")){
+          this.delete(id).then(
+            data => {
+              this.setWarning(data, { root: true }).then(()=>{
+                  this.fetchInputs();
+              })
+            },
+            error => {
+              console.log(error);
+            });
+        }
       },
       search(pagination){
         this.fetchInputs(pagination);
