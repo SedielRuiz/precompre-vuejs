@@ -497,7 +497,7 @@
                 this.buildAttributes();
                 this.product.product_class = this.class_id.value;
                 this.product.attributes = attrs;
-                this.product.pivot_attributes = this.pivotAttributes;
+                this.product.pivot_attributes = this.pivotAttributes//["5d2b2e1ac80bd50c64d4d265", "5d41b1b8e99910503cd97820", "5d41b169d4925a50146c9f63", "5d2b2e1ac80bd50c64d4d265"];
                 this.product.categories = this.formatCategories();
                 if(this.edit)
                     this.product.status = this.product.status.value;

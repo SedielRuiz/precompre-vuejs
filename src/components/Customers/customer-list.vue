@@ -19,7 +19,10 @@
         <td>{{ props.item.last_name }}</td>
         <td>{{ props.item.email }}</td>
         <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo" }}</td>
-        <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
+        <td>
+          <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
+          <v-btn color="error" @click="deleteCustomer(props.item._id)">Eliminar</v-btn>
+        </td>
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
@@ -53,8 +56,20 @@
     methods: {
       ...mapActions({
         fetchCustomers: 'customer/fetchCustomers',
+        delete: 'customer/delete',
         setWarning: 'setWarning',
       }),
+      deleteCustomer(id){
+        this.delete(id).then(
+          data => {
+            this.setWarning(data, { root: true }).then(()=>{
+                this.fetchCustomers();
+            })
+          },
+          error => {
+            console.log(error);
+          });
+      },
       search(pagination){
         this.fetchCustomers(pagination);
       },

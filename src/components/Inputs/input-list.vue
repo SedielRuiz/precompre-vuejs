@@ -14,9 +14,12 @@
         :items="rows"
         class="elevation-1">
         <template v-slot:items="props">
-        <td>{{ props.item.name }}</td>
-        <td>{{ props.item.metric }}</td>
-        <td><v-btn color="primary" @click="redirect(true, props.item._id)">Editar</v-btn></td>
+          <td>{{ props.item.name }}</td>
+          <td>{{ props.item.metric }}</td>
+          <td>
+            <v-btn color="primary" @click="redirect(true, props.item._id)">Editar</v-btn>
+            <v-btn color="error" @click="deleteInput(props.item._id)">Eliminar</v-btn>
+          </td>
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
@@ -58,8 +61,20 @@
     methods: {
       ...mapActions({
         fetchInputs: 'input/fetchInputs',
+        delete: 'input/delete',
         setWarning: 'setWarning',
       }),
+      deleteInput(id){
+        this.delete(id).then(
+          data => {
+            this.setWarning(data, { root: true }).then(()=>{
+                this.fetchInputs();
+            })
+          },
+          error => {
+            console.log(error);
+          });
+      },
       search(pagination){
         this.fetchInputs(pagination);
       },

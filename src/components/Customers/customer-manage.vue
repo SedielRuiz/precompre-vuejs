@@ -30,12 +30,9 @@
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--TELEFONOS-->
                     <label style="font-size: 18px;">Nuevo teléfono</label><hr>
-                    <v-text-field v-model="phone.title" prepend-icon="title" name="title" label="Titulo" type="text"></v-text-field>
                     <v-text-field v-model="phone.number" prepend-icon="call" name="number" label="Número" type="number"></v-text-field>
                     <v-combobox v-model="phone.type" :items="typesPhone" prepend-icon="call" label="Tipo de número"></v-combobox>
-                    <v-text-field v-model="phone.extension" prepend-icon="extension" name="extension" label="Extensión" type="text"></v-text-field>
-                    <v-text-field v-model="phone.code" prepend-icon="code" name="code" label="Código postal" type="text"></v-text-field>
-                    <v-switch v-model="phone.main" :label="'Principal'"></v-switch>
+                    <v-switch v-model="phones.length == 0 ? phone.main = true : phone.main" :label="'Principal'"></v-switch>
                     <v-btn color="primary" @click="addPhone()">Agregar</v-btn>
                     <!--TELEFONOS-->
                   </v-card><br>
@@ -97,8 +94,8 @@
         placeDelivery:"",
         typeSeleted:"",
         typesPhone: [
-          {text: 'Fijo', value:'fijo'},
-          {text: 'Celular', value:'movil'}
+          {text: 'Movil', value:'movil'},
+          {text: 'Hogar', value:'home'}
         ],
         typesIdentification: [
           {text: 'Tarjeta de identidad', value:'ti'},
