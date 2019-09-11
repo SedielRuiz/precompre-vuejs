@@ -70,9 +70,6 @@
                         </v-card><br>
                         <v-card class="pa-2" outlined tile v-if="shoppingCart.length > 0">
                             <h1>Pre compra</h1><hr><br>
-                            <v-layout row wra>
-                                <v-combobox prepend-icon="filter_list" v-model="deliveryPlace" :items="formatList(customer.delivery_places, 'name', 'id', 'unit_name')" label="Lugares de entrega"></v-combobox>
-                            </v-layout>
                             <div v-for="(sc, index) in shoppingCart">
                                 <v-layout row wra>
                                     <v-flex xs12 md1>
@@ -148,6 +145,9 @@
                                             </v-layout>
                                         </div>
                                     </v-flex>
+                                </v-layout>
+                                <v-layout row wra>
+                                    <v-combobox prepend-icon="filter_list" v-model="sc.delivery_place" :items="formatList(customer.delivery_places, 'name', 'id', 'unit_name')" label="Lugares de entrega"></v-combobox>
                                 </v-layout>
                             </div>
                         </v-card><br>
