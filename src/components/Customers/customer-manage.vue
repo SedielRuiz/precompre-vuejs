@@ -170,7 +170,6 @@
         }else{
           this.titleText="Nuevo cliente"
         }
-        console.log(this.generatePassword(8));
     },
     methods: {
         ...mapActions({

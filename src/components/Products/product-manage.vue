@@ -16,8 +16,11 @@
                 <v-combobox  v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
                 <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-                
-                <div v-if="class_id">
+                <v-combobox v-model="pvt" @change="addArray('pv')" :items="pivots" prepend-icon="check_circle_outline" label="Pivotes"></v-combobox>
+                <div v-if="pivotAttributes">
+                    <v-chip v-for="(pv, index) in pivotAttributes" :key="index">{{pv.text}} <v-icon medium @click="removeArray('pv', index)">close</v-icon></v-chip>
+                </div>
+                <div v-if="class_id && pivotAttributes.length > 0">
                     <v-card class="pa-2" outlined tile>
                         <v-layout row wra>
                             <v-flex xs12 md12>
@@ -25,7 +28,7 @@
                                 <div row wra v-if="addSub">
                                     <v-layout row wra>                    
                                         <v-flex xs12 md4>
-                                            <v-combobox prepend-icon="filter_list" v-model="sub" :items="pivots" label="Variaciones"></v-combobox>
+                                            <v-combobox prepend-icon="filter_list" v-model="sub" :items="pivotAttributes" label="Variaciones"></v-combobox>
                                         </v-flex>  
                                         <v-flex xs12 md4>
                                             <v-combobox prepend-icon="filter_list" v-model="sub.option" :items="sub.options" label="Opciones"></v-combobox>
@@ -217,6 +220,7 @@
             ingredients:[],
             inputs:[],
             pivots:[],
+            pvt:"",
             addPivots:[],
             pivotAttributes:[],
             sub:"",
@@ -353,6 +357,9 @@
             },
             addArray(arr){
                 switch(arr) {
+                    case "pv":
+                        this.pivotAttributes.push(this.pvt);
+                        break;
                     case "p":
                         this.addPivots.push({"pivot":this.sub.id, "option":this.sub.option.value});
                         break;
@@ -381,6 +388,9 @@
             },
             removeArray(arr, idx, val = ""){
                 switch(arr) {
+                    case "pv":
+                        this.pivotAttributes.splice(idx,1);
+                        break;
                     case "p":
                         this.addPivots.splice(idx,1);
                         break;
@@ -463,13 +473,21 @@
                     }
                 }
             },
-            buildAttributes(){
-                attrs = [];
-                //Armo atributos no personalizables
-                this.buildAttr("attributes");
-                //Armo atributos personalizables
-                if(!this.msgError)
-                    this.buildAttr("attributesCustomisable");
+            buildAttributes(pivot = false){
+                if(pivot){
+                    var lst = [];
+                    for(var s = 0; s < this.pivotAttributes.length; s++){
+                        lst.push(this.pivotAttributes[s].id);
+                    }
+                    return lst;
+                }else{
+                    attrs = [];
+                    //Armo atributos no personalizables
+                    this.buildAttr("attributes");
+                    //Armo atributos personalizables
+                    if(!this.msgError)
+                        this.buildAttr("attributesCustomisable");
+                }
             },
             formatCategories(){
                 var ct = [];
@@ -497,7 +515,7 @@
                 this.buildAttributes();
                 this.product.product_class = this.class_id.value;
                 this.product.attributes = attrs;
-                this.product.pivot_attributes = this.pivotAttributes//["5d2b2e1ac80bd50c64d4d265", "5d41b1b8e99910503cd97820", "5d41b169d4925a50146c9f63", "5d2b2e1ac80bd50c64d4d265"];
+                this.product.pivot_attributes = this.buildAttributes(true);//["5d2b2e1ac80bd50c64d4d265", "5d41b1b8e99910503cd97820", "5d41b169d4925a50146c9f63", "5d2b2e1ac80bd50c64d4d265"];
                 this.product.categories = this.formatCategories();
                 if(this.edit)
                     this.product.status = this.product.status.value;
