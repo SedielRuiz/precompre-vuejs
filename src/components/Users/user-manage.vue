@@ -1,5 +1,7 @@
 <template>
   <v-container>
+    <v-layout row wra justify-center>
+      <v-flex sm12 xs12 md10>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
             <v-toolbar-title>{{titleText}}</v-toolbar-title>
@@ -9,19 +11,19 @@
           </v-toolbar>
           <v-card-text>
               <v-layout row wra>
-                <v-flex xs12 sm12 md6>
-                  <v-text-field class="col-xs-12 col-sm-12 col-md-6" v-model="user.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
+                <v-flex sm12 xs12 md6>
+                  <v-text-field class="col-xs-12 col-sm-12 col-md-12" v-model="user.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm12 md6>
-                  <v-text-field v-model="user.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
+                <v-flex sm12 xs12 md6>
+                  <v-text-field class="col-xs-12 col-sm-12 col-md-12" v-model="user.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
               <v-layout row wra>
-                <v-flex xs12 sm12 md6>
-                  <v-combobox v-model="user.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
+                <v-flex sm12 xs12 md6>
+                  <v-combobox class="col-xs-12 col-sm-12 col-md-12" v-model="user.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
                 </v-flex>
-                <v-flex xs12 sm12 md6>
-                  <v-text-field v-model="user.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
+                <v-flex sm12 xs12 md6>
+                  <v-text-field class="col-xs-12 col-sm-12 col-md-12" v-model="user.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
                 <v-text-field v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
@@ -48,10 +50,11 @@
                 <v-date-picker v-model="user.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker>
           </v-card-text>
           <v-card-actions>
-            <v-spacer></v-spacer>
             <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processUser()">Guardar</v-btn>
           </v-card-actions>
         </v-card>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -128,7 +131,6 @@
       },
       removePhone(idx){
         this.phones.splice(idx,1);
-        this.phone = {};
       },
       formatPhones(){
         for(var s = 0; s < this.phones.length; s++){
