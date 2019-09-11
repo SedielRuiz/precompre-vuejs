@@ -42,7 +42,7 @@
                     <v-text-field v-model="phone.number" prepend-icon="call" name="number" label="Número" type="number"></v-text-field>
                     <v-combobox v-model="phone.type" :items="typesPhone" prepend-icon="call" label="Tipo de número"></v-combobox>
                     <v-switch v-model="phones.length == 0 ? phone.main = true : phone.main" :label="'Principal'"></v-switch>
-                    {{phone.error}}
+                    <label>Recuerde que si selecciona este como principal se anularan los anteriores como principal.</label>
                     <v-btn color="primary" :disabled="phone.number ? false : true" @click="addPhone()">Agregar</v-btn>
                     <!--TELEFONOS-->
                   </v-card><br>
@@ -205,17 +205,12 @@
           if(this.phone.number){
             for(var s = 0; s < this.phones.length; s++){
               if(this.phone.main == true && this.phones[s].main == true){
-                this.phone.error = "Ya tiene un teléfono principal.";
-                break;
-              }else{
-                this.phone.error = "";
+                this.phones[s].main = false;
               }
             }
-            if(!this.phone.error){
-              this.phones.push(this.phone);
-              this.phone = {};
-              this.addNumber = false;
-            }
+            this.phones.push(this.phone);
+            this.phone = {};
+            this.addNumber = false;
           }
         },
         removePhone(idx){
