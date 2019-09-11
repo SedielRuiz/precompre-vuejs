@@ -24,7 +24,7 @@
                     </div>
                     <v-text-field v-model="u.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
                     <v-text-field v-model="u.unity" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
-                    <v-btn small color="primary" @click="addUnity(index, u.value)">Agregar unidad</v-btn>
+                    <v-btn small color="primary" :disabled="!u.unity ? true :false" @click="addUnity(index, u.value)">Agregar unidad</v-btn>
                   </div><br>
                 </div>  
             </v-form>
@@ -86,13 +86,15 @@
         },
     },
     mounted () {
-        this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
-        if(this.edit!=""){
-            this.titleText="Editar lugar de entrega"
-            this.getPlace(this.edit);
-        }else{
-          this.titleText="Nuevo lugar de entrega"
-        }
+      this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
+      if(this.edit!=""){
+          this.titleText="Editar lugar de entrega"
+          this.getPlace(this.edit);
+      }else{
+        this.titleText="Nuevo lugar de entrega"
+      }
+      this.place.country = this.countries.find(element=>{return element.value == "colombia"});
+      this.place.city = this.cities.find(element=>{return element.value == "bogota"});
     },
     methods: {
       ...mapActions({
@@ -125,7 +127,7 @@
         return next;
       },
       addUnity(idx, type){
-        //if(this.unities[idx].unity != ""){
+        //if(this.unities[idx].unity != "" && this.unities[idx].unity != undefined){
           if(this.verifyUnities(type, this.unities[idx].quantity)){
             this.units.push({"id":idx, "type":type, "code":idx+"_"+this.unities[idx].unity.split(" ").join(""), "name":this.unities[idx].unity});
             this.unities[idx].list = this.units;
@@ -135,7 +137,7 @@
             this.unities[idx].msgError = "Cantidad maxima de unidades para la unidad "+ this.unities[idx].text;
           }
           this.unities[idx].unity = "";
-       // }
+        //}
       },
       removeUnity(code){
         var key = code.split("_");
@@ -159,7 +161,7 @@
             listUnts = []
             unt._type = this.unities[s].value;
             unt.qty = this.unities[s].quantity;
-            if(this.unities[s].list.length > 0){
+            if(this.unities[s] && this.unities[s].list){
               for(var r = 0; r < this.unities[s].list.length; r++){
                 if(this.unities[s].list[r].type == this.unities[s].value)
                   listUnts.push({"unit_name":this.unities[s].list[r].name});
@@ -214,7 +216,8 @@
         pl: state => state.placeDelivery.place, 
       }),
       trySend(){
-        if(this.place && this.place.country && this.place.city && this.place.address){
+        console.log(this.place);
+        if(this.place && this.place.name != "" && this.place.address != ""){
           return false; 
         }
         return true;
