@@ -174,7 +174,7 @@
         us: state => state.user.user, 
       }),
       trySend(){
-        if(this.user && this.user.id_type && this.user.id_description && this.user.email && this.user.password && this.user.name){
+        if(this.user && this.user.id_type && this.user.id_description && this.user.email && this.user.name){
           return false; 
         }
         return true;
