@@ -36,7 +36,7 @@
                                 <td class="text-xs-right">{{ props.item.name }}</td>
                                 <td class="text-xs-right">{{ props.item.last_name }}</td>
                                 <td class="text-xs-right">{{ props.item.email }}</td>
-                                <td class="text-xs-right">{{ props.item.status }}</td>
+                                <td class="text-xs-right">{{ props.item.status == "enable" ? "Activo" : "Inactivo" }}</td>
                             </tr>
                         </template>
                     </v-data-table>

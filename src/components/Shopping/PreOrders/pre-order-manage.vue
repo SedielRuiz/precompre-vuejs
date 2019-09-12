@@ -69,7 +69,7 @@
                             </v-layout>
                         </v-card><br>
                         <v-card class="pa-2" outlined tile v-if="shoppingCart.length > 0">
-                            <h1>Pre compra</h1><hr><br>
+                            <h1>Pre orden</h1><hr><br>
                             <div v-for="(sc, index) in shoppingCart">
                                 <v-layout row wra>
                                     <v-flex xs12 md1>

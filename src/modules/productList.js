@@ -123,6 +123,22 @@ const actions = {
             })
         });
     },
+
+    delete:({commit},data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+        Vue.http.post('delete_model_list/'+data).then(
+            response =>{
+                var data = User.actions.processResponse(response.data, false);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
   
 };
 

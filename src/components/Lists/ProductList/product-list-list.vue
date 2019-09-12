@@ -15,7 +15,10 @@
         class="elevation-1">
         <template v-slot:items="props">
         <td>{{ props.item.title }}</td>
-        <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
+        <td>
+          <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
+          <v-btn color="error" @click="deleteList(true, props.item._id)">ELiminar</v-btn>
+        </td>
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
@@ -45,8 +48,22 @@
     methods: {
       ...mapActions({
         fetchProductLists: 'productList/fetchProductLists',
+        delete: 'productList/delete',
         setWarning: 'setWarning',
       }),
+      deleteList(id){
+        if(confirm("¿ Seguro que desea eliminar este registro ? ")){
+          this.delete(id).then(
+            data => {
+              this.setWarning(data, { root: true }).then(()=>{
+                  this.fetchProductLists();
+              })
+            },
+            error => {
+              console.log(error);
+            });
+        }
+      },
       search(pagination){
         this.fetchProductLists(pagination);
       },

@@ -17,7 +17,10 @@
             <td>{{ props.item.name }}</td>
             <td>{{ props.item.address }}</td>
             <td>{{ props.item.city }}</td>
-            <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
+            <td>
+              <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
+              <v-btn color="error" @click="deletePlace(props.item._id)">Eliminar</v-btn>
+            </td>
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
@@ -49,8 +52,22 @@
     methods: {
       ...mapActions({
         fetchPlaceDelivery: 'placeDelivery/fetchPlaces',
+        delete: 'placeDelivery/delete',
         setWarning: 'setWarning',
       }),
+      deletePlace(id){
+        if(confirm("¿ Seguro que desea eliminar este registro ? ")){
+          this.delete(id).then(
+            data => {
+              this.setWarning(data, { root: true }).then(()=>{
+                  this.fetchPlaceDelivery();
+              })
+            },
+            error => {
+              console.log(error);
+            });
+        }
+      },
       search(pagination){
         this.fetchPlaceDelivery(pagination);
       },

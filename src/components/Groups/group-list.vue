@@ -15,8 +15,10 @@
         class="elevation-1">
         <template v-slot:items="props">
         <td>{{ props.item._type }}</td>
-        <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo" }}</td>
-        <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
+        <td>
+          <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
+          <v-btn color="error" @click="deleteGroup(props.item._id)">Eliminar</v-btn>  
+        </td>
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
@@ -36,19 +38,32 @@
       return {
         headers: [
             {text:"Tipo", value:"_type"},
-            {text:"Estado", value:"status"},
             {text:"Acciones", value:"actons"}
         ]
       }
     },
     mounted () {
-      this.fetchGroups()
+      this.fetchGroups();
     },
     methods: {
       ...mapActions({
         fetchGroups: 'group/fetchGroups',
+        delete: 'group/delete',
         setWarning: 'setWarning',
       }),
+      deleteGroup(id){
+        if(confirm("¿ Seguro que desea eliminar este registro ? ")){
+          this.delete(id).then(
+            data => {
+              this.setWarning(data, { root: true }).then(()=>{
+                  this.fetchGroups();
+              })
+            },
+            error => {
+              console.log(error);
+            });
+        }
+      },
       search(pagination){
         this.fetchGroups(pagination);
       },
