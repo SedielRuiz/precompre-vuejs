@@ -9,20 +9,24 @@
         </div>
     </div>
     <hr><br>
-    <v-data-table
-        :headers="headers"
-        :items="rows"
-        class="elevation-1">
-        <template v-slot:items="props">
-          <td>{{ props.item.name }}</td>
-          <td>{{ props.item.metric }}</td>
-          <td>
-            <v-btn color="primary" @click="redirect(true, props.item._id)">Editar</v-btn>
-            <v-btn color="error" @click="deleteInput(props.item._id)">Eliminar</v-btn>
-          </td>
-        </template>
-    </v-data-table>
+    <div v-if="rows" >
+      <v-data-table
+          :headers="headers"
+          :items="rows"
+          hide-actions disable-initial-sort
+          class="elevation-1">
+          <template v-slot:items="props">
+            <td>{{ props.item.name }}</td>
+            <td>{{ props.item.metric }}</td>
+            <td>
+              <v-btn color="primary" @click="redirect(true, props.item._id)">Editar</v-btn>
+              <v-btn color="error" @click="deleteInput(props.item._id)">Eliminar</v-btn>
+            </td>
+          </template>
+      </v-data-table>
+    </div>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
+
     <v-dialog v-model="create" persistent>
         <inputManage @redirect = "redirect" :edit="false"></inputManage>
     </v-dialog>
@@ -51,12 +55,12 @@
         headers: [
             {text:"Nombre", value:"name"},
             {text:"Unidad de medida", value:"metric"},
-            {text:"Acciones", value:"actons"}
+            {text:"Acciones", value:"actions"}
         ],
       }
     },
     mounted () {
-        this.fetchInputs();
+      this.fetchInputs();
     },
     methods: {
       ...mapActions({

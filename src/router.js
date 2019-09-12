@@ -64,6 +64,10 @@ import Bills from '@/components/Shopping/Bills/bill-list';
 import Comanda from '@/components/Comanda';
 /**Insumos**/
 import InputList from '@/components/Inputs/input-list';
+/**Campañas**/
+import CampaignList from '@/components/Campaigns/campaign-list';
+import CampaignManage from '@/components/Campaigns/campaign-manage';
+import CampaignDetail from '@/components/Campaigns/campaign-detail';
 
 const router = new Router({
   routes: [
@@ -397,6 +401,31 @@ const router = new Router({
         name: 'inputList',
         component: InputList,
         meta: { Auth: true, title: 'Insumos' },
+    },
+    /**Campañas**/
+    {
+        path: '/campaignList',
+        name: 'campaignList',
+        component: CampaignList,
+        meta: { Auth: true, title: 'Campañas' },
+    },
+    {
+        path: '/campaignDetail/:id',
+        name: 'campaignDetail',
+        component: CampaignDetail,
+        meta: { Auth: true, title: 'Campaña' },
+    },
+    {
+        path: '/campaignManage/',
+        name: 'campaignManageCreate',
+        component: CampaignManage,
+        meta: { Auth: true, title: 'Crear camapaña' },
+    },
+    {
+        path: '/campaignManage/:id/',
+        name: 'campaignManageUpdate',
+        component: CampaignManage,
+        meta: { Auth: true, title: 'Editar camapaña' },
     },
     
   ]

@@ -61,6 +61,7 @@
             if(this.edit){
                 this.update(this.input).then(
                     data => {
+                        this.input = {};
                         this.setWarning(data, { root: true }).then(()=>{
                           this.closeModal();
                         })

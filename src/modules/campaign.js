@@ -2,22 +2,22 @@ import Vue from 'vue';
 import User from '@/modules/user';
 
 const state = {
-  inputs: [],
-  input: "",
-  //Paginación
-  page_size:0,
-  total_items:0,
-  total_pages:0,
+    campaigns: [],
+    campaign: "",
+    //Paginación
+    page_size:"",
+    total_items:"",
+    total_pages:"",
 };
 
 const actions = {
-    getInput:({commit}, id) => {
+    getCampaign:({commit}, id) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('inputs/'+id).then(
+        Vue.http.post('campaign/'+id).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
-                commit('setInput',data);
+                commit('setCampaign',data);
                 resolve(data)
             }).catch(error=>{
                 commit('setError', error, { root: true });
@@ -27,12 +27,12 @@ const actions = {
             })
         });
     },
-    fetchInputs:({commit}, data) => {
+    fetchCampaigns:({commit}) => {
         return new Promise((resolve, reject) => {
-        Vue.http.post('inputs', data).then(
+        Vue.http.post('campaigns').then(
             response =>{
                 var data = User.actions.processResponse(response.data, true);
-                commit('setInputs', data);
+                commit('setCampaigns',data);
                 resolve(data)
             }).catch(error=>{
                 commit('setError', error, { root: true });
@@ -44,7 +44,7 @@ const actions = {
     create:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('register_input',data).then(
+        Vue.http.post('register_customer_group',data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)
@@ -60,7 +60,7 @@ const actions = {
     update:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('edit_input',data).then(
+        Vue.http.post('edit_customer_group',data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)
@@ -76,7 +76,7 @@ const actions = {
     delete:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('delete_input/'+data).then(
+        Vue.http.post('delete_customer_group/'+data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)
@@ -92,18 +92,25 @@ const actions = {
 };
 
 const getters = {
+    getCampaigns: (state) => (id) =>{
+        let groupObj = state.groups.find(element=>{
+          return element._id == id
+        })
+        return groupObj;
+    }
 };
 
 const mutations = {
-    setInputs: (state, list) => {
-        state.inputs = list.result_set;
+    setCampaigns: (state, list) => {
+        state.campaigns = list.result_set;
         state.page_size = list.page_size;
         state.total_pages = list.total_pages;
         state.total_items = list.total_items;
     },
-    setInput: (state, pr) => {
-        state.input = pr
+    setCampaign: (state, cmp) => {
+        state.campaign = cmp
     },
+
 };
 
 export default {

@@ -34,15 +34,20 @@
         page:1,
         rows:"",
         pagination:{"page_number":0, "page_size":10},
-        page_size:"",
+        page_size:0,
         since:1,
-        until:""
+        until:0
       }
     },
     mounted () {
       this.page_size = 10;
-      this.rows = this.page_size;
-      this.until = this.page_size;
+      if(this.total_items < this.page_size){
+        this.until = this.total_items;
+        this.rows = this.total_items;
+      }else{
+        this.rows = this.page_size;
+        this.until = this.page_size;
+      }
       if(this.total_items == undefined){
         this.total_items = 0;
         this.rows = 0;
@@ -52,9 +57,11 @@
     },
     watch:{
         page(val){
+          if(val){
             this.buildPag(val);
             this.until = val * this.page_size;
             this.since = this.until - this.page_size + 1;
+          }
         },
     },
     methods: {
@@ -71,12 +78,17 @@
             }
         },
         buildPag(val){
+          if(val){
             this.pagination.page_number = val - 1;
             this.pagination.page_size = this.page_size; 
             this.search(this.pagination);
+          }
         },
         search(pag){
+          if(pag){
+            console.log("llegue aca")
             this.$emit("search", pag);
+          }
         }
     },
   }
