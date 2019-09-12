@@ -180,7 +180,7 @@
       <router-view></router-view>
     </v-content>
     <v-footer color="indigo" app>
-      <span class="white--text">&copy; v0.0.11</span>
+      <span class="white--text">&copy; v0.0.12</span>
     </v-footer>
   </v-app>
 </template>
