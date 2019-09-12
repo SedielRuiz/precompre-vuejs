@@ -14,7 +14,8 @@
         :items="rows"
         class="elevation-1">
         <template v-slot:items="props">
-        <td>{{ props.item._type }}</td>
+        <td>{{ props.item.name }}</td>
+        <td>{{ props.item.description }}</td>
         <td>
           <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
           <v-btn color="error" @click="deleteCampaign(props.item._id)">Eliminar</v-btn>  
@@ -38,16 +39,17 @@
       return {
         headers: [
             {text:"Nombre", value:"name"},
+            {text:"Descripción", value:"description"},
             {text:"Acciones", value:"actons"}
         ]
       }
     },
     mounted () {
-      this.fetchCampaign();
+      this.fetchCampaigns();
     },
     methods: {
       ...mapActions({
-        fetchCampaign: 'campaign/fetchCampaign',
+        fetchCampaigns: 'campaign/fetchCampaigns',
         delete: 'campaign/delete',
         setWarning: 'setWarning',
       }),
@@ -56,7 +58,7 @@
           this.delete(id).then(
             data => {
               this.setWarning(data, { root: true }).then(()=>{
-                  this.fetchCampaign();
+                  this.fetchCampaigns();
               })
             },
             error => {

@@ -14,7 +14,7 @@ const actions = {
     getCampaign:({commit}, id) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('campaign/'+id).then(
+        Vue.http.post('campaigns/'+id).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 commit('setCampaign',data);
@@ -44,7 +44,7 @@ const actions = {
     create:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('register_customer_group',data).then(
+        Vue.http.post('register_campaign',data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)
@@ -60,7 +60,7 @@ const actions = {
     update:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('edit_customer_group',data).then(
+        Vue.http.post('edit_campaign',data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)
@@ -76,7 +76,7 @@ const actions = {
     delete:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('delete_customer_group/'+data).then(
+        Vue.http.post('delete_campaign/'+data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)

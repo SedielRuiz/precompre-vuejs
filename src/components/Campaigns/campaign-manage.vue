@@ -12,6 +12,7 @@
           <v-card-text>
             <v-form>
                 <v-text-field v-model="campaign.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
+                <v-textarea v-model="campaign.description" prepend-icon="library_books"name="description" label="Descripción"></v-textarea>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -110,7 +111,7 @@
             grp: state => state.campaign.campaign, 
         }),
         trySend(){
-            if(this.campaign && this.campaign.name){
+            if(this.campaign && this.campaign.name && this.campaign.description){
                 return false; 
             }
             return true;
