@@ -179,13 +179,6 @@
             fetchPlaceDelivery: 'placeDelivery/fetchPlaces',
             setWarning: 'setWarning',
         }),
-        generatePassword(longitud){
-          var long=parseInt(longitud);
-            var caracteres = "abcdefghijkmnp?qrtuvwx&yzABCDEF/GHI+JKLMNPQRTUVW.X@YZ_2346789";
-            var contraseña = "";
-            for (var i=0; i<long; i++) contraseña += caracteres.charAt(Math.floor(Math.random()*caracteres.length));
-            return contraseña;
-        },
         removePlace(idx){
             this.placesSelected.splice(idx,1);
             this.place = {};
@@ -230,7 +223,6 @@
             if(this.edit)
             this.customer.status = this.customer.status.value;
             this.customer.delivery_places = this.placesSelected;
-            this.customer.password = "admin123"//this.generatePassword(8);
             return this.customer;
         },
         processCustomer () {

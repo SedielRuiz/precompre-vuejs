@@ -6,6 +6,7 @@
           <v-toolbar dark color="primary">
             <v-toolbar-title>Detalle cliente</v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-btn color="success" @click="resetPass()">Recuperar contraseña</v-btn>
             <v-btn color="success" @click="redirect('pre')">Pre ordenes</v-btn>
             <v-btn color="success" @click="redirect('order')">Ordenes</v-btn>
             <v-btn color="success" @click="redirect('bill')">Facturas</v-btn>
@@ -79,7 +80,19 @@
       ...mapActions({
         setWarning: 'setWarning',
         getCustomer: 'customer/getCustomer', 
+        resetPassword: 'customer/resetPassword', 
       }),
+      resetPass(){
+        if(confirm("¿ Seguro desea recuperar su contraseña. ?")){
+          this.resetPassword({"id":this.customer._id}).then(
+                data => {
+                    this.setWarning(data, { root: true }).then(()=>{
+                    })
+                },
+                error => {
+            })
+        }
+      },
       redirect(page){
 
         switch(page){

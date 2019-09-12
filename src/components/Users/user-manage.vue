@@ -112,13 +112,6 @@
         getUser: 'user/getUser', 
         setWarning: 'setWarning',
       }),
-      generatePassword(longitud){
-        var long=parseInt(longitud);
-          var caracteres = "abcdefghijkmnp?qrtuvwx&yzABCDEF/GHI+JKLMNPQRTUVW.X@YZ_2346789";
-          var contraseña = "";
-          for (var i=0; i<long; i++) contraseña += caracteres.charAt(Math.floor(Math.random()*caracteres.length));
-          return contraseña;
-      },
       addPhone(){
         if(this.phone.number){
           for(var s = 0; s < this.phones.length; s++){
@@ -146,7 +139,6 @@
         this.user.id_type = this.user.id_type && this.user.id_type.value ? this.user.id_type.value : this.user.id_type;
         if(this.edit)
           this.user.status = this.user.status.value;
-        this.user.password = "admin123"//this.generatePassword(8);
         return this.user;
       },
       processUser () {

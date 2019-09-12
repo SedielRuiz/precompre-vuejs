@@ -6,6 +6,7 @@
           <v-toolbar dark color="primary">
             <v-toolbar-title>Detalle usuario</v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-btn color="success" @click="resetPass()">Recuperar contraseña</v-btn>
             <v-btn color="success" @click="redirect(true)">Editar</v-btn>
             <v-btn color="success" @click="redirect(false)">Volver</v-btn>
           </v-toolbar>
@@ -74,7 +75,19 @@
       ...mapActions({
         setWarning: 'setWarning',
         getUser: 'user/getUser', 
+        resetPassword: 'user/resetPassword', 
       }),
+      resetPass(){
+        if(confirm("¿ Seguro desea recuperar su contraseña. ?")){
+          this.resetPassword({"id":this.user._id}).then(
+                data => {
+                    this.setWarning(data, { root: true }).then(()=>{
+                    })
+                },
+                error => {
+            })
+        }
+      },
       redirect(page){
           if(page){
               this.$router.push('/userManage/'+this.edit)
