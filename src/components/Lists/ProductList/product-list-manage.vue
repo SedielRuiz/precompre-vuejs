@@ -384,13 +384,16 @@
         this.itemFilter = "";
         this.selectedList = [];
         this.filter = {};
+        this.filters.push();
         console.log(this.filters);
       },
       removeFilter(idx, item){
         if(item){
           this.selectedList.splice(idx,1);
+          this.selectedList.push();
         }else{
           this.filters.splice(idx,1);
+          this.filters.push();
         }
       },
       getOperators(item){

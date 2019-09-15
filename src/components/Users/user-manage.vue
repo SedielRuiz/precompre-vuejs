@@ -27,6 +27,7 @@
                 </v-flex>
               </v-layout>
                 <v-text-field v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
+                <v-combobox class="col-xs-12 col-sm-12 col-md-12" v-model="user.role_id" prepend-icon="account_box" :items="roles" label="Rol"></v-combobox>
                 <v-combobox v-if="edit!=''" v-model="user.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <!--v-text-field v-if="edit==''" v-model="user.password" prepend-icon="lock" name="password" label="Contraseña" type="password"></v-text-field-->
                 <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
@@ -69,6 +70,7 @@
         user: {},
         phone:{},
         phones:[],
+        roles:[],
         addNumber:false,
         typesPhone: [
           {text: 'Movil', value:'movil'},
@@ -95,20 +97,27 @@
             this.phones = val.telephones;
           }
         },
+        rls(val){
+          for(var s = 0; s < val.length; s++){
+            this.roles.push({"text":val[s].name, "value":val[s]._id});
+          }
+        }
     },
     mounted () {
-        this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
-        if(this.edit!=""){
-            this.titleText="Editar usuario"
-            this.getUser(this.edit);
-        }else{
-          this.titleText="Nuevo usuario"
-        }
+      this.fetchRoles();
+      this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
+      if(this.edit!=""){
+          this.titleText="Editar usuario"
+          this.getUser(this.edit);
+      }else{
+        this.titleText="Nuevo usuario"
+      }
     },
     methods: {
       ...mapActions({
         create: 'user/create',
         update: 'user/update',
+        fetchRoles: 'role/fetchRoles',
         getUser: 'user/getUser', 
         setWarning: 'setWarning',
       }),
@@ -137,6 +146,7 @@
       buildUser(){
         this.user.telephones = this.formatPhones();
         this.user.id_type = this.user.id_type && this.user.id_type.value ? this.user.id_type.value : this.user.id_type;
+        this.user.role_id = this.user.role_id && this.user.role_id.value ? this.user.role_id.value : this.user.role_id;
         if(this.edit)
           this.user.status = this.user.status.value;
         return this.user;
@@ -157,7 +167,7 @@
             this.create(this.user).then(
                 data => {
                     this.setWarning(data, { root: true }).then(()=>{
-                        this.$router.push('/login')
+                        this.$router.push('/userList')
                     })
                 },
                 error => {
@@ -181,6 +191,7 @@
         warning: state => state.warning,
         logged: state => state.auth.logged,
         us: state => state.user.user, 
+        rls: state => state.role.roles,
       }),
       trySend(){
         if(this.user && this.user.id_type && this.user.id_description && this.user.email && this.user.name){

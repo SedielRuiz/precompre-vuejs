@@ -12,6 +12,7 @@
     <v-data-table
         :headers="headers"
         :items="rows"
+        hide-actions disable-initial-sort
         class="elevation-1">
         <template v-slot:items="props">
           <td>{{ props.item.delivery_date.split("T")[0] }}</td>

@@ -74,7 +74,6 @@
             {text:"Estado", value:"status"}
         ],
         rol: {},
-        permissionsId:[],
         permissions:[],
         status:[
           {text: 'Activo', value:'enabled'},
@@ -88,15 +87,12 @@
         rl(val){
             if(val){
                 this.rol = val;
-                this.permissionsId = val.permissions;
+                this.permissions = val.permissions;
             }
         },
-        permissionsObj(val){
-            this.permissions = val;
-        }
     },
     mounted () {
-        this.fetchPermissions();
+        this.fetchPermissions({"page_size":-1});
         this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
         if(this.edit!=""){
             this.titleText="Editar rol"
@@ -172,19 +168,6 @@
             rl: state => state.role.role, 
             rows: state => state.permission.permissions, 
         }),
-        ...mapGetters({
-            getPermissions: 'permission/getPermissions', 
-        }),
-        permissionsObj(){
-            var permiss = [];
-            if(this.permissionsId){
-                for(var s in this.permissionsId){
-                    if(this.permissionsId[s])
-                        permiss.push(this.getPermissions(this.permissionsId[s]));
-                }
-                return permiss;
-            }
-        },
     },
   }
 </script>

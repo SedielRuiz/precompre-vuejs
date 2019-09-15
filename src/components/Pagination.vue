@@ -19,7 +19,7 @@
 </template>
 <style>
   .v-datatable__actions{
-    display:none !important;
+    /*display:none !important;*/
   }
   .text-center{
     text-align:center !important;

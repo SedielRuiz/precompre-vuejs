@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout align-center justify-center>
-      <v-flex xs12 sm8 md10>
+      <v-flex xs12 sm8 md12>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
             <v-toolbar-title>{{titleText}}</v-toolbar-title>
@@ -16,109 +16,111 @@
                 <v-combobox  v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
                 <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-                <v-combobox v-model="pvt" @change="addArray('pv')" :items="pivots" prepend-icon="check_circle_outline" label="Pivotes"></v-combobox>
-                <div v-if="pivotAttributes">
-                    <v-chip v-for="(pv, index) in pivotAttributes" :key="index">{{pv.text}} <v-icon medium @click="removeArray('pv', index)">close</v-icon></v-chip>
-                </div>
-                <div v-if="class_id && pivotAttributes.length > 0">
-                    <v-card class="pa-2" outlined tile>
-                        <v-layout row wra>
-                            <v-flex xs12 md12>
-                                <h2>Sub productos <v-icon medium @click="addSub ? addSub = false : addSub = true">add</v-icon></h2>
-                                <div row wra v-if="addSub">
-                                    <v-layout row wra>                    
-                                        <v-flex xs12 md4>
-                                            <v-combobox prepend-icon="filter_list" v-model="sub" :items="pivotAttributes" label="Variaciones"></v-combobox>
-                                        </v-flex>  
-                                        <v-flex xs12 md4>
-                                            <v-combobox prepend-icon="filter_list" v-model="sub.option" :items="sub.options" label="Opciones"></v-combobox>
-                                        </v-flex>
-                                        <v-flex xs12 md1>
-                                            <v-icon medium @click="addArray('p')">add</v-icon>
-                                        </v-flex>
-                                        <v-flex xs12 md2>
-                                            <v-text-field v-model="sub.price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
-                                        </v-flex>
-                                    </v-layout>
-                                    <div v-if="addPivots">
-                                        <v-layout row wra v-for="(pv, index) in addPivots" :key="index">
-                                            <v-flex xs12 md5>
-                                                <v-combobox :disabled="true" prepend-icon="filter_list" :value="viewNamePivot(pv.pivot)" :items="pivots" label="Variaciones"></v-combobox>
-                                            </v-flex>  
-                                            <v-flex xs12 md5>
-                                                <v-combobox :disabled="true" prepend-icon="filter_list" v-model="pv.option" :items="sub.options" label="Opciones"></v-combobox>
-                                            </v-flex>
-                                            <v-flex xs12 md2>
-                                                <v-icon medium @click="removeArray('p', index)">close</v-icon>
-                                            </v-flex>
-                                        </v-layout>
-                                    </div><br>
-                                    <h2>Insumos del sub producto</h2><hr>
-                                    <v-layout row wra>
-                                        <v-flex xs12 md4>
-                                            <v-combobox prepend-icon="filter_list" v-model="sub.input" :items="inputs" label="Insumos"></v-combobox>
-                                        </v-flex>
-                                        <v-flex xs12 md2>
-                                            <v-text-field v-model="sub.quantity" prepend-icon="featured_play_list" name="quantity" label="Cantidad" type="number"></v-text-field>
-                                        </v-flex>
-                                        <v-flex xs12 md2>
-                                            <v-layout row wra>
-                                                <v-icon medium @click="addArray('i')">add</v-icon>
-                                                <v-chip v-for="(i, index) in ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="primary" :disabled="addPivots.length > 0 ? false : true" @click="addArray('s')">Agregar sub producto</v-btn>
-                                    </v-card-actions>
-                                    <v-layout row wra v-for="(subp, index) in subs" :key="index">
-                                        <v-flex xs12 md12>
-                                            <v-card class="pa-2" outlined tile :key="index">
-                                                <h2>{{product.name}} - $ {{subp.price}}</h2>
-                                                <v-layout row wra>
-                                                    <v-flex  xs12 md4>
-                                                        <v-layout row wra v-for="(p, index) in subp.pivots" :key="index">
-                                                            <v-flex xs12 m12>
-                                                                <label>{{viewNamePivot(p.pivot)}} {{p.option}}</label>
-                                                            </v-flex>
-                                                        </v-layout>
+                <div v-if="class_id">
+                    <v-layout row wra>
+                        <v-flex xs12 md12>
+                            <h2>Sub productos <v-icon medium @click="addSub ? addSub = false : addSub = true">add</v-icon></h2><br>
+                            <label style="font-size:30px;">{{product.name}}</label><hr><br>
+                            <div row wra v-if="addSub && subProductsAttribute">
+                                <v-layout align-center row wra >   
+                                    <v-flex class="alignGrid" v-for="h in subProductsAttribute[0]" xs12 md3>
+                                        <label class="col-md-2">{{h.code.split("_").join(" ").charAt(0).toUpperCase() + h.code.split("_").join(" ").slice(1)}}</label>
+                                    </v-flex>
+                                    <v-flex class="alignGrid" xs12 md1>
+                                        <label class="col-md-2">Insumos</label>
+                                    </v-flex>
+                                    <v-flex class="alignGrid" xs12 md1>
+                                        <label class="col-md-2">Foto</label>
+                                    </v-flex>
+                                    <v-flex class="alignGrid" xs12 md1>
+                                        <label class="col-md-2">Precio</label>
+                                    </v-flex>
+                                    <v-flex class="alignGrid" xs12 md1>
+                                        <label class="col-md-2">Activo</label>
+                                    </v-flex>
+                                </v-layout>
+                                <div v-for="(sub, index) in subProductsAttribute" :key="index">
+                                    <v-layout align-center row wra >       
+                                        <v-flex v-for="(attr, index) in sub" row wra :key="index" xs12 md3>
+                                            <div v-if="attr.options && attr.options.length > 0">
+                                                <v-flex xs12 md12>
+                                                    <v-combobox :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="attr.options"></v-combobox>
+                                                </v-flex>
+                                            </div>
+                                            <div v-else>
+                                                <div v-if="attr.type == 'boolean'">
+                                                    <v-flex xs12 md12>
+                                                        <v-switch :disabled="attr.custom" :key="index+'_'+attr.code"  v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value"></v-switch>
                                                     </v-flex>
-                                                    <v-flex  xs12 md8>
-                                                        <v-layout row wra>
-                                                            <v-flex xs12 md11>
-                                                                <v-layout v-if="subp.ingredients.length > 0" align-center row wra>
-                                                                    Ingredientes
-                                                                    <v-chip v-for="(i, index) in subp.ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}}</v-chip>
-                                                                </v-layout>
-                                                            </v-flex>
-                                                        <v-icon medium @click="removeArray('s', index)">close</v-icon>
-                                                        </v-layout><br>
-                                                    </v-flex>
-                                                </v-layout>
-                                            </v-card>
+                                                </div>
+                                                <div v-else>
+                                                    <div v-if="attr.size == 'short'">
+                                                        <v-flex xs12 md12>
+                                                            <v-text-field :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" :type="attr.type"></v-text-field>
+                                                        </v-flex>
+                                                    </div>
+                                                    <div v-else-if="attr.size == 'medium'">
+                                                        <v-flex xs12 md12>
+                                                            <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="77px" name="mediumText"></v-textarea>
+                                                        </v-flex>
+                                                    </div>
+                                                    <div v-else>
+                                                        <v-flex xs12 md12>
+                                                            <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="135px" name="mediumText"></v-textarea>
+                                                        </v-flex>
+                                                    </div>
+                                                </div>
+                                            </div>            
+                                        </v-flex> 
+                                        <v-flex class="alignGrid" xs12 md1>
+                                            <v-icon  @click="formRecipe()">add</v-icon>
+                                        </v-flex>
+                                        <v-flex class="alignGrid" xs12 md1>
+                                            <v-icon >add</v-icon>
+                                            <!--v-text-field v-model="sub.photo" name="photo" type="file"></v-text-field-->
+                                        </v-flex>
+                                        <v-flex class="alignGrid" xs12 md1>
+                                            <v-text-field v-model="sub.price" name="price" placeholder="$ 0.000" type="number"></v-text-field>
+                                        </v-flex>
+                                        <v-flex class="alignGrid" xs12 md1>
+                                            <v-checkbox value input-value="true" v-model="sub.active == null || sub.active == undefined ? sub.active = true : sub.active"></v-checkbox>
                                         </v-flex>
                                     </v-layout>
-                                    
                                 </div>
-                            </v-flex>
-                        </v-layout>
-                    </v-card><br>
+                            </div>
+                        </v-flex>
+                    </v-layout><br>
                 </div>
-                
+                <v-dialog v-model="recipe" persistent>
+                    <v-card class="elevation-12">
+                        <v-toolbar dark color="primary">
+                        <v-toolbar-title>Receta</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-btn color="error" @click="closeModal()">Cancelar</v-btn>
+                        </v-toolbar>
+                        <v-card-text>
+                        <v-form>
+                        </v-form>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" :disabled="trySend" style="width: 100%;" >Guardar</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
                 <h2 v-if="class_id">Atributos <hr><br></h2>
                 <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
                   <v-card  style="height: 100%;width: 84%; padding: 10px;">
                     <!--ATRIBUTOS-->
                     <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
-                    <v-text-field v-if="attr.type != 'boolean'" :disabled="true" v-model="attr.code.split('_').join(' ')" prepend-icon="title" name="title" label="" type="text"></v-text-field>
+                    <v-text-field v-if="attr.type != 'boolean'" :disabled="true" v-model="attr.code.split('_').join(' ')"  name="title" label="" type="text"></v-text-field>
                     <div v-if="attr.options.length > 0">
-                        <v-combobox  :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="attr.options" prepend-icon="filter_list" label="Opciones"></v-combobox>
+                        <v-combobox  :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="attr.options" label="Opciones"></v-combobox>
                     </div>
                     <div v-else>
                         <div v-if="attr.type == 'boolean'">
-                            <v-switch prepend-icon="title" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :label="attr.code"></v-switch>
+                            <v-switch  v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value"></v-switch>
                         </div>
                         <div v-else>
                             <div v-if="attr.size == 'short'">
@@ -144,13 +146,13 @@
                   <v-card  style="height: 100%;width: 84%; padding: 10px;">
                     <!--ATRIBUTOS Personalizables-->
                     <v-alert :value="attrc.msgError ? true : false" type="error">{{attrc.msgError}}</v-alert>
-                    <v-text-field :disabled="true" v-if="attr.type != 'boolean'" v-model="attrc.code.split('_').join(' ')" prepend-icon="title" name="title" label="" type="text"></v-text-field>
+                    <v-text-field :disabled="true" v-if="attr.type != 'boolean'" v-model="attrc.code.split('_').join(' ')"  name="title" label="" type="text"></v-text-field>
                     <div v-if="attrc.options.length > 0">
-                        <v-combobox  :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value" :value="attrc.default_value" :items="attrc.options" prepend-icon="filter_list" label="Opciones"></v-combobox>
+                        <v-combobox  :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value" :value="attrc.default_value" :items="attrc.options" label="Opciones"></v-combobox>
                     </div>
                     <div v-else>
                         <div v-if="attrc.type == 'boolean'">
-                            <v-switch prepend-icon="title" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value" :label="attrc.code"></v-switch>
+                            <v-switch  v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value" :label="attrc.code"></v-switch>
                         </div>
                         <div v-else>
                             <div v-if="attrc.size == 'short'">
@@ -209,20 +211,28 @@
     </v-layout>
   </v-container>
 </template>
+<style>
+    .alignGrid{
+        text-align:center !important;
+        font-size:20px !important;
+    }
+</style>
 <script>
     var attrs = [];
+    var subss=[];
+    import Vue from 'vue'
     import {mapActions,mapState} from 'vuex';
     
     export default {
         name: 'product-manage',
         data () {
         return {
+            recipe:false,
             ingredients:[],
             inputs:[],
             pivots:[],
-            pvt:"",
             addPivots:[],
-            pivotAttributes:[],
+            subProductsAttribute:[],
             sub:"",
             subs:[],
             addSub:"",
@@ -261,8 +271,8 @@
                     this.class_id = {"text":val.product_class.code, "value":val.product_class._id};
                     this.attributesP = val.attributes;
                     this.categories = val.categories;
-                    this.subs = this.editSubProducts(val.sub_products);
-                    if(this.subs.length > 0)this.addSub = true;
+                    this.subProductsAttribute = this.editSubProducts(val.sub_products, val.product_class.order_attributes);
+                    if(this.subProductsAttribute.length > 0)this.addSub = true;
                     //this.attributesCustomisable = val.order_attributes;
                 }
             },
@@ -281,20 +291,23 @@
             },
             class_id(val){
                 if(val){
+                    console.log(val);
                     this.getProductClassAttribute(val.value);
                 }
+
             },
             attr(val){
-                this.attributes = val.attributes;
-                this.formatAttributes("attributes");
-                this.attributesCustomisable = val.order_attributes;
-                this.formatAttributes("attributesCustomisable");
-                if(this.edit){
-                    this.formatAttributeEdit("attributes");
-                    this.formatAttributeEdit("attributesCustomisable");
-                }   
-                this.pivots = this.attributesCustomisable;
-                this.pivots = this.formatPivots();
+                if(val){
+                    this.attributes = val.attributes;
+                    this.formatAttributes("attributes");
+                    this.attributesCustomisable = val.order_attributes;
+                    this.formatAttributes("attributesCustomisable");
+                    if(this.edit){
+                        this.formatAttributeEdit("attributes");
+                        this.formatAttributeEdit("attributesCustomisable");
+                    }   
+                    this.formatSubProducts(val.order_attributes);
+                }
             },
             inp(val){
                 if(val){
@@ -327,87 +340,100 @@
                 getProductClassAttribute: 'product/getProductClassAttribute', 
                 setWarning: 'setWarning',
             }),
+            closeModal(){
+                this.recipe = false;
+            },
+            formRecipe(){
+                this.recipe = true;
+            },
+            complement(array){
+                let permutations = []; 
+                for(let i = 0; i < array.length; i++){
+                    let i_permutations = [...permutations];
+                    for(let j = 0; j < array[i].options.length; j++){
+                        if(i==0){
+                            array[i].active = true;
+                            const option = array[i]
+                            permutations.push([{...option, default_value:option.options[j].value}]);
+                        }else{
+                            if(j>0) permutations = [...permutations.concat([...i_permutations])]
+                        }
+                    }
+                    for(let j = 0; j < array[i].options.length; j++){
+                        for(let k = i_permutations.length*j; k < i_permutations.length*(j+1); k++){
+                            let x = [...permutations[k]] 
+                            array[i].active = true;
+                            const option = array[i]
+                            x.push({...option, default_value:option.options[j].value});
+                            permutations[k] = [...x]
+                        }
+                    }
+                }
+                console.log(permutations);
+                return permutations;
+            },
+            formatSubProducts(attributes){
+                this.subProductsAttribute = this.complement(attributes);
+            },
             viewNamePivot(id){
                 if(id){
                     var p = this.pivots.find(element=>{return element.id == id});
                     return p && p.text ? p.text : "";
                 }
             },
-            editSubProducts(subs){
+            editSubProducts(subs, attrs){
+                console.log(attrs);
                 var lst = [];
+                var att = [];
                 if(subs){
                     for(var s = 0; s < subs.length; s++){
-                        subs[s].pivot = this.attributesCustomisable.find(element=>{return element._id == subs[s].pivot})
-                        subs[s].pivots = subs[s].options;
-                        for(var r = 0; r < subs[s].ingredients.length; r++){
-                            var ing = {};
-                            ing = this.inputs.find(element=>{return element.value == subs[s].ingredients[r].input});
-                            if(ing){
-                                ing.id = ing.value;
-                                ing.quantity = subs[s].ingredients[r].quantity
-                                ing.name = ing.text.split("-")[0];
-                                ing.metric = ing.text.split("-")[1];
-                                subs[s].ingredients[r] = ing;
-                            }
+                        console.log(subs[s].options);
+                        for(var r = 0; r < subs[s].options.length; r++){
+                            var at = attrs.find(element=>{return element._id == subs[s].options[r].pivot});
+                            att.push(at);
+
                         }
-                        lst.push(subs[s]);
+                        console.log(att);
+                        var obj = {
+                            "price":subs[s].price,
+                        };
+                        var arr = [obj, att]
+                        lst.push([arr]);
                     }
                 }
+                console.log(lst);
                 return lst;
             },
-            addArray(arr){
+            addArray(arr, idx){
                 switch(arr) {
-                    case "pv":
-                        this.pivotAttributes.push(this.pvt);
-                        break;
-                    case "p":
-                        this.addPivots.push({"pivot":this.sub.id, "option":this.sub.option.value});
-                        break;
-                    case "s":
-                        this.sub.ingredients = this.ingredients;
-                        this.sub.pivots = this.addPivots;
-                        console.log(this.sub);
-                        this.subs.push({"id":this.sub.id, "ingredients":this.ingredients, "input":this.sub.input, "option":this.sub.option, 
-                                        "options":this.sub.options, "pivots":this.sub.pivots, "price":this.sub.price, "quantity":this.sub.quantity,
-                                        "text":this.sub.text, "value":this.sub.value});
-                        this.sub = "";
-                        this.addPivots = [];
-                        this.ingredients = [];
-                        console.log(this.subs);
-                        break;
                     case "i":
+                        var ing = [];
                         var obj = {
-                            "id": this.sub.input.value,
-                            "quantity":this.sub.quantity,
-                            "name": this.sub.input.text.split("-")[0], 
-                            "metric": this.sub.input.text.split("-")[1],
+                            "id": this.subProductsAttribute[idx].input.value,
+                            "quantity":this.subProductsAttribute[idx].quantity,
+                            "name": this.subProductsAttribute[idx].input.text.split("-")[0], 
+                            "metric": this.subProductsAttribute[idx].input.text.split("-")[1],
                         }
-                        this.ingredients.push(obj);
+                        ing = Array.isArray(this.subProductsAttribute[idx].ingredients) ? this.subProductsAttribute[idx].ingredients : [];
+                        ing.push(obj);
+                        this.subProductsAttribute[idx].input = "";
+                        this.subProductsAttribute[idx].quantity = "";
+                        this.subProductsAttribute[idx].ingredients = ing;
+                        console.log(this.subProductsAttribute[idx]);
                         break;
                 }
             },
-            removeArray(arr, idx, val = ""){
+            removeArray(arr, idx){
                 switch(arr) {
-                    case "pv":
-                        this.pivotAttributes.splice(idx,1);
-                        break;
-                    case "p":
-                        this.addPivots.splice(idx,1);
-                        break;
-                    case "s":
-                        this.subs.splice(idx,1);
-                        break;
                     case "i":
-                        this.ingredients.splice(idx,1);
+                        var ing = Array.isArray(this.subProductsAttribute[idx].ingredients) ? this.subProductsAttribute[idx].ingredients : [];
+                        ing.splice(idx,1);
+                        this.subProductsAttribute[idx].input = "";
+                        this.subProductsAttribute[idx].quantity = "";
+                        this.subProductsAttribute[idx].ingredients = ing;
+                        this.subProductsAttribute.push();
                         break;
                 }
-            },
-            formatPivots(){
-                var pv = [];
-                for(var s = 0; s < this.pivots.length; s++){
-                    pv.push({"text":this.pivots[s].code, "value":this.pivots[s].code, "id":this.pivots[s]._id, "options":this.pivots[s].options});
-                }
-                return pv;
             },
             removeCategories () {
                 if (this.categories.length) this.categories = []
@@ -473,21 +499,13 @@
                     }
                 }
             },
-            buildAttributes(pivot = false){
-                if(pivot){
-                    var lst = [];
-                    for(var s = 0; s < this.pivotAttributes.length; s++){
-                        lst.push(this.pivotAttributes[s].id);
-                    }
-                    return lst;
-                }else{
-                    attrs = [];
-                    //Armo atributos no personalizables
-                    this.buildAttr("attributes");
-                    //Armo atributos personalizables
-                    if(!this.msgError)
-                        this.buildAttr("attributesCustomisable");
-                }
+            buildAttributes(){
+                attrs = [];
+                //Armo atributos no personalizables
+                this.buildAttr("attributes");
+                //Armo atributos personalizables
+                if(!this.msgError)
+                    this.buildAttr("attributesCustomisable");
             },
             formatCategories(){
                 var ct = [];
@@ -505,8 +523,19 @@
             },
             buildSubProducts(){
                 var subP = [];
-                for(var s = 0; s < this.subs.length; s++){
-                    subP.push({"price":this.subs[s].price, "photo":this.subs[s].photo, "options":this.subs[s].pivots, "ingredients":this.formatIngredients(this.subs[s].ingredients)});
+                var lst = [];
+                for(var s = 0; s < this.subProductsAttribute.length; s++){
+                    for(var r = 0; r < this.subProductsAttribute[s].length; r++){
+                        if(this.subProductsAttribute[s][r] && this.subProductsAttribute[s][r].active == true){
+                            lst.push({"pivot":this.subProductsAttribute[s][r]._id, "option":this.subProductsAttribute[s][r].value ? this.subProductsAttribute[s][r].value : this.subProductsAttribute[s][r].default_value });
+                        }
+                    }
+                    subP.push({
+                        "price":this.subProductsAttribute[s]["price"], 
+                        "photo":this.subProductsAttribute[s]["photo"] ? this.subProductsAttribute[s]["photo"] : "", 
+                        "options":lst, 
+                        "ingredients":this.subProductsAttribute[s]["ingredients"] ? this.formatIngredients(this.subProductsAttribute[s]["ingredients"]) : []
+                        });
                 }
                 return subP;
             },
@@ -515,7 +544,6 @@
                 this.buildAttributes();
                 this.product.product_class = this.class_id.value;
                 this.product.attributes = attrs;
-                this.product.pivot_attributes = this.buildAttributes(true);//["5d2b2e1ac80bd50c64d4d265", "5d41b1b8e99910503cd97820", "5d41b169d4925a50146c9f63", "5d2b2e1ac80bd50c64d4d265"];
                 this.product.categories = this.formatCategories();
                 if(this.edit)
                     this.product.status = this.product.status.value;

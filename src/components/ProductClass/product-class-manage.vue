@@ -18,7 +18,7 @@
                 <div class="row col-md-8">
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--ATRIBUTOS-->
-                    <v-data-table v-model="attributes" :headers="headers" :items="attrN" :pagination.sync="paginationAttr" select-all item-key="_id" class="elevation-1">
+                    <v-data-table v-model="attributes" :headers="headersA" :items="attrN" :pagination.sync="paginationAttr" select-all item-key="_id" class="elevation-1">
                         <template v-slot:headers="props">
                             <tr>
                                 <th>
@@ -38,6 +38,9 @@
                                 <td class="text-xs-right">{{ props.item.code.split('_').join(' ') }}</td>
                                 <td class="text-xs-right">{{ props.item.type }}</td>
                                 <td class="text-xs-right">{{ props.item.required ? 'Si' : 'No'}}</td>
+                                <td class="text-xs-right">
+                                    <v-checkbox :input-value="props.item.variable" primary hide-details></v-checkbox>
+                                </td>
                             </tr>
                         </template>
                     </v-data-table>
@@ -49,7 +52,7 @@
                 <div class="row col-md-8">
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--ATRIBUTOS PERSONALIZABLES-->
-                    <v-data-table v-model="attributesCustomisable" :headers="headers" :items="attrC" :pagination.sync="paginationAttrCustom" select-all item-key="code" class="elevation-1">
+                    <v-data-table v-model="attributesCustomisable" :headers="headersC" :items="attrC" :pagination.sync="paginationAttrCustom" select-all item-key="code" class="elevation-1">
                         <template v-slot:headers="propsC">
                             <tr>
                                 <th>
@@ -69,6 +72,12 @@
                                 <td class="text-xs-right">{{ propsC.item.code.split('_').join(' ') }}</td>
                                 <td class="text-xs-right">{{ propsC.item.type }}</td>
                                 <td class="text-xs-right">{{ propsC.item.required ? 'Si' : 'No'}}</td>
+                                <td class="text-xs-right">
+                                    <v-checkbox :input-value="propsC.item.pp" primary hide-details></v-checkbox>
+                                </td>
+                                <td>
+                                    <v-checkbox :input-value="propsC.item.pivot" primary hide-details></v-checkbox>
+                                </td>
                             </tr>
                         </template>
                     </v-data-table>
@@ -102,10 +111,17 @@ var auxArr = ""
         paginationAttrCustom: {
             sortBy: 'name'
         },
-        headers: [
+        headersA: [
             {text:"Nombre", value:"code"},
             {text:"Tipo", value:"type"},
-            {text:"Requerido", value:"required"}
+            {text:"Requerido", value:"required"},
+            {text:"Variable", value:"variable"}
+        ],
+        headersC: [
+            {text:"Nombre", value:"code"},
+            {text:"Tipo", value:"type"},
+            {text:"Requerido", value:"required"},
+            {text:"Permite permutación", value:"pivot"}
         ],
         classs: {},
         attributes:[],
@@ -132,6 +148,9 @@ var auxArr = ""
         },
         attr(val){
             this.attrN=val;
+            for(var s = 0; s < this.attrN.length; s++){
+                this.attrN[s].variable = false;
+            }
             this.attrC=val;
         },
         attributesObj(val){
@@ -165,6 +184,16 @@ var auxArr = ""
         }
     },
     methods: {
+        setAtt(al){
+            var at = "";
+            for(var s = 0; s < this.attributes.length; s++){if(this.attributes[s]._id == al._id){at = s;}}
+            if(at == ""){
+                this.attributes.push(al);
+            }else{
+                this.attributes.splice(at, 1);
+            }
+            this.attributes.push();
+        },
         ...mapActions({
             create: 'productClass/create',
             update: 'productClass/update',

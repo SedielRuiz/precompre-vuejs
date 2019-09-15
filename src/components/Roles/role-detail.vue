@@ -17,8 +17,8 @@
                 <div class="row col-md-8">
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--PERMISOS-->
-                    <div v-if="permissions">
-                      <v-chip v-for="(p, index) in permissions" :key="index">{{p.description}}</v-chip>
+                    <div v-if="rol.permissions">
+                      <v-chip v-for="(r, index) in rol.permissions" :key="index">{{r.title}}</v-chip>
                     </div>
                     <!--PERMISOS-->
                   </v-card><br>
@@ -43,7 +43,6 @@
     data () {
       return {
         rol: {},
-        permissionsId:[],
         status:[
           {text: 'Activo', value:'enabled'},
           {text: 'Inactivo', value:'disabled'},
@@ -55,7 +54,6 @@
         rl(val){
             if(val){
                 this.rol = val;
-                this.permissionsId = val.permissions;
             }
         }
     },
@@ -77,23 +75,10 @@
         }
     },
     computed:{
-        ...mapState({
-            warning: state => state.warning,
-            rl: state => state.role.role, 
-        }),
-        ...mapGetters({
-            getPermissions: 'permission/getPermissions', 
-        }),
-        permissions(){
-            var permiss = [];
-            if(this.permissionsId){
-                for(var s in this.permissionsId){
-                    if(this.permissionsId[s])
-                        permiss.push(this.getPermissions(this.permissionsId[s]));
-                }
-                return permiss;
-            }
-        },
+      ...mapState({
+          warning: state => state.warning,
+          rl: state => state.role.role, 
+      }),
     },
   }
 </script>

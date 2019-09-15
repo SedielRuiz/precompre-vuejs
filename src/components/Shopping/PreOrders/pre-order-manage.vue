@@ -81,7 +81,7 @@
                                     <v-flex xs12 md10>
                                         <v-layout justify-center row wra>
                                             <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                                <label>Lunes</label>{{sc.lunes}}
+                                                <label>Lunes</label>
                                                 <v-checkbox v-model="sc.lunes"></v-checkbox>
                                             </v-flex>
                                             <v-flex xs12 md2 cols="12" sm="4" md="2">
@@ -208,6 +208,7 @@
     },
     data () {
         return {
+            subProductsAttribute:[],
             deliveryPlace:"",
             deliveryPlaces:[],
             customer_id:"",
@@ -229,19 +230,13 @@
                 this.products = [];
                 for(var s = 0; s < val.length; s++){
                     if(val[s].status == "enable"){
-                        for(var r = 0; r < val[s].sub_products.length; r++){
-                            if(val[s].sub_products[r].state == "avilable"){
-                                var name = this.buildNameProduct(val[s].name, val[s], val[s].sub_products[r]);
-                                this.products.push({"text":name, "sub_value":val[s].sub_products[r]._id, "principal_value":val[s]._id, "attributes":val[s].attributes, "categories":val[s].categories, "class":val[s].product_class, "price":val[s].default_price});
-                            }
-                        }
+                        this.products.push({"text":val[s].name, "sub_products":val[s].sub_products, "principal_value":val[s]._id, "attributes":val[s].attributes, "categories":val[s].categories, "class":val[s].product_class, "price":val[s].default_price});
                     }
                 }
             }
         },
         product(val){
             if(val){
-                console.log(val);
                 this.product.product_id = val.principal_value;
                 this.product.sub_product = val.sub_value;
                 this.product.unit_value = val.price;
