@@ -267,7 +267,7 @@ var auxArr = ""
             var attr = [];
             console.log(this.attributes);
             for(var s = 0; s < this.attributes.length; s++){
-                if(!this.attributes.find(element=>{return element._id == this.attributes[s]._id }))
+                if(!attr.find(element=>{return element._id == this.attributes[s]._id }))
                     attr.push({"id":this.attributes[s]._id, "variable":this.attributes[s].variable});
             }
             this.classs.attributes = attr;
