@@ -42,7 +42,7 @@
                         <!--ATRIBUTOS-->
                         <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
                         <div v-if="attr.options.length > 0">
-                            <v-combobox  :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="attr.options" :label="attr.code"></v-combobox>
+                            <v-combobox  prepend-icon="check_circle_outline" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="attr.options" :label="attr.code"></v-combobox>
                         </div>
                         <div v-else>
                             <div v-if="attr.type == 'boolean'">
