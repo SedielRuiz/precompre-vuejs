@@ -171,7 +171,7 @@ var auxArr = ""
         },*/
     },
     mounted () {
-        this.fetchAttributes();
+        this.fetchAttributes({"page_size":-1});
         this.fetchClasss();
         this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
         if(this.edit!=""){
@@ -189,16 +189,6 @@ var auxArr = ""
             }else{
                 this.attributesCustomisable.push(val);
             }
-        },
-        setAtt(al){
-            var at = "";
-            for(var s = 0; s < this.attributes.length; s++){if(this.attributes[s]._id == al._id){at = s;}}
-            if(at == ""){
-                this.attributes.push(al);
-            }else{
-                this.attributes.splice(at, 1);
-            }
-            this.attributes.push();
         },
         ...mapActions({
             create: 'productClass/create',
@@ -277,7 +267,7 @@ var auxArr = ""
             var attr = [];
             console.log(this.attributes);
             for(var s = 0; s < this.attributes.length; s++){
-                if(!attr.find(element=>{return element.id == this.attributes[s]._id }))
+                if(!this.attributes.find(element=>{return element._id == this.attributes[s]._id }))
                     attr.push({"id":this.attributes[s]._id, "variable":this.attributes[s].variable});
             }
             this.classs.attributes = attr;

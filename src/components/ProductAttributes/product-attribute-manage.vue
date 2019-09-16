@@ -112,16 +112,18 @@
             this.option = {};
         },
         buildAttribute(){
-            this.attribute.code = this.attribute.code.toLowerCase().split(" ").join("_");
-            this.attribute.options = this.options;
-            if(this.attribute.size)
-                this.attribute.size = this.attribute.size.value;
-            if(this.attribute.type)
-                this.attribute.type = this.attribute.type.value;
+          this.attribute.sku = this.attribute.code.substring(0, 3);
+          this.attribute.title = this.attribute.code;
+          this.attribute.code = this.attribute.code.toLowerCase().split(" ").join("_");
+          this.attribute.options = this.options;
+          if(this.attribute.size)
+              this.attribute.size = this.attribute.size.value;
+          if(this.attribute.type)
+              this.attribute.type = this.attribute.type.value;
 
-            this.attribute.length_text = 100;
-            this.attribute.default_value = "xxx";
-            return this.attribute;
+          this.attribute.length_text = 100;
+          this.attribute.default_value = "xxx";
+          return this.attribute;
         },
         processAttribute () {
             this.attribute = this.buildAttribute();
@@ -160,7 +162,7 @@
           att: state => state.productAttribute.attribute, 
       }),
       trySend(){
-        if(this.attribute && this.attribute.type && this.attribute.code && this.attribute.required != "" && this.attribute.visible != ""){
+        if(this.attribute && this.attribute.type && this.attribute.code && this.attribute.required != ""){
           return false; 
         }
         return true;

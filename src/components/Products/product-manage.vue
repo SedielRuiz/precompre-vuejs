@@ -13,9 +13,88 @@
             <v-form>
                 <v-select v-model="product.type" :items="typesProduct" prepend-icon="featured_play_list" label="Tipo de producto"></v-select>
                 <v-text-field v-model="product.name" prepend-icon="person" name="name" label="Nombre del producto" type="text"></v-text-field>
-                <v-combobox  v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
+                <v-layout row wra>
+                    <v-flex xs12 md4>
+                        <v-combobox prepend-icon="filter_list" v-model="ingredient.input" :items="inputs" label="Insumos"></v-combobox>
+                    </v-flex>
+                    <v-flex xs12 md2>
+                        <v-text-field v-model="ingredient.quantity" prepend-icon="featured_play_list" name="quantity" label="Cantidad" type="number"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md2>
+                        <v-layout row wra>
+                            <v-icon medium @click="addArray('i', 'general')">add</v-icon>
+                            <v-chip v-for="(i, index) in ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip>
+                        </v-layout>
+                    </v-flex>
+                </v-layout>
                 <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
+                <v-combobox  v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
+                <h2 v-if="class_id">Atributos <hr><br></h2>
+                <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
+                <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
+                    <div v-if="attr.visible">
+                        <v-card  style="height: 100%;width: 84%; padding: 10px;">
+                            <!--ATRIBUTOS-->
+                            <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
+                            <v-text-field v-if="attr.type != 'boolean'" :disabled="true" v-model="attr.code.split('_').join(' ')"  name="title" label="" type="text"></v-text-field>
+                            <div v-if="attr.options.length > 0">
+                                <v-combobox  :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="attr.options" label="Opciones"></v-combobox>
+                            </div>
+                            <div v-else>
+                                <div v-if="attr.type == 'boolean'">
+                                    <v-switch  v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value"></v-switch>
+                                </div>
+                                <div v-else>
+                                    <div v-if="attr.size == 'short'">
+                                        <v-text-field :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" label="Valor" type="text"></v-text-field>
+                                    </div>
+                                    <div v-else-if="attr.size == 'medium'">
+                                        <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="77px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..."></v-textarea>
+                                    </div>
+                                    <div v-else>
+                                        <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="135px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..."></v-textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--v-switch v-if="!attr.required" v-model="attr.add" :label="'Agregar'"></v-switch-->
+                            <!--ATRIBUTOS-->
+                        </v-card><br>
+                    </div>
+                </div>
+                <h2 v-if="class_id">Atributos personalizados <hr><br></h2>
+                <!--div v-if="attributes.length > 0">
+                  <v-chip v-for="(attr, index) in attributes" :key="index+'_'+attr.code">{{attr.description}} <v-icon medium @click="removeAttribute(index)">close</v-icon></v-chip>
+                </div-->
+                <div v-for="(attrc, index) in attributesCustomisable" :key="index+'_'+attr.code" class="row col-md-8">
+                  <v-card  style="height: 100%;width: 84%; padding: 10px;">
+                    <!--ATRIBUTOS Personalizables-->
+                    <v-alert :value="attrc.msgError ? true : false" type="error">{{attrc.msgError}}</v-alert>
+                    <v-text-field :disabled="true" v-if="attr.type != 'boolean'" v-model="attrc.code.split('_').join(' ')"  name="title" label="" type="text"></v-text-field>
+                    <div v-if="attrc.options.length > 0">
+                        <v-combobox  :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value" :value="attrc.default_value" :items="attrc.options" label="Opciones"></v-combobox>
+                    </div>
+                    <div v-else>
+                        <div v-if="attrc.type == 'boolean'">
+                            <v-switch  v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value" :label="attrc.code"></v-switch>
+                        </div>
+                        <div v-else>
+                            <div v-if="attrc.size == 'short'">
+                                <v-text-field :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value"  :maxlength="attrc.length_text ? length_text : 99999999 " prepend-icon="library_books" name="title" label="Valor" type="text"></v-text-field>
+                            </div>
+                            <div v-else-if="attrc.size == 'medium'">
+                                <v-textarea :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value"  prepend-icon="library_books" height="77px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..." :maxlength="attrc.length_text != '' ? length_text : 99999999 "></v-textarea>
+                            </div>
+                            <div v-else>
+                                <v-textarea :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value"  prepend-icon="library_books" height="135px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..." :maxlength="attrc.length_text != '' ? length_text : 99999999 "></v-textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <!--v-switch v-if="!attrc.required" v-model="attrc.add" :label="'Agregar'"></v-switch-->
+                  </v-card><br>
+                </div>
+                <!--ATRIBUTOS Personalizables-->
+                <!--SUB PRODUCTOS-->
                 <div v-if="class_id">
                     <v-layout row wra>
                         <v-flex xs12 md12>
@@ -44,7 +123,7 @@
                                         <v-flex v-for="(attr, index) in sub" row wra :key="index" xs12 md3>
                                             <div v-if="attr.options && attr.options.length > 0">
                                                 <v-flex xs12 md12>
-                                                    <v-combobox :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="attr.options"></v-combobox>
+                                                    <v-combobox :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', '_id')"></v-combobox>
                                                 </v-flex>
                                             </div>
                                             <div v-else>
@@ -80,10 +159,10 @@
                                                 <v-icon>add</v-icon>
                                                 <v-text-field v-model="sub.photo" name="photo" type="file"></v-text-field>
                                             </label-->
-                                            <v-text-field v-model="sub.photo" name="photo" placeholder="URL" type="text"></v-text-field>
+                                            <v-text-field v-model="!sub.photo ? sub.photo = getPhoto() : sub.photo" name="photo" placeholder="URL" type="text"></v-text-field>
                                         </v-flex>
                                         <v-flex class="alignGrid" xs12 md1>
-                                            <v-text-field v-model="sub.price" name="price" placeholder="$ 0.000" type="number"></v-text-field>
+                                            <v-text-field v-model="!sub.price ? sub.price = product.default_price : sub.price" name="price" placeholder="$ 0.000" type="number"></v-text-field>
                                         </v-flex>
                                         <v-flex class="alignGrid" xs12 md1>
                                             <v-checkbox value input-value="true" v-model="sub.active == null || sub.active == undefined ? sub.active = true : sub.active"></v-checkbox>
@@ -127,69 +206,6 @@
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
-                <h2 v-if="class_id">Atributos <hr><br></h2>
-                <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
-                <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
-                  <v-card  style="height: 100%;width: 84%; padding: 10px;">
-                    <!--ATRIBUTOS-->
-                    <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
-                    <v-text-field v-if="attr.type != 'boolean'" :disabled="true" v-model="attr.code.split('_').join(' ')"  name="title" label="" type="text"></v-text-field>
-                    <div v-if="attr.options.length > 0">
-                        <v-combobox  :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="attr.options" label="Opciones"></v-combobox>
-                    </div>
-                    <div v-else>
-                        <div v-if="attr.type == 'boolean'">
-                            <v-switch  v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value"></v-switch>
-                        </div>
-                        <div v-else>
-                            <div v-if="attr.size == 'short'">
-                                <v-text-field :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" label="Valor" type="text"></v-text-field>
-                            </div>
-                            <div v-else-if="attr.size == 'medium'">
-                                <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="77px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..."></v-textarea>
-                            </div>
-                            <div v-else>
-                                <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="135px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..."></v-textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <!--v-switch v-if="!attr.required" v-model="attr.add" :label="'Agregar'"></v-switch-->
-                    <!--ATRIBUTOS-->
-                  </v-card><br>
-                </div>
-                <h2 v-if="class_id">Atributos personalizados <hr><br></h2>
-                <!--div v-if="attributes.length > 0">
-                  <v-chip v-for="(attr, index) in attributes" :key="index+'_'+attr.code">{{attr.description}} <v-icon medium @click="removeAttribute(index)">close</v-icon></v-chip>
-                </div-->
-                <div v-for="(attrc, index) in attributesCustomisable" :key="index+'_'+attr.code" class="row col-md-8">
-                  <v-card  style="height: 100%;width: 84%; padding: 10px;">
-                    <!--ATRIBUTOS Personalizables-->
-                    <v-alert :value="attrc.msgError ? true : false" type="error">{{attrc.msgError}}</v-alert>
-                    <v-text-field :disabled="true" v-if="attr.type != 'boolean'" v-model="attrc.code.split('_').join(' ')"  name="title" label="" type="text"></v-text-field>
-                    <div v-if="attrc.options.length > 0">
-                        <v-combobox  :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value" :value="attrc.default_value" :items="attrc.options" label="Opciones"></v-combobox>
-                    </div>
-                    <div v-else>
-                        <div v-if="attrc.type == 'boolean'">
-                            <v-switch  v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value" :label="attrc.code"></v-switch>
-                        </div>
-                        <div v-else>
-                            <div v-if="attrc.size == 'short'">
-                                <v-text-field :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value"  :maxlength="attrc.length_text ? length_text : 99999999 " prepend-icon="library_books" name="title" label="Valor" type="text"></v-text-field>
-                            </div>
-                            <div v-else-if="attrc.size == 'medium'">
-                                <v-textarea :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value"  prepend-icon="library_books" height="77px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..." :maxlength="attrc.length_text != '' ? length_text : 99999999 "></v-textarea>
-                            </div>
-                            <div v-else>
-                                <v-textarea :key="index+'_'+attr.code" v-model="!attrc.value && attrc.value != '' ? attrc.value = attrc.default_value : attrc.value"  prepend-icon="library_books" height="135px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..." :maxlength="attrc.length_text != '' ? length_text : 99999999 "></v-textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <!--v-switch v-if="!attrc.required" v-model="attrc.add" :label="'Agregar'"></v-switch-->
-                  </v-card><br>
-                </div>
-                <!--ATRIBUTOS Personalizables-->
-
                 <h2>Categorias</h2><hr><br>
                 <div class="row col-md-8">
                     <v-card style="height: 100%;width: 84%; padding: 31px;">
@@ -260,7 +276,6 @@
 </style>
 <script>
     var attrs = [];
-    var subss=[];
     import Vue from 'vue'
     import {mapActions,mapState} from 'vuex';
     
@@ -314,14 +329,6 @@
                     //this.attributesCustomisable = val.order_attributes;
                 }
             },
-            sub(val){
-                if(val){
-                    this.sub.price = !this.sub.price ? this.product.default_price : this.sub.price;
-                    this.sub.options = val.options;
-                }else{
-                    this.sub = "";
-                }
-            },
             classess(val){
                 for(var s = 0; s < val.length; s++){
                     this.classes.push({"text":val[s].code, "value":val[s]._id});
@@ -335,19 +342,19 @@
             },
             attr(val){
                 if(val){
-                    this.attributes = val.attributes;
+                    this.attributes = val.attributes.attribute;
                     this.formatAttributes("attributes");
-                    this.attributesCustomisable = val.order_attributes;
+                    this.attributesCustomisable = val.order_attributes.attribute;
                     this.formatAttributes("attributesCustomisable");
                     if(this.edit){
                         this.formatAttributeEdit("attributes");
                         this.formatAttributeEdit("attributesCustomisable");
-                        this.subProductsAttribute = this.editSubProducts(this.product.sub_products, this.product.product_class.order_attributes);
+                        this.subProductsAttribute = this.editSubProducts(this.product.sub_products, this.product.product_class.order_attributes.attribute);
                         if(this.class_id.value != this.product.product_class._id){
-                            this.formatSubProducts(val.order_attributes);    
+                            this.formatSubProducts(val.order_attributes.attribute);    
                         }
                     }else{
-                        this.formatSubProducts(val.order_attributes);
+                        this.formatSubProducts(val.order_attributes.attribute);
                     }
                     if(this.subProductsAttribute.length > 0)this.addSub = true;
                 }
@@ -383,6 +390,10 @@
                 getProductClassAttribute: 'product/getProductClassAttribute', 
                 setWarning: 'setWarning',
             }),
+            getPhoto(){
+                var at = this.attributes.find(element=>{return element.code == "photo"});
+                return at && at.default_value ? at.default_value : at.value;
+            },
             closeModal(){
                 this.recipe = false;
             },
@@ -393,31 +404,41 @@
             complement(array){
                 let permutations = []; 
                 for(let i = 0; i < array.length; i++){
-                    let i_permutations = [...permutations];
-                    for(let j = 0; j < array[i].options.length; j++){
-                        if(i==0){
-                            array[i].active = true;
-                            const option = array[i]
-                            permutations.push([{...option, default_value:option.options[j].value}]);
-                        }else{
-                            if(j>0) permutations = [...permutations.concat([...i_permutations])]
+                    if(array[i].visible){
+                        let i_permutations = [...permutations];
+                        for(let j = 0; j < array[i].options.length; j++){
+                            if(i==0){
+                                array[i].active = true;
+                                const option = array[i]
+                                permutations.push([{...option, default_value:option.options[j].value}]);
+                            }else{
+                                if(j>0) permutations = [...permutations.concat([...i_permutations])]
+                            }
                         }
-                    }
-                    for(let j = 0; j < array[i].options.length; j++){
-                        for(let k = i_permutations.length*j; k < i_permutations.length*(j+1); k++){
-                            let x = [...permutations[k]] 
-                            array[i].active = true;
-                            const option = array[i]
-                            x.push({...option, default_value:option.options[j].value});
-                            permutations[k] = [...x]
+                        for(let j = 0; j < array[i].options.length; j++){
+                            for(let k = i_permutations.length*j; k < i_permutations.length*(j+1); k++){
+                                let x = [...permutations[k]] 
+                                array[i].active = true;
+                                const option = array[i]
+                                x.push({...option, default_value:option.options[j].value});
+                                permutations[k] = [...x]
+                            }
                         }
                     }
                 }
                 console.log(permutations);
                 return permutations;
             },
+            formatList(list, name, code){
+                var lst = [];
+                if(list){
+                    for(var s = 0; s < list.length; s++){
+                        lst.push({"text":list[s][name], "value":list[s][code]});
+                    }
+                }
+                return lst;
+            },
             formatSubProducts(attributes){
-                console.log(attributes);
                 this.subProductsAttribute = this.complement(attributes);
             },
             editSubProducts(subs, attrs){
@@ -428,8 +449,11 @@
                     for(var s = 0; s < subs.length; s++){
                         for(var r = 0; r < subs[s].options.length; r++){
                             var at = attrs.find(element=>{return element._id == subs[s].options[r].pivot});
-                            at.value = subs[s].options[r].option;
-                            att.push(at);
+                            console.log(at);
+                            if(at){
+                                at.value = subs[s].options[r].option;
+                                att.push(at);
+                            }
 
                         }
                         att["price"] = subs[s].price;
@@ -451,12 +475,15 @@
                             "name": this.ingredient.input.text.split("-")[0], 
                             "metric": this.ingredient.input.text.split("-")[1],
                         }
-                        ing = Array.isArray(this.subProductsAttribute[idx].ingredients) ? this.subProductsAttribute[idx].ingredients : [];
-                        ing.push(obj);
+                        if(idx == "general"){
+                            this.ingredients.push(obj);
+                        }else{
+                            ing = Array.isArray(this.subProductsAttribute[idx].ingredients) ? this.subProductsAttribute[idx].ingredients : [];
+                            ing.push(obj);
+                            this.subProductsAttribute[idx].ingredients = ing;
+                        }
                         this.ingredient.input = "";
                         this.ingredient.quantity = "";
-                        this.subProductsAttribute[idx].ingredients = ing;
-                        console.log(this.subProductsAttribute[idx]);
                         break;
                 }
             },
@@ -520,7 +547,9 @@
                 this.msgError = false;
                 for(var s = 0; s < this[attr].length; s++){
                     var val  = this[attr][s].options.length > 0 && this[attr][s].value.value ? this[attr][s].value.value : this[attr][s].value;
-                    if((this[attr][s].required && this.valAttrRequired(this[attr][s])) || (!this[attr][s].required && this.valAttrNoRequired(val))){
+                    if( (this[attr][s].required && this.valAttrRequired(this[attr][s])) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){
+                        val = this[attr][s].code == "price" ? this.product.price : val;
+                        val = this[attr][s].code == "recipe" ? this.formatIngredients(this.ingredients) : val;
                         this[attr][s].msgError = "";
                         obj = {};
                         obj.code = this[attr][s]._id;
@@ -574,12 +603,13 @@
                     if(this.subProductsAttribute[s]["ingredients"]){
                         lst.push(this.formatIngredients(this.subProductsAttribute[s]["ingredients"]));
                     }
-                    if(this.subProductsAttribute[s]["photo"]){
-                        lst.push({"pivot":"1235", "value":this.subProductsAttribute[s]["photo"]});
-                    }
-                    if(this.subProductsAttribute[s]["price"]){
-                        lst.push({"pivot":"5321", "value":this.subProductsAttribute[s]["price"]});
-                    }
+                    
+                    var pht = this.attributes.find(element=>{return element.code == "photo"});
+                    lst.push({"pivot":pht._id, "option":this.subProductsAttribute[s]["photo"] ? this.subProductsAttribute[s]["photo"] : (pht && pht.value ? pht.value : pht.default_value)});
+
+                    var prc = this.attributes.find(element=>{return element.code == "price"});
+                    lst.push({ "pivot":prc._id, "option":this.subProductsAttribute[s]["price"] ? this.subProductsAttribute[s]["price"] : product.default_price });
+
                     subP.push({
                         "status": this.subProductsAttribute[s]["active"],
                         "options":lst,

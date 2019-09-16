@@ -21,7 +21,10 @@
             <td v-if="props.item.attributes.length > 0">{{ props.item.attributes[0].value.charAt(0).toUpperCase() + props.item.attributes[0].value.slice(1) }}</td>
             <td v-else></td>
             <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo" }}</td>
-            <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
+            <td>
+              <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
+              <v-btn color="error" @click="deleteProduct(props.item._id)">ELiminar</v-btn>
+            </td>
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
@@ -49,13 +52,27 @@
       }
     },
     mounted () {
-        this.fetchProducts()
+        this.fetchProducts();
     },
     methods: {
       ...mapActions({
         fetchProducts: 'product/fetchProducts',
+        delete: 'product/delete',
         setWarning: 'setWarning',
       }),
+      deleteProduct(id){
+        if(confirm("¿ Seguro que desea eliminar este registro ? ")){
+          this.delete(id).then(
+            data => {
+              this.setWarning(data, { root: true }).then(()=>{
+                  this.fetchProducts();
+              })
+            },
+            error => {
+              console.log(error);
+            });
+        }
+      },
       search(pagination){
         this.fetchProducts(pagination);
       },
