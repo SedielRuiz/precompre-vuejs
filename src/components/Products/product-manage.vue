@@ -36,36 +36,32 @@
                     </v-flex>
                 </v-layout>
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-                <h2 v-if="class_id"></h2>
                 <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
                     <div v-if="attr.visible">
-                        <v-card  style="height: 100%;width: 84%; padding: 10px;">
-                            <!--ATRIBUTOS-->
-                            <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
-                            <v-text-field v-if="attr.type != 'boolean'" :disabled="true" v-model="attr.code.split('_').join(' ')"  name="title" label="" type="text"></v-text-field>
-                            <div v-if="attr.options.length > 0">
-                                <v-combobox  :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="attr.options" label="Opciones"></v-combobox>
+                        <!--ATRIBUTOS-->
+                        <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
+                        <div v-if="attr.options.length > 0">
+                            <v-combobox  :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="attr.options" :label="attr.code"></v-combobox>
+                        </div>
+                        <div v-else>
+                            <div v-if="attr.type == 'boolean'">
+                                <v-switch  v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value"></v-switch>
                             </div>
                             <div v-else>
-                                <div v-if="attr.type == 'boolean'">
-                                    <v-switch  v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value"></v-switch>
+                                <div v-if="attr.size == 'short'">
+                                    <v-text-field :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" :label="attr.code" type="text"></v-text-field>
+                                </div>
+                                <div v-else-if="attr.size == 'medium'">
+                                    <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="77px" solo name="mediumText" :label="attr.code"></v-textarea>
                                 </div>
                                 <div v-else>
-                                    <div v-if="attr.size == 'short'">
-                                        <v-text-field :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" label="Valor" type="text"></v-text-field>
-                                    </div>
-                                    <div v-else-if="attr.size == 'medium'">
-                                        <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="77px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..."></v-textarea>
-                                    </div>
-                                    <div v-else>
-                                        <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="135px" solo name="mediumText" label="Escriba un valor y especifique tipos de medias..."></v-textarea>
-                                    </div>
+                                    <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="135px" solo name="mediumText" :label="attr.code"></v-textarea>
                                 </div>
                             </div>
-                            <!--v-switch v-if="!attr.required" v-model="attr.add" :label="'Agregar'"></v-switch-->
-                            <!--ATRIBUTOS-->
-                        </v-card><br>
+                        </div>
+                        <!--v-switch v-if="!attr.required" v-model="attr.add" :label="'Agregar'"></v-switch-->
+                        <!--ATRIBUTOS--><br>
                     </div>
                 </div>
                 <h2 v-if="class_id">Atributos personalizados <hr><br></h2>
