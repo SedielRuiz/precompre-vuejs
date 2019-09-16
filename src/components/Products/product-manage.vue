@@ -23,7 +23,7 @@
                     <v-flex xs12 md2>
                         <v-layout row wra>
                             <v-icon medium @click="addArray('i', 'general')">add</v-icon>
-                            <v-chip v-for="(i, index) in ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip>
+                            <v-chip v-for="(i, index) in ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index, true)">close</v-icon></v-chip>
                         </v-layout>
                     </v-flex>
                 </v-layout>
@@ -349,7 +349,9 @@
                     if(this.edit){
                         this.formatAttributeEdit("attributes");
                         this.formatAttributeEdit("attributesCustomisable");
-                        this.subProductsAttribute = this.editSubProducts(this.product.sub_products, this.product.product_class.order_attributes.attribute);
+                        var att = this.product.product_class.order_attributes.attribute;
+                        att = att.concat(this.product.product_class.attributes.attribute);
+                        this.subProductsAttribute = this.editSubProducts(this.product.sub_products, att);
                         if(this.class_id.value != this.product.product_class._id){
                             this.formatSubProducts(val.order_attributes.attribute);    
                         }
@@ -445,6 +447,8 @@
                 console.log(attrs);
                 var lst = [];
                 var att = [];
+                var photo = "";
+                var price = "";
                 if(subs){
                     for(var s = 0; s < subs.length; s++){
                         for(var r = 0; r < subs[s].options.length; r++){
@@ -452,12 +456,20 @@
                             console.log(at);
                             if(at){
                                 at.value = subs[s].options[r].option;
-                                att.push(at);
+                                if(at.visible && at.code != "photo"){
+                                    att.push(at);
+                                }
+                                if(at.code == "photo"){
+                                    photo = subs[s].options[r].option;
+                                }
+                                if(at.code == "price"){
+                                    price = subs[s].options[r].option;
+                                }
                             }
 
                         }
-                        att["price"] = subs[s].price;
-                        att["photo"] = subs[s].photo;
+                        att["price"] = price;
+                        att["photo"] = photo;
                         lst.push(att);
                         att = [];
                     }
@@ -487,15 +499,19 @@
                         break;
                 }
             },
-            removeArray(arr, idx){
+            removeArray(arr, idx, gn = false){
                 switch(arr) {
                     case "i":
-                        var ing = Array.isArray(this.subProductsAttribute[idx].ingredients) ? this.subProductsAttribute[idx].ingredients : [];
-                        ing.splice(idx,1);
-                        this.ingredient.input = "";
-                        this.ingredient.quantity = "";
-                        this.subProductsAttribute[idx].ingredients = ing;
-                        this.subProductsAttribute.push();
+                        if(gn){
+                            this.ingredients.splice(idx, 1);
+                        }else{
+                            var ing = Array.isArray(this.subProductsAttribute[idx].ingredients) ? this.subProductsAttribute[idx].ingredients : [];
+                            ing.splice(idx,1);
+                            this.ingredient.input = "";
+                            this.ingredient.quantity = "";
+                            this.subProductsAttribute[idx].ingredients = ing;
+                            this.subProductsAttribute.push();
+                        }
                         break;
                 }
             },
@@ -516,6 +532,18 @@
                     for(var r = 0; r < this.attributesP.length; r++){
                         if(this[arr1][s]._id == this.attributesP[r].code){
                             this[arr1][s].value = this.attributesP[r].value;
+
+                            if(this[arr1][s].code == "recipe"){
+                                for(var g = 0; g < this.attributesP[r].value.option.length; g++){
+                                    var inp = this.inputs.find(element=>{return element.value == this.attributesP[r].value.option[g].input});
+                                    this.ingredients.push({"name": inp.text.split("-")[0], "metric": inp.text.split("-")[1], "id":inp.value, "quantity":this.attributesP[r].value.option[g].value});
+                                }
+                            }
+
+                            if(this[arr1][s].code == "price"){
+                                this.product.default_price = this.attributesP[r].value;
+                            }
+
                         }
                     }
                 }
@@ -547,7 +575,7 @@
                 this.msgError = false;
                 for(var s = 0; s < this[attr].length; s++){
                     var val  = this[attr][s].options.length > 0 && this[attr][s].value.value ? this[attr][s].value.value : this[attr][s].value;
-                    if( (this[attr][s].required && this.valAttrRequired(this[attr][s])) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){
+                    if( (this[attr][s].code == "recipe" || this[attr][s].required && this.valAttrRequired(this[attr][s])) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){
                         val = this[attr][s].code == "price" ? this.product.price : val;
                         val = this[attr][s].code == "recipe" ? this.formatIngredients(this.ingredients) : val;
                         this[attr][s].msgError = "";
@@ -670,8 +698,8 @@
                 rows: state => state.category.categories, 
             }),
             trySend(){
-                if(this.product && this.product.name && this.product.type && this.product.default_price && this.class_id){
-                return false; 
+                if(this.edit || this.product && this.product.name && this.product.type && this.product.default_price && this.class_id){
+                    return false; 
                 }
                 return true;
             }
