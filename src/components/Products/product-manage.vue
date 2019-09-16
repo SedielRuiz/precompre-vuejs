@@ -442,6 +442,9 @@
             },
             formatSubProducts(attributes){
                 this.subProductsAttribute = this.complement(attributes);
+                for(var s = 0; s < this.subProductsAttribute.length; s++){
+                    this.subProductsAttribute[s].ingredients = this.ingredients ? this.ingredients : [];
+                }
             },
             editSubProducts(subs, attrs){
                 console.log(attrs);
