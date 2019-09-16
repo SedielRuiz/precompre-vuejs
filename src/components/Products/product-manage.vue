@@ -11,8 +11,16 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-select v-model="product.type" :items="typesProduct" prepend-icon="featured_play_list" label="Tipo de producto"></v-select>
                 <v-text-field v-model="product.name" prepend-icon="person" name="name" label="Nombre del producto" type="text"></v-text-field>
+                <v-layout row wra>
+                    <v-flex xs12 md6>
+                        <v-select v-model="product.type" :items="typesProduct" prepend-icon="featured_play_list" label="Tipo de producto"></v-select>
+                    </v-flex>
+                    <v-flex xs12 md6>
+                        <v-combobox  v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
+                    </v-flex>
+                </v-layout>
+                <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
                 <v-layout row wra>
                     <v-flex xs12 md4>
                         <v-combobox prepend-icon="filter_list" v-model="ingredient.input" :items="inputs" label="Insumos"></v-combobox>
@@ -27,10 +35,8 @@
                         </v-layout>
                     </v-flex>
                 </v-layout>
-                <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
-                <v-combobox  v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-                <h2 v-if="class_id">Atributos <hr><br></h2>
+                <h2 v-if="class_id"></h2>
                 <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
                     <div v-if="attr.visible">
