@@ -100,9 +100,9 @@
                         <v-flex xs12 md12>
                             <h2>Sub productos <v-icon medium @click="addSub ? addSub = false : addSub = true">add</v-icon></h2><br>
                             <label style="font-size:30px;">{{product.name}}</label><hr><br>
-                            <div row wra v-if="addSub && subProductsAttribute">
+                            <div row wra v-if="addSub && subProductsAttribute" :key="index">
                                 <v-layout align-center row wra >   
-                                    <v-flex class="alignGrid" v-for="h in subProductsAttribute[0]" xs12 md3>
+                                    <v-flex class="alignGrid" v-for="h in subProductsAttribute[0]" :key="index" xs12 md3>
                                         <label class="col-md-2">{{h.code.split("_").join(" ").charAt(0).toUpperCase() + h.code.split("_").join(" ").slice(1)}}</label>
                                     </v-flex>
                                     <v-flex class="alignGrid" xs12 md1>
