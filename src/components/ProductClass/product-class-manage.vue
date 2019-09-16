@@ -31,7 +31,7 @@
                             </tr>
                         </template>
                         <template v-slot:items="props">
-                            <tr :active="props.selected" @click="props.selected = !props.selected">
+                            <tr :active="props.selected" @click="addAtt('a', props.item)">
                                 <td>
                                     <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
                                 </td>
@@ -39,7 +39,7 @@
                                 <td class="text-xs-right">{{ props.item.type }}</td>
                                 <td class="text-xs-right">{{ props.item.required ? 'Si' : 'No'}}</td>
                                 <td class="text-xs-right">
-                                    <v-checkbox :input-value="props.item.variable" primary hide-details></v-checkbox>
+                                    <v-checkbox v-model="props.item.variable" :input-value="props.item.variable" primary hide-details></v-checkbox>
                                 </td>
                             </tr>
                         </template>
@@ -65,19 +65,19 @@
                             </tr>
                         </template>
                         <template v-slot:items="propsC">
-                            <tr :active="propsC.selected" @click="propsC.selected = !propsC.selected">
+                            <tr :active="propsC.selected" @click="addAtt('ac', propsC.item)">
                                 <td>
                                     <v-checkbox :input-value="propsC.selected" primary hide-details></v-checkbox>
                                 </td>
                                 <td class="text-xs-right">{{ propsC.item.code.split('_').join(' ') }}</td>
                                 <td class="text-xs-right">{{ propsC.item.type }}</td>
                                 <td class="text-xs-right">{{ propsC.item.required ? 'Si' : 'No'}}</td>
-                                <td class="text-xs-right">
-                                    <v-checkbox :input-value="propsC.item.pp" primary hide-details></v-checkbox>
-                                </td>
                                 <td>
-                                    <v-checkbox :input-value="propsC.item.pivot" primary hide-details></v-checkbox>
+                                    <v-checkbox v-model="propsC.item.pivot" :input-value="propsC.item.pivot" primary hide-details></v-checkbox>
                                 </td>
+                                <!--td class="text-xs-right">
+                                    <v-checkbox v-model="propsC.item.pp" :input-value="propsC.item.pp" primary hide-details></v-checkbox>
+                                </td-->
                             </tr>
                         </template>
                     </v-data-table>
@@ -148,9 +148,6 @@ var auxArr = ""
         },
         attr(val){
             this.attrN=val;
-            for(var s = 0; s < this.attrN.length; s++){
-                this.attrN[s].variable = false;
-            }
             this.attrC=val;
         },
         attributesObj(val){
@@ -160,16 +157,17 @@ var auxArr = ""
             this.attributesCustomisable = val;
         },
         classess(val){
-            console.log(val);
             for(var s = 0; s < val.length; s++){
                 this.classes.push({"text":val[s].code, "value":val[s]._id});
             }
-        }
+        },
         /*attributes(val){
-            this.alternateAttr("c");
+            if(val)
+                this.alternateAttr("c", val);
         },
         attributesCustomisable(val){
-            this.alternateAttr("n");
+            if(val)
+                this.alternateAttr("n", val);
         },*/
     },
     mounted () {
@@ -184,6 +182,14 @@ var auxArr = ""
         }
     },
     methods: {
+        addAtt(t, val){
+            console.log(val);
+            if(t == "a"){
+                this.attributes.push(val);
+            }else{
+                this.attributesCustomisable.push(val);
+            }
+        },
         setAtt(al){
             var at = "";
             for(var s = 0; s < this.attributes.length; s++){if(this.attributes[s]._id == al._id){at = s;}}
@@ -220,51 +226,23 @@ var auxArr = ""
                 //this[arr2].splice(idx,1);
             }
         },
-        validateAlternate(arr1, arr2){
-            console.log("1 "+this.auxA+" 2: "+arr1)
-            if(this.auxA!=arr1){
-                console.log("entro " + arr1 +" y aux "+ this.auxA);
-                this.auxA = arr1
-                auxArr = this[arr1];
-                this.msgErrorC = false;
-                this.msgErrorN = false;
-            }else{
-                this[arr1] = auxArr;
-                if(arr1 == "attributes"){
-                    this.msgErrorN = true;
-                    this.msgErrorC = false;
-                }else{
-                    this.msgErrorC = true;
-                    this.msgErrorN = false;
-                }
-            }
-            console.log(auxArr);
-            var p = 0;
-            var code = "";
-            var idx = "";
-            p = this[arr1].length;
-            if(p > 0){
-                p = p == 0 ? p : p-1;
-                code = this[arr1][p]._id;
-                for(var s in this[arr2]){
-                    if(this[arr2][s]._id === code){
-                        idx = s;
-                        break;
+        alternateAttr(arr, val){
+            if(arr=="c"){
+                if(this.attributes){
+                    for(var s = 0; s < this.attributes.length; s++){
+                        for(var r = 0; r < this.attrC.length; r++){
+                            if((this.attributes[s] && this.attributes[s]._id) == (this.attrC[r] && this.attrC[r]._id)){
+                                this.attrC.splice(r, 1);
+                                this.attrN.push(this.attributes[s]);
+                            }
+                        }
                     }
                 }
-                if(idx != ""){
-                    console.log(auxArr);
-                    //this[arr1] = auxArr;
-                    this[arr1].splice(idx,1);
-                }
-            }
-        },
-        alternateAttr(arr){
-            if(arr=="c"){
-                //if(this.attributes.length > 0)
-                  //  this.validateAlternate("attributes", "attributesCustomisable")
+                this.attrN.push();
+                this.attrC.push();
+                    //this.validateAlternate("attributes", "attributesCustomisable")
             }else{
-                //if(this.attributesCustomisable.length > 0)
+                if(this.attributesCustomisable.length > 0){}
                     //this.validateAlternate("attributesCustomisable", "attributes")
             }
         },
@@ -297,14 +275,17 @@ var auxArr = ""
         buildClass(){
             /**Atributos**/
             var attr = [];
+            console.log(this.attributes);
             for(var s = 0; s < this.attributes.length; s++){
-                attr.push(this.attributes[s]._id);
+                if(!attr.find(element=>{return element.id == this.attributes[s]._id }))
+                    attr.push({"id":this.attributes[s]._id, "variable":this.attributes[s].variable});
             }
             this.classs.attributes = attr;
             /**Atributos personalizables**/
             var attrCustom = [];
             for(var s = 0; s < this.attributesCustomisable.length; s++){
-                attrCustom.push(this.attributesCustomisable[s]._id);
+                if(!attrCustom.find(element=>{return element.id == this.attributesCustomisable[s]._id }))
+                    attrCustom.push({"id":this.attributesCustomisable[s]._id, "pivot":this.attributesCustomisable[s].pivot});
             }
             this.classs.order_attributes = attrCustom;
             if(this.classs.parent)
@@ -361,8 +342,12 @@ var auxArr = ""
             var attrs = [];
             if(this.attributesId){
                 for(var s in this.attributesId){
-                    if(this.attributesId[s])
-                        attrs.push(this.getAttributes(this.attributesId[s]));
+                    if(this.attributesId[s]){
+                        var at = this.getAttributes(this.attributesId[s].id);
+                        if(at)
+                            at.variable = this.attributesId[s].variable != undefined ? this.attributesId[s].variable : false;
+                        attrs.push(at);
+                    }
                 }
                 return attrs;
             }
@@ -371,8 +356,12 @@ var auxArr = ""
             var attrCs = [];
             if(this.attributesCustomisableId){
                 for(var s in this.attributesCustomisableId){
-                    if(this.attributesCustomisableId[s])
-                        attrCs.push(this.getAttributes(this.attributesCustomisableId[s]));
+                    if(this.attributesCustomisableId[s]){
+                        var at = this.getAttributes(this.attributesCustomisableId[s].id);
+                        if(at)
+                            at.pivot = this.attributesCustomisableId[s].pivot != undefined ? this.attributesCustomisableId[s].pivot : false;
+                        attrCs.push(at);
+                    }
                 }
                 return attrCs;
             }

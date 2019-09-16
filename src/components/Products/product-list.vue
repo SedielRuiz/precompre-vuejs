@@ -57,7 +57,7 @@
         setWarning: 'setWarning',
       }),
       search(pagination){
-        this.fetchRoles(pagination);
+        this.fetchProducts(pagination);
       },
       redirect(page,id){
         if(!page){

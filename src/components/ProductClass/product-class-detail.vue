@@ -68,6 +68,7 @@
         }
     },
     mounted () {
+      this.fetchAttributes();
         this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
         if(this.edit!=""){
             this.getClass(this.edit);
@@ -76,6 +77,7 @@
     methods: {
         ...mapActions({
             getClass: 'productClass/getClass', 
+            fetchAttributes: 'productAttribute/fetchAttributes',
             setWarning: 'setWarning',
         }),
         redirect(page){
@@ -104,7 +106,7 @@
             if(this.attributesId){
                 for(var s in this.attributesId){
                     if(this.attributesId[s])
-                        attrs.push(this.getAttributes(this.attributesId[s]));
+                        attrs.push(this.getAttributes(this.attributesId[s].id));
                 }
                 return attrs;
             }
@@ -114,7 +116,7 @@
             if(this.attributesCustomisablesId){
                 for(var s in this.attributesCustomisablesId){
                     if(this.attributesCustomisablesId[s])
-                        attrsC.push(this.getAttributes(this.attributesCustomisablesId[s]));
+                        attrsC.push(this.getAttributes(this.attributesCustomisablesId[s].id));
                 }
                 return attrsC;
             }

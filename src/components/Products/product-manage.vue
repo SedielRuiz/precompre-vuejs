@@ -73,11 +73,14 @@
                                             </div>            
                                         </v-flex> 
                                         <v-flex class="alignGrid" xs12 md1>
-                                            <v-icon  @click="formRecipe()">add</v-icon>
+                                            <v-icon  @click="formRecipe(index)">add</v-icon>
                                         </v-flex>
                                         <v-flex class="alignGrid" xs12 md1>
-                                            <v-icon >add</v-icon>
-                                            <!--v-text-field v-model="sub.photo" name="photo" type="file"></v-text-field-->
+                                            <!--label class="text-reader">
+                                                <v-icon>add</v-icon>
+                                                <v-text-field v-model="sub.photo" name="photo" type="file"></v-text-field>
+                                            </label-->
+                                            <v-text-field v-model="sub.photo" name="photo" placeholder="URL" type="text"></v-text-field>
                                         </v-flex>
                                         <v-flex class="alignGrid" xs12 md1>
                                             <v-text-field v-model="sub.price" name="price" placeholder="$ 0.000" type="number"></v-text-field>
@@ -96,15 +99,31 @@
                         <v-toolbar dark color="primary">
                         <v-toolbar-title>Receta</v-toolbar-title>
                             <v-spacer></v-spacer>
-                            <v-btn color="error" @click="closeModal()">Cancelar</v-btn>
+                            <v-btn color="success" @click="closeModal()">Ok</v-btn>
                         </v-toolbar>
                         <v-card-text>
                         <v-form>
+                             <v-layout row wra>
+                                <v-flex xs12 md4>
+                                    <v-combobox prepend-icon="filter_list" v-model="ingredient.input" :items="inputs" label="Insumos"></v-combobox>
+                                </v-flex>
+                                <v-flex xs12 md2>
+                                    <v-text-field v-model="ingredient.quantity" prepend-icon="featured_play_list" name="quantity" label="Cantidad" type="number"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 md2>
+                                    <v-layout row wra>
+                                        <v-icon medium @click="addArray('i', ingredient.idx)">add</v-icon>
+                                        <div v-if="ingredient && subProductsAttribute[ingredient.idx] && subProductsAttribute[ingredient.idx].ingredients">
+                                            <v-chip v-for="(i, index) in subProductsAttribute[ingredient.idx].ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip>
+                                        </div>
+                                    </v-layout>
+                                </v-flex>
+                            </v-layout>
                         </v-form>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="primary" :disabled="trySend" style="width: 100%;" >Guardar</v-btn>
+                            <!--v-btn color="primary" @click="processInput(ingredient.idx)" style="width: 100%;" >Guardar</v-btn-->
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -216,6 +235,28 @@
         text-align:center !important;
         font-size:20px !important;
     }
+    .v-dialog--persistent{
+        width:57% !important;
+    }
+
+    .text-reader {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+
+        /* Fancy button style 😎 */
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 1px 6px;
+        cursor: pointer;
+    }
+    .text-reader input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        opacity: 0;
+    }
 </style>
 <script>
     var attrs = [];
@@ -228,13 +269,11 @@
         data () {
         return {
             recipe:false,
+            ingredient:{},
             ingredients:[],
             inputs:[],
-            pivots:[],
-            addPivots:[],
             subProductsAttribute:[],
             sub:"",
-            subs:[],
             addSub:"",
             pagination: {
                 sortBy: 'name'
@@ -271,7 +310,6 @@
                     this.class_id = {"text":val.product_class.code, "value":val.product_class._id};
                     this.attributesP = val.attributes;
                     this.categories = val.categories;
-                    this.subProductsAttribute = this.editSubProducts(val.sub_products, val.product_class.order_attributes);
                     if(this.subProductsAttribute.length > 0)this.addSub = true;
                     //this.attributesCustomisable = val.order_attributes;
                 }
@@ -291,7 +329,6 @@
             },
             class_id(val){
                 if(val){
-                    console.log(val);
                     this.getProductClassAttribute(val.value);
                 }
 
@@ -305,8 +342,14 @@
                     if(this.edit){
                         this.formatAttributeEdit("attributes");
                         this.formatAttributeEdit("attributesCustomisable");
-                    }   
-                    this.formatSubProducts(val.order_attributes);
+                        this.subProductsAttribute = this.editSubProducts(this.product.sub_products, this.product.product_class.order_attributes);
+                        if(this.class_id.value != this.product.product_class._id){
+                            this.formatSubProducts(val.order_attributes);    
+                        }
+                    }else{
+                        this.formatSubProducts(val.order_attributes);
+                    }
+                    if(this.subProductsAttribute.length > 0)this.addSub = true;
                 }
             },
             inp(val){
@@ -343,7 +386,8 @@
             closeModal(){
                 this.recipe = false;
             },
-            formRecipe(){
+            formRecipe(idx){
+                this.ingredient.idx = idx;
                 this.recipe = true;
             },
             complement(array){
@@ -373,13 +417,8 @@
                 return permutations;
             },
             formatSubProducts(attributes){
+                console.log(attributes);
                 this.subProductsAttribute = this.complement(attributes);
-            },
-            viewNamePivot(id){
-                if(id){
-                    var p = this.pivots.find(element=>{return element.id == id});
-                    return p && p.text ? p.text : "";
-                }
             },
             editSubProducts(subs, attrs){
                 console.log(attrs);
@@ -387,18 +426,16 @@
                 var att = [];
                 if(subs){
                     for(var s = 0; s < subs.length; s++){
-                        console.log(subs[s].options);
                         for(var r = 0; r < subs[s].options.length; r++){
                             var at = attrs.find(element=>{return element._id == subs[s].options[r].pivot});
+                            at.value = subs[s].options[r].option;
                             att.push(at);
 
                         }
-                        console.log(att);
-                        var obj = {
-                            "price":subs[s].price,
-                        };
-                        var arr = [obj, att]
-                        lst.push([arr]);
+                        att["price"] = subs[s].price;
+                        att["photo"] = subs[s].photo;
+                        lst.push(att);
+                        att = [];
                     }
                 }
                 console.log(lst);
@@ -409,15 +446,15 @@
                     case "i":
                         var ing = [];
                         var obj = {
-                            "id": this.subProductsAttribute[idx].input.value,
-                            "quantity":this.subProductsAttribute[idx].quantity,
-                            "name": this.subProductsAttribute[idx].input.text.split("-")[0], 
-                            "metric": this.subProductsAttribute[idx].input.text.split("-")[1],
+                            "id": this.ingredient.input.value,
+                            "quantity":this.ingredient.quantity,
+                            "name": this.ingredient.input.text.split("-")[0], 
+                            "metric": this.ingredient.input.text.split("-")[1],
                         }
                         ing = Array.isArray(this.subProductsAttribute[idx].ingredients) ? this.subProductsAttribute[idx].ingredients : [];
                         ing.push(obj);
-                        this.subProductsAttribute[idx].input = "";
-                        this.subProductsAttribute[idx].quantity = "";
+                        this.ingredient.input = "";
+                        this.ingredient.quantity = "";
                         this.subProductsAttribute[idx].ingredients = ing;
                         console.log(this.subProductsAttribute[idx]);
                         break;
@@ -428,8 +465,8 @@
                     case "i":
                         var ing = Array.isArray(this.subProductsAttribute[idx].ingredients) ? this.subProductsAttribute[idx].ingredients : [];
                         ing.splice(idx,1);
-                        this.subProductsAttribute[idx].input = "";
-                        this.subProductsAttribute[idx].quantity = "";
+                        this.ingredient.input = "";
+                        this.ingredient.quantity = "";
                         this.subProductsAttribute[idx].ingredients = ing;
                         this.subProductsAttribute.push();
                         break;
@@ -516,26 +553,37 @@
             },
             formatIngredients(arr){
                 var lst = [];
+                var obj = {};
+                obj.pivot = arr[0].attr_id;
                 for(var s = 0; s < arr.length; s++){
-                    lst.push({"input":arr[s].id, "quantity":arr[s].quantity});
+                    lst.push({"input":arr[s].id, "value":arr[s].quantity});
                 }
-                return lst;
+                obj.option = lst
+                return obj;
             },
             buildSubProducts(){
                 var subP = [];
                 var lst = [];
                 for(var s = 0; s < this.subProductsAttribute.length; s++){
+                    lst = []
                     for(var r = 0; r < this.subProductsAttribute[s].length; r++){
-                        if(this.subProductsAttribute[s][r] && this.subProductsAttribute[s][r].active == true){
+                        if(this.subProductsAttribute[s][r] && this.subProductsAttribute[s][r].active != undefined && this.subProductsAttribute[s]["active"] == true){
                             lst.push({"pivot":this.subProductsAttribute[s][r]._id, "option":this.subProductsAttribute[s][r].value ? this.subProductsAttribute[s][r].value : this.subProductsAttribute[s][r].default_value });
                         }
                     }
+                    if(this.subProductsAttribute[s]["ingredients"]){
+                        lst.push(this.formatIngredients(this.subProductsAttribute[s]["ingredients"]));
+                    }
+                    if(this.subProductsAttribute[s]["photo"]){
+                        lst.push({"pivot":"1235", "value":this.subProductsAttribute[s]["photo"]});
+                    }
+                    if(this.subProductsAttribute[s]["price"]){
+                        lst.push({"pivot":"5321", "value":this.subProductsAttribute[s]["price"]});
+                    }
                     subP.push({
-                        "price":this.subProductsAttribute[s]["price"], 
-                        "photo":this.subProductsAttribute[s]["photo"] ? this.subProductsAttribute[s]["photo"] : "", 
-                        "options":lst, 
-                        "ingredients":this.subProductsAttribute[s]["ingredients"] ? this.formatIngredients(this.subProductsAttribute[s]["ingredients"]) : []
-                        });
+                        "status": this.subProductsAttribute[s]["active"],
+                        "options":lst,
+                    });
                 }
                 return subP;
             },

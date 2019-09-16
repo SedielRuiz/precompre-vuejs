@@ -120,6 +120,7 @@
                 this.attribute.type = this.attribute.type.value;
 
             this.attribute.length_text = 100;
+            this.attribute.default_value = "xxx";
             return this.attribute;
         },
         processAttribute () {
