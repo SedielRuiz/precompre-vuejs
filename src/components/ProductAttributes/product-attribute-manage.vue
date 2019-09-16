@@ -85,6 +85,7 @@
         },
     },
     mounted () {
+      this.attribute.visible = true;
         this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
         if(this.edit!=""){
             this.titleText="Editar atributo";
