@@ -576,7 +576,7 @@
                 for(var s = 0; s < this[attr].length; s++){
                     var val  = this[attr][s].options.length > 0 && this[attr][s].value.value ? this[attr][s].value.value : this[attr][s].value;
                     if( (this[attr][s].code == "recipe" || this[attr][s].required && this.valAttrRequired(this[attr][s])) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){
-                        val = this[attr][s].code == "price" ? this.product.price : val;
+                        val = this[attr][s].code == "price" ? this.product.default_price : val;
                         val = this[attr][s].code == "recipe" ? this.formatIngredients(this.ingredients) : val;
                         this[attr][s].msgError = "";
                         obj = {};
