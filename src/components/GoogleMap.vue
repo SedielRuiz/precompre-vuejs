@@ -3,7 +3,8 @@
         <div>
             <label class="lbl">{{title}}</label>
             <label>
-                <gmap-autocomplete v-model="placeDir != '' ? placeDir : placeDir" class="form-control" @place_changed="setPlace" @change="addMarker"></gmap-autocomplete>
+                <gmap-autocomplete v-model="placeDir != '' ? placeDir : placeDir" class="form-control" @place_changed="setPlace" @change="addMarker"
+                :options="autocompleteOptions" ></gmap-autocomplete>
                 <!--v-text-field v-model="place.name" prepend-icon="email" name="name" label="Dirección" type="text"></v-text-field-->
             </label>
             <br/>
@@ -30,7 +31,15 @@ export default {
             places: [],
             currentPlace: null,
             placeDir:"",
-            placeN:""
+            placeN:"",
+            autocompleteOptions: {
+                types:['geocode'],
+                componentRestrictions: {
+                    country: [
+                        'col',
+                    ],
+                },
+            },
         };
     },
     watch:{
@@ -91,6 +100,7 @@ export default {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
+            navigator.setOptions({strictBounds: true});
         });
         }
     }
