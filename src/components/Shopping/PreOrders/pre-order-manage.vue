@@ -704,7 +704,7 @@
                         "quantity": this.shoppingCart[r].productsCart[g].quantity,
                     };
                     var place = this.shoppingCart[r].productsCart[g].delivery_place && this.shoppingCart[r].productsCart[g].delivery_place.value ? this.shoppingCart[r].productsCart[g].delivery_place.value : this.shoppingCart[r].productsCart[g].delivery_place;
-                    json.push({"name":this.shoppingCart[r].productsCart[g].name, "days":days, "item":item, "delivery_place":place, "customer":this.shoppingCart[r].productsCart[g].customer_id});
+                    json.push({"group_name":this.shoppingCart[r].name, "days":days, "item":item, "delivery_place":place, "customer":this.shoppingCart[r].productsCart[g].customer_id});
                 }
             }
             console.log(json)
