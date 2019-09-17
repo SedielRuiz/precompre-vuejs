@@ -100,7 +100,6 @@ export default {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-            navigator.setOptions({strictBounds: true});
         });
         }
     }
