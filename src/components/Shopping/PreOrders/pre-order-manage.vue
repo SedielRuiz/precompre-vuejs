@@ -681,7 +681,7 @@
             }
             return r;
         },
-        PreOrder(){
+        buildPreOrder(){
             var json = [];
             for(var r = 0; r < this.shoppingCart.length; r++){
                 //Recupero días
