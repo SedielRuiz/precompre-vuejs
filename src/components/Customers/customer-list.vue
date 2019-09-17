@@ -20,7 +20,7 @@
         <td>{{ props.item.last_name }}</td>
         <td>{{ props.item.email }}</td>
         <td>{{ props.item.telephones.length > 0 ? (props.item.telephones.find(element=>{return element.main == true}) && props.item.telephones.find(element=>{return element.main == true}).number ? props.item.telephones.find(element=>{return element.main == true}).number : "") : "" }}</td>
-        <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo" }}</td>
+        <td>{{ props.item.campaign_code ? props.item.campaign_code : ""}}</td>
         <td>
           <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
           <v-btn color="error" @click="deleteCustomer(props.item._id)">Eliminar</v-btn>
@@ -48,7 +48,7 @@
             {text:"Apellidos", value:"last_name"},
             {text:"Correo", value:"email"},
             {text:"Teléfono", value:"telephones"},
-            {text:"Estado", value:"status"},
+            {text:"Campaña", value:"campaign_code"},
             {text:"Acciones", value:"actons"}
         ]
       }

@@ -15,20 +15,33 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-combobox :disabled="true" v-model="customer.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
-                <v-text-field :disabled="true" v-model="customer.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-model="customer.last_name" prepend-icon="person" name="last_name" label="Apellidos" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
-                <v-combobox :disabled="true" v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-                <h2>Teléfonos</h2><hr><br>
-                <div v-if="phones">
-                  <v-chip v-for="(p, index) in phones" :key="index">{{p.number}}</v-chip>
-                </div>  
-                <h2>Lugares de entrega</h2><hr><br>
-                <div v-if="deliveryPlaces">
-                  <v-chip v-for="(l, index) in deliveryPlaces" height="40px" width="115px" :key="index">{{l.name}} - {{l.unit_name}}</v-chip>
-                </div>
+              <v-layout row wra>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field :disabled="true" v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field :disabled="true" v-model="customer.last_name" prepend-icon="person" name="last_name" label="Apellidos" type="text"></v-text-field>
+                </v-flex>
+              </v-layout>
+              <v-layout row wra>
+                <v-flex xs12 sm12 md6>
+                  <v-combobox :disabled="true" v-model="customer.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field :disabled="true" v-model="customer.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
+                </v-flex>
+              </v-layout>
+              <v-text-field :disabled="true" v-model="customer.campaign_code" prepend-icon="person" name="campaign_code" label="Campaña" type="text"></v-text-field>
+              <v-text-field :disabled="true" v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
+              <v-combobox :disabled="true" v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
+              <h2>Teléfonos</h2><hr><br>
+              <div v-if="phones">
+                <v-chip v-for="(p, index) in phones" :key="index">{{p.number}}</v-chip>
+              </div>  
+              <h2>Lugares de entrega</h2><hr><br>
+              <div v-if="deliveryPlaces">
+                <v-chip v-for="(l, index) in deliveryPlaces" height="40px" width="115px" :key="index">{{l.name}} - {{l.unit_name}}</v-chip>
+              </div>
             </v-form>
           </v-card-text>
           <v-card-actions>
