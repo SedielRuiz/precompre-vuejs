@@ -497,9 +497,9 @@
                 var attributes = [];
                 for(var a = 0; a < this.shoppingCartEdit[r].pre_orders[0].item.attributes.length; a++){
                     var at = this.shoppingCartEdit[r].pre_orders[0].item.attributes[a].attribute[0];
-                    at.value = this.shoppingCartEdit[r].pre_orders[0].item.attributes[a].value;
+                    at.value = this.shoppingCartEdit[r].pre_orders[0].item.attributes[a].value ? this.shoppingCartEdit[r].pre_orders[0].item.attributes[a].value : "";
                     var c = this.shoppingCartEdit[r].pre_orders[0].item.product.attributes.find(element=>{return element.code == this.shoppingCartEdit[r].pre_orders[0].item.attributes[a].attribute[0]._id});
-                    at.custom = !c.customizable ? true : false;
+                    at.custom = c && !c.customizable ? true : false;
                     attributes.push(at);
                 }
                 this.shoppingCartEdit[r].attributes = attributes;

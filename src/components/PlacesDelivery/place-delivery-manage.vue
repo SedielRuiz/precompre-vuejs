@@ -11,22 +11,77 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-text-field v-model="place.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
-                <div v-if="(edit && place && place.address) || (!edit)"><google-map :title="'Dirección'" :direct="place.address" :coords="place.coords" @setAddress="setAddress"/></div><br><!--v-icon medium style="font-size:25px;">email</v-icon-->
-                <v-combobox v-model="place.country" prepend-icon="email" :items="countries" label="País"></v-combobox>
-                <v-combobox v-model="place.city" prepend-icon="email" :items="cities" label="Ciudad"></v-combobox>
-                <div v-if="unities">
-                  <div v-for="(u, index) in unities">
-                    <h2>{{u.text}}</h2><br>
-                    <v-alert :value="u.msgError ? true : false" type="error">{{u.msgError}}</v-alert>
+              <v-layout row wra>
+                <v-flex xs12 sm12 md6>
+                  <v-combobox v-model="place.country" prepend-icon="email" :items="countries" label="País"></v-combobox>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-combobox v-model="place.city" prepend-icon="email" :items="cities" label="Ciudad"></v-combobox>
+                </v-flex>
+              </v-layout>
+              <v-text-field v-model="place.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
+              <div v-if="(edit && place && place.address) || (!edit)"><google-map :title="'Dirección'" :direct="place.address" :coords="place.coords" @setAddress="setAddress"/></div><br><!--v-icon medium style="font-size:25px;">email</v-icon-->
+              <v-layout row wra>
+                <v-flex xs12 sm12 md6>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                </v-flex>
+              </v-layout>
+                <v-layout row wra>
+                  <v-flex xs12 sm12 md12>
+                    <h2>Composición</h2><hr><br>
+                    <!--v-alert :value="u.msgError ? true : false" type="error">{{u.msgError}}</v-alert>
                     <div v-if="u.list">
                       <v-chip v-for="(lst, index) in getList(index)" :key="index">{{lst.name}} <v-icon medium @click="removeUnity(index+'_'+lst.name)">close</v-icon></v-chip>
+                    </div-->
+                    <v-layout row wra>
+                      <v-flex xs12 sm12 md6>
+                        <v-text-field v-model="unity.group" prepend-icon="email" name="group" label="Agrupación" type="text"></v-text-field>
+                      </v-flex>
+                      <v-flex xs12 sm12 md6>
+                        <v-text-field v-model="unity.sub_group" prepend-icon="email" name="sub_group" label="Sub agrupación" type="text"></v-text-field>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout row wra>
+                      <v-flex xs12 sm12 md6>
+                        <v-text-field v-model="unity.floor" prepend-icon="email" name="floor" label="Piso" type="text"></v-text-field>
+                      </v-flex>
+                      <v-flex xs12 sm12 md6>
+                        <v-text-field v-model="unity.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout row wra>
+                      <v-spacer></v-spacer>
+                      <v-btn medium color="primary" :disabled="!unity.floor || !unity.quantity ? true :false" @click="addUnity()">Agregar unidades</v-btn><br><br>
+                      <v-btn medium color="primary" :disabled="units.length > 0 ? false : true" @click="units = []">Limpiar</v-btn><br><br>
+                    </v-layout>
+                    <div v-if="units.length > 0">
+                      <h2>Unidades</h2><hr><br>
+                      <v-layout row wra>
+                        <v-flex xs12 sm12 md4>
+                          <label style="font-size:20px;"> Unidad </label>
+                        </v-flex>
+                        <v-flex xs12 sm12 md4>
+                          <label style="font-size:20px;"> Tipo </label>
+                        </v-flex>
+                        <v-flex xs12 sm12 md4>
+                          <label style="font-size:20px;"> Disponible</label>
+                        </v-flex>
+                      </v-layout>
+                      <v-layout row wra v-for="(u, index) in units" :key="index">
+                        <v-flex xs12 sm12 md4>
+                          <v-text-field v-model="u.unity" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm12 md4>
+                          <v-select v-model="u.type" :items="unities" prepend-icon="featured_play_list" label="Tipo"></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm12 md4>
+                          <v-checkbox align-center value input-value="true" v-model="u.available == null || u.available == undefined ? u.available = true : u.available"></v-checkbox>
+                        </v-flex>
+                      </v-layout>
                     </div>
-                    <v-text-field v-model="u.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
-                    <v-text-field v-model="u.unity" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
-                    <v-btn small color="primary" :disabled="!u.unity ? true :false" @click="addUnity(index, u.value)">Agregar unidad</v-btn>
-                  </div><br>
-                </div>  
+                  </v-flex>
+                </v-layout><br> 
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -50,6 +105,7 @@
     },
     data () {
       return {
+        unity:{},
         place: {},
         countries:[
           {text:"Colombia", value:"colombia"}
@@ -70,16 +126,11 @@
         pl(val){
           if(val){
             this.place = val;
-            for(var s = 0; s < this.unities.length; s++){
-              for(var r = 0; r < val.unities.length; r++){
-                for(var p = 0; p < val.unities[r].list.length; p++){
-                  if(this.unities[s].value == val.unities[r]._type){
-                    this.units.push({"id":s, "type":val.unities[r]._type, "code":s+"_"+val.unities[r].list[p].unit_name.split(" ").join(""), "name":val.unities[r].list[p].unit_name});
-                  }
+            for(var s = 0; s < val.unities.length; s++){
+              if(val.unities[s].list.length > 0){
+                for(var r = 0; r < val.unities[s].list.length; r++){
+                  this.units.push({"type":val.unities[s]._type, "unity":val.unities[s].list[r].unit_name, "available":true});
                 }
-                this.unities[s].type = val.unities[r]._type;
-                this.unities[s].quantity = val.unities[r].qty;
-                this.unities[s].list = this.units;
               }
             }
           }
@@ -107,37 +158,18 @@
         this.place.address = obj.name;
         this.place.coords = {"lat":obj.position.lat, "long":obj.position.lng}
       },
-      getList(idx, type){
-        var lst = [];
-        for(var s = 0; s < this.units.length; s++){
-          if(this.units[s].id == idx)
-            lst.push(this.units[s]);
+      addUnity(){
+        var unit = "";
+        var group = this.unity.group ? this.unity.group + " - " : "";
+        var sub_group =  this.unity.sub_group ? this.unity.sub_group + " - " : "";
+        for(var s = 1; s <= this.unity.quantity; s++){
+          unit = group + sub_group + this.unity.floor+(s < 10 ? "0"+s : s);
+          this.units.push({"type":this.unities[0].value, "unity":unit, "available":true});
         }
-        return lst;
-      },
-      verifyUnities(type, max){
-        var next = true;
-        var c = 1;
-        for(var s = 0; s < this.units.length; s++){
-          if(this.units[s].type == type) c++;
-        }
-        //console.log("maximo "+max +" tipo "+type+ " cantidad "+c);
-        if(c > max)
-          next = false;
-        return next;
-      },
-      addUnity(idx, type){
-        //if(this.unities[idx].unity != "" && this.unities[idx].unity != undefined){
-          if(this.verifyUnities(type, this.unities[idx].quantity)){
-            this.units.push({"id":idx, "type":type, "code":idx+"_"+this.unities[idx].unity.split(" ").join(""), "name":this.unities[idx].unity});
-            this.unities[idx].list = this.units;
-            this.unities[idx].msgError = "";
-          }
-          else{
-            this.unities[idx].msgError = "Cantidad maxima de unidades para la unidad "+ this.unities[idx].text;
-          }
-          this.unities[idx].unity = "";
-        //}
+        this.unity.group = "";
+        this.unity.sub_group = "";
+        this.unity.quantity = "";
+        this.unity.floor = "";
       },
       removeUnity(code){
         var key = code.split("_");
@@ -151,25 +183,28 @@
         }
         this.units.splice(idx,1);
       },
-      buildUnities(){
-        var unt = {};
-        var unts = [];
-        var listUnts = [];
-        if(this.unities.length > 0){
-          for(var s = 0; s < this.unities.length; s++){
-            unt = {};
-            listUnts = []
-            unt._type = this.unities[s].value;
-            unt.qty = this.unities[s].quantity;
-            if(this.unities[s] && this.unities[s].list){
-              for(var r = 0; r < this.unities[s].list.length; r++){
-                if(this.unities[s].list[r].type == this.unities[s].value)
-                  listUnts.push({"unit_name":this.unities[s].list[r].name});
-              }
-            }
-            unt.list = listUnts;
-            unts.push(unt)
+      typeCompos(type){
+        var lst = [];
+        var obj = {};
+        obj._type = type;
+        for(var r = 0; r < this.units.length; r++){
+          if(this.units[r].type == type && this.units[r].available == true){
+            lst.push({unit_name:this.units[r].unity});
           }
+        }
+        obj.qty = lst.length;
+        obj.list = lst;
+        return obj;
+      },
+      buildUnities(){
+        var unts = [];
+        var compos = {};
+        if(this.units.length > 0){
+          compos = this.typeCompos("oficina");
+          if(compos){unts.push(compos);}
+
+          compos = this.typeCompos("apto");
+          if(compos){unts.push(compos);}
         }
         return unts;
       },
@@ -181,7 +216,6 @@
       },
       processPlace () {
         this.place = this.buildPlace();
-        console.log(this.place);
         if(this.edit){
             this.update(this.place).then(
                 data => {
