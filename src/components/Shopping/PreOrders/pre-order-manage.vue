@@ -492,6 +492,7 @@
 
         },
         formatShopping(){
+            console.log(this.shoppingCartEdit);
             for(var r = 0; r < this.shoppingCartEdit.length; r++){
                 var attributes = [];
                 for(var a = 0; a < this.shoppingCartEdit[r].pre_orders[0].item.attributes.length; a++){
