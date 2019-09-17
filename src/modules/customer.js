@@ -27,9 +27,9 @@ const actions = {
             })
         });
     },
-    fetchCustomers:({commit}) => {
+    fetchCustomers:({commit}, data) => {
         return new Promise((resolve, reject) => {
-        Vue.http.post('customers').then(
+        Vue.http.post('customers', data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, true);
                 commit('setCustomers',data);

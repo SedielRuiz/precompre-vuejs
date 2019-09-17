@@ -78,7 +78,6 @@
             }
         },
         buildPag(val){
-          console.log(val);
           if(val){
             this.pagination.page_number = val - 1;
             this.pagination.page_size = this.page_size; 
@@ -87,7 +86,6 @@
         },
         search(pag){
           if(pag){
-            console.log("llegue aca")
             this.$emit("search", pag);
           }
         }
