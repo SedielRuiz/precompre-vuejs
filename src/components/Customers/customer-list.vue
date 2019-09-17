@@ -12,7 +12,7 @@
     <v-data-table
         :headers="headers"
         :items="rows"
-        hide-actions disable-initial-sort
+        hide-actions 
         class="elevation-1">
         <template v-slot:items="props">
         <td>{{ props.item.id_description }}</td>
