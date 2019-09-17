@@ -19,6 +19,7 @@
         <td>{{ props.item.name }}</td>
         <td>{{ props.item.last_name }}</td>
         <td>{{ props.item.email }}</td>
+        <td>{{ props.item.telephones.length > 0 ? props.item.telephones.find(element=>{return element.main == true}).number : "" }}</td>
         <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo" }}</td>
         <td>
           <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
@@ -46,6 +47,7 @@
             {text:"Nombres", value:"name"},
             {text:"Apellidos", value:"last_name"},
             {text:"Correo", value:"email"},
+            {text:"Teléfono", value:"telephones"},
             {text:"Estado", value:"status"},
             {text:"Acciones", value:"actons"}
         ]
