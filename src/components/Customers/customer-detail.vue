@@ -18,7 +18,7 @@
                 <v-combobox :disabled="true" v-model="customer.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
                 <v-text-field :disabled="true" v-model="customer.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
                 <v-text-field :disabled="true" v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-model="customer.last_ame" prepend-icon="person" name="last_ame" label="Apellidos" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-model="customer.last_name" prepend-icon="person" name="last_name" label="Apellidos" type="text"></v-text-field>
                 <v-text-field :disabled="true" v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
                 <v-combobox :disabled="true" v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <h2>Teléfonos</h2><hr><br>
