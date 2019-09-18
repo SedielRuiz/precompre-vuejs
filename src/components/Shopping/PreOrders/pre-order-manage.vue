@@ -481,7 +481,6 @@
                     break
                 }
             }
-            console.log(price)
             this.product.price = price;
         },
         closeModal(info){
@@ -641,7 +640,7 @@
                                     "delivery_place":this.preOrder.deliveryPlace, "attributes":this.product.attributes, "categories":this.product.categories, "class":this.product.class, "customer_id":this.product.customer_id,
                                     "days":this.product.days, "price":this.product.price, "principal_value":this.product.principal_value, "product_id":this.product.product_id,
                                     "quantity":this.product.quantity, "sub_product":this.product.sub_product, "sub_value":this.product.sub_value, "text":this.product.text,
-                                    "unit_value":this.product.unit_value, "viewAtt":this.product.viewAtt,
+                                    "unit_value":this.product.price, "viewAtt":this.product.viewAtt,
                                 };
                         if(!inside){
                             this.productsCart.push(obj);
