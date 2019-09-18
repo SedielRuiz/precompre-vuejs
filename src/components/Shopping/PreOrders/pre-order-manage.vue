@@ -30,7 +30,7 @@
                                     <v-text-field v-model="product.quantity" prepend-icon="library_books" name="title" label="Cantidad" type="number"></v-text-field>
                                 </v-flex>  
                                 <v-flex xs12 md6>
-                                    <v-text-field :disabled="true" v-model="product.unit_value" prepend-icon="library_books" name="title" label="Precio" type="text"></v-text-field>
+                                    <v-text-field :disabled="true" v-model="product.price" prepend-icon="library_books" name="title" label="Precio" type="text"></v-text-field>
                                 </v-flex>        
                             </v-layout>
                             <v-layout row wra v-if="attributes">
@@ -38,7 +38,7 @@
                                     <div v-if="attr.visible && attr.code != 'photo'">
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
-                                                <v-combobox :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
+                                                <v-combobox :disabled="attr.custom" @change="findPrice()" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
                                             </v-flex>
                                         </div>
                                         <div v-else>
@@ -417,7 +417,7 @@
             if(val){
                 this.product.product_id = val.principal_value;
                 this.product.sub_product = val.sub_value;
-                this.product.unit_value = val.price;
+                //this.product.unit_value = val.price;
                 this.attributes = [];
                 this.attributes = val.class.attributes;
                 this.attributes = this.attributes.concat(val.class.order_attributes);
@@ -443,6 +443,47 @@
             getCustomer: 'customer/getCustomer', 
             setWarning: 'setWarning',
         }),
+        findPrice(){
+            console.log(this.product.sub_products);
+            console.log(this.attributes);
+            var pivot = false;
+            var price = 0;
+            pivot = true;
+            for(var r = 0; r < this.product.sub_products.length; r++){
+                pivot = true;
+                console.log(r);
+                for(var g = 0; g < this.product.sub_products[r].options.length; g++){
+                    for(var s = 0; s < this.attributes.length; s++){
+                        var valurVal = this.attributes[s].value && this.attributes[s].value.value ? this.attributes[s].value.value : this.attributes[s].value;
+                        console.log(this.attributes[s]);
+                        if( (this.attributes[s].code != "recipe" && this.attributes[s].code != "photo") &&
+                            (this.attributes[s]._id == this.product.sub_products[r].options[g].pivot) && 
+                            (valurVal != this.product.sub_products[r].options[g].option) )
+                        {
+                            if(this.attributes[s].code == "price")
+                            {
+                                price = this.product.sub_products[r].options[g].option;
+                            }else{
+                                if(this.attributes[s].visible){
+                                    console.log("llegue aca");
+                                    pivot = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                    if(pivot){
+                        break
+                    }
+                }
+                if(pivot){
+                    break
+                }
+            }
+            console.log(price)
+            this.product.price = price;
+        },
         closeModal(info){
             this.info = "";
             this.detail = false;
@@ -655,7 +696,7 @@
             for(var s = 0; s < this.attributes.length; s++){
                 for(var r = 0; r < attrs.length; r++){
                     if(this.attributes[s]._id == attrs[r].code){
-                        this.attributes[s].value = attrs[r].value;
+                        this.attributes[s].value = attrs[r].value && attrs[r].value.value ? attrs[r].value.value : attrs[r].value;
                         this.attributes[s].custom = !attrs[r].customizable ? true : false;
                     }
 
