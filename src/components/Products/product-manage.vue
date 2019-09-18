@@ -482,8 +482,13 @@
                                     price = subs[s].options[r].option;
                                 }
                                 if(at.code == "recipe"){
-                                    for(var g = 0; g < subs[s].options[r].option.length; g++){
-                                        recipe.push({"input":subs[s].options[r].option[g].input, "quantity":subs[s].options[r].option[g].value});
+                                    recipe = [];
+                                    if(subs[s].options[r].option){
+                                        for(var g = 0; g < subs[s].options[r].option.length; g++){
+                                            var inp = this.inputs.find(element=>{return element.value == subs[s].options[r].option[g].input});
+                                            if(inp)
+                                                recipe.push({"name": inp.text.split("-")[0], "metric": inp.text.split("-")[1], "id":inp.value, "quantity":subs[s].options[r].option[g].value});
+                                        }
                                     }
                                 }
                             }
@@ -491,6 +496,7 @@
                         }
                         att["price"] = price;
                         att["photo"] = photo;
+                        att["ingredients"] = recipe;
                         lst.push(att);
                         att = [];
                     }
@@ -633,20 +639,21 @@
             formatIngredients(arr){
                 var lst = [];
                 var obj = {};
-                obj.pivot = arr[0].attr_id;
                 for(var s = 0; s < arr.length; s++){
                     lst.push({"input":arr[s].id, "value":arr[s].quantity});
                 }
+                obj.pivot = this.attributes.find(element=>{return element.code == "recipe"})._id;
                 obj.option = lst
                 return obj;
             },
             buildSubProducts(){
+                console.log(this.subProductsAttribute);
                 var subP = [];
                 var lst = [];
                 for(var s = 0; s < this.subProductsAttribute.length; s++){
                     lst = []
                     for(var r = 0; r < this.subProductsAttribute[s].length; r++){
-                        if(this.subProductsAttribute[s][r] && this.subProductsAttribute[s][r].active != undefined && this.subProductsAttribute[s]["active"] == true){
+                        if(this.subProductsAttribute[s][r] && this.subProductsAttribute[s]["active"] == true){
                             lst.push({"pivot":this.subProductsAttribute[s][r]._id, "option":this.subProductsAttribute[s][r].value ? this.subProductsAttribute[s][r].value : this.subProductsAttribute[s][r].default_value });
                         }
                     }
