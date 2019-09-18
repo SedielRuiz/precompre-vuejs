@@ -355,6 +355,7 @@
                         att = att.concat(this.product.product_class.attributes.attribute);
                         this.subProductsAttribute = this.editSubProducts(this.product.sub_products, att);
                         if(this.class_id.value != this.product.product_class._id){
+                            console.log(val);
                             this.formatSubProducts(val.order_attributes.attribute);    
                         }
                     }else{
@@ -463,7 +464,7 @@
                         for(var r = 0; r < subs[s].options.length; r++){
                             var at = attrs.find(element=>{return element._id == subs[s].options[r].pivot});
                             console.log(at);
-                            if(at){
+                            if(at != "" && at != undefined){
                                 at.value = subs[s].options[r].option;
                                 if(at.visible && at.code != "photo"){
                                     att.push(at);
