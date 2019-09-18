@@ -11,16 +11,22 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-text-field v-model="product.name" prepend-icon="person" name="name" label="Nombre del producto" type="text"></v-text-field>
                 <v-layout row wra>
                     <v-flex xs12 md6>
+                        <v-text-field v-model="product.name" prepend-icon="person" name="name" label="Nombre del producto" type="text"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md6>
                         <v-select v-model="product.type" :items="typesProduct" prepend-icon="featured_play_list" label="Tipo de producto"></v-select>
+                    </v-flex>
+                </v-layout>
+                <v-layout row wra>
+                    <v-flex xs12 md6>
+                        <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
                     </v-flex>
                     <v-flex xs12 md6>
                         <v-combobox  v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
                     </v-flex>
                 </v-layout>
-                <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
                 <v-layout v-if="class_id && (valRecipe())" row wra>
                     <v-flex xs12 md4>
                         <v-combobox prepend-icon="filter_list" v-model="ingredient.input" :items="inputs" label="Insumos"></v-combobox>
