@@ -125,6 +125,7 @@
     watch:{
         cu(val){
           if(val){
+            console.log(val.delivery_places);
             this.customer = val;
             this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type });
             this.phones = val.telephones;
