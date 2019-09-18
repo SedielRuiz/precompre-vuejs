@@ -107,7 +107,7 @@
                                     <v-flex class="alignGrid" v-for="h in subProductsAttribute[0]" :key="h.code" xs12 md2>
                                         <label class="col-md-2">{{h.code.split("_").join(" ").charAt(0).toUpperCase() + h.code.split("_").join(" ").slice(1)}}</label>
                                     </v-flex>
-                                    <v-flex class="alignGrid" xs12 md2>
+                                    <v-flex class="alignGrid" xs12 md1>
                                         <label class="col-md-2">Insumos</label>
                                     </v-flex>
                                     <v-flex class="alignGrid" xs12 md1>
@@ -153,7 +153,7 @@
                                                 </div>
                                             </div>            
                                         </v-flex> 
-                                        <v-flex class="alignGrid" xs12 md2>
+                                        <v-flex class="alignGrid" xs12 md1>
                                             <v-icon  @click="formRecipe(index)">add</v-icon>
                                         </v-flex>
                                         <v-flex class="alignGrid" xs12 md1>
