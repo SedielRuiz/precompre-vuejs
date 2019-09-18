@@ -464,7 +464,7 @@
                             {
                                 price = this.product.sub_products[r].options[g].option;
                             }else{
-                                if(this.attributes[s].visible){
+                                if(this.attributes[s].visible && this.attributes[s].custom == false){
                                     console.log("llegue aca");
                                     pivot = false;
                                     break;
