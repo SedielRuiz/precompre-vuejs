@@ -125,7 +125,7 @@
                                         <v-flex v-for="(attr, index) in sub" row wra :key="index" xs12 md2>
                                             <div v-if="attr.options && attr.options.length > 0">
                                                 <v-flex xs12 md12>
-                                                    {{attr.value}}
+                                                    {{attr.value ? attr.value : attr.default_value}}
                                                 </v-flex>
                                             </div>
                                             <div v-else>
