@@ -283,7 +283,7 @@
       <router-view></router-view>
     </v-content>
     <v-footer color="indigo" app>
-      <span class="white--text">&copy; v0.0.17</span>
+      <span class="white--text">&copy; v0.0.18</span>
     </v-footer>
   </v-app>
 </template>

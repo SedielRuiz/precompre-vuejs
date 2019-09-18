@@ -21,7 +21,7 @@
                     </v-flex>
                 </v-layout>
                 <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
-                <v-layout row wra>
+                <v-layout v-if="class_id && (valRecipe())" row wra>
                     <v-flex xs12 md4>
                         <v-combobox prepend-icon="filter_list" v-model="ingredient.input" :items="inputs" label="Insumos"></v-combobox>
                     </v-flex>
@@ -284,41 +284,41 @@
     export default {
         name: 'product-manage',
         data () {
-        return {
-            recipe:false,
-            ingredient:{},
-            ingredients:[],
-            inputs:[],
-            subProductsAttribute:[],
-            sub:"",
-            addSub:"",
-            pagination: {
-                sortBy: 'name'
-            },
-            headers: [
-                {text:"Titulo", value:"title"},
-                {text:"Nombre", value:"name"}
-            ],
-            typesProduct:[  
-                {text:"Simple", value:"simple"},
-                {text:"Complejo", value:"complejo"}
-            ],
-            product: {},
-            classes:[],
-            attributes:[],
-            attributeCustomisable:{},
-            attributesCustomisable:[],
-            attributesP:[],
-            categories:[],
-            status:[
-                {text: 'Activo', value:'enabled'},
-                {text: 'Inactivo', value:'disabled'},
-            ],
-            edit:"",
-            titleText:"",
-            class_id:"",
-            msgError:false
-        }
+            return {
+                recipe:false,
+                ingredient:{},
+                ingredients:[],
+                inputs:[],
+                subProductsAttribute:[],
+                sub:"",
+                addSub:"",
+                pagination: {
+                    sortBy: 'name'
+                },
+                headers: [
+                    {text:"Titulo", value:"title"},
+                    {text:"Nombre", value:"name"}
+                ],
+                typesProduct:[  
+                    {text:"Simple", value:"simple"},
+                    {text:"Complejo", value:"complejo"}
+                ],
+                product: {},
+                classes:[],
+                attributes:[],
+                attributeCustomisable:{},
+                attributesCustomisable:[],
+                attributesP:[],
+                categories:[],
+                status:[
+                    {text: 'Activo', value:'enabled'},
+                    {text: 'Inactivo', value:'disabled'},
+                ],
+                edit:"",
+                titleText:"",
+                class_id:"",
+                msgError:false
+            }
         },
         watch:{
             pro(val){
@@ -394,6 +394,9 @@
                 getProductClassAttribute: 'product/getProductClassAttribute', 
                 setWarning: 'setWarning',
             }),
+            valRecipe(){
+                return this.attributes.find(element=>{return element.code == "recipe"}) ? true : false;
+            },
             getPhoto(){
                 var at = this.attributes.find(element=>{return element.code == "photo"});
                 return at && at.default_value ? at.default_value : at.value;

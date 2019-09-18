@@ -183,11 +183,31 @@ var auxArr = ""
     },
     methods: {
         addAtt(t, val){
-            console.log(val);
+            var idx = "";
             if(t == "a"){
-                this.attributes.push(val);
+                for(var s in this.attributes){
+                    if(this.attributes[s]._id == val._id){
+                        idx = s;
+                        break;
+                    }
+                }
+                if(idx != ""){
+                    this.attributes.splice(idx, 1);
+                }else{
+                    this.attributes.push(val);
+                }
             }else{
-                this.attributesCustomisable.push(val);
+                for(var s in this.attributesCustomisable){
+                    if(this.attributesCustomisable[s]._id == val._id){
+                        idx = s;
+                        break;
+                    }
+                }
+                if(idx != ""){
+                    this.attributesCustomisable.splice(idx, 1);
+                }else{
+                    this.attributesCustomisable.push(val);
+                }
             }
         },
         ...mapActions({
@@ -267,8 +287,9 @@ var auxArr = ""
             var attr = [];
             console.log(this.attributes);
             for(var s = 0; s < this.attributes.length; s++){
-                if(!attr.find(element=>{return element._id == this.attributes[s]._id }))
+                if(!attr.find(element=>{return element.id == this.attributes[s]._id })){
                     attr.push({"id":this.attributes[s]._id, "variable":this.attributes[s].variable});
+                }
             }
             this.classs.attributes = attr;
             /**Atributos personalizables**/

@@ -61,6 +61,7 @@
     watch:{
         cl(val){
             if(val){
+              console.log(val);
                 this.classs = val;
                 this.attributesId = val.attributes;
                 this.attributesCustomisablesId = val.order_attributes;
@@ -92,6 +93,7 @@
         ...mapState({
             warning: state => state.warning,
             cl: state => state.productClass.class, 
+            att: state => state.productAttribute.attributes, 
         }),
         ...mapGetters({
             getAttributes: 'productAttribute/getAttributes', 
@@ -103,7 +105,7 @@
         },
         attributes(){
             var attrs = [];
-            if(this.attributesId){
+            if(this.attributesId && this.att){
                 for(var s in this.attributesId){
                     if(this.attributesId[s])
                         attrs.push(this.getAttributes(this.attributesId[s].id));
@@ -113,7 +115,7 @@
         },
         attributesCustomisables(){
             var attrsC = [];
-            if(this.attributesCustomisablesId){
+            if(this.attributesCustomisablesId && this.att){
                 for(var s in this.attributesCustomisablesId){
                     if(this.attributesCustomisablesId[s])
                         attrsC.push(this.getAttributes(this.attributesCustomisablesId[s].id));
