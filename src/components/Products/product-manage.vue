@@ -21,7 +21,7 @@
                 </v-layout>
                 <v-layout row wra>
                     <v-flex xs12 md6>
-                        <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
+                        <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio base" type="number"></v-text-field>
                     </v-flex>
                     <v-flex xs12 md6>
                         <v-combobox  v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
