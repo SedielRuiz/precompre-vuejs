@@ -104,10 +104,10 @@
                             <label style="font-size:30px;">{{product.name}}</label><hr><br>
                             <div row wra v-if="addSub && subProductsAttribute">
                                 <v-layout align-center row wra >   
-                                    <v-flex class="alignGrid" v-for="h in subProductsAttribute[0]" :key="h.code" xs12 md3>
+                                    <v-flex class="alignGrid" v-for="h in subProductsAttribute[0]" :key="h.code" xs12 md2>
                                         <label class="col-md-2">{{h.code.split("_").join(" ").charAt(0).toUpperCase() + h.code.split("_").join(" ").slice(1)}}</label>
                                     </v-flex>
-                                    <v-flex class="alignGrid" xs12 md1>
+                                    <v-flex class="alignGrid" xs12 md2>
                                         <label class="col-md-2">Insumos</label>
                                     </v-flex>
                                     <v-flex class="alignGrid" xs12 md1>
@@ -122,10 +122,10 @@
                                 </v-layout>
                                 <div v-for="(sub, index) in subProductsAttribute" :key="index">
                                     <v-layout align-center row wra >       
-                                        <v-flex v-for="(attr, index) in sub" row wra :key="index" xs12 md3>
+                                        <v-flex v-for="(attr, index) in sub" row wra :key="index" xs12 md2>
                                             <div v-if="attr.options && attr.options.length > 0">
                                                 <v-flex xs12 md12>
-                                                    <v-combobox :disabled="true" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', '_id')"></v-combobox>
+                                                    {{attr.value}}
                                                 </v-flex>
                                             </div>
                                             <div v-else>
@@ -153,7 +153,7 @@
                                                 </div>
                                             </div>            
                                         </v-flex> 
-                                        <v-flex class="alignGrid" xs12 md1>
+                                        <v-flex class="alignGrid" xs12 md2>
                                             <v-icon  @click="formRecipe(index)">add</v-icon>
                                         </v-flex>
                                         <v-flex class="alignGrid" xs12 md1>
@@ -250,7 +250,7 @@
 </template>
 <style>
     .alignGrid{
-        text-align:center !important;
+        /*text-align:center !important;*/
         font-size:20px !important;
     }
     .v-dialog--persistent{
@@ -355,7 +355,6 @@
                         att = att.concat(this.product.product_class.attributes.attribute);
                         this.subProductsAttribute = this.editSubProducts(this.product.sub_products, att);
                         if(this.class_id.value != this.product.product_class._id){
-                            console.log(val);
                             this.formatSubProducts(val.order_attributes.attribute);    
                         }
                     }else{
@@ -459,6 +458,7 @@
                 var att = [];
                 var photo = "";
                 var price = "";
+                var recipe = [];
                 if(subs){
                     for(var s = 0; s < subs.length; s++){
                         for(var r = 0; r < subs[s].options.length; r++){
@@ -474,6 +474,11 @@
                                 }
                                 if(at.code == "price"){
                                     price = subs[s].options[r].option;
+                                }
+                                if(at.code == "recipe"){
+                                    for(var g = 0; g < subs[s].options[r].option.length; g++){
+                                        recipe.push({"input":subs[s].options[r].option[g].input, "quantity":subs[s].options[r].option[g].value});
+                                    }
                                 }
                             }
 
