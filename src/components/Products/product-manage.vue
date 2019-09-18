@@ -462,13 +462,12 @@
                 if(subs){
                     for(var s = 0; s < subs.length; s++){
                         for(var r = 0; r < subs[s].options.length; r++){
-                            var at = attrs.find(element=>{return element._id == subs[s].options[r].pivot});
-                            console.log(at);
+                            var at = "";
+                            at = Object.assign({...attrs.find(element=>{return element._id == subs[s].options[r].pivot})});
                             if(at){
                                 if(at.visible && at.code != "photo"){
-                                    at.value = "000000";
                                     at.value = subs[s].options[r].option;
-                                    att.push(at);
+                                    att.push(at)
                                 }
                                 if(at.code == "photo"){
                                     photo = subs[s].options[r].option;
@@ -547,7 +546,8 @@
                             if(this[arr1][s].code == "recipe"){
                                 for(var g = 0; g < this.attributesP[r].value.option.length; g++){
                                     var inp = this.inputs.find(element=>{return element.value == this.attributesP[r].value.option[g].input});
-                                    this.ingredients.push({"name": inp.text.split("-")[0], "metric": inp.text.split("-")[1], "id":inp.value, "quantity":this.attributesP[r].value.option[g].value});
+                                    if(inp)
+                                        this.ingredients.push({"name": inp.text.split("-")[0], "metric": inp.text.split("-")[1], "id":inp.value, "quantity":this.attributesP[r].value.option[g].value});
                                 }
                             }
 
