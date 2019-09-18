@@ -464,9 +464,10 @@
                         for(var r = 0; r < subs[s].options.length; r++){
                             var at = attrs.find(element=>{return element._id == subs[s].options[r].pivot});
                             console.log(at);
-                            if(at != "" && at != undefined){
-                                at.value = subs[s].options[r].option;
+                            if(at){
                                 if(at.visible && at.code != "photo"){
+                                    at.value = "000000";
+                                    at.value = subs[s].options[r].option;
                                     att.push(at);
                                 }
                                 if(at.code == "photo"){

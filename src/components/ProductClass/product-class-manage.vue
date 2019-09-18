@@ -295,8 +295,9 @@ var auxArr = ""
             /**Atributos personalizables**/
             var attrCustom = [];
             for(var s = 0; s < this.attributesCustomisable.length; s++){
-                if(!attrCustom.find(element=>{return element.id == this.attributesCustomisable[s]._id }))
+                if(!attrCustom.find(element=>{return element.id == this.attributesCustomisable[s]._id })){
                     attrCustom.push({"id":this.attributesCustomisable[s]._id, "pivot":this.attributesCustomisable[s].pivot});
+                }
             }
             this.classs.order_attributes = attrCustom;
             if(this.classs.parent)
