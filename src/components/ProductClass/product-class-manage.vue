@@ -13,7 +13,7 @@
             <v-form>
                 <v-text-field v-model="classs.code" prepend-icon="person" name="title" label="Nombre" type="text"></v-text-field>
                 <v-combobox  v-model="classs.parent" :items="classes" prepend-icon="ballot" label="Clase padre"></v-combobox>
-                <h2>Atributos estaticos</h2><hr><br>
+                <h2>Atributos estáticos</h2><hr><br>
                 <v-alert :value="msgErrorN" type="error">Ya tiene este atributo como atributo personalizable</v-alert> <br>
                 <div class="row col-md-8">
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
@@ -31,7 +31,7 @@
                             </tr>
                         </template>
                         <template v-slot:items="props">
-                            <tr :active="props.selected" v-if="props.item.code != 'photo' && props.item.code != 'price' && props.item.code != 'recipe'">
+                            <tr :active="props.selected">
                                 <td @click="addAtt('a', props.item)">
                                     <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
                                 </td>
@@ -65,7 +65,7 @@
                             </tr>
                         </template>
                         <template v-slot:items="propsC">
-                            <tr :active="propsC.selected" v-if="propsC.item.code != 'photo' && propsC.item.code != 'price' && propsC.item.code != 'recipe'">
+                            <tr :active="propsC.selected">
                                 <td @click="addAtt('ac', propsC.item)">
                                     <v-checkbox :input-value="propsC.selected" primary hide-details></v-checkbox>
                                 </td>
@@ -149,26 +149,26 @@ var auxArr = ""
         },
         attr(val){
             this.attrN=val;
+            this.reserved.push(this.attrN.find(element=>{return element.code == "photo" }));
+            this.reserved.push(this.attrN.find(element=>{return element.code == "recipe" }));
+            this.reserved.push(this.attrN.find(element=>{return element.code == "price" }));
+            for(var s = 0; s < this.attrN.length; s++){
+                if(this.attrN[s].code == "price" || this.attrN[s].code == "recipe" || this.attrN[s].code == "photo"){
+                    this.attrN.splice(s, 1);
+                }
+            }
             this.attrC=val;
+            for(var s = 0; s < this.attrC.length; s++){
+                if(this.attrC[s].code == "price" || this.attrC[s].code == "recipe" || this.attrC[s].code == "photo"){
+                    this.attrC.splice(s, 1);
+                }
+            }
         },
         attributesObj(val){
             this.attributes = val;
-            this.reserved.push(this.attributes.find(element=>{return element.code == "photo" }));
-            this.reserved.push(this.attributes.find(element=>{return element.code == "recipe" }));
-            this.reserved.push(this.attributes.find(element=>{return element.code == "price" }));
-            for(var s = 0; s < this.attributes.length; s++){
-                if(this.attributes[s].code == "price" || this.attributes[s].code == "recipe" || this.attributes[s].code == "photo"){
-                    this.attributes.splice(s, 1);
-                }
-            }
         },
         attributesCustomisablesObj(val){
             this.attributesCustomisable = val;
-            for(var s = 0; s < this.attributesCustomisable.length; s++){
-                if(this.attributesCustomisable[s].code == "price" || this.attributesCustomisable[s].code == "recipe" || this.attributesCustomisable[s].code == "photo"){
-                    this.attributesCustomisable.splice(s, 1);
-                }
-            }
         },
         classess(val){
             for(var s = 0; s < val.length; s++){
