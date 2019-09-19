@@ -30,7 +30,7 @@
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
-                    <div v-if="attr.visible">
+                    <div v-if="attr.visible && attr.code != 'photo'">
                         <!--ATRIBUTOS-->
                         <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
                         <div v-if="attr.options.length > 0">
@@ -626,8 +626,8 @@
                 //Armo atributos no personalizables
                 this.buildAttr("attributes");
                 //Armo atributos personalizables
-                if(!this.msgError)
-                    this.buildAttr("attributesCustomisable");
+                //if(!this.msgError)
+                    //this.buildAttr("attributesCustomisable");
             },
             formatCategories(){
                 var ct = [];
