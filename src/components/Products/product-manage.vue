@@ -598,6 +598,7 @@
             valAttrRequired(attr){
                 var next = false;
                 var val = attr.options.length > 0 && attr.value.value ? attr.value.value : attr.value;
+                console.log(attr);
                 if(val != "" && val != undefined && val.trim() != "")
                     next = true;
                 return next;
