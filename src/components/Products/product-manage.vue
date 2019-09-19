@@ -200,8 +200,8 @@
                                 <v-flex xs12 md2>
                                     <v-layout row wra>
                                         <v-icon medium @click="addArray('i', ingredient.idx)">add</v-icon>
-                                        <div v-if="ingredient && subProductsAttribute[ingredient.idx] && subProductsAttribute[ingredient.idx].ingredients">
-                                            <v-chip v-for="(i, index) in subProductsAttribute[ingredient.idx].ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip>
+                                        <div v-if="ingredient && subProductsAttribute[ingredient.idx] && subProductsAttribute[ingredient.idx].inputs">
+                                            <v-chip v-for="(i, index) in subProductsAttribute[ingredient.idx].inputs" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip>
                                         </div>
                                     </v-layout>
                                 </v-flex>
@@ -503,7 +503,7 @@
                         }
                         att["price"] = price;
                         att["photo"] = photo;
-                        att["ingredients"] = recipe;
+                        att["inputs"] = recipe;
                         lst.push(att);
                         att = [];
                     }
@@ -514,9 +514,9 @@
             addArray(arr, idx){
                 switch(arr) {
                     case "i":
-                        var ing = [];
-                        var ingr = Object.assign({...this.ingredient});
-                        var obj = {
+                        let ing = [];
+                        let ingr = Object.assign({...this.ingredient});
+                        let obj = {
                             "id": ingr.input.value,
                             "quantity":ingr.quantity,
                             "name": ingr.input.text.split("-")[0], 
@@ -525,9 +525,9 @@
                         if(idx == "general"){
                             this.ingredients.push(Object.assign({...obj}));
                         }else{
-                            ing = Array.isArray(this.subProductsAttribute[idx].ingredients) ? this.subProductsAttribute[idx].ingredients : [];
+                            ing = Array.isArray(this.subProductsAttribute[idx].inputs) ? this.subProductsAttribute[idx].inputs : [];
                             ing.push(Object.assign({...obj}));
-                            this.subProductsAttribute[idx].ingredients = ing;
+                            this.subProductsAttribute[idx].inputs = ing;
                         }
                         this.ingredients.push();
                         this.subProductsAttribute.push();
@@ -667,8 +667,8 @@
                             lst.push({"pivot":this.subProductsAttribute[s][r]._id, "option":this.subProductsAttribute[s][r].value ? this.subProductsAttribute[s][r].value : this.subProductsAttribute[s][r].default_value });
                         }
                     }
-                    if(this.subProductsAttribute[s]["ingredients"]){
-                        lst.push(this.formatIngredients(this.subProductsAttribute[s]["ingredients"]));
+                    if(this.subProductsAttribute[s]["inputs"]){
+                        lst.push(this.formatIngredients(this.subProductsAttribute[s]["inputs"]));
                     }
                     
                     var pht = this.attributes.find(element=>{return element.code == "photo"});
