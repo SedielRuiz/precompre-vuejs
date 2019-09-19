@@ -156,6 +156,11 @@ var auxArr = ""
             this.reserved.push(this.attributes.find(element=>{return element.code == "photo" }));
             this.reserved.push(this.attributes.find(element=>{return element.code == "recipe" }));
             this.reserved.push(this.attributes.find(element=>{return element.code == "price" }));
+            for(var s = 0; s < this.attributes.length; s++){
+                if(this.attributes[s].code == "price" || this.attributes[s].code == "recipe" || this.attributes[s].code == "photo"){
+                    this.attributes.splice(s, 1);
+                }
+            }
         },
         attributesCustomisablesObj(val){
             this.attributesCustomisable = val;
