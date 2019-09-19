@@ -31,8 +31,8 @@
                             </tr>
                         </template>
                         <template v-slot:items="props">
-                            <tr :active="props.selected" @click="addAtt('a', props.item)">
-                                <td>
+                            <tr :active="props.selected" v-if="props.item.code != 'photo' && props.item.code != 'price' && props.item.code != 'recipe'">
+                                <td @click="addAtt('a', props.item)">
                                     <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
                                 </td>
                                 <td class="text-xs-right">{{ props.item.code.split('_').join(' ') }}</td>
@@ -65,8 +65,8 @@
                             </tr>
                         </template>
                         <template v-slot:items="propsC">
-                            <tr :active="propsC.selected" @click="addAtt('ac', propsC.item)">
-                                <td>
+                            <tr :active="propsC.selected" v-if="propsC.item.code != 'photo' && propsC.item.code != 'price' && propsC.item.code != 'recipe'">
+                                <td @click="addAtt('ac', propsC.item)">
                                     <v-checkbox :input-value="propsC.selected" primary hide-details></v-checkbox>
                                 </td>
                                 <td class="text-xs-right">{{ propsC.item.code.split('_').join(' ') }}</td>
@@ -108,6 +108,7 @@ var auxArr = ""
         paginationAttr: {
             sortBy: 'name'
         },
+        reserved:[],
         paginationAttrCustom: {
             sortBy: 'name'
         },
@@ -151,6 +152,9 @@ var auxArr = ""
             this.attrC=val;
         },
         attributesObj(val){
+            this.reserved.push(this.attributes.find(element=>{return element.code == "photo" }));
+            this.reserved.push(this.attributes.find(element=>{return element.code == "recipe" }));
+            this.reserved.push(this.attributes.find(element=>{return element.code == "price" }));
             this.attributes = val;
         },
         attributesCustomisablesObj(val){
@@ -196,6 +200,7 @@ var auxArr = ""
                 }else{
                     this.attributes.push(val);
                 }
+                this.attributes.push();
             }else{
                 for(var s in this.attributesCustomisable){
                     if(this.attributesCustomisable[s]._id == val._id){
@@ -208,6 +213,7 @@ var auxArr = ""
                 }else{
                     this.attributesCustomisable.push(val);
                 }
+                this.attributesCustomisable.push();
             }
         },
         ...mapActions({
@@ -291,6 +297,7 @@ var auxArr = ""
                     attr.push({"id":this.attributes[s]._id, "variable":this.attributes[s].variable});
                 }
             }
+            attr = attr.concat(this.reserved);
             this.classs.attributes = attr;
             /**Atributos personalizables**/
             var attrCustom = [];
@@ -356,9 +363,12 @@ var auxArr = ""
                 for(var s in this.attributesId){
                     if(this.attributesId[s]){
                         var at = this.getAttributes(this.attributesId[s].id);
-                        if(at)
+                        if(at){
                             at.variable = this.attributesId[s].variable != undefined ? this.attributesId[s].variable : false;
-                        attrs.push(at);
+                        }
+                        if(at.code != "photo" && at.code != "recipe" && at.code != "price"){
+                            attrs.push(at);
+                        }
                     }
                 }
                 return attrs;
@@ -370,9 +380,12 @@ var auxArr = ""
                 for(var s in this.attributesCustomisableId){
                     if(this.attributesCustomisableId[s]){
                         var at = this.getAttributes(this.attributesCustomisableId[s].id);
-                        if(at)
+                        if(at){
                             at.pivot = this.attributesCustomisableId[s].pivot != undefined ? this.attributesCustomisableId[s].pivot : false;
-                        attrCs.push(at);
+                        }
+                        if(at.code != "photo" && at.code != "recipe" && at.code != "price"){
+                            attrCs.push(at);
+                        }
                     }
                 }
                 return attrCs;
