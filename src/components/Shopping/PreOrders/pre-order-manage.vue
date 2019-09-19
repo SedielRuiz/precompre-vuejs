@@ -699,7 +699,7 @@
         replaceValue(attrs){
             for(var s = 0; s < this.attributes.length; s++){
                 for(var r = 0; r < attrs.length; r++){
-                    if(this.attributes[s].attribute[0]._id == attrs[r].code){
+                    if(this.attributes[s].attribute.length > 0 && this.attributes[s].attribute[0]._id == attrs[r].code){
                         this.attributes[s].attribute[0].value = attrs[r].value && attrs[r].value.value ? attrs[r].value.value : attrs[r].value;
                         this.attributes[s].attribute[0].custom = !attrs[r].customizable ? true : false;
                         this.attributes[s].attribute[0].variable = this.attributes[s].variable;
@@ -710,8 +710,9 @@
             }
             var atrs = [];
             for(var r = 0; r < this.attributes.length; r++){
-                atrs.push(this.attributes[r].attribute[0]);
-
+                if(this.attributes[r].attribute[0]){
+                    atrs.push(this.attributes[r].attribute[0]);
+                }
             }
             this.attributes = atrs;
         },

@@ -152,10 +152,10 @@ var auxArr = ""
             this.attrC=val;
         },
         attributesObj(val){
+            this.attributes = val;
             this.reserved.push(this.attributes.find(element=>{return element.code == "photo" }));
             this.reserved.push(this.attributes.find(element=>{return element.code == "recipe" }));
             this.reserved.push(this.attributes.find(element=>{return element.code == "price" }));
-            this.attributes = val;
         },
         attributesCustomisablesObj(val){
             this.attributesCustomisable = val;
@@ -366,7 +366,7 @@ var auxArr = ""
                         if(at){
                             at.variable = this.attributesId[s].variable != undefined ? this.attributesId[s].variable : false;
                         }
-                        if(at.code != "photo" && at.code != "recipe" && at.code != "price"){
+                        if(at && at.code != "photo" && at.code != "recipe" && at.code != "price"){
                             attrs.push(at);
                         }
                     }
@@ -383,7 +383,7 @@ var auxArr = ""
                         if(at){
                             at.pivot = this.attributesCustomisableId[s].pivot != undefined ? this.attributesCustomisableId[s].pivot : false;
                         }
-                        if(at.code != "photo" && at.code != "recipe" && at.code != "price"){
+                        if(at && at.code != "photo" && at.code != "recipe" && at.code != "price"){
                             attrCs.push(at);
                         }
                     }
