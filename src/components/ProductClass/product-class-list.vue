@@ -52,7 +52,7 @@
         delete: 'productClass/delete',
         setWarning: 'setWarning',
       }),
-      deteleClass(id){
+      deleteClass(id){
         if(confirm("¿ Seguro que desea eliminar este registro ? ")){
           this.delete(id).then(
             data => {
