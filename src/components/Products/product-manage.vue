@@ -70,13 +70,12 @@
                         <!--ATRIBUTOS--><br>
                     </div>
                 </div>
-                <h2 v-if="class_id">Atributos personalizados <hr><br></h2>
-                <!--div v-if="attributes.length > 0">
+                <!--h2 v-if="class_id">Atributos personalizados <hr><br></h2>
+                <div v-if="attributes.length > 0">
                   <v-chip v-for="(attr, index) in attributes" :key="index+'_'+attr.code">{{attr.description}} <v-icon medium @click="removeAttribute(index)">close</v-icon></v-chip>
                 </div-->
-                <div v-for="(attrc, index) in attributesCustomisable" :key="index+'_'+attr.code" class="row col-md-8">
+                <!--div v-for="(attrc, index) in attributesCustomisable" :key="index+'_'+attr.code" class="row col-md-8">
                   <v-card  style="height: 100%;width: 84%; padding: 10px;">
-                    <!--ATRIBUTOS Personalizables-->
                     <v-alert :value="attrc.msgError ? true : false" type="error">{{attrc.msgError}}</v-alert>
                     <v-text-field :disabled="true" v-if="attr.type != 'boolean'" v-model="attrc.code.split('_').join(' ')"  name="title" label="" type="text"></v-text-field>
                     <div v-if="attrc.options.length > 0">
@@ -98,19 +97,17 @@
                             </div>
                         </div>
                     </div>
-                    <!--v-switch v-if="!attrc.required" v-model="attrc.add" :label="'Agregar'"></v-switch-->
                   </v-card><br>
-                </div>
+                </div-->
                 <!--ATRIBUTOS Personalizables-->
                 <!--SUB PRODUCTOS-->
                 <div v-if="class_id">
                     <v-layout row wra>
                         <v-flex xs12 md12>
-                            <h2>Sub productos <v-icon medium @click="addSub ? addSub = false : addSub = true">add</v-icon></h2><br>
-                            <label style="font-size:30px;">{{product.name}}</label><hr><br>
+                            <h2>Sub productos <v-icon medium @click="addSub ? addSub = false : addSub = true">keyboard_arrow_down</v-icon></h2><br>
                             <div row wra v-if="addSub && subProductsAttribute">
                                 <v-layout align-center row wra >   
-                                    <v-flex class="alignGrid" v-for="h in subProductsAttribute[0]" :key="h.code" xs12 md2>
+                                    <v-flex class="alignGrid" v-for="h in subProductsAttribute[0]" :key="h.code" xs12 md1>
                                         <label class="col-md-2">{{h.code.split("_").join(" ").charAt(0).toUpperCase() + h.code.split("_").join(" ").slice(1)}}</label>
                                     </v-flex>
                                     <v-flex class="alignGrid" xs12 md1>
@@ -123,12 +120,12 @@
                                         <label class="col-md-2">Precio</label>
                                     </v-flex>
                                     <v-flex class="alignGrid" xs12 md1>
-                                        <label class="col-md-2">Activo</label>
+                                        <label class="col-md-2">Disponible</label>
                                     </v-flex>
                                 </v-layout>
                                 <div v-for="(sub, index) in subProductsAttribute" :key="index">
                                     <v-layout align-center row wra >       
-                                        <v-flex v-for="(attr, index) in sub" row wra :key="index" xs12 md2>
+                                        <v-flex v-for="(attr, index) in sub" row wra :key="index" xs12 md1>
                                             <div v-if="attr.options && attr.options.length > 0">
                                                 <v-flex xs12 md12>
                                                     {{attr.value ? attr.value : attr.default_value}}
@@ -173,7 +170,7 @@
                                             <v-text-field v-model="!sub.price ? sub.price = product.default_price : sub.price" name="price" placeholder="$ 0.000" type="number"></v-text-field>
                                         </v-flex>
                                         <v-flex class="alignGrid" xs12 md1>
-                                            <v-checkbox value input-value="true" v-model="sub.active == null || sub.active == undefined ? sub.active = true : sub.active"></v-checkbox>
+                                            <v-checkbox value input-value="true" v-model="sub.active == null || sub.active == undefined ? sub.active = false : sub.active"></v-checkbox>
                                         </v-flex>
                                     </v-layout>
                                 </div>
