@@ -357,8 +357,8 @@
                     if(this.edit){
                         this.formatAttributeEdit("attributes");
                         this.formatAttributeEdit("attributesCustomisable");
-                        var att = this.product.product_class.order_attributes.attribute;
-                        att = att.concat(this.product.product_class.attributes.attribute);
+                        var att = this.product.product_class.order_attributes;
+                        att = att.concat(this.product.product_class.attributes);
                         this.subProductsAttribute = this.editSubProducts(this.product.sub_products, att);
                         if(this.class_id.value != this.product.product_class._id){
                             this.formatSubProducts(val.order_attributes.attribute);    
@@ -460,6 +460,13 @@
             },
             editSubProducts(subs, attrs){
                 console.log(attrs);
+                var atts = [];
+                for(var s = 0; s < attrs.length; s++){
+                    var nat = attrs[s].attribute[0] ? attrs[s].attribute[0] : "";
+                    if(nat)
+                        atts.push(nat);
+                }
+                attrs = atts;
                 var lst = [];
                 var att = [];
                 var photo = "";
@@ -508,11 +515,12 @@
                 switch(arr) {
                     case "i":
                         var ing = [];
+                        var ingr = Object.assign({...this.ingredient});
                         var obj = {
-                            "id": this.ingredient.input.value,
-                            "quantity":this.ingredient.quantity,
-                            "name": this.ingredient.input.text.split("-")[0], 
-                            "metric": this.ingredient.input.text.split("-")[1],
+                            "id": ingr.input.value,
+                            "quantity":ingr.quantity,
+                            "name": ingr.input.text.split("-")[0], 
+                            "metric": ingr.input.text.split("-")[1],
                         }
                         if(idx == "general"){
                             this.ingredients.push(Object.assign({...obj}));
