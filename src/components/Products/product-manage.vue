@@ -515,12 +515,14 @@
                             "metric": this.ingredient.input.text.split("-")[1],
                         }
                         if(idx == "general"){
-                            this.ingredients.push(obj);
+                            this.ingredients.push(Object.assign({...obj}));
                         }else{
                             ing = Array.isArray(this.subProductsAttribute[idx].ingredients) ? this.subProductsAttribute[idx].ingredients : [];
-                            ing.push(obj);
+                            ing.push(Object.assign({...obj}));
                             this.subProductsAttribute[idx].ingredients = ing;
                         }
+                        this.ingredients.push();
+                        this.subProductsAttribute.push();
                         this.ingredient.input = "";
                         this.ingredient.quantity = "";
                         break;
