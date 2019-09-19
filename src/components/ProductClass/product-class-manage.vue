@@ -308,7 +308,7 @@ var auxArr = ""
                 }
             }
             for(var s = 0; s < this.reserved.length; s++){
-                if(!attr.find(element=>{return element.id == this.reserved[s]._id })){
+                if(this.reserved[s] && !attr.find(element=>{return element.id == this.reserved[s]._id })){
                     attr.push({"id":this.reserved[s]._id, "variable":true});
                 }
             }
