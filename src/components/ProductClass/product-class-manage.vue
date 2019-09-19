@@ -307,7 +307,11 @@ var auxArr = ""
                     attr.push({"id":this.attributes[s]._id, "variable":this.attributes[s].variable});
                 }
             }
-            attr = attr.concat(this.reserved);
+            for(var s = 0; s < this.reserved.length; s++){
+                if(!attr.find(element=>{return element.id == this.reserved[s]._id })){
+                    attr.push({"id":this.reserved[s]._id, "variable":true});
+                }
+            }
             this.classs.attributes = attr;
             /**Atributos personalizables**/
             var attrCustom = [];
