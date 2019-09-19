@@ -179,7 +179,7 @@
           att: state => state.productAttribute.attribute, 
       }),
       trySend(){
-        if(this.attribute && this.attribute.type && this.attribute.code && this.attribute.required != ""){
+        if(this.attribute && this.attribute.type && this.attribute.code){
           return false; 
         }
         return true;
