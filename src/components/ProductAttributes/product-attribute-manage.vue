@@ -12,17 +12,29 @@
           <v-card-text>
             <v-form>
                 <v-text-field v-model="attribute.code" prepend-icon="person" name="name" label="Nombre" type="text"></v-text-field>
-                <v-combobox v-model="attribute.type" :items="types" prepend-icon="reorder" label="Tipo"></v-combobox>
-                <div v-if="attribute.type && attribute.type.value === 'boolean' || attribute.type === 'boolean'">
-                    <v-switch v-show="false" v-model="attribute.default_value" :label="'Valor por defecto'"></v-switch>
-                </div>
-                <div v-else>
-                    <v-combobox v-model="attribute.size" :items="sizes" prepend-icon="high_quality" label="Tamaño de la caja de texto"></v-combobox>
-                    <v-text-field v-show="false" v-model="attribute.length_text" prepend-icon="view_module" name="length_text" label="Longitud" type="text"></v-text-field>
-                    <v-text-field v-show="false" v-model="attribute.default_value" prepend-icon="speaker_notes" name="name" label="Valor por defecto" type="text"></v-text-field>
-                </div>
-                <v-switch v-model="attribute.required" :label="'Requerido'"></v-switch>
-                <v-switch v-model="attribute.visible" :label="'Visible'"></v-switch>
+                <v-layout row wra>
+                    <v-flex xs12 md6>
+                      <v-combobox v-model="attribute.type" :items="types" prepend-icon="reorder" label="Tipo"></v-combobox>
+                    </v-flex>
+                    <v-flex xs12 md6>
+                      <div v-if="attribute.type && attribute.type.value === 'boolean' || attribute.type === 'boolean'">
+                          <v-switch v-show="false" v-model="attribute.default_value" :label="'Valor por defecto'"></v-switch>
+                      </div>
+                      <div v-else>
+                          <v-combobox v-model="attribute.size" :items="sizes" prepend-icon="high_quality" label="Tamaño de la caja de texto"></v-combobox>
+                          <v-text-field v-show="false" v-model="attribute.length_text" prepend-icon="view_module" name="length_text" label="Longitud" type="text"></v-text-field>
+                          <v-text-field v-show="false" v-model="attribute.default_value" prepend-icon="speaker_notes" name="name" label="Valor por defecto" type="text"></v-text-field>
+                      </div>
+                    </v-flex>
+                </v-layout>
+                <v-layout row wra>
+                    <v-flex xs12 md6>
+                      <v-switch v-model="attribute.required" :label="'Requerido'"></v-switch>
+                    </v-flex>
+                    <v-flex xs12 md6>
+                      <v-switch v-model="attribute.visible" :label="'Visible'"></v-switch>
+                    </v-flex>
+                </v-layout>
                 <v-switch v-model="custom" :label="'Personalizable'"></v-switch>
                 <div v-if="custom">
                   <h2>Opciones personalizables</h2>

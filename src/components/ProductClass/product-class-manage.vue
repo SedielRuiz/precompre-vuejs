@@ -12,7 +12,7 @@
           <v-card-text>
             <v-form>
                 <v-text-field v-model="classs.code" prepend-icon="person" name="title" label="Nombre" type="text"></v-text-field>
-                <v-combobox  v-model="classs.parent" :items="classes" prepend-icon="ballot" label="Clase parent"></v-combobox>
+                <v-combobox  v-model="classs.parent" :items="classes" prepend-icon="ballot" label="Clase padre"></v-combobox>
                 <h2>Atributos estaticos</h2><hr><br>
                 <v-alert :value="msgErrorN" type="error">Ya tiene este atributo como atributo personalizable</v-alert> <br>
                 <div class="row col-md-8">

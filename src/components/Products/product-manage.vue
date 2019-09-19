@@ -27,20 +27,6 @@
                         <v-combobox  v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
                     </v-flex>
                 </v-layout>
-                <v-layout v-if="class_id && (valRecipe())" row wra>
-                    <v-flex xs12 md4>
-                        <v-combobox prepend-icon="filter_list" v-model="ingredient.input" :items="inputs" label="Insumos"></v-combobox>
-                    </v-flex>
-                    <v-flex xs12 md2>
-                        <v-text-field v-model="ingredient.quantity" prepend-icon="featured_play_list" name="quantity" label="Cantidad" type="number"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 md2>
-                        <v-layout row wra>
-                            <v-icon medium @click="addArray('i', 'general')">add</v-icon>
-                            <v-chip v-for="(i, index) in ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index, true)">close</v-icon></v-chip>
-                        </v-layout>
-                    </v-flex>
-                </v-layout>
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
@@ -70,6 +56,23 @@
                         <!--ATRIBUTOS--><br>
                     </div>
                 </div>
+                <div v-if="class_id && (valRecipe())">
+                    <h2>Receta</h2><hr><br>
+                    <v-layout  row wra>
+                        <v-flex xs12 md4>
+                            <v-combobox prepend-icon="filter_list" v-model="ingredient.input" :items="inputs" label="Insumos"></v-combobox>
+                        </v-flex>
+                        <v-flex xs12 md2>
+                            <v-text-field v-model="ingredient.quantity" prepend-icon="featured_play_list" name="quantity" label="Cantidad" type="number"></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 md2>
+                            <v-layout row wra>
+                                <v-icon medium @click="addArray('i', 'general')">add</v-icon>
+                                <v-chip v-for="(i, index) in ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index, true)">close</v-icon></v-chip>
+                            </v-layout>
+                        </v-flex>
+                    </v-layout>
+                </div><br>
                 <!--h2 v-if="class_id">Atributos personalizados <hr><br></h2>
                 <div v-if="attributes.length > 0">
                   <v-chip v-for="(attr, index) in attributes" :key="index+'_'+attr.code">{{attr.description}} <v-icon medium @click="removeAttribute(index)">close</v-icon></v-chip>
