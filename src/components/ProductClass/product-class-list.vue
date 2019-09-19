@@ -18,7 +18,7 @@
         <td>{{ props.item.code }}</td>
         <td>
           <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
-          <v-btn color="error" @click="deleteClass(true, props.item._id)">Eliminar</v-btn>
+          <v-btn color="error" @click="deleteClass(props.item._id)">Eliminar</v-btn>
         </td>
         </template>
     </v-data-table>
