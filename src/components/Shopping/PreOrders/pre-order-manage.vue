@@ -67,9 +67,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--div v-else-if="(!attr.custom && !attr.pivot)">
-                                        holi
-                                    </div-->
+                                    <div v-else-if="(!attr.custom && !attr.pivot)">
+                                        Otros <br>
+                                        <v-flex xs12 md12>
+                                            <v-text-field :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" :label="attr.code" :type="attr.type"></v-text-field>
+                                        </v-flex>
+                                    </div>
                                 </div>
                             </v-layout>
                             <v-layout row wra>
