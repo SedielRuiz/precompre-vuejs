@@ -67,9 +67,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div v-else-if="(!attr.custom && !attr.pivot)">
+                                    <!--div v-else-if="(!attr.custom && !attr.pivot)">
                                         holi
-                                    </div>
+                                    </div-->
                                 </div>
                             </v-layout>
                             <v-layout row wra>
