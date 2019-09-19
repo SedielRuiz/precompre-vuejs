@@ -110,7 +110,7 @@
                                         <v-icon>add</v-icon>
                                         <v-text-field v-model="sub.photo" name="photo" type="file"></v-text-field>
                                     </label-->
-                                    <img :src="sub.price ? sub.price : 'No hay foto' "/>
+                                    <img :src="sub.photo ? sub.photo : 'No hay foto' "/>
                                 </v-flex>
                                 <v-flex class="alignGrid" xs12 md2>
                                     {{!sub.price ? sub.price = '$ '+product.default_price : '$ '+sub.price}}
