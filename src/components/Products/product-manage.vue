@@ -34,21 +34,21 @@
                         <!--ATRIBUTOS-->
                         <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
                         <div v-if="attr.options.length > 0">
-                            <v-combobox  prepend-icon="check_circle_outline" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="attr.options" :label="attr.code"></v-combobox>
+                            <v-combobox  prepend-icon="check_circle_outline" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" :items="attr.options" :label="attr.code"></v-combobox>
                         </div>
                         <div v-else>
                             <div v-if="attr.type == 'boolean'">
-                                <v-switch  v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value"></v-switch>
+                                <v-switch  v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value"></v-switch>
                             </div>
                             <div v-else>
                                 <div v-if="attr.size == 'short'">
-                                    <v-text-field :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" :label="attr.code" type="text"></v-text-field>
+                                    <v-text-field :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" prepend-icon="library_books" name="title" :label="attr.code" type="text"></v-text-field>
                                 </div>
                                 <div v-else-if="attr.size == 'medium'">
-                                    <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="77px" solo name="mediumText" :label="attr.code"></v-textarea>
+                                    <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" prepend-icon="library_books" height="77px" solo name="mediumText" :label="attr.code"></v-textarea>
                                 </div>
                                 <div v-else>
-                                    <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="135px" solo name="mediumText" :label="attr.code"></v-textarea>
+                                    <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" prepend-icon="library_books" height="135px" solo name="mediumText" :label="attr.code"></v-textarea>
                                 </div>
                             </div>
                         </div>
@@ -598,7 +598,6 @@
             valAttrRequired(attr){
                 var next = false;
                 var val = attr.options.length > 0 && attr.value.value ? attr.value.value : attr.value;
-                console.log(attr);
                 if(val != "" && val != undefined && val.trim() != "")
                     next = true;
                 return next;
