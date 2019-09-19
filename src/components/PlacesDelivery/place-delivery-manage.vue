@@ -61,10 +61,13 @@
                         <v-flex xs12 sm12 md4>
                           <label style="font-size:20px;"> Unidad </label>
                         </v-flex>
-                        <v-flex xs12 sm12 md4>
+                        <v-flex xs12 sm12 md3>
                           <label style="font-size:20px;"> Tipo </label>
                         </v-flex>
-                        <v-flex xs12 sm12 md4>
+                        <v-flex xs12 sm12 md3>
+                          <label style="font-size:20px;"> Observaciones</label>
+                        </v-flex>
+                        <v-flex xs12 sm12 md2>
                           <label style="font-size:20px;"> Disponible</label>
                         </v-flex>
                       </v-layout>
@@ -72,10 +75,13 @@
                         <v-flex xs12 sm12 md4>
                           <v-text-field v-model="u.unity" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm12 md4>
+                        <v-flex xs12 sm12 md3>
                           <v-select v-model="u.type" :items="unities" prepend-icon="featured_play_list" label="Tipo"></v-select>
                         </v-flex>
-                        <v-flex xs12 sm12 md4>
+                        <v-flex xs12 sm12 md3>
+                          <v-text-field v-model="u.observations" prepend-icon="email" name="observations" label="Observaciones" type="text"></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm12 md2>
                           <v-checkbox align-center value input-value="true" v-model="u.available == null || u.available == undefined ? u.available = true : u.available"></v-checkbox>
                         </v-flex>
                       </v-layout>
@@ -189,7 +195,7 @@
         obj._type = type;
         for(var r = 0; r < this.units.length; r++){
           if(this.units[r].type == type && this.units[r].available == true){
-            lst.push({unit_name:this.units[r].unity});
+            lst.push({unit_name:this.units[r].unity, observations:this.units[r].observations});
           }
         }
         obj.qty = lst.length;
