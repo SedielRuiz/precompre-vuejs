@@ -167,8 +167,8 @@
                     this.categories = val.categories;
                     this.formatAttributes("attributes", val.attributes);
                     this.formatAttributes("order_attributes", val.attributes);
-                    var att = this.product.product_class.order_attributes.attribute;
-                    att = att.concat(this.product.product_class.attributes.attribute);
+                    var att = this.product.product_class.order_attributes;
+                    att = att.concat(this.product.product_class.attributes);
                     if(this.inputs){
                         this.formatInputs()
                         this.subProducts = this.detailSubProducts(val.sub_products, att);
@@ -200,6 +200,14 @@
                 this.recipe = true;
             },
             detailSubProducts(subs, attrs){
+                console.log(attrs);
+                var atts = [];
+                for(var s = 0; s < attrs.length; s++){
+                    var nat = attrs[s].attribute[0] ? attrs[s].attribute[0] : "";
+                    if(nat)
+                        atts.push(nat);
+                }
+                attrs = atts;
                 console.log(attrs);
                 var lst = [];
                 var att = [];

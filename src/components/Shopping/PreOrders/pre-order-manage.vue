@@ -36,6 +36,7 @@
                             <v-layout row wra v-if="attributes">
                                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code">
                                     <div v-if="attr.visible && attr.code != 'photo' && ( (attr.custom && attr.variable) || (!attr.custom && attr.pivot) )">
+                                        Atributo <br>
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
                                                 <v-combobox :disabled="attr.custom" @change="findPrice()" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
@@ -65,6 +66,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div v-else-if="(!attr.custom && !attr.pivot)">
+                                        holi
                                     </div>
                                 </div>
                             </v-layout>
