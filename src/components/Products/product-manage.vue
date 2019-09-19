@@ -30,7 +30,7 @@
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
-                    <div v-if="attr.visible && attr.code != 'photo'">
+                    <div v-if="attr.visible && attr.code != 'price'">
                         <!--ATRIBUTOS-->
                         <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
                         <div v-if="attr.options.length > 0">
@@ -131,7 +131,7 @@
                                         <v-flex v-for="(attr, index) in sub" row wra :key="index" xs12 md1>
                                             <div v-if="attr.options && attr.options.length > 0">
                                                 <v-flex xs12 md12>
-                                                    {{attr.value ? attr.value : attr.default_value}}
+                                                    {{attr && attr.value ? attr.value : (attr.default_value ? attr.default_value : "")}}
                                                 </v-flex>
                                             </div>
                                             <div v-else>
