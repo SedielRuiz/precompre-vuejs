@@ -33,8 +33,15 @@
                                     <v-text-field :disabled="true" v-model="product.price" prepend-icon="library_books" name="title" label="Precio" type="text"></v-text-field>
                                 </v-flex>        
                             </v-layout>
+                            <v-layout row wra>
+                                <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code+'_other'" v-if="(!attr.custom && !attr.pivot)">
+                                    <v-flex xs12 md12>
+                                        <v-text-field :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" :label="attr.code" :type="attr.type"></v-text-field>
+                                    </v-flex>
+                                </div>
+                            </v-layout>
+                            <label v-if="attributes.length > 0" style="font-size:15px;">Atributos </label><br>
                             <v-layout row wra v-if="attributes">
-                                <label v-if="attributes.length > 0">Atributo </label><br>
                                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code">
                                     <div v-if="attr.visible && attr.code != 'photo' && ( (attr.custom && attr.variable) || (!attr.custom && attr.pivot) )">
                                         <div v-if="attr.options && attr.options.length > 0">
@@ -67,14 +74,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </v-layout>
-                            <v-layout row wra>
-                                <label v-if="attributes.length > 0">Otros </label><br>
-                                <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code+'_other'" v-if="(!attr.custom && !attr.pivot)">
-                                    <v-flex xs12 md12>
-                                        <v-text-field :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" :label="attr.code" :type="attr.type"></v-text-field>
-                                    </v-flex>
                                 </div>
                             </v-layout>
                             <v-layout row wra>
