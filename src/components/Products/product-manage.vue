@@ -32,7 +32,6 @@
                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
                     <div v-if="attr.visible && attr.code != 'price'">
                         <!--ATRIBUTOS-->
-                        {{attr}}
                         <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
                         <div v-if="attr.options.length > 0">
                             <v-combobox  prepend-icon="check_circle_outline" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" :items="attr.options" :label="attr.code"></v-combobox>
