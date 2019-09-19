@@ -12,17 +12,28 @@
           <v-card-text>
             <v-form>
                 <v-text-field :disabled="true" v-model="attribute.code" prepend-icon="person" name="name" label="Nombre" type="text"></v-text-field>
-                <v-combobox :disabled="true" v-model="attribute.type" :items="types" prepend-icon="reorder" label="Tipo"></v-combobox>
-                <v-text-field :disabled="true" v-model="attribute.size" prepend-icon="high_quality" name="size" label="Tamaño" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-model="attribute.length_text" prepend-icon="view_module" name="length_text" label="Longitud" type="text"></v-text-field>
+                <v-layout row wra>
+                  <v-flex xs12 md6>
+                    <v-combobox :disabled="true" v-model="attribute.type" :items="types" prepend-icon="reorder" label="Tipo"></v-combobox>
+                  </v-flex>
+                  <v-flex xs12 md6>
+                    <v-text-field :disabled="true" v-model="attribute.size" prepend-icon="high_quality" name="size" label="Tamaño" type="text"></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-text-field v-show="false" :disabled="true" v-model="attribute.length_text" prepend-icon="view_module" name="length_text" label="Longitud" type="text"></v-text-field>
                 <div v-if="attribute.type && attribute.type.value == 'text'">
                     <v-combobox :disabled="true" v-model="attribute.size" :items="sizes" prepend-icon="high_quality" label="Tamaño de la caja de texto"></v-combobox>
-                    <v-text-field :disabled="true" v-model="attribute.length_text" prepend-icon="view_module" name="length_text" label="Longitud" type="text"></v-text-field>
+                    <v-text-field v-show="false" :disabled="true" v-model="attribute.length_text" prepend-icon="view_module" name="length_text" label="Longitud" type="text"></v-text-field>
                 </div>
-                <v-text-field :disabled="true" v-model="attribute.default_value" prepend-icon="speaker_notes" name="name" label="Valor por defecto" type="text"></v-text-field>
-                <v-switch :disabled="true" v-model="attribute.required" :label="'Requerido'"></v-switch>
-                <v-switch :disabled="true" v-model="attribute.visible" :label="'Visible'"></v-switch>
-                <v-switch :disabled="true" v-model="attribute.wysiwyg" :label="'Wysiwyg'"></v-switch>
+                <v-text-field v-show="false" :disabled="true" v-model="attribute.default_value" prepend-icon="speaker_notes" name="name" label="Valor por defecto" type="text"></v-text-field>
+                <v-layout row wra>
+                  <v-flex xs12 md6>
+                    <v-switch :disabled="true" v-model="attribute.required" :label="'Requerido'"></v-switch>
+                  </v-flex>
+                  <v-flex xs12 md6>
+                    <v-switch :disabled="true" v-model="attribute.visible" :label="'Visible'"></v-switch>
+                  </v-flex>
+                </v-layout>
                 <h2>Opciones</h2>
                 <div v-if="options.length > 0">
                   <v-chip v-for="(opc, index) in options" :key="index">{{opc.code}}</v-chip>
