@@ -20,7 +20,7 @@
           <td>{{ props.item.required ? 'Si' : 'No'}}</td>
           <td>
             <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
-            <v-btn color="error" @click="deteleAttribute(props.item._id)">Eliminar</v-btn>
+            <v-btn v-if="props.item.code != 'price' && props.item.code != 'recipe' && props.item.code != 'photo'" color="error" @click="deteleAttribute(props.item._id)">Eliminar</v-btn>
           </td>
         </template>
     </v-data-table>
