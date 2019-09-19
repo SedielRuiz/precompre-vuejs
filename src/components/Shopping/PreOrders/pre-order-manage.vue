@@ -129,24 +129,24 @@
                                     <v-flex xs12 md12>
                                         <div v-if="sc.viewAtt">
                                             <v-layout row wra>
-                                                <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code" class="row col-md-8">
-                                                    <div v-if="attr.visible && attr.code != 'photo'">
-                                                        <div v-if="attr.options && attr.options.length > 0">
-                                                            <v-combobox  :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
+                                                <div v-for="(attrr, index) in sc.attributes" :key="index+'_'+attrr.code+'_prg'" class="row col-md-8">
+                                                    <div v-if="attrr.visible && attrr.code != 'photo'">
+                                                        <div v-if="attrr.options && attrr.options.length > 0">
+                                                            <v-combobox  :disabled="attrr.custom" :key="index+'_'+attrr.code+'_prg'" v-model="!attrr.value && attrr.value != ''? attrr.value = attrr.default_value : attrr.value" :items="formatList(attrr.options, 'code', 'code')" prepend-icon="filter_list" :label="attrr.code"></v-combobox>
                                                         </div>
                                                         <div v-else>
-                                                            <div v-if="attr.type == 'boolean'">
-                                                                <v-switch :disabled="attr.custom" :key="index+'_'+attr.code" prepend-icon="title" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :label="attr.code"></v-switch>
+                                                            <div v-if="attrr.type == 'boolean'">
+                                                                <v-switch :disabled="attrr.custom" :key="index+'_'+attrr.code+'_prg'" prepend-icon="title" v-model="!attrr.value && attrr.value != ''? attrr.value = attrr.default_value : attrr.value" :label="attrr.code"></v-switch>
                                                             </div>
                                                             <div v-else>
-                                                                <div v-if="attr.size == 'short'">
-                                                                    <v-text-field :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" :label="attr.code" type="text"></v-text-field>
+                                                                <div v-if="attrr.size == 'short'">
+                                                                    <v-text-field :disabled="attrr.custom" :key="index+'_'+attrr.code+'_prg'" v-model="!attrr.value && attrr.value != ''? attrr.value = attrr.default_value : attrr.value" prepend-icon="library_books" name="title" :label="attrr.code" type="text"></v-text-field>
                                                                 </div>
-                                                                <div v-else-if="attr.size == 'medium'">
-                                                                    <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="77px" name="mediumText" :label="attr.code"></v-textarea>
+                                                                <div v-else-if="attrr.size == 'medium'">
+                                                                    <v-textarea :disabled="attrr.custom" :key="index+'_'+attrr.code+'_prg'" v-model="!attrr.value && attrr.value != ''? attrr.value = attrr.default_value : attrr.value" prepend-icon="library_books" height="77px" name="mediumText" :label="attrr.code"></v-textarea>
                                                                 </div>
                                                                 <div v-else>
-                                                                    <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="135px" name="mediumText" :label="attr.code"></v-textarea>
+                                                                    <v-textarea :disabled="attrr.custom" :key="index+'_'+attrr.code+'_prg'" v-model="!attrr.value && attrr.value != ''? attrr.value = attrr.default_value : attrr.value" prepend-icon="library_books" height="135px" name="mediumText" :label="attrr.code"></v-textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -418,7 +418,6 @@
                 this.product.product_id = val.principal_value;
                 this.product.sub_product = val.sub_value;
                 //this.product.unit_value = val.price;
-                this.attributes = [];
                 this.attributes = val.class.attributes;
                 this.attributes = this.attributes.concat(val.class.order_attributes);
                 this.replaceValue(val.attributes);
@@ -444,11 +443,12 @@
             setWarning: 'setWarning',
         }),
         findPrice(){
+            console.log(this.productsCart);
             console.log(this.product.sub_products);
             console.log(this.attributes);
-            var pivot = false;
+            this.productsCart.push();
+            let pivot = true;
             var price = 0;
-            pivot = true;
             for(var r = 0; r < this.product.sub_products.length; r++){
                 pivot = true;
                 console.log(r);
@@ -632,7 +632,7 @@
                 switch(arr){
                     case "p":
                         this.product.customer_id = this.customer_id;
-                        this.product.attributes = this.attributes;
+                        this.product.attributes = [...this.attributes];
                         this.product.days = [];
                         this.product.viewAtt = false;
                         console.log(this.product);
@@ -645,6 +645,7 @@
                         if(!inside){
                             this.productsCart.push(obj);
                             this.preOrder.finish = true;
+                            this.productsCart.push();
                         }else{
                             var prds = this.shoppingCart[idx].productsCart;
                             prds.push(obj);
@@ -654,8 +655,8 @@
                         }
                         this.product = "";
                         this.attributes = [];
-
-                        console.log(this.shoppingCart);
+                        this.attributes.push();
+                        this.fetchProducts();
                         break;
                     case "cart":
                         this.shoppingCart.push({
