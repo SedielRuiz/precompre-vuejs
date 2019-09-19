@@ -164,6 +164,11 @@ var auxArr = ""
         },
         attributesCustomisablesObj(val){
             this.attributesCustomisable = val;
+            for(var s = 0; s < this.attributesCustomisable.length; s++){
+                if(this.attributesCustomisable[s].code == "price" || this.attributesCustomisable[s].code == "recipe" || this.attributesCustomisable[s].code == "photo"){
+                    this.attributesCustomisable.splice(s, 1);
+                }
+            }
         },
         classess(val){
             for(var s = 0; s < val.length; s++){
