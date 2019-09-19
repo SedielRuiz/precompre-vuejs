@@ -35,7 +35,7 @@
                             </v-layout>
                             <v-layout row wra v-if="attributes">
                                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code">
-                                    <div v-if="attr.visible && attr.code != 'photo' && attr.variable">
+                                    <div v-if="attr.visible && attr.code != 'photo' && ( (attr.custom && attr.variable) || (!attr.custom && attr.pivot) )">
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
                                                 <v-combobox :disabled="attr.custom" @change="findPrice()" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
@@ -695,13 +695,21 @@
         replaceValue(attrs){
             for(var s = 0; s < this.attributes.length; s++){
                 for(var r = 0; r < attrs.length; r++){
-                    if(this.attributes[s]._id == attrs[r].code){
-                        this.attributes[s].value = attrs[r].value && attrs[r].value.value ? attrs[r].value.value : attrs[r].value;
-                        this.attributes[s].custom = !attrs[r].customizable ? true : false;
+                    if(this.attributes[s].attribute[0]._id == attrs[r].code){
+                        this.attributes[s].attribute[0].value = attrs[r].value && attrs[r].value.value ? attrs[r].value.value : attrs[r].value;
+                        this.attributes[s].attribute[0].custom = !attrs[r].customizable ? true : false;
+                        this.attributes[s].attribute[0].variable = this.attributes[s].variable;
+                        this.attributes[s].attribute[0].pivot = this.attributes[s].pivot;
                     }
 
                 }
             }
+            var atrs = [];
+            for(var r = 0; r < this.attributes.length; r++){
+                atrs.push(this.attributes[r].attribute[0]);
+
+            }
+            this.attributes = atrs;
         },
         formatAttributes(lst){
             var list = [];
