@@ -504,6 +504,7 @@
                         att["price"] = price;
                         att["photo"] = photo;
                         att["inputs"] = recipe;
+                        att["active"] = true;
                         lst.push(att);
                         att = [];
                     }
