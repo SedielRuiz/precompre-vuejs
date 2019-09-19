@@ -18,7 +18,7 @@
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--ATRIBUTOS-->
                     <div v-if="attributes">
-                        <v-chip v-for="(attr, index) in attributes" :key="index">{{attr.code.split('_').join(' ')}}</v-chip>
+                        <v-chip v-for="(attr, index) in attributes" :key="index">{{attr ? attr.code.split('_').join(' ') : ""}}</v-chip>
                     </div>
                     <!--ATRIBUTOS-->
                   </v-card><br>
@@ -28,7 +28,7 @@
                   <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--ATRIBUTOS-->
                     <div v-if="attributesCustomisables">
-                        <v-chip v-for="(attrC, index) in attributesCustomisables" :key="index">{{attrC.code.split('_').join(' ')}}</v-chip>
+                        <v-chip v-for="(attrC, index) in attributesCustomisables" :key="index">{{attrC ? attrC.code.split('_').join(' ') : ""}}</v-chip>
                     </div>
                     <!--ATRIBUTOS-->
                   </v-card><br>
