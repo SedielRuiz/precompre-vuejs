@@ -166,8 +166,8 @@
       },
       addUnity(){
         var unit = "";
-        var group = this.unity.group ? this.unity.group + " - " : "";
-        var sub_group =  this.unity.sub_group ? this.unity.sub_group + " - " : "";
+        var group = this.unity.group ? this.unity.group + " " : "";
+        var sub_group =  this.unity.sub_group ? this.unity.sub_group + " " : "";
         for(var s = 1; s <= this.unity.quantity; s++){
           unit = group + sub_group + this.unity.floor+(s < 10 ? "0"+s : s);
           this.units.push({"type":this.unities[0].value, "unity":unit, "available":true});
