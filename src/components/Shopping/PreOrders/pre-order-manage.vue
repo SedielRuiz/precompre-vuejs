@@ -467,14 +467,15 @@
         },
         customer_id(val){
             if(val){
+                this.preOrder = {};
                 this.preOrder.hour = this.hours[0];
-                this.fetchProducts();
                 this.getCustomer(this.customer_id.value ? this.customer_id.value : this.customer_id);
                 this.fetchPreOrdersCustomer(this.customer_id.value ? this.customer_id.value : this.customer_id);
             }
         },
     },
     mounted () {
+        this.fetchProducts();
         this.fetchCustomers({"page_size":-1});
         this.customer_id = this.$route.params.id == undefined ? "" : this.$route.params.id;
     },
