@@ -45,10 +45,10 @@
                                     <v-text-field :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" prepend-icon="library_books" name="title" :label="attr.code" type="text"></v-text-field>
                                 </div>
                                 <div v-else-if="attr.size == 'medium'">
-                                    <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" prepend-icon="library_books" height="77px" solo name="mediumText" :label="attr.code"></v-textarea>
+                                    <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" prepend-icon="library_books" height="77px" name="mediumText" :label="attr.code"></v-textarea>
                                 </div>
                                 <div v-else>
-                                    <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" prepend-icon="library_books" height="135px" solo name="mediumText" :label="attr.code"></v-textarea>
+                                    <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" prepend-icon="library_books" height="135px" name="mediumText" :label="attr.code"></v-textarea>
                                 </div>
                             </div>
                         </div>
@@ -124,6 +124,7 @@
                                     </v-flex>
                                     <v-flex class="alignGrid" xs12 md1>
                                         <label class="col-md-2">Disponible</label>
+                                        <v-checkbox v-model="activeCheck" @click="activeAll()" label="Todos"></v-checkbox>
                                     </v-flex>
                                 </v-layout>
                                 <div v-for="(sub, index) in subProductsAttribute" :key="index">
@@ -291,6 +292,7 @@
         name: 'product-manage',
         data () {
             return {
+                activeCheck:false,
                 recipe:false,
                 ingredient:{},
                 ingredients:[],
@@ -400,6 +402,12 @@
                 getProductClassAttribute: 'product/getProductClassAttribute', 
                 setWarning: 'setWarning',
             }),
+            activeAll(){
+                for(let i = 0; i < this.subProductsAttribute.length; i++){
+                    this.subProductsAttribute[i].active = this.activeCheck;
+                }
+                this.subProductsAttribute.push();
+            },  
             valRecipe(){
                 return this.attributes.find(element=>{return element.code == "recipe"}) ? true : false;
             },
