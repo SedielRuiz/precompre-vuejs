@@ -481,7 +481,7 @@
             this.shoppingCart[idx].productsCart[idx2].price = this.shoppingCart[idx].productsCart[idx2].price_base * this.shoppingCart[idx].productsCart[idx2].quantity;
             this.shoppingCart.push();
         },
-        findPrice(opc, idx, idx2 = ""){
+        findPrice(opc, idx = "", idx2 = ""){
             var subss = [];
             var attrs = [];
             if(opc=="g"){
