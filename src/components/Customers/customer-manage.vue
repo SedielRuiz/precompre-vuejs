@@ -125,7 +125,6 @@
     watch:{
         cu(val){
           if(val){
-            console.log(val.delivery_places);
             this.customer = val;
             if(val.id_type)
               this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type });
@@ -265,10 +264,14 @@
         places: state => state.placeDelivery.places
       }),
       trySend(){
-        if(this.customer && this.customer.id_type && this.customer.id_description && this.customer.email && this.customer.name){
-          return false; 
+        if(this.edit){
+          return false;
+        }else{
+          if(this.customer && this.customer.id_type && this.customer.id_description && this.customer.email && this.customer.name){
+            return false; 
+          }
+          return true;
         }
-        return true;
       }
     },
   }
