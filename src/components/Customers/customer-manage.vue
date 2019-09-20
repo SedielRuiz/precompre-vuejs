@@ -220,6 +220,7 @@
         },
         buildCustomer(){
             this.customer.telephones = this.formatPhones();
+            this.customer.id_type = this.customer.id_type && this.customer.id_type.value ? this.customer.id_type.value : this.customer.id_type;
             if(this.edit)
               this.customer.status = this.customer.status.value;
             this.customer.delivery_places = this.placesSelected;
