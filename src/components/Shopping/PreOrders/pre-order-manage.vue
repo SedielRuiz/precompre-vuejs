@@ -475,7 +475,7 @@
         },
     },
     mounted () {
-        this.fetchCustomers();
+        this.fetchCustomers({"page_size":-1});
         this.customer_id = this.$route.params.id == undefined ? "" : this.$route.params.id;
     },
     methods: {
