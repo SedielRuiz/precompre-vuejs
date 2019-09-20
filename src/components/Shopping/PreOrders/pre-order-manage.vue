@@ -825,7 +825,6 @@
                         "product": this.shoppingCart[r].productsCart[g].product_id,
                         "sub_product": this.shoppingCart[r].productsCart[g].sub_product,
                         "attributes": this.formatAttributes(this.shoppingCart[r].productsCart[g].attributes),
-                        "unit_value": this.shoppingCart[r].productsCart[g].unit_value,
                         "quantity": this.shoppingCart[r].productsCart[g].quantity,
                     };
                     var place = this.shoppingCart[r].productsCart[g].delivery_place && this.shoppingCart[r].productsCart[g].delivery_place.value ? this.shoppingCart[r].productsCart[g].delivery_place.value : this.shoppingCart[r].productsCart[g].delivery_place;
