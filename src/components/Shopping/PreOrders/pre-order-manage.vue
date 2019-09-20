@@ -482,16 +482,17 @@
             this.shoppingCart.push();
         },
         findPrice(opc, idx = "", idx2 = ""){
-            var opcs = opc == undefined ? "g" : opc;
-             var subss = [];
+            var subss = [];
             var attrs = [];
-            if(opcs == "g"){
+            subss = this.product.sub_products;
+            attrs = this.attributes;
+            if(opc == "g"){
                 subss = this.product.sub_products;
                 attrs = this.attributes;
-            }else if(opcs == "e"){
+            }else if(opc == "e"){
                 subss = this.productsCart[idx].sub_products;
                 attrs = this.productsCart[idx].attributes;
-            }else if(opcs == "p"){
+            }else if(opc == "p"){
                 subss = this.shoppingCart[idx].productsCart[idx2].sub_products;
                 attrs = this.shoppingCart[idx].productsCart[idx2].attributes;
             }
@@ -524,26 +525,26 @@
                     }
                 }
                 if(pivot){
-                    if(opcs == "g"){
+                    if(opc == "g"){
                         this.product.sub_product = subss[r]._id;
-                    }else if(opcs == "e"){
+                    }else if(opc == "e"){
                         this.productsCart[idx].sub_product = subss[r]._id;
-                    }else if(opcs == "p"){
+                    }else if(opc == "p"){
                         this.shoppingCart[idx].productsCart[idx].sub_product = subss[r]._id;
                     }
                     break
                 }
             }
-            if(opcs == "g"){
+            if(opc == "g"){
                 this.product.price = price;
-            }else if(opcs == "e"){
+            }else if(opc == "e"){
                 this.productsCart[idx].price = price;
-            }else if(opcs == "p"){
+            }else if(opc == "p"){
                 this.shoppingCart[idx].productsCart[idx].price = price * this.shoppingCart[idx].productsCart[idx].quantity;
                 this.shoppingCart[idx].productsCart[idx].price_base = price;
             }
             console.log("precio :"+price);
-            console.log("la opciopn :"+opcs);
+            console.log("la opciopn :"+opc);
             console.log(subss);
             console.log(attrs);
         },
