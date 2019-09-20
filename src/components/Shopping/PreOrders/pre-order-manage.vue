@@ -494,9 +494,6 @@
                 subss = this.shoppingCart[idx].productsCart[idx2].sub_products;
                 attrs = this.shoppingCart[idx].productsCart[idx2].attributes;
             }
-            console.log("la opciopn :"+opc);
-            console.log("losa subs :"+subss);
-            console.log("losa attri :"+attrs);
             this.productsCart.push();
             let pivot = true;
             var price = 0;
@@ -544,6 +541,10 @@
                 this.shoppingCart[idx].productsCart[idx].price = price * this.shoppingCart[idx].productsCart[idx].quantity;
                 this.shoppingCart[idx].productsCart[idx].price_base = price;
             }
+            console.log("precio :"+price);
+            console.log("la opciopn :"+opc);
+            console.log(subss);
+            console.log(attrs);
         },
         closeModal(info){
             this.info = "";
