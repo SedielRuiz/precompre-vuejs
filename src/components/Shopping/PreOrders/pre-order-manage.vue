@@ -38,7 +38,7 @@
                                     <div v-if="attr.visible && attr.code != 'photo'">
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
-                                                <v-combobox :disabled="attr.custom" @change="findPriceO()" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
+                                                <v-combobox :disabled="attr.custom" @change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
                                             </v-flex>
                                         </div>
                                         <div v-else>
@@ -481,49 +481,9 @@
             this.shoppingCart[idx].productsCart[idx2].price = this.shoppingCart[idx].productsCart[idx2].price_base * this.shoppingCart[idx].productsCart[idx2].quantity;
             this.shoppingCart.push();
         },
-        findPriceO(opc){
-            console.log("llwguw");
-            this.productsCart.push();
-            this.attributes.push();
-            let pivot = true;
-            var price = 0;
-            for(var r = 0; r < this.product.sub_products.length; r++){
-                pivot = true;
-                for(var g = 0; g < this.product.sub_products[r].options.length; g++){
-                    for(var s = 0; s < this.attributes.length; s++){
-                        if(this.attributes[s].type != "text"){
-                            var prc = this.product.sub_products[r].options.find(element=>{return element.pivot == this.attributes[s]._id});
-                            if(prc && this.attributes[s].code != "photo" && this.attributes[s].code != "recipe"){
-                                var valurVal = this.attributes[s].value && this.attributes[s].value.value ? this.attributes[s].value.value : this.attributes[s].value;
-                                if(this.attributes[s].code == "price"){
-                                    price = prc.option;
-                                }
-                                if(valurVal != prc.option){
-                                    if(this.attributes[s].code != "price"){
-                                        pivot = false;
-                                        break;
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-                    if(pivot){
-                        break
-                    }
-                }
-                if(pivot){
-                        this.product.sub_product = this.product.sub_products[r]._id;
-                    break
-                }
-            }
-                this.product.price = price;
-        },
         findPrice(opc, idx = "", idx2 = ""){
             var subss = [];
             var attrs = [];
-            subss = this.product.sub_products;
-            attrs = this.attributes;
             if(opc == "g"){
                 subss = this.product.sub_products;
                 attrs = this.attributes;
