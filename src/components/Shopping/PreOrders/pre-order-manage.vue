@@ -484,6 +484,8 @@
         findPrice(opc, idx = "", idx2 = ""){
             var subss = [];
             var attrs = [];
+            this.attributes.push();
+            this.productsCart.push();
             if(opc == "g"){
                 subss = this.product.sub_products;
                 attrs = this.attributes;
@@ -494,7 +496,9 @@
                 subss = this.shoppingCart[idx].productsCart[idx2].sub_products;
                 attrs = this.shoppingCart[idx].productsCart[idx2].attributes;
             }
-            this.productsCart.push();
+            console.log("la opciopn :"+opc);
+            console.log(subss);
+            console.log(attrs);
             let pivot = true;
             var price = 0;
             for(var r = 0; r < subss.length; r++){
@@ -542,9 +546,6 @@
                 this.shoppingCart[idx].productsCart[idx].price_base = price;
             }
             console.log("precio :"+price);
-            console.log("la opciopn :"+opc);
-            console.log(subss);
-            console.log(attrs);
         },
         closeModal(info){
             this.info = "";
