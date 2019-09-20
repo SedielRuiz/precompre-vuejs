@@ -755,7 +755,6 @@
         removeArray(opc, arr, idx, idx2 = ""){
             switch(opc){
                 case "p":
-                    console.log("llegue aca : index: "+idx+" al que voy : "+idx2);
                     var prds = this.shoppingCart[idx].productsCart;
                     prds.splice(idx2, 1);
                     this.shoppingCart[idx].productsCart = prds;
