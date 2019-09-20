@@ -10,7 +10,8 @@
                 </v-toolbar>
                 <v-card-text>
                     <v-form>
-                        <v-card class="pa-2" outlined tile>
+                        <v-combobox prepend-icon="filter_list" v-if="!this.$route.params.id" v-model="customer_id" :items="customers" label="Cliente"></v-combobox>
+                        <v-card v-if="customer_id" class="pa-2" outlined tile>
                             <h3>Datos pre orden</h3>
                             <v-text-field :disabled="preOrder.finish" v-model="preOrder.name" prepend-icon="library_books" name="title" label="Nombre" type="text"></v-text-field>
                             <v-layout row wra>
@@ -420,6 +421,7 @@
             hours:[
                 {text:"06:00 AM", value:"06:00"},
             ],
+            customers:[],
             preOrder:{},
             productsCart:[],
             subProductsAttribute:[],
@@ -458,15 +460,23 @@
                 this.replaceValue(val.attributes);
             }
         },
+        cutms(val){
+            for(var s = 0; s < val.length; s++){
+                this.customers.push({"text":val[s].name+" "+val[s].last_name, value:val[s]._id});
+            }
+        },
+        customer_id(val){
+            if(val){
+                this.preOrder.hour = this.hours[0];
+                this.fetchProducts();
+                this.getCustomer(this.customer_id.value ? this.customer_id.value : this.customer_id);
+                this.fetchPreOrdersCustomer(this.customer_id.value ? this.customer_id.value : this.customer_id);
+            }
+        },
     },
     mounted () {
-        this.preOrder.hour = this.hours[0];
-        this.fetchProducts();
-        this.customer_id = this.$route.params.id == undefined ? 0 : this.$route.params.id;
-        if(!this.customer){
-            this.getCustomer(this.customer_id);
-        }
-        this.fetchPreOrdersCustomer(this.customer_id);
+        this.fetchCustomers();
+        this.customer_id = this.$route.params.id == undefined ? "" : this.$route.params.id;
     },
     methods: {
         ...mapActions({
@@ -474,6 +484,7 @@
             delete: 'preOrder/delete',
             fetchPreOrdersCustomer: 'preOrder/fetchPreOrdersCustomer',
             fetchProducts: 'product/fetchProducts',
+            fetchCustomers: 'customer/fetchCustomers',
             getCustomer: 'customer/getCustomer', 
             setWarning: 'setWarning',
         }),
@@ -550,7 +561,7 @@
         closeModal(info){
             this.info = "";
             this.detail = false;
-            this.fetchPreOrdersCustomer(this.customer_id);
+            this.fetchPreOrdersCustomer(this.customer_id.value ? this.customer_id.value : this.customer_id);
         },
         buildNameProduct(base, product, sub){
             var name = base;
@@ -568,7 +579,7 @@
                 this.delete(id).then(
                     data => {
                         this.setWarning(data, { root: true }).then(()=>{
-                            this.fetchPreOrdersCustomer(this.customer_id);
+                            this.fetchPreOrdersCustomer(this.customer_id.value ? this.customer_id.value : this.customer_id);
                         })
                     },
                     error => {
@@ -612,7 +623,7 @@
                 this.shoppingCartEdit[r].delivery_place = this.formatList(this.customer.delivery_places, 'name', 'id', 'unit_name').find(element=>{return element.value == this.shoppingCartEdit[r].pre_orders[0].delivery_place.id});
                 this.shoppingCartEdit[r].product_id = this.shoppingCartEdit[r].pre_orders[0].item.product._id;
                 this.shoppingCartEdit[r].sub_product = this.shoppingCartEdit[r].pre_orders[0].item.sub_product;
-                this.shoppingCartEdit[r].customer_id = this.customer._id;
+                this.shoppingCartEdit[r].customer_id = this.customer_id.value ? this.customer_id.value : this.customer_id;
                 this.shoppingCartEdit[r]._id = this.shoppingCartEdit[r].pre_orders[0]._id;
             }
         },
@@ -695,7 +706,7 @@
             if(arr){
                 switch(arr){
                     case "p":
-                        this.product.customer_id = this.customer_id;
+                        this.product.customer_id = this.customer_id.value ? this.customer_id.value : this.customer_id;
                         this.product.attributes = [...this.attributes];
                         this.product.days = [];
                         this.product.viewAtt = false;
@@ -843,7 +854,7 @@
                 data => {
                     this.setWarning(data, { root: true }).then(()=>{
                         //this.fetchPreOrdersCustomer(this.customer_id);
-                        this.$router.push('/customerDetail/'+this.customer_id)
+                        this.$router.push('/customerDetail/'+this.customer_id.value ? this.customer_id.value : this.customer_id)
                     })
                 },
                 error => {
@@ -851,7 +862,7 @@
         },
         redirect(page){
             if(page){
-                this.$router.push('/customerDetail/'+this.customer_id)
+                this.$router.push('/customerDetail/'+this.customer_id.value ? this.customer_id.value : this.customer_id)
             }else{
                 this.$router.push('/customerList')
             }
@@ -862,6 +873,7 @@
             prds: state => state.product.products,
             warning: state => state.warning,
             customer: state => state.customer.customer,
+            cutms: state => state.customer.customers,
             preOrders: state => state.preOrder.preOrders,
         }),
         trySend(){

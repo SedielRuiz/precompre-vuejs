@@ -368,6 +368,12 @@ const router = new Router({
         component: PreOrder,
         meta: { Auth: true, title: 'Listas de pre ordenes' },
     },
+    {
+        path: '/preOrder',
+        name: 'preOrderG',
+        component: PreOrder,
+        meta: { Auth: true, title: 'Listas de pre ordenes' },
+    },
     /**Ordenes**/
     {
         path: '/orders/:id',

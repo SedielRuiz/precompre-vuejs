@@ -101,7 +101,7 @@
 
             <v-divider></v-divider>
 
-            <v-list-tile @click="dirigir('/placeDeliveryList')">
+            <v-list-tile @click="dirigir('/preOrder')">
                 <v-list-tile-action>
                 <v-icon>assignment</v-icon>
                 </v-list-tile-action>
