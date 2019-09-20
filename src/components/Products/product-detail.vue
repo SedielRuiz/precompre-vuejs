@@ -168,7 +168,7 @@
                     var att = this.product.product_class.order_attributes;
                     att = att.concat(this.product.product_class.attributes);
                     if(this.inputs){
-                        this.formatInputs()
+                        this.formatInputs();
                         this.subProducts = this.detailSubProducts(val.sub_products, att);
                     }
                     this.pivots = val.product_class.order_attributes;
