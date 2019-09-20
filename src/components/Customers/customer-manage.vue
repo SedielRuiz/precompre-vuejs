@@ -21,7 +21,7 @@
               </v-layout>
               <v-layout row wra>
                 <v-flex xs12 sm12 md6>
-                  <v-combobox v-model="customer.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
+                  <v-select v-model="customer.id_type" :items="typesIdentification" prepend-icon="featured_play_list" label="Tipo de identificación"></v-select>
                 </v-flex>
                 <v-flex xs12 sm12 md6>
                   <v-text-field v-model="customer.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
@@ -220,9 +220,8 @@
         },
         buildCustomer(){
             this.customer.telephones = this.formatPhones();
-            this.customer.id_type = this.customer.id_type && this.customer.id_type.value ? this.customer.id_type.value : this.customer.id_type;
             if(this.edit)
-            this.customer.status = this.customer.status.value;
+              this.customer.status = this.customer.status.value;
             this.customer.delivery_places = this.placesSelected;
             return this.customer;
         },
