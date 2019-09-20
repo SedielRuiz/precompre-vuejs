@@ -30,7 +30,7 @@
                                     <v-text-field v-model="product.quantity" prepend-icon="library_books" name="title" label="Cantidad" type="number"></v-text-field>
                                 </v-flex>  
                                 <v-flex xs12 md6>
-                                    <v-text-field :disabled="true" v-model="product.price" prepend-icon="library_books" name="title" label="Precio" type="text"></v-text-field>
+                                    <v-text-field :disabled="true" v-model="product.price" prepend-icon="library_books" name="title" label="Precio unitario" type="text"></v-text-field>
                                 </v-flex>        
                             </v-layout>
                             <v-layout row wra>
@@ -494,6 +494,9 @@
                 subss = this.shoppingCart[idx].productsCart[idx2].sub_products;
                 attrs = this.shoppingCart[idx].productsCart[idx2].attributes;
             }
+            console.log("la opciopn :"+opc);
+            console.log("losa subs :"+subss);
+            console.log("losa attri :"+attrs);
             this.productsCart.push();
             let pivot = true;
             var price = 0;
