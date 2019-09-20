@@ -36,10 +36,10 @@
                     </div-->
                     <v-layout row wra>
                       <v-flex xs12 sm12 md6>
-                        <v-text-field v-model="unity.group" prepend-icon="email" name="group" label="Agrupación" type="text"></v-text-field>
+                        <v-text-field v-model="unity.group" prepend-icon="email" name="group" label="Agrupación Ej(Torre)" type="text"></v-text-field>
                       </v-flex>
                       <v-flex xs12 sm12 md6>
-                        <v-text-field v-model="unity.sub_group" prepend-icon="email" name="sub_group" label="Sub agrupación" type="text"></v-text-field>
+                        <v-text-field v-model="unity.sub_group" prepend-icon="email" name="sub_group" label="Sub agrupación Ej(Interior)" type="text"></v-text-field>
                       </v-flex>
                     </v-layout>
                     <v-layout row wra>
