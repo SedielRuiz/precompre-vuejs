@@ -482,7 +482,9 @@
             this.shoppingCart.push();
         },
         findPriceO(opc){
+            console.log("llwguw");
             this.productsCart.push();
+            this.attributes.push();
             let pivot = true;
             var price = 0;
             for(var r = 0; r < this.product.sub_products.length; r++){
