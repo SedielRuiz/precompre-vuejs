@@ -482,15 +482,16 @@
             this.shoppingCart.push();
         },
         findPrice(opc, idx = "", idx2 = ""){
-            var subss = [];
+            var opcs = opc == undefined ? "g" : opc;
+             var subss = [];
             var attrs = [];
-            if(opc=="g"){
+            if(opcs == "g"){
                 subss = this.product.sub_products;
                 attrs = this.attributes;
-            }else if(opc=="e"){
+            }else if(opcs == "e"){
                 subss = this.productsCart[idx].sub_products;
                 attrs = this.productsCart[idx].attributes;
-            }else if(opc == "p"){
+            }else if(opcs == "p"){
                 subss = this.shoppingCart[idx].productsCart[idx2].sub_products;
                 attrs = this.shoppingCart[idx].productsCart[idx2].attributes;
             }
@@ -523,26 +524,26 @@
                     }
                 }
                 if(pivot){
-                    if(opc == "g"){
+                    if(opcs == "g"){
                         this.product.sub_product = subss[r]._id;
-                    }else if(opc == "e"){
+                    }else if(opcs == "e"){
                         this.productsCart[idx].sub_product = subss[r]._id;
-                    }else if(opc == "p"){
+                    }else if(opcs == "p"){
                         this.shoppingCart[idx].productsCart[idx].sub_product = subss[r]._id;
                     }
                     break
                 }
             }
-            if(opc == "g"){
+            if(opcs == "g"){
                 this.product.price = price;
-            }else if(opc == "e"){
+            }else if(opcs == "e"){
                 this.productsCart[idx].price = price;
-            }else if(opc == "p"){
+            }else if(opcs == "p"){
                 this.shoppingCart[idx].productsCart[idx].price = price * this.shoppingCart[idx].productsCart[idx].quantity;
                 this.shoppingCart[idx].productsCart[idx].price_base = price;
             }
             console.log("precio :"+price);
-            console.log("la opciopn :"+opc);
+            console.log("la opciopn :"+opcs);
             console.log(subss);
             console.log(attrs);
         },
