@@ -38,7 +38,7 @@
                                     <div v-if="attr.visible && attr.code != 'photo'">
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
-                                                <v-combobox :disabled="attr.custom" @change="findPrice()" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
+                                                <v-combobox :disabled="attr.custom" @change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
                                             </v-flex>
                                         </div>
                                         <div v-else>
@@ -74,7 +74,7 @@
                                     <div v-if="attr.visible && attr.code != 'photo' && ( (attr.custom && attr.variable) || (!attr.custom && attr.pivot) )">
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
-                                                <v-combobox :disabled="attr.custom" @change="findPrice()" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
+                                                <v-combobox :disabled="attr.custom" @change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
                                             </v-flex>
                                         </div>
                                         <div v-else>
@@ -121,7 +121,7 @@
                                         <v-icon medium @click="sc.viewAtt ? sc.viewAtt = false : sc.viewAtt = true">add</v-icon>
                                     </v-flex>
                                     <v-flex xs12 md2>
-                                        <v-text-field :disabled="true" v-model="sc.price" name="quantity" label="Precio" type="number"></v-text-field>
+                                        <v-text-field :disabled="true" v-model="sc.price" name="price" label="Precio" type="number"></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 md10>
                                         <v-layout justify-center row wra>
@@ -166,9 +166,9 @@
                                         <div v-if="sc.viewAtt">
                                             <v-layout row wra>
                                                 <div v-for="(attrr, index) in sc.attributes" :key="index+'_'+attrr.code+'_prg'" class="row col-md-8">
-                                                    <div v-if="attrr.visible && attrr.code != 'photo'">
+                                                    <div v-if="attrr.visible && attrr.code != 'photo' && ( (attrr.custom && attrr.variable) || (!attrr.custom && attrr.pivot) )">
                                                         <div v-if="attrr.options && attrr.options.length > 0">
-                                                            <v-combobox  :disabled="attrr.custom" :key="index+'_'+attrr.code+'_prg'" v-model="!attrr.value && attrr.value != ''? attrr.value = attrr.default_value : attrr.value" :items="formatList(attrr.options, 'code', 'code')" prepend-icon="filter_list" :label="attrr.code"></v-combobox>
+                                                            <v-combobox @change="findPrice('e', sc.index)" :disabled="attrr.custom" :key="index+'_'+attrr.code+'_prg'" v-model="!attrr.value && attrr.value != ''? attrr.value = attrr.default_value : attrr.value" :items="formatList(attrr.options, 'code', 'code')" prepend-icon="filter_list" :label="attrr.code"></v-combobox>
                                                         </div>
                                                         <div v-else>
                                                             <div v-if="attrr.type == 'boolean'">
@@ -224,7 +224,7 @@
                                                 <v-text-field v-model="product.quantity" prepend-icon="library_books" name="title" label="Cantidad" type="number"></v-text-field>
                                             </v-flex>  
                                             <v-flex xs12 md4>
-                                                <v-text-field :disabled="true" v-model="product.unit_value" prepend-icon="library_books" name="title" label="Precio" type="text"></v-text-field>
+                                                <v-text-field :disabled="true" v-model="product.price" prepend-icon="library_books" name="title" label="Precio" type="text"></v-text-field>
                                             </v-flex>  
                                             <v-flex xs12 md2>
                                                 <v-btn color="primary" :disabled="!product ? true : false" @click="addArray('p', true, index)">Agregar</v-btn>
@@ -232,10 +232,10 @@
                                         </v-layout>
                                         <v-layout row wra v-if="attributes">
                                             <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code">
-                                                <div v-if="attr.visible && attr.code != 'photo'">
+                                                <div v-if="attr.visible && attr.code != 'photo' && ( (attr.custom && attr.variable) || (!attr.custom && attr.pivot) )">
                                                     <div v-if="attr.options && attr.options.length > 0">
                                                         <v-flex xs12 md12>
-                                                            <v-combobox :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
+                                                            <v-combobox :disabled="attr.custom" @change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
                                                         </v-flex>
                                                     </div>
                                                     <div v-else>
@@ -271,7 +271,7 @@
                                     <div v-for="(sc, index) in sh.productsCart" :key="index">
                                         <v-layout row wra>
                                             <v-flex xs12 md1>
-                                                <v-text-field v-model="sc.quantity" name="quantity" label="Cantidad" type="number"></v-text-field>
+                                                <v-text-field v-model="sc.quantity" @change="calculatePrice(sh.index, index)" name="quantity" label="Cantidad" type="number"></v-text-field>
                                             </v-flex> 
                                             <v-flex xs12 md3>
                                                 <v-combobox :disabled="true" prepend-icon="filter_list" v-model="sc.text" label="Producto"></v-combobox>
@@ -280,7 +280,7 @@
                                                 <v-icon medium @click="sc.viewAtt ? sc.viewAtt = false : sc.viewAtt = true">add</v-icon>
                                             </v-flex>
                                             <v-flex xs12 md2>
-                                                <v-text-field :disabled="true" v-model="sc.price" name="quantity" label="Precio" type="number"></v-text-field>
+                                                <v-text-field :disabled="true" v-model="sc.price" name="price" label="Precio" type="number"></v-text-field>
                                             </v-flex>
                                             <v-flex xs12 md10>
                                                 <v-layout justify-center row wra>
@@ -325,9 +325,9 @@
                                                 <div v-if="sc.viewAtt">
                                                     <v-layout row wra>
                                                         <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code" class="row col-md-8">
-                                                            <div v-if="attr.visible && attr.code != 'photo'">
+                                                            <div v-if="attr.visible && attr.code != 'photo' && ( (attr.custom && attr.variable) || (!attr.custom && attr.pivot) )">
                                                                 <div v-if="attr.options && attr.options.length > 0">
-                                                                    <v-combobox  :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
+                                                                    <v-combobox @change="findPrice('p', sh.index, sc.index)" :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
                                                                 </div>
                                                                 <div v-else>
                                                                     <div v-if="attr.type == 'boolean'">
@@ -477,23 +477,39 @@
             getCustomer: 'customer/getCustomer', 
             setWarning: 'setWarning',
         }),
-        findPrice(){
+        calculatePrice(idx, idx2){
+            this.shoppingCart[idx].productsCart[idx2].price = this.shoppingCart[idx].productsCart[idx2].price_base * this.shoppingCart[idx].productsCart[idx2].quantity;
+            this.shoppingCart.push();
+        },
+        findPrice(opc, idx, idx2 = ""){
+            var subss = [];
+            var attrs = [];
+            if(opc=="g"){
+                subss = this.product.sub_products;
+                attrs = this.attributes;
+            }else if(opc=="e"){
+                subss = this.productsCart[idx].sub_products;
+                attrs = this.productsCart[idx].attributes;
+            }else if(opc == "p"){
+                subss = this.shoppingCart[idx].productsCart[idx2].sub_products;
+                attrs = this.shoppingCart[idx].productsCart[idx2].attributes;
+            }
             this.productsCart.push();
             let pivot = true;
             var price = 0;
-            for(var r = 0; r < this.product.sub_products.length; r++){
+            for(var r = 0; r < subss.length; r++){
                 pivot = true;
-                for(var g = 0; g < this.product.sub_products[r].options.length; g++){
-                    for(var s = 0; s < this.attributes.length; s++){
-                        if(this.attributes[s].type != "text"){
-                            var prc = this.product.sub_products[r].options.find(element=>{return element.pivot == this.attributes[s]._id});
-                            if(prc && this.attributes[s].code != "photo" && this.attributes[s].code != "recipe"){
-                                var valurVal = this.attributes[s].value && this.attributes[s].value.value ? this.attributes[s].value.value : this.attributes[s].value;
-                                if(this.attributes[s].code == "price"){
+                for(var g = 0; g < subss[r].options.length; g++){
+                    for(var s = 0; s < attrs.length; s++){
+                        if(attrs[s].type != "text"){
+                            var prc = subss[r].options.find(element=>{return element.pivot == attrs[s]._id});
+                            if(prc && attrs[s].code != "photo" && attrs[s].code != "recipe"){
+                                var valurVal = attrs[s].value && attrs[s].value.value ? attrs[s].value.value : attrs[s].value;
+                                if(attrs[s].code == "price"){
                                     price = prc.option;
                                 }
                                 if(valurVal != prc.option){
-                                    if(this.attributes[s].code != "price"){
+                                    if(attrs[s].code != "price"){
                                         pivot = false;
                                         break;
                                     }
@@ -507,11 +523,24 @@
                     }
                 }
                 if(pivot){
-                    this.product.sub_product = this.product.sub_products[r]._id;
+                    if(opc == "g"){
+                        this.product.sub_product = subss[r]._id;
+                    }else if(opc == "e"){
+                        this.productsCart[idx].sub_product = subss[r]._id;
+                    }else if(opc == "p"){
+                        this.shoppingCart[idx].productsCart[idx].sub_product = subss[r]._id;
+                    }
                     break
                 }
             }
-            this.product.price = price;
+            if(opc == "g"){
+                this.product.price = price;
+            }else if(opc == "e"){
+                this.productsCart[idx].price = price;
+            }else if(opc == "p"){
+                this.shoppingCart[idx].productsCart[idx].price = price * this.shoppingCart[idx].productsCart[idx].quantity;
+                this.shoppingCart[idx].productsCart[idx].price_base = price;
+            }
         },
         closeModal(info){
             this.info = "";
@@ -665,19 +694,28 @@
                         this.product.attributes = [...this.attributes];
                         this.product.days = [];
                         this.product.viewAtt = false;
+                        var idxp = "";
                         console.log(this.product);
                         var obj={
                                     "delivery_place":this.preOrder.deliveryPlace, "attributes":this.product.attributes, "categories":this.product.categories, "class":this.product.class, "customer_id":this.product.customer_id,
                                     "days":this.product.days, "price":this.product.price, "principal_value":this.product.principal_value, "product_id":this.product.product_id,
-                                    "quantity":this.product.quantity, "sub_product":this.product.sub_product, "text":this.product.text,
+                                    "quantity":this.product.quantity, "sub_products":this.product.sub_products, "sub_product":this.product.sub_product, "text":this.product.text,
                                     "unit_value":this.product.price, "viewAtt":this.product.viewAtt,
                                 };
                         if(!inside){
+                            idxp = this.productsCart.length == 1 ? 0 : this.productsCart.length - 1;
+                            obj.index = idxp < 0 ? 0 : idxp;
+
                             this.productsCart.push(obj);
                             this.preOrder.finish = true;
                             this.productsCart.push();
                         }else{
+                            idxp = this.shoppingCart[idx].productsCart.length == 1 ? 0 : this.shoppingCart[idx].productsCart.length - 1;
+                            obj.index = idxp < 0 ? 0 : idxp;
+
                             var prds = this.shoppingCart[idx].productsCart;
+                            obj.price_base = obj.price;
+                            obj.price = obj.price * obj.quantity;
                             prds.push(obj);
                             this.shoppingCart[idx].productsCart = prds;
                             this.shoppingCart[idx].addProduct = false;
@@ -689,9 +727,15 @@
                         this.fetchProducts();
                         break;
                     case "cart":
+                        var prdsT = [];
+                        for(var s = 0; s < this.productsCart.length; s++){
+                            this.productsCart[s].price_base = this.productsCart[s].price;
+                            this.productsCart[s].price = this.productsCart[s].price * this.productsCart[s].quantity;
+                            prdsT.push(this.productsCart[s]);
+                        }
                         this.shoppingCart.push({
                             "index":idxp, "name":this.preOrder.name, "delivery_place":this.preOrder.deliveryPlace, "hour":this.preOrder.hour,
-                            "productsCart":this.productsCart, "addProduct":false
+                            "productsCart":prdsT, "addProduct":false
                         });
                         var idxp = this.shoppingCart.length == 1 ? 0 : this.shoppingCart.length - 1;
                         this.shoppingCart[idxp].index = idxp;
