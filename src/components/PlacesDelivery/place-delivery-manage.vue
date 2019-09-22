@@ -172,9 +172,9 @@
           unit = group + sub_group + this.unity.floor+(s < 10 ? "0"+s : s);
           this.units.push({"type":this.unities[0].value, "unity":unit, "available":true});
         }
-        this.unity.group = "";
-        this.unity.sub_group = "";
-        this.unity.quantity = "";
+        //this.unity.group = "";
+        //this.unity.sub_group = "";
+        //this.unity.quantity = "";
         this.unity.floor = "";
       },
       removeUnity(code){
