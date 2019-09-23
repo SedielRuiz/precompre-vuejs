@@ -42,6 +42,7 @@
                         <v-combobox v-model="unity.type" prepend-icon="email" name="group" :items="unities" label="Tipo"></v-combobox>
                       </v-flex>
                     </v-layout>
+                    <h3>Masivo</h3><hr>
                     <v-layout row wra>
                       <v-flex xs12 sm12 md6>
                         <v-combobox v-model="floor" prepend-icon="email" name="floor" :items="floors" label="Pisos"></v-combobox>
@@ -54,7 +55,21 @@
                       <v-spacer></v-spacer>
                       <v-btn medium color="primary" @click="addUnity('m')">Agregar unidades</v-btn><br><br>
                       <v-btn medium color="primary" :disabled="units.length > 0 ? false : true" @click="unitsV = []">Limpiar</v-btn><br><br>
+                    </v-layout><br>
+                    <h3>Individual</h3><hr>
+                    <v-layout row wra>
+                      <v-flex xs12 sm12 md6>
+                        <v-combobox v-model="floor" prepend-icon="email" name="floor" :items="floors" label="Pisos"></v-combobox>
+                      </v-flex>
+                      <v-flex xs12 sm12 md6>
+                        <v-text-field v-model="unity.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
+                      </v-flex>
                     </v-layout>
+                    <v-layout row wra>
+                      <v-spacer></v-spacer>
+                      <v-btn medium color="primary" @click="addUnity('r')">Agregar unidades</v-btn><br><br>
+                    </v-layout>
+                    
                     <div v-if="unitsV.length > 0">
                       <h2>Unidades</h2><hr><br><br>
                       <div v-for="(u, index) in unitsV" :key="index">
