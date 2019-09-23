@@ -55,6 +55,7 @@ import CustomerListDetail from '@/components/Lists/CustomerList/customer-list-de
 /***Shopping*/
 /**Pre ordenes**/
 import PreOrder from '@/components/Shopping/PreOrders/pre-order-manage';
+import PreOrdersList from '@/components/Shopping/PreOrders/pre-order-list';
 /**Ordenes**/
 import Orders from '@/components/Shopping/Orders/orders-list';
 import DetailOrders from '@/components/Shopping/Orders/order-detail';
@@ -372,6 +373,12 @@ const router = new Router({
         path: '/preOrder',
         name: 'preOrderG',
         component: PreOrder,
+        meta: { Auth: true, title: 'Listas de pre ordenes' },
+    },
+    {
+        path: '/preOrderList',
+        name: 'preOrderList',
+        component: PreOrdersList,
         meta: { Auth: true, title: 'Listas de pre ordenes' },
     },
     /**Ordenes**/

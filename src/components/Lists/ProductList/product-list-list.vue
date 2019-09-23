@@ -2,7 +2,7 @@
   <v-container>
     <div class="row col-md-10">
         <div class="col-md-8">
-            <h1>Listas de productos</h1>
+            <h1>Filtros de productos</h1>
         </div>
         <div class="col-md-2">
             <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
@@ -17,7 +17,7 @@
         <td>{{ props.item.title }}</td>
         <td>
           <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
-          <v-btn color="error" @click="deleteList(true, props.item._id)">ELiminar</v-btn>
+          <v-btn color="error" @click="deleteList(props.item._id)">ELiminar</v-btn>
         </td>
         </template>
     </v-data-table>

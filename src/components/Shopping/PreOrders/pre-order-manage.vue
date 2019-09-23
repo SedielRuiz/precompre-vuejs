@@ -905,7 +905,7 @@
         },
         redirect(page){
             if(page){
-                this.$router.push('/preOrder')
+                this.$router.push('/preOrderList')
             }else{
                 this.$router.push('/customerList')
             }

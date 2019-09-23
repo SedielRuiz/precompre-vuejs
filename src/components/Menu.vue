@@ -101,7 +101,7 @@
 
             <v-divider></v-divider>
 
-            <v-list-tile @click="dirigir('/preOrder')">
+            <v-list-tile @click="dirigir('/preOrderList')">
                 <v-list-tile-action>
                 <v-icon>assignment</v-icon>
                 </v-list-tile-action>
@@ -283,7 +283,7 @@
       <router-view></router-view>
     </v-content>
     <v-footer color="indigo" app>
-      <span class="white--text">&copy; v0.0.29</span>
+      <span class="white--text">&copy; v0.0.30</span>
     </v-footer>
   </v-app>
 </template>
