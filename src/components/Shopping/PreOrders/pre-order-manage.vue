@@ -162,6 +162,45 @@
                                         </v-layout>
                                     </v-flex>
                                 </v-layout>
+                                <v-layout row wra>
+                                    <div v-if="sc.viewAtt">
+                                        <v-layout row wra>
+                                            <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code+'_other'" v-if="(!attr.custom && !attr.pivot)">
+                                                <div v-if="attr.visible && attr.code != 'photo'">
+                                                    <div v-if="attr.options && attr.options.length > 0">
+                                                        <v-flex xs12 md12>
+                                                            <v-select :disabled="attr.custom" @change="findPrice('e', sc.index)" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-select>
+                                                        </v-flex>
+                                                    </div>
+                                                    <div v-else>
+                                                        <div v-if="attr.type == 'boolean'">
+                                                            <v-flex xs12 md12>
+                                                                <v-switch :disabled="attr.custom" :key="index+'_'+attr.code" prepend-icon="title" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :label="attr.code"></v-switch>
+                                                            </v-flex>
+                                                        </div>
+                                                        <div v-else>
+                                                            <div v-if="attr.size == 'short'">
+                                                                <v-flex xs12 md12>
+                                                                    <v-text-field :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" prepend-icon="library_books" name="title" :label="attr.code" :type="attr.type"></v-text-field>
+                                                                </v-flex>
+                                                            </div>
+                                                            <div v-else-if="attr.size == 'medium'">
+                                                                <v-flex xs12 md12>
+                                                                    <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" prepend-icon="library_books" height="77px" name="mediumText" :label="attr.code"></v-textarea>
+                                                                </v-flex>
+                                                            </div>
+                                                            <div v-else>
+                                                                <v-flex xs12 md12>
+                                                                    <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" prepend-icon="library_books" height="135px" name="mediumText" :label="attr.code"></v-textarea>
+                                                                </v-flex>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </v-layout>
+                                    </div>
+                                </v-layout>
                                 <v-layout justify-center row wra>
                                     <v-flex xs12 md12>
                                         <div v-if="sc.viewAtt">
@@ -233,7 +272,7 @@
                                         </v-layout>
                                         <v-layout row wra v-if="attributes">
                                             <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code">
-                                                <div v-if="attr.visible && attr.code != 'photo' && ( (attr.custom && attr.variable) || (!attr.custom && attr.pivot) )">
+                                                <div v-if="attr.visible && attr.code != 'photo'">
                                                     <div v-if="attr.options && attr.options.length > 0">
                                                         <v-flex xs12 md12>
                                                             <v-combobox :disabled="attr.custom" @change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
@@ -321,12 +360,13 @@
                                                 </v-layout>
                                             </v-flex>
                                         </v-layout>
+                                        
                                         <v-layout justify-center row wra>
                                             <v-flex xs12 md12>
                                                 <div v-if="sc.viewAtt">
                                                     <v-layout row wra>
                                                         <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code" class="row col-md-8">
-                                                            <div v-if="attr.visible && attr.code != 'photo' && ( (attr.custom && attr.variable) || (!attr.custom && attr.pivot) )">
+                                                            <div v-if="attr.visible && attr.code != 'photo'">
                                                                 <div v-if="attr.options && attr.options.length > 0">
                                                                     <v-combobox @change="findPrice('p', sh.index, sc.index)" :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
                                                                 </div>
@@ -461,8 +501,10 @@
             }
         },
         cutms(val){
-            for(var s = 0; s < val.length; s++){
-                this.customers.push({"text":val[s].name+" "+val[s].last_name, value:val[s]._id});
+            if(val){
+                for(var s = 0; s < val.length; s++){
+                    this.customers.push({"text":val[s].name+" "+val[s].last_name, value:val[s]._id});
+                }
             }
         },
         customer_id(val){
@@ -855,7 +897,7 @@
                 data => {
                     this.setWarning(data, { root: true }).then(()=>{
                         //this.fetchPreOrdersCustomer(this.customer_id);
-                        this.$router.push('/customerDetail/'+this.customer_id.value ? this.customer_id.value : this.customer_id)
+                        this.$router.push('/preOrder')
                     })
                 },
                 error => {
@@ -863,7 +905,7 @@
         },
         redirect(page){
             if(page){
-                this.$router.push('/customerDetail/'+this.customer_id.value ? this.customer_id.value : this.customer_id)
+                this.$router.push('/preOrder')
             }else{
                 this.$router.push('/customerList')
             }
