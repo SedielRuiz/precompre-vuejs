@@ -410,7 +410,7 @@
                 //Re ordeno nuemor de unidades
                 var lst = [];
                 for(var g = 0; g < units.length; g++){
-                  lst.push(this.floor+(s < 10 ? "0"+s : s));
+                  lst.push(this.floor+(g < 10 ? "0"+g : g));
                 }
                 //Actualizo las unidades del piso
                 this.units[idx].floors[flr].types[type].units = lst;
