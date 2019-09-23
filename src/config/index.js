@@ -4,8 +4,8 @@ const dev_enviroment = {
     //ROOT_API: 'http://localhost:52000/api/' 
   };
   const production_enviroment = {
-    ROOT_API: 'http://35.185.114.245/api/admin/'
-    //ROOT_API: 'api/admin/'
+    //ROOT_API: 'http://35.185.114.245/api/admin/'
+    ROOT_API: 'api/admin/'
   };
   
   let enviroment;
