@@ -498,15 +498,19 @@
             var attrs = [];
             this.attributes.push();
             this.productsCart.push();
-            if(opc == "g"){
-                subss = this.product.sub_products;
-                attrs = this.attributes;
-            }else if(opc == "e"){
-                subss = this.productsCart[idx].sub_products;
-                attrs = this.productsCart[idx].attributes;
-            }else if(opc == "p"){
-                subss = this.shoppingCart[idx].productsCart[idx2].sub_products;
-                attrs = this.shoppingCart[idx].productsCart[idx2].attributes;
+            switch(opc){
+                case "g":
+                    subss = this.product.sub_products;
+                    attrs = this.attributes;
+                    break;
+                case "e":
+                    subss = this.productsCart[idx].sub_products;
+                    attrs = this.productsCart[idx].attributes;
+                    break;
+                case "p":
+                    subss = this.shoppingCart[idx].productsCart[idx2].sub_products;
+                    attrs = this.shoppingCart[idx].productsCart[idx2].attributes;
+                    break;
             }
             console.log("la opciopn :"+opc);
             console.log(subss);
@@ -538,24 +542,32 @@
                         break
                     }
                 }
-                if(pivot){
-                    if(opc == "g"){
+                switch(opc){
+                    case "g":
                         this.product.sub_product = subss[r]._id;
-                    }else if(opc == "e"){
+                        break;
+                    case "e":
                         this.productsCart[idx].sub_product = subss[r]._id;
-                    }else if(opc == "p"){
+                        break;
+                    case "p":
                         this.shoppingCart[idx].productsCart[idx].sub_product = subss[r]._id;
-                    }
+                        break;
+                }
+                if(pivot){
                     break
                 }
             }
-            if(opc == "g"){
-                this.product.price = price;
-            }else if(opc == "e"){
-                this.productsCart[idx].price = price;
-            }else if(opc == "p"){
-                this.shoppingCart[idx].productsCart[idx].price = price * this.shoppingCart[idx].productsCart[idx].quantity;
-                this.shoppingCart[idx].productsCart[idx].price_base = price;
+            switch(opc){
+                case "g":
+                    this.product.price = price;
+                    break;
+                case "e":
+                    this.productsCart[idx].price = price;
+                    break;
+                case "p":
+                    this.shoppingCart[idx].productsCart[idx].price = price * this.shoppingCart[idx].productsCart[idx].quantity;
+                    this.shoppingCart[idx].productsCart[idx].price_base = price;
+                    break;
             }
             console.log("precio :"+price);
         },
