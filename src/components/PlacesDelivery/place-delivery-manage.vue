@@ -58,34 +58,38 @@
                     <div v-if="unitsV.length > 0">
                       <h2>Unidades</h2><hr><br><br>
                       <div v-for="(u, index) in unitsV" :key="index">
-                        <v-layout row wra>
-                          <v-flex xs12 sm12 md4>
-                            <label style="font-size:20px;"> Unidad </label>
-                          </v-flex>
-                          <v-flex xs12 sm12 md3>
-                            <label style="font-size:20px;"> Observaciones</label>
-                          </v-flex>
-                          <v-flex xs12 sm12 md2>
-                            <label style="font-size:20px;"> Disponible</label>
-                          </v-flex>
-                        </v-layout>
-                        <div row wra v-for="(t, index) in u.types" :key="index">
+                        <v-card class="elevation-8">
+                          <v-container>
+                            <v-layout row wra>
+                              <v-flex xs12 sm12 md4>
+                                <label style="font-size:20px;"> Unidad </label>
+                              </v-flex>
+                              <v-flex xs12 sm12 md3>
+                                <label style="font-size:20px;"> Observaciones</label>
+                              </v-flex>
+                              <v-flex xs12 sm12 md2>
+                                <label style="font-size:20px;"> Disponible</label>
+                              </v-flex>
+                            </v-layout>
+                            <div row wra v-for="(t, index) in u.types" :key="index">
 
-                          <h3>{{u.name}} - {{t.type}}</h3><br>
+                              <h3>{{u.name}} - {{t.type}}</h3><br>
 
-                          <v-layout row wra v-for="(n, index) in t.units" :key="index">
-                            <v-flex xs12 sm12 md4>
-                              <v-text-field v-model="n.unity" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm12 md3>
-                              <v-text-field v-model="n.observations" prepend-icon="email" name="observations" label="Observaciones" type="text"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm12 md2>
-                              <v-checkbox align-center value input-value="true" v-model="n.state"></v-checkbox>
-                            </v-flex>
-                          </v-layout>
+                              <v-layout row wra v-for="(n, index) in t.units" :key="index">
+                                <v-flex xs12 sm12 md4>
+                                  <v-text-field v-model="n.unity" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm12 md3>
+                                  <v-text-field v-model="n.observations" prepend-icon="email" name="observations" label="Observaciones" type="text"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm12 md2>
+                                  <v-checkbox align-center value input-value="true" v-model="n.state"></v-checkbox>
+                                </v-flex>
+                              </v-layout>
 
-                        </div>
+                            </div>
+                          </v-container>
+                        </v-card><br><br>
                       </div>
                       
                     </div>
@@ -388,8 +392,13 @@
               }
               //Objeto con nueva unidades y nuevo tipo
               if(exs){
+                //Re ordeno nuemor de unidades
+                var lst = [];
+                for(var g = 0; g < units.length; g++){
+                  lst.push(this.floor+(s < 10 ? "0"+s : s));
+                }
                 //Actualizo las unidades del piso
-                this.units[idx].floors[flr].types[type].units = units;
+                this.units[idx].floors[flr].types[type].units = lst;
               }else{
                 var obj = {
                   _type: this.unity.type.value,
