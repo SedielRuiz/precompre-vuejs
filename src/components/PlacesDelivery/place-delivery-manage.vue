@@ -140,13 +140,15 @@
         pl(val){
           if(val){
             this.place = val;
-            for(var s = 0; s < val.unities.length; s++){
+            this.units = val.clusters;
+            this.formatUnits();
+            /*for(var s = 0; s < val.unities.length; s++){
               if(val.unities[s].list.length > 0){
                 for(var r = 0; r < val.unities[s].list.length; r++){
                   this.units.push({"type":val.unities[s]._type, "observations":val.unities[s].list[r].observations, "unity":val.unities[s].list[r].unit_name, "available":true});
                 }
               }
-            }
+            }*/
           }
         },
         group(val){
@@ -428,7 +430,14 @@
         this.units.splice(idx,1);
       },
       replaceUnities(unit1, unit2){
-
+        for(var r = 0; r < unit1.length; r++){
+          for(var g = 0; g < unit2.length; g++){
+            if(unit1[r].unity == unit2[g].unity && unit2[g].state){
+              unit1[r].observations = unit2[g].observations;
+            }
+          }
+        }
+        return unit1
       },
       typeCompos(type){
         var lst = [];
@@ -444,7 +453,7 @@
                   for(var p = 0; p < this.unitsV[s].types.length; p++){
 
                     if( this.units[r].floors[g].types[j]._type == type && this.unitsV[s].types[p].type == type ){
-                      this.replaceUnities(this.units[r].floors[g].types[j].units, this.unitsV[s].types[p].units);
+                      this.units[r].floors[g].types[j].units = this.replaceUnities(this.units[r].floors[g].types[j].units, this.unitsV[s].types[p].units);
                     }
 
                   }
@@ -455,13 +464,7 @@
 
             }
           }
-          if(this.units[r].type == type && this.units[r].available == true){
-            lst.push({unit_name:this.units[r].unity, observations:this.units[r].observations});
-          }
         }
-        obj.qty = lst.length;
-        obj.list = lst;
-        return obj;
       },
       buildUnities(){
         var unts = [];
@@ -473,10 +476,10 @@
           compos = this.typeCompos("apto");
           if(compos){unts.push(compos);}
         }
-        return unts;
       },
       buildPlace(){
-        this.place.clusters = this.units;//this.buildUnities();
+        this.buildUnities();
+        this.place.clusters = this.units;
         this.place.country = this.place.country.value;
         this.place.city = this.place.city.value;
         return this.place;
