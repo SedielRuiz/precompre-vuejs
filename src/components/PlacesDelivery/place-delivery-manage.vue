@@ -36,15 +36,15 @@
                     </div-->
                     <v-layout row wra>
                       <v-flex xs12 sm12 md6>
-                        <v-text-field v-model="unity.group" prepend-icon="email" name="group" label="Agrupación Ej(Torre)" type="text"></v-text-field>
+                        <v-combobox v-model="group" prepend-icon="email" name="group" :items="inside" label="Agrupación Ej(Torre)"></v-combobox>
                       </v-flex>
                       <v-flex xs12 sm12 md6>
-                        <v-text-field v-model="unity.sub_group" prepend-icon="email" name="sub_group" label="Sub agrupación Ej(Interior)" type="text"></v-text-field>
+                        <v-combobox v-model="unity.type" prepend-icon="email" name="group" :items="unities" label="Tipo"></v-combobox>
                       </v-flex>
                     </v-layout>
                     <v-layout row wra>
                       <v-flex xs12 sm12 md6>
-                        <v-text-field v-model="unity.floor" prepend-icon="email" name="floor" label="Piso" type="text"></v-text-field>
+                        <v-combobox v-model="floor" prepend-icon="email" name="floor" :items="floors" label="Piso"></v-combobox>
                       </v-flex>
                       <v-flex xs12 sm12 md6>
                         <v-text-field v-model="unity.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
@@ -52,39 +52,42 @@
                     </v-layout>
                     <v-layout row wra>
                       <v-spacer></v-spacer>
-                      <v-btn medium color="primary" :disabled="!unity.floor || !unity.quantity ? true :false" @click="addUnity()">Agregar unidades</v-btn><br><br>
-                      <v-btn medium color="primary" :disabled="units.length > 0 ? false : true" @click="units = []">Limpiar</v-btn><br><br>
+                      <v-btn medium color="primary" @click="addUnity('m')">Agregar unidades</v-btn><br><br>
+                      <v-btn medium color="primary" :disabled="units.length > 0 ? false : true" @click="unitsV = []">Limpiar</v-btn><br><br>
                     </v-layout>
-                    <div v-if="units.length > 0">
-                      <h2>Unidades</h2><hr><br>
-                      <v-layout row wra>
-                        <v-flex xs12 sm12 md4>
-                          <label style="font-size:20px;"> Unidad </label>
-                        </v-flex>
-                        <v-flex xs12 sm12 md3>
-                          <label style="font-size:20px;"> Tipo </label>
-                        </v-flex>
-                        <v-flex xs12 sm12 md3>
-                          <label style="font-size:20px;"> Observaciones</label>
-                        </v-flex>
-                        <v-flex xs12 sm12 md2>
-                          <label style="font-size:20px;"> Disponible</label>
-                        </v-flex>
-                      </v-layout>
-                      <v-layout row wra v-for="(u, index) in units" :key="index">
-                        <v-flex xs12 sm12 md4>
-                          <v-text-field v-model="u.unity" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm12 md3>
-                          <v-select v-model="u.type" :items="unities" prepend-icon="featured_play_list" label="Tipo"></v-select>
-                        </v-flex>
-                        <v-flex xs12 sm12 md3>
-                          <v-text-field v-model="u.observations" prepend-icon="email" name="observations" label="Observaciones" type="text"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm12 md2>
-                          <v-checkbox align-center value input-value="true" v-model="u.available == null || u.available == undefined ? u.available = true : u.available"></v-checkbox>
-                        </v-flex>
-                      </v-layout>
+                    <div v-if="unitsV.length > 0">
+                      <h2>Unidades</h2><hr><br><br>
+                      <div v-for="(u, index) in unitsV" :key="index">
+                        <v-layout row wra>
+                          <v-flex xs12 sm12 md4>
+                            <label style="font-size:20px;"> Unidad </label>
+                          </v-flex>
+                          <v-flex xs12 sm12 md3>
+                            <label style="font-size:20px;"> Observaciones</label>
+                          </v-flex>
+                          <v-flex xs12 sm12 md2>
+                            <label style="font-size:20px;"> Disponible</label>
+                          </v-flex>
+                        </v-layout>
+                        <div row wra v-for="(t, index) in u.types" :key="index">
+
+                          <h3>{{u.name}} - {{t.type}}</h3><br>
+
+                          <v-layout row wra v-for="(n, index) in t.units" :key="index">
+                            <v-flex xs12 sm12 md4>
+                              <v-text-field v-model="n.unity" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm12 md3>
+                              <v-text-field v-model="n.observations" prepend-icon="email" name="observations" label="Observaciones" type="text"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm12 md2>
+                              <v-checkbox align-center value input-value="true" v-model="n.state"></v-checkbox>
+                            </v-flex>
+                          </v-layout>
+
+                        </div>
+                      </div>
+                      
                     </div>
                   </v-flex>
                 </v-layout><br> 
@@ -113,6 +116,10 @@
       return {
         unity:{},
         place: {},
+        inside:[],
+        floors:[],
+        floor:"",
+        group:"",
         countries:[
           {text:"Colombia", value:"colombia"}
         ],
@@ -124,6 +131,7 @@
           {text:"Oficina", value:"oficina"},
         ],
         units:[],
+        unitsV:[],
         edit:"",
         titleText:""
       }
@@ -137,6 +145,17 @@
                 for(var r = 0; r < val.unities[s].list.length; r++){
                   this.units.push({"type":val.unities[s]._type, "observations":val.unities[s].list[r].observations, "unity":val.unities[s].list[r].unit_name, "available":true});
                 }
+              }
+            }
+          }
+        },
+        group(val){
+          if(val){
+            var int = this.units.find(element=>{return element.title == val.value ? val.value : val });
+            if(int){
+              this.floors = [];
+              for(var s = 0; s <= int.floors; s++){
+                this.floors.push({text:int.floors[s].number, value:int.floors[s].number});
               }
             }
           }
@@ -164,18 +183,237 @@
         this.place.address = obj.name;
         this.place.coords = {"lat":obj.position.lat, "long":obj.position.lng}
       },
-      addUnity(){
+      formatFloors(array, type){
+        var types = "";
         var unit = "";
-        var group = this.unity.group ? this.unity.group + " " : "";
-        var sub_group =  this.unity.sub_group ? this.unity.sub_group + " " : "";
-        for(var s = 1; s <= this.unity.quantity; s++){
-          unit = group + sub_group + this.unity.floor+(s < 10 ? "0"+s : s);
-          this.units.push({"type":this.unities[0].value, "unity":unit, "available":true});
+        var units = [];
+        for(var r = 0; r < array.floors.length; r++){
+          for(var g = 0; g < array.floors[r].types.length; g++){
+            if(array.floors[r].types[g]._type == type){
+
+              var type = array.floors[r].types[g]._type;
+              for(var j = 0; j < array.floors[r].types[g].units.length; j++){
+                unit = array.floors[r].types[g].units[j].u;
+                units.push({observations:"", unity:unit, state:true});
+              }
+              types = {"type":type , "units": units};
+
+            }
+          }
         }
-        //this.unity.group = "";
-        //this.unity.sub_group = "";
-        //this.unity.quantity = "";
-        this.unity.floor = "";
+        return types;
+      },
+      formatUnits(){
+        this.unitsV = [];
+        var tps = [];
+        var type = "";
+        for(var s = 0; s < this.units.length; s++){
+          tps = [];
+          type = this.formatFloors(this.units[s], 'apto');
+          if(type != ""){
+            tps.push(type);
+          }
+          type = this.formatFloors(this.units[s], 'oficina');
+          if(type != ""){
+            tps.push(type);
+          }
+
+          if(tps.length > 0){
+            this.unitsV.push({"name":this.units[s].title.value ? this.units[s].title.value : this.units[s].title, "types":tps});
+          }
+        }
+        console.log(this.unitsV);
+      },
+      addUnity(opc){
+        var unit = "";
+        var units = [];
+        var group = this.group.value ? this.group.value : this.group;
+        var idx = "";
+        for(var s = 0; s < this.units.length; s++){
+          var tl = this.units[s].title && this.units[s].title.value ? this.units[s].title.value : this.units[s].title;
+          if(tl == group){
+            idx = s;
+            break;
+          }
+        }
+        //Si no existe la agrupacion
+        if(idx === ""){
+          if(opc == "m"){
+            var floorss = []
+            this.inside.push({text:group, value:group});
+            //Lleno las unidades
+            for(var p = 1; p <= this.floor; p++){
+              units = [];
+              for(var s = 1; s <= this.unity.quantity; s++){
+                unit = p+(s < 10 ? "0"+s : s);
+                units.push({u: unit,observations:"",state:true});
+              }
+              floorss.push({"number":p, "types":[ {"_type":this.unity.type.value, "units": units} ] });
+            }
+            //cargo el nuevo interior
+            this.units.push({
+              title:group, 
+              floors:floorss
+            });
+            this.floor = "";
+          }else{
+            this.inside.push({text:group, value:group});
+            //Lleno las unidades
+            for(var s = 1; s <= this.unity.quantity; s++){
+              unit = this.floor+(s < 10 ? "0"+s : s);
+              units.push({u: unit,observations:"",state:true});
+            }
+            //cargo el nuevo interior
+            this.units.push({
+              title:group, 
+              floors:[{
+                number:this.floor, 
+                types:[
+                  {
+                    _type: this.unity.type.value,
+                    units:units
+                  }
+                ],
+              }]
+            });
+            this.floor = "";
+          }
+
+
+        }else{
+          //Si existe la agrupacion
+          if(opc == "m"){
+            var flr = -1;
+            //Piso existente
+            for(var p = 1; p <= this.floor; p++){
+              for(var r = 0; r < this.units[idx].floors.length; r++){
+                if(this.units[idx].floors[r].number == p){
+                  flr = r;
+                  break;
+                }
+              }
+
+              //Lleno las unidades
+              units = [];
+              for(var s = 1; s <= this.unity.quantity; s++){
+                unit = p+(s < 10 ? "0"+s : s);
+                units.push({u: unit,observations:"",state:true});
+              }
+
+              //Si el piso existe 
+              var type = -1;
+              var exs = true;
+              if(flr >= 0){
+                //Concateno las que ya tenia units por tipo
+                for(var g = 0; g < this.units[idx].floors[flr].types.length; g++){
+                  if(this.units[idx].floors[flr].types[g]._type == this.unity.type.value){ 
+                    units = units.concat(this.units[idx].floors[flr].types[g].units);
+                    type = g;
+                    break;
+                  }
+                }
+                if(type < 0){
+                  exs = false;
+                }
+                //Objeto con nueva unidades y nuevo tipo
+                if(exs){
+                  //Actualizo las unidades del piso
+                  this.units[idx].floors[flr].types[type].units = units;
+                }else{
+                  var obj = {
+                    _type: this.unity.type.value,
+                    units:units,
+                  };
+                  var lst = this.units[idx].floors[flr].types;
+                  lst.push(obj);
+                  this.units[idx].floors[flr].types = lst;
+                }
+
+              }else{
+                //Si el piso no existe
+                units = [];
+                for(var s = 1; s <= this.unity.quantity; s++){
+                  unit = p+(s < 10 ? "0"+s : s);
+                  units.push({u: unit,observations:"",state:true});
+                }
+
+                var floor = {
+                  number:p, 
+                  types:[{
+                      _type: this.unity.type.value,
+                      units:units
+                    }],
+                };
+                var flrs = this.units[idx].floors;
+                flrs.push(floor);
+                this.units[idx].floors = flrs;
+              }
+              
+            }
+          }else{
+            var flr = -1;
+            units = [];
+            //Piso existente
+            for(var r = 0; r < this.units[idx].floors.length; r++){
+              if(this.units[idx].floors[r].number == this.floor){
+                flr = r;
+                break;
+              }
+            }
+
+            //Lleno las unidades
+            for(var s = 1; s <= this.unity.quantity; s++){
+              unit = this.floor+(s < 10 ? "0"+s : s);
+              units.push({u: unit, observations:"", state:true});
+            }
+
+            //Si el piso existe 
+            var type = -1;
+            var exs = true;
+            if(flr >= 0){
+              //Concateno las que ya tenia units por tipo
+              for(var g = 0; g < this.units[idx].floors[flr].types.length; g++){
+                if(this.units[idx].floors[flr].types[g]._type == this.unity.type.value){ 
+                  units = units.concat(this.units[idx].floors[flr].types[g].units);
+                  type = g;
+                  break;
+                }
+              }
+              if(type < 0){
+                exs = false;
+              }
+              //Objeto con nueva unidades y nuevo tipo
+              if(exs){
+                //Actualizo las unidades del piso
+                this.units[idx].floors[flr].types[type].units = units;
+              }else{
+                var obj = {
+                  _type: this.unity.type.value,
+                  units:units,
+                };
+                var lst = this.units[idx].floors[flr].types;
+                lst.push(obj);
+                this.units[idx].floors[flr].types = lst;
+              }
+
+            }else{
+              //Si el piso no existe
+              var floor = {
+                number:this.floor, 
+                types:[{
+                    _type: this.unity.type.value,
+                    units:units
+                  }],
+              }
+              var flrs = this.units[idx].floors;
+              flrs.push(floor);
+              this.units[idx].floors = flrs;
+            }
+          }
+
+        }
+        this.formatUnits();
+        console.log(this.units);
       },
       removeUnity(code){
         var key = code.split("_");
@@ -215,7 +453,7 @@
         return unts;
       },
       buildPlace(){
-        this.place.unities = this.buildUnities();
+        this.place.clusters = this.units;//this.buildUnities();
         this.place.country = this.place.country.value;
         this.place.city = this.place.city.value;
         return this.place;
