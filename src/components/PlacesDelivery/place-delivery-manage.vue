@@ -140,8 +140,10 @@
         pl(val){
           if(val){
             this.place = val;
-            this.units = val.clusters;
-            this.formatUnits();
+            if(val.clusters){
+              this.units = val.clusters;
+              this.formatUnits();
+            }
             /*for(var s = 0; s < val.unities.length; s++){
               if(val.unities[s].list.length > 0){
                 for(var r = 0; r < val.unities[s].list.length; r++){
