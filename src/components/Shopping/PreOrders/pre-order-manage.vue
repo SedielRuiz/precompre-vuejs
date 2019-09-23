@@ -39,7 +39,7 @@
                                     <div v-if="attr.visible && attr.code != 'photo'">
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
-                                                <v-select :disabled="attr.custom" @change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-select>
+                                                <v-select :disabled="attr.custom" @input="findPrice('g')" v-on:change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-select>
                                             </v-flex>
                                         </div>
                                         <div v-else>
@@ -493,24 +493,20 @@
             this.shoppingCart[idx].productsCart[idx2].price = this.shoppingCart[idx].productsCart[idx2].price_base * this.shoppingCart[idx].productsCart[idx2].quantity;
             this.shoppingCart.push();
         },
-        findPrice(opc, idx = "", idx2 = ""){
+        findPrice: function(opc, idx = "", idx2 = ""){
             var subss = [];
             var attrs = [];
             this.attributes.push();
             this.productsCart.push();
-            switch(opc){
-                case "g":
-                    subss = this.product.sub_products;
-                    attrs = this.attributes;
-                    break;
-                case "e":
-                    subss = this.productsCart[idx].sub_products;
-                    attrs = this.productsCart[idx].attributes;
-                    break;
-                case "p":
-                    subss = this.shoppingCart[idx].productsCart[idx2].sub_products;
-                    attrs = this.shoppingCart[idx].productsCart[idx2].attributes;
-                    break;
+            if(opc == "g"){
+                subss = this.product.sub_products;
+                attrs = this.attributes;
+            }else if(opc == "e"){
+                subss = this.productsCart[idx].sub_products;
+                attrs = this.productsCart[idx].attributes;
+            }else if(opc == "p"){
+                subss = this.shoppingCart[idx].productsCart[idx2].sub_products;
+                attrs = this.shoppingCart[idx].productsCart[idx2].attributes;
             }
             console.log("la opciopn :"+opc);
             console.log(subss);
@@ -542,32 +538,24 @@
                         break
                     }
                 }
-                switch(opc){
-                    case "g":
-                        this.product.sub_product = subss[r]._id;
-                        break;
-                    case "e":
-                        this.productsCart[idx].sub_product = subss[r]._id;
-                        break;
-                    case "p":
-                        this.shoppingCart[idx].productsCart[idx].sub_product = subss[r]._id;
-                        break;
-                }
                 if(pivot){
+                    if(opc == "g"){
+                        this.product.sub_product = subss[r]._id;
+                    }else if(opc == "e"){
+                        this.productsCart[idx].sub_product = subss[r]._id;
+                    }else if(opc == "p"){
+                        this.shoppingCart[idx].productsCart[idx].sub_product = subss[r]._id;
+                    }
                     break
                 }
             }
-            switch(opc){
-                case "g":
-                    this.product.price = price;
-                    break;
-                case "e":
-                    this.productsCart[idx].price = price;
-                    break;
-                case "p":
-                    this.shoppingCart[idx].productsCart[idx].price = price * this.shoppingCart[idx].productsCart[idx].quantity;
-                    this.shoppingCart[idx].productsCart[idx].price_base = price;
-                    break;
+            if(opc == "g"){
+                this.product.price = price;
+            }else if(opc == "e"){
+                this.productsCart[idx].price = price;
+            }else if(opc == "p"){
+                this.shoppingCart[idx].productsCart[idx].price = price * this.shoppingCart[idx].productsCart[idx].quantity;
+                this.shoppingCart[idx].productsCart[idx].price_base = price;
             }
             console.log("precio :"+price);
         },
