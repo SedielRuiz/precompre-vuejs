@@ -23,7 +23,7 @@
                                 </v-flex>
                             </v-layout><br>
                             <h3>Productos pre orden</h3>
-                            <v-layout row wra>
+                            <v-layout v-if="preOrder && preOrder.name && preOrder.deliveryPlace && preOrder.hour" row wra>
                                 <v-flex xs12 md4>
                                     <v-combobox prepend-icon="filter_list" v-model="product" :items="products" label="Producto"></v-combobox>
                                 </v-flex>  
