@@ -23,7 +23,7 @@
                                 </v-flex>
                             </v-layout><br>
                             <h3>Productos pre orden</h3>
-                            <v-layout v-if="preOrder && preOrder.name && preOrder.deliveryPlace && preOrder.hour" row wra>
+                            <v-layout row wra>
                                 <v-flex xs12 md4>
                                     <v-combobox prepend-icon="filter_list" v-model="product" :items="products" label="Producto"></v-combobox>
                                 </v-flex>  
@@ -107,7 +107,7 @@
                             </v-layout>
                             <v-layout row wra>
                                 <v-spacer></v-spacer>
-                                <v-btn color="primary" @click="addArray('p')">Agregar producto</v-btn>
+                                <v-btn color="primary" :disabled="preOrder.name && preOrder.deliveryPlace && preOrder.hour ? false : true" @click="addArray('p')">Agregar producto</v-btn>
                             </v-layout><br>
                             <h3 v-if="productsCart.length > 0">Programa tu semana</h3><br>
                             <div v-for="(sc, index) in productsCart">
