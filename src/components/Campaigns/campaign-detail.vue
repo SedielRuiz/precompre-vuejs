@@ -13,6 +13,7 @@
             <v-form>
                 <v-text-field :disabled="true" v-model="campaign.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
                 <v-textarea :disabled="true" v-model="campaign.description" prepend-icon="library_books"name="description" label="Descripción"></v-textarea>
+                <v-text-field :disabled="true" v-model="campaign.code_promo" prepend-icon="email" name="code" label="Código de promoción" type="text"></v-text-field>
             </v-form>
           </v-card-text>
           <v-card-actions>

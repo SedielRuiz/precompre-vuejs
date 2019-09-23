@@ -44,7 +44,7 @@
                     </v-layout>
                     <v-layout row wra>
                       <v-flex xs12 sm12 md6>
-                        <v-combobox v-model="floor" prepend-icon="email" name="floor" :items="floors" label="Piso"></v-combobox>
+                        <v-combobox v-model="floor" prepend-icon="email" name="floor" :items="floors" label="Pisos"></v-combobox>
                       </v-flex>
                       <v-flex xs12 sm12 md6>
                         <v-text-field v-model="unity.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
@@ -427,11 +427,34 @@
         }
         this.units.splice(idx,1);
       },
+      replaceUnities(unit1, unit2){
+
+      },
       typeCompos(type){
         var lst = [];
         var obj = {};
         obj._type = type;
         for(var r = 0; r < this.units.length; r++){
+          for(var g = 0; g < this.units[r].floors.length; g++){
+            for(var j = 0; j < this.units[r].floors[g].types.length; j++){
+
+              for(var s = 0; s < this.unitsV.length; s++){
+
+                if(this.unitsV[s].name == this.units[r].title){
+                  for(var p = 0; p < this.unitsV[s].types.length; p++){
+
+                    if( this.units[r].floors[g].types[j]._type == type && this.unitsV[s].types[p].type == type ){
+                      this.replaceUnities(this.units[r].floors[g].types[j].units, this.unitsV[s].types[p].units);
+                    }
+
+                  }
+                }
+
+              }
+
+
+            }
+          }
           if(this.units[r].type == type && this.units[r].available == true){
             lst.push({unit_name:this.units[r].unity, observations:this.units[r].observations});
           }

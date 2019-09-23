@@ -17,6 +17,7 @@
         <template v-slot:items="props">
         <td>{{ props.item.name }}</td>
         <td>{{ props.item.description }}</td>
+        <td>{{ props.item.code_promo }}</td>
         <td>
           <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
           <v-btn color="error" @click="deleteCampaign(props.item._id)">Eliminar</v-btn>  
@@ -41,6 +42,7 @@
         headers: [
             {text:"Nombre", value:"name"},
             {text:"Descripción", value:"description"},
+            {text:"Código de promoción", value:"code_promo"},
             {text:"Acciones", value:"actons"}
         ]
       }
