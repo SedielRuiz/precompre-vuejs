@@ -6,6 +6,7 @@
         </div>
         <div class="col-md-2">
             <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
+            <v-btn color="success" @click="verify = true">Verificar código</v-btn>
         </div>
     </div>
     <hr><br>
@@ -15,12 +16,12 @@
         hide-actions 
         class="elevation-1">
         <template v-slot:items="props">
-        <td>{{ props.item.id_description }}</td>
-        <td>{{ props.item.name }}</td>
-        <td>{{ props.item.last_name }}</td>
+        <td>{{ props.item.created_at }}</td>
+        <td>{{ props.item.name }} {{ props.item.last_name }}</td>
         <td>{{ props.item.email }}</td>
         <td>{{ props.item.telephones.length > 0 ? (props.item.telephones.find(element=>{return element.main == true}) && props.item.telephones.find(element=>{return element.main == true}).number ? props.item.telephones.find(element=>{return element.main == true}).number : "") : "" }}</td>
         <td>{{ props.item.campaign_code ? props.item.campaign_code : ""}}</td>
+        <td>{{ props.item.telephones.length > 0 ? (props.item.telephones.find(element=>{return element.main == true}) && props.item.telephones.find(element=>{return element.main == true}).verification_code ? props.item.telephones.find(element=>{return element.main == true}).verification_code : "") : "" }}</td>
         <td>
           <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
           <v-btn color="error" @click="deleteCustomer(props.item._id)">Eliminar</v-btn>
@@ -28,6 +29,60 @@
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
+    
+    <v-dialog v-model="verify" persistent>
+      <v-card class="elevation-12">
+        <v-toolbar dark color="primary">
+          <v-toolbar-title>Verificación</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn color="error" @click="verify = false">Cerrar</v-btn>
+        </v-toolbar>
+        <v-card-text>
+          <v-form>
+            <v-layout row wra>
+                <v-flex xs12 sm12 md9>
+                  <v-text-field v-model="code" prepend-icon="email" @change="" name="title" label="Código" type="text"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md3>
+                  <v-btn color="primary" :disabled="code ? false : true" style="width: 100%;" @click="findCode()">Consultar</v-btn>
+                </v-flex>
+              </v-layout><br>
+              <div v-if="info">
+                <v-layout row wra>
+                  <v-flex xs12 sm12 md4>
+                    <label style="font-size:18px;"> Nombre </label>
+                  </v-flex>
+                  <v-flex xs12 sm12 md3>
+                    <label style="font-size:18px;"> Teléfono</label>
+                  </v-flex>
+                  <v-flex xs12 sm12 md2>
+                    <label style="font-size:18px;"> Verificar</label>
+                  </v-flex>
+                </v-layout><hr>
+                <v-layout row wra v-for="(c, index) in info" :key="index">
+                  <v-flex xs12 sm12 md4>
+                    {{c.name}} {{c.last_name}}
+                  </v-flex>
+                  <v-flex xs12 sm12 md4>
+                    {{c.telephones[0].number}}
+                  </v-flex>
+                  <v-flex xs12 sm12 md4>
+                    <div v-if="c.telephones[0].verifed">
+                      Ya se encuentra verificado
+                    </div>
+                    <div v-else>
+                      <v-btn color="success" @click="verifyCode(c)">Verificar</v-btn>
+                    </div>
+                  </v-flex>
+                </v-layout>
+              </div>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -43,25 +98,53 @@
     data () {
       return {
         headers: [
-            {text:"Documento", value:"id_description"},
-            {text:"Nombres", value:"name"},
-            {text:"Apellidos", value:"last_name"},
-            {text:"Correo", value:"email"},
-            {text:"Teléfono", value:"telephones"},
-            {text:"Campaña", value:"campaign_code"},
-            {text:"Acciones", value:"actons"}
-        ]
+          {text:"Fecha de ingreso", value:"created_at"},
+          {text:"Nombre", value:"name"},
+          {text:"Correo", value:"email"},
+          {text:"Teléfono", value:"telephones"},
+          {text:"Campaña", value:"campaign_code"},
+          {text:"Código de verificación", value:"telephones"},
+          {text:"Acciones", value:"actons"}
+        ],
+        verify:false,
+        code:"",
+        info:"",
       }
     },
     mounted () {
-        this.fetchCustomers()
+      this.fetchCustomers();
     },
     methods: {
       ...mapActions({
         fetchCustomers: 'customer/fetchCustomers',
+        verifyCode: 'customer/verifyCode',
+        findCode: 'customer/findCode',
         delete: 'customer/delete',
         setWarning: 'setWarning',
       }),
+      verifyCode(data){
+        this.verifyCode(data).then(
+          data => {
+            this.setWarning(data, { root: true }).then(()=>{
+              this.verify = false;
+              this.fetchCustomers();
+            })
+          },
+          error => {
+            console.log(error);
+        });
+      },
+      findCode(){
+        this.findCode(this.code).then(
+          data => {
+            this.setWarning(data, { root: true }).then(()=>{
+              this.info;
+            })
+          },
+          error => {
+            console.log(error);
+        });
+      },
       deleteCustomer(id){
         if(confirm("¿ Seguro que desea eliminar este registro ? ")){
           this.delete(id).then(
