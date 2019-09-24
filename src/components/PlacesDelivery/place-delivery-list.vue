@@ -18,6 +18,7 @@
             <td>{{ props.item.name }}</td>
             <td>{{ props.item.address }}</td>
             <td>{{ props.item.city }}</td>
+            <td>{{ props.item.welcome_code }}</td>
             <td>
               <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
               <v-btn color="error" @click="deletePlace(props.item._id)">Eliminar</v-btn>
@@ -43,6 +44,7 @@
             {text:"Nombre", value:"name"},
             {text:"Dirección", value:"address"},
             {text:"Ciudad", value:"city"},
+            {text:"Código de bienvenida", value:"welcome_code"},
             {text:"Acciones", value:"actions"}
         ]
       }
