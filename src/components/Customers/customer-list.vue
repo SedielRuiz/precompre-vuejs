@@ -125,6 +125,8 @@
       verifyNumberCode(data){
         this.verifyCode(data).then(
           data => {
+            this.info = "";
+            this.verify_code = "";
             this.verify = false;
             this.fetchCustomers();
           },
