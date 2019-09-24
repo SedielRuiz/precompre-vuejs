@@ -59,15 +59,15 @@
                     <h3>Individual</h3><hr>
                     <v-layout row wra>
                       <v-flex xs12 sm12 md6>
-                        <v-combobox v-model="floor" prepend-icon="email" name="floor" :items="floors" label="Pisos"></v-combobox>
+                        <v-combobox v-model="floor" prepend-icon="email" name="floor" :items="floors" label="Piso"></v-combobox>
                       </v-flex>
                       <v-flex xs12 sm12 md6>
-                        <v-text-field v-model="unity.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
+                        <v-text-field v-model="unity.unt" prepend-icon="email" name="address" label="Unidad" type="number"></v-text-field>
                       </v-flex>
                     </v-layout>
                     <v-layout row wra>
                       <v-spacer></v-spacer>
-                      <v-btn medium color="primary" @click="addUnity('r')">Agregar unidades</v-btn><br><br>
+                      <v-btn medium color="primary" @click="addUnity('r')">Agregar unidad</v-btn><br><br>
                     </v-layout>
                     
                     <div v-if="unitsV.length > 0">
@@ -385,11 +385,12 @@
             }
 
             //Lleno las unidades
-            for(var s = 1; s <= this.unity.quantity; s++){
+            /*for(var s = 1; s <= this.unity.quantity; s++){
               unit = this.floor+(s < 10 ? "0"+s : s);
               units.push({u: unit, observations:"", state:true});
-            }
+            }*/
 
+            units.push({u: this.unity.unt, observations:"", state:true});
             //Si el piso existe 
             var type = -1;
             var exs = true;
@@ -408,12 +409,12 @@
               //Objeto con nueva unidades y nuevo tipo
               if(exs){
                 //Re ordeno nuemor de unidades
-                var lst = [];
+                /*var lst = [];
                 for(var g = 1; g <= units.length; g++){
                   lst.push(this.floor+(g < 10 ? "0"+g : g));
-                }
+                }*/
                 //Actualizo las unidades del piso
-                this.units[idx].floors[flr].types[type].units = lst;
+                this.units[idx].floors[flr].types[type].units = units;
               }else{
                 var obj = {
                   _type: this.unity.type.value,
