@@ -67,7 +67,7 @@
                     {{c.telephones[0].number}}
                   </v-flex>
                   <v-flex xs12 sm12 md4>
-                    <div v-if="c.telephones[0].verifed">
+                    <div v-if="c.telephones[0].verified">
                       Ya se encuentra verificado
                     </div>
                     <div v-else>
