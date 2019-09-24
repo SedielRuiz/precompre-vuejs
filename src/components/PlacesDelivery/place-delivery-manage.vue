@@ -390,7 +390,6 @@
               units.push({u: unit, observations:"", state:true});
             }*/
 
-            units.push({u: this.unity.unt, observations:"", state:true});
             //Si el piso existe 
             var type = -1;
             var exs = true;
@@ -414,6 +413,7 @@
                   lst.push(this.floor+(g < 10 ? "0"+g : g));
                 }*/
                 //Actualizo las unidades del piso
+                units.push({u: this.unity.unt, observations:"", state:true});
                 this.units[idx].floors[flr].types[type].units = units;
               }else{
                 var obj = {
@@ -424,8 +424,10 @@
                 lst.push(obj);
                 this.units[idx].floors[flr].types = lst;
               }
-
+              this.unity.unt = "";
+              this.floor = "";
             }else{
+              units.push({u: this.unity.unt, observations:"", state:true});
               //Si el piso no existe
               var floor = {
                 number:this.floor, 
