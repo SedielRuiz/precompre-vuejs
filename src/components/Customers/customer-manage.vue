@@ -137,7 +137,7 @@
         places(val){
             if(val){
                 for(var s = 0; s < val.length; s++){
-                    this.placesDelivery.push({"text":val[s].name, "value":val[s]._id});
+                    this.placesDelivery.push({ "text":val[s].name, "value":val[s]._id, "clusters":val[s].clusters });
                 }
             }
         },
@@ -145,12 +145,9 @@
             if(val){
                 val = val.value;
                 this.typesPlaces = [];
-                for(var s = 0; s < this.places.length; s++){
-                    if(this.places[s]._id == val){
-                        for(var r = 0; r < this.places[s].unities.length; r++){
-                            this.typesPlaces.push({"text":this.places[s].unities[r]._type, "value":this.places[s].unities[r]._type, "list":this.places[s].unities[r].list});
-                        }
-                    }
+                for(var r = 0; r < val.clusters.floors.length; r++){
+                  this.typesPlaces.push(this.formatType(val.clusters.floors[r], 'apto'));
+                  this.typesPlaces.push(this.formatType(val.clusters.floors[r], 'oficina'));
                 }
             }
         },
@@ -159,7 +156,7 @@
                 console.log(val);
                 this.units = [];
                 for(var s = 0; s < val.list.length; s++){
-                    this.units.push({"text":val.list[s].unit_name, "value":val.list[s]._id});
+                    this.units.push({"text":val.list[s].u, "value":val.list[s]._id});
                 }
             }
         },
@@ -182,6 +179,15 @@
             fetchPlaceDelivery: 'placeDelivery/fetchPlaces',
             setWarning: 'setWarning',
         }),
+        formatType(floor, type){
+          var lst = [];
+          for(var s = 0; s < floor.types.length; s++){
+            if(floor.types[s]._type == type){
+              lst.push({"text":type, "value":type, "list":floor.types[s]});
+            }
+          }
+          return lst
+        },
         removePlace(idx){
             this.placesSelected.splice(idx,1);
             this.place = {};

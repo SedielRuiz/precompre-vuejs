@@ -228,6 +228,7 @@
         setWarning: 'setWarning',
       }),
       setAddress(obj){
+        console.log(obj);
         this.place.address = obj.name;
         this.place.coords = {"lat":obj.position.lat, "long":obj.position.lng}
       },
