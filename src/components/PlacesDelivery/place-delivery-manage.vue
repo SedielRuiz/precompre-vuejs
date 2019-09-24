@@ -66,7 +66,7 @@
                     <h3>Unidades por piso</h3><hr>
                     <v-layout row wra>
                       <v-flex xs12 sm12 md6>
-                        <v-combobox v-model="floor" prepend-icon="email" name="floor" :items="floors" label="Piso"></v-combobox>
+                        <v-combobox v-model="unity.floor_unit" prepend-icon="email" name="floor" :items="floors" label="Piso"></v-combobox>
                       </v-flex>
                       <v-flex xs12 sm12 md6>
                         <v-text-field v-model="unity.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
@@ -79,7 +79,7 @@
                     <h3>Individual</h3><hr>
                     <v-layout row wra>
                       <v-flex xs12 sm12 md6>
-                        <v-combobox v-model="floor" prepend-icon="email" name="floor" :items="floors" label="Piso"></v-combobox>
+                        <v-combobox v-model="unity.floor_only" prepend-icon="email" name="floor" :items="floors" label="Piso"></v-combobox>
                       </v-flex>
                       <v-flex xs12 sm12 md6>
                         <v-text-field v-model="unity.unt" prepend-icon="email" name="address" label="Unidad" type="number"></v-text-field>
@@ -406,7 +406,7 @@
             units = [];
             //Piso existente
             for(var r = 0; r < this.units[idx].floors.length; r++){
-              if(this.units[idx].floors[r].number == this.floor){
+              if(this.units[idx].floors[r].number == (opc == "r" ? this.unity.floor_only : this.floor_unit )){
                 flr = r;
                 break;
               }
@@ -415,7 +415,7 @@
             //Lleno las unidades
             if(opc == "s"){
               for(var s = 1; s <= this.unity.quantity; s++){
-                unit = this.floor+(s < 10 ? "0"+s : s);
+                unit = this.unity.floor_unit+(s < 10 ? "0"+s : s);
                 units.push({u: unit, observations:"", state:true});
               }
             }
@@ -441,7 +441,7 @@
                 if(opc == "s"){
                   var lst = [];
                   for(var g = 1; g <= units.length; g++){
-                    lst.push(this.floor+(g < 10 ? "0"+g : g));
+                    lst.push(this.unity.floor_unit+(g < 10 ? "0"+g : g));
                   }
                 }
                 //Actualizo las unidades del piso
@@ -458,8 +458,6 @@
                 lst.push(obj);
                 this.units[idx].floors[flr].types = lst;
               }
-              this.unity.unt = "";
-              this.floor = "";
             }else{
               if(opc == "r"){
                 units.push({u: this.unity.unt, observations:"", state:true});
@@ -478,6 +476,15 @@
             }
           }
 
+        }
+        if(opc == "r"){
+          this.unity.unt = "";
+          this.unity.floor_only = "";
+        }else if(opc == "s"){
+          this.unity.floor_unit = "";
+          this.unity.quantity = "";
+        }else{
+          this.floor = "";
         }
         this.units.push();
         this.formatUnits();
