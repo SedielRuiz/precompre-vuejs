@@ -69,7 +69,7 @@
                         <v-combobox v-model="floor" prepend-icon="email" name="floor" :items="floors" label="Piso"></v-combobox>
                       </v-flex>
                       <v-flex xs12 sm12 md6>
-                        <v-text-field v-model="unity.unt" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
+                        <v-text-field v-model="unity.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
                       </v-flex>
                     </v-layout>
                     <v-layout row wra>
