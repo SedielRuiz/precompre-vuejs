@@ -94,6 +94,9 @@
           if(val){
             this.user = val;
             this.user.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type });
+            if(val.role_id){
+              this.user.role_id = this.roles.find(element=>{return element.value == val.reole_id });
+            }
             this.phones = val.telephones;
           }
         },

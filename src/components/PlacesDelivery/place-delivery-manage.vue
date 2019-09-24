@@ -19,7 +19,14 @@
                   <v-combobox v-model="place.city" prepend-icon="email" :items="cities" label="Ciudad"></v-combobox>
                 </v-flex>
               </v-layout>
-              <v-text-field v-model="place.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
+              <v-layout row wra>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field v-model="place.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field v-if="edit" v-model="place.welcome_code" prepend-icon="email" name="welcome_code" label="Código de bienvenida" type="text"></v-text-field>
+                </v-flex>
+              </v-layout>
               <div v-if="(edit && place && place.address) || (!edit)"><google-map :title="'Dirección'" :direct="place.address" :coords="place.coords" @setAddress="setAddress"/></div><br><!--v-icon medium style="font-size:25px;">email</v-icon-->
               <v-layout row wra>
                 <v-flex xs12 sm12 md6>
