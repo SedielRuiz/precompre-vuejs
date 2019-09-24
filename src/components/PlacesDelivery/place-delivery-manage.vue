@@ -256,6 +256,8 @@
         var tps = [];
         var type = "";
         for(var s = 0; s < this.units.length; s++){
+          var name = this.units[s].title.value ? this.units[s].title.value : this.units[s].title;
+          this.inside.push({text:name, value:name});
           tps = [];
           type = this.formatFloors(this.units[s], 'apto');
           if(type != ""){
@@ -267,7 +269,7 @@
           }
 
           if(tps.length > 0){
-            this.unitsV.push({"name":this.units[s].title.value ? this.units[s].title.value : this.units[s].title, "types":tps});
+            this.unitsV.push({"name":name, "types":tps});
           }
         }
         this.unitsV.push();
