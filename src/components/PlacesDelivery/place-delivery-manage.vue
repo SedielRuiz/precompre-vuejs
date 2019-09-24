@@ -443,6 +443,7 @@
                   for(var g = 1; g <= units.length; g++){
                     lst.push(this.unity.floor_unit+(g < 10 ? "0"+g : g));
                   }
+                  units = lst;
                 }
                 //Actualizo las unidades del piso
                 if(opc == "r"){

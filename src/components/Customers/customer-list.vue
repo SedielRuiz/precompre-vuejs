@@ -63,7 +63,7 @@
                   <v-flex xs12 sm12 md4>
                     {{c.name}} {{c.last_name}}
                   </v-flex>
-                  <v-flex xs12 sm12 md4>
+                  <v-flex xs12 sm12 md3>
                     {{c.telephones[0].number}}
                   </v-flex>
                   <v-flex xs12 sm12 md4>
