@@ -71,7 +71,7 @@
                       Ya se encuentra verificado
                     </div>
                     <div v-else>
-                      <v-btn color="success" @click="verifyCode(c)">Verificar</v-btn>
+                      <v-btn color="success" @click="verifyNumberCode(c)">Verificar</v-btn>
                     </div>
                   </v-flex>
                 </v-layout>
@@ -122,7 +122,7 @@
         delete: 'customer/delete',
         setWarning: 'setWarning',
       }),
-      verifyCode(data){
+      verifyNumberCode(data){
         this.verifyCode(data).then(
           data => {
             this.setWarning(data, { root: true }).then(()=>{
