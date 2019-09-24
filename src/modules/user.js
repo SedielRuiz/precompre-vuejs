@@ -52,7 +52,7 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('register_user',data).then(
             response =>{
-                var data = actions.processResponse(response.data, true);
+                var data = actions.processResponse(response.data, false);
                 resolve(data)
             }
         ).catch(error=>{
@@ -69,7 +69,7 @@ const actions = {
         return new Promise((resolve, reject) => {
         Vue.http.post('edit_user',data).then(
             response =>{
-                var data = actions.processResponse(response.data, true);
+                var data = actions.processResponse(response.data, false);
                 resolve(data)
             }
         ).catch(error=>{
