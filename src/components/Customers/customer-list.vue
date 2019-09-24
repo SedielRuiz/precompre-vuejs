@@ -138,7 +138,7 @@
         this.findCode(this.verify_code).then(
           data => {
             this.setWarning(data, { root: true }).then(()=>{
-              this.info;
+              this.info = data;
             })
           },
           error => {
