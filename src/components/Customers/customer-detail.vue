@@ -80,7 +80,9 @@
     watch:{
         cu(val){
             this.customer = val;
-            this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
+            if(val.id_type){
+              this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
+            }
             this.phones = val.telephones;
             this.deliveryPlaces = val.delivery_places;
         },
