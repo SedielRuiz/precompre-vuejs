@@ -41,10 +41,10 @@
           <v-form>
             <v-layout row wra>
                 <v-flex xs12 sm12 md9>
-                  <v-text-field v-model="code" prepend-icon="email" @change="" name="title" label="Código" type="text"></v-text-field>
+                  <v-text-field v-model="verify_code" prepend-icon="email" @change="" name="title" label="Código" type="text"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm12 md3>
-                  <v-btn color="primary" :disabled="code ? false : true" style="width: 100%;" @click="findCode()">Consultar</v-btn>
+                  <v-btn color="primary" :disabled="verify_code ? false : true" style="width: 100%;" @click="findCode()">Consultar</v-btn>
                 </v-flex>
               </v-layout><br>
               <div v-if="info">
@@ -107,7 +107,7 @@
           {text:"Acciones", value:"actons"}
         ],
         verify:false,
-        code:"",
+        verify_code:"",
         info:"",
       }
     },
@@ -135,7 +135,7 @@
         });
       },
       findCode(){
-        this.findCode(this.code).then(
+        this.findCode(this.verify_code).then(
           data => {
             this.setWarning(data, { root: true }).then(()=>{
               this.info;
