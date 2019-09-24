@@ -125,10 +125,8 @@
       verifyNumberCode(data){
         this.verifyCode(data).then(
           data => {
-            this.setWarning(data, { root: true }).then(()=>{
-              this.verify = false;
-              this.fetchCustomers();
-            })
+            this.verify = false;
+            this.fetchCustomers();
           },
           error => {
             console.log(error);
@@ -137,10 +135,7 @@
       findVerifyCode(){
         this.findCode(this.verify_code).then(
           data => {
-            this.setWarning(data, { root: true }).then(()=>{
-              this.info = data.result_set;
-              console.log(this.info);
-            })
+            this.info = data.result_set;
           },
           error => {
             console.log(error);
