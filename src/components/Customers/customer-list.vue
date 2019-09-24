@@ -138,8 +138,8 @@
         this.findCode(this.verify_code).then(
           data => {
             this.setWarning(data, { root: true }).then(()=>{
-              console.log(data);
-              this.info = data;
+              this.info = data.result_set;
+              console.log(this.info);
             })
           },
           error => {
