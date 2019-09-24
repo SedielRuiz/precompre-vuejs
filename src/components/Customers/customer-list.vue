@@ -138,6 +138,7 @@
         this.findCode(this.verify_code).then(
           data => {
             this.setWarning(data, { root: true }).then(()=>{
+              console.log(data);
               this.info = data;
             })
           },
