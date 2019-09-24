@@ -290,8 +290,8 @@
         //Si no existe la agrupacion
         if(idx === ""){
           if(opc == "m"){
-            var floorss = []
             this.inside.push({text:group, value:group});
+            var floorss = []
             //Lleno las unidades
             for(var p = 1; p <= this.floor; p++){
               units = [];
@@ -309,7 +309,6 @@
             this.floor = "";
           }else{
             var flr = this.floor ? this.floor : this.unity.floor_unit;
-            this.inside.push({text:group, value:group});
             //Lleno las unidades
             for(var s = 1; s <= this.unity.quantity; s++){
               unit = flr+(s < 10 ? "0"+s : s);
