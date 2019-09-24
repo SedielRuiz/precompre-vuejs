@@ -44,7 +44,7 @@
                   <v-text-field v-model="verify_code" prepend-icon="email" @change="" name="title" label="Código" type="text"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm12 md3>
-                  <v-btn color="primary" :disabled="verify_code ? false : true" style="width: 100%;" @click="findCode()">Consultar</v-btn>
+                  <v-btn color="primary" :disabled="verify_code ? false : true" style="width: 100%;" @click="findVerifyCode()">Consultar</v-btn>
                 </v-flex>
               </v-layout><br>
               <div v-if="info">
@@ -134,7 +134,7 @@
             console.log(error);
         });
       },
-      findCode(){
+      findVerifyCode(){
         this.findCode(this.verify_code).then(
           data => {
             this.setWarning(data, { root: true }).then(()=>{
