@@ -19,7 +19,7 @@
         <td>{{ props.item.code }}</td>
         <td>{{ props.item.description }}</td>
         <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo" }}</td>
-        <td><v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn></td>
+        <td><v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon></td>
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>

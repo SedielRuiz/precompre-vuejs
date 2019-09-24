@@ -21,8 +21,8 @@
           <td>{{ props.item.email }}</td>
           <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo" }}</td>
           <td>
-            <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
-            <v-btn color="error" @click="deleteUser(props.item._id)">Eliminar</v-btn>
+            <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
+            <v-icon style="color:#bf1526;" medium @click="deleteUser(props.item._id)">delete</v-icon>
           </td>
         </template>
     </v-data-table>
