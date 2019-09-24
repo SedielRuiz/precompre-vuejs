@@ -308,17 +308,18 @@
             });
             this.floor = "";
           }else{
+            var flr = this.floor ? this.floor : this.unity.floor_unit;
             this.inside.push({text:group, value:group});
             //Lleno las unidades
             for(var s = 1; s <= this.unity.quantity; s++){
-              unit = this.floor+(s < 10 ? "0"+s : s);
+              unit = flr+(s < 10 ? "0"+s : s);
               units.push({u: unit,observations:"",state:true});
             }
             //cargo el nuevo interior
             this.units.push({
               title:group, 
               floors:[{
-                number:this.floor, 
+                number:flr, 
                 types:[
                   {
                     _type: this.unity.type.value,
