@@ -18,8 +18,8 @@
           <td>{{ props.item.title }}</td>
           <td>{{ props.item.name }}</td>
           <td>
-            <v-btn color="primary" @click="redirect(true, props.item._id)">Editar</v-btn>
-            <v-btn color="error" @click="deleteCategory(props.item._id)">Eliminar</v-btn>
+            <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
+            <v-icon style="color:#bf1526;" medium @click="deleteCategory(props.item._id)">delete</v-icon>
           </td>
         </template>
     </v-data-table>

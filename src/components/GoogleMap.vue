@@ -69,6 +69,7 @@ export default {
     },
     methods: {
         setPlace(place) {
+                console.log("aca lugar "+place);
             this.currentPlace = place;
             this.addMarker();
         },
@@ -76,6 +77,9 @@ export default {
             this.center = this.marker.position
         },
         addMarker() {
+            console.log(this.placeDir);
+            console.log(this.placeDir.name);
+            console.log(this.currentPlace);
             if (this.currentPlace) {
                 console.log(this.currentPlace)
                 const marker = {

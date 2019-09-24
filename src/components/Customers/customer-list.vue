@@ -16,15 +16,15 @@
         hide-actions 
         class="elevation-1">
         <template v-slot:items="props">
-        <td>{{ props.item.created_at.split("T")[0].split("-")[2] +"/"+ props.item.created_at.split("T")[0].split("-")[1] +"/"+ props.item.created_at.split("T")[0].split("-")[0] }}</td>
+        <td>{{ props.item.created_at.split("T")[0].split("-")[2] +"/"+ props.item.created_at.split("T")[0].split("-")[1] +"/"+ props.item.created_at.split("T")[0].split("-")[0]}} <br>{{props.item.created_at.split("T")[1].split(".")[0]}}</td>
         <td>{{ props.item.name }} {{ props.item.last_name }}</td>
         <td>{{ props.item.email }}</td>
         <td>{{ props.item.telephones.length > 0 ? (props.item.telephones.find(element=>{return element.main == true}) && props.item.telephones.find(element=>{return element.main == true}).number ? props.item.telephones.find(element=>{return element.main == true}).number : "") : "" }}</td>
         <td>{{ props.item.campaign_code ? props.item.campaign_code : ""}}</td>
         <td>{{ props.item.telephones.length > 0 ? (props.item.telephones.find(element=>{return element.main == true}) && props.item.telephones.find(element=>{return element.main == true}).verification_code ? props.item.telephones.find(element=>{return element.main == true}).verification_code : "") : "" }}</td>
         <td>
-          <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
-          <v-btn color="error" @click="deleteCustomer(props.item._id)">Eliminar</v-btn>
+          <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
+          <v-icon style="color:#bf1526;" medium @click="deleteCustomer(props.item._id)">delete</v-icon>
         </td>
         </template>
     </v-data-table>

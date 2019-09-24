@@ -595,7 +595,6 @@
         pl: state => state.placeDelivery.place, 
       }),
       trySend(){
-        console.log(this.place);
         if(this.place && this.place.name != "" && this.place.address != ""){
           return false; 
         }

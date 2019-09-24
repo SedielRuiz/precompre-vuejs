@@ -20,8 +20,8 @@
             <td>{{ props.item.city }}</td>
             <td>{{ props.item.welcome_code }}</td>
             <td>
-              <v-btn color="primary" @click="redirect(true, props.item._id)">Detalle</v-btn>
-              <v-btn color="error" @click="deletePlace(props.item._id)">Eliminar</v-btn>
+              <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
+              <v-icon style="color:#bf1526;" medium @click="deletePlace(props.item._id)">delete</v-icon>
             </td>
         </template>
     </v-data-table>
