@@ -270,6 +270,7 @@
             this.unitsV.push({"name":this.units[s].title.value ? this.units[s].title.value : this.units[s].title, "types":tps});
           }
         }
+        this.unitsV.push();
         console.log(this.unitsV);
       },
       addUnity(opc){
@@ -476,6 +477,7 @@
           }
 
         }
+        this.units.push();
         this.formatUnits();
         console.log(this.units);
       },
