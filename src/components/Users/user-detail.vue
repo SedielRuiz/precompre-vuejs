@@ -15,7 +15,7 @@
                 <v-combobox :disabled="true" v-model="user.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
                 <v-text-field :disabled="true" v-model="user.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
                 <v-text-field :disabled="true" v-model="user.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-model="user.last_ame" prepend-icon="person" name="last_ame" label="Apellidos" type="text"></v-text-field>
+                <v-text-field :disabled="true" v-model="user.last_name" prepend-icon="person" name="last_ame" label="Apellidos" type="text"></v-text-field>
                 <v-text-field :disabled="true" v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
                 <v-combobox :disabled="true" v-model="user.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <h2>Teléfonos</h2><br>
@@ -63,7 +63,9 @@
     watch:{
         us(val){
           this.user = val;
-          this.user.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
+          if(val.id_type){
+            this.user.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
+          }
           this.phones = val.telephones;
         },
     },
