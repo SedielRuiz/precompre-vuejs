@@ -57,7 +57,14 @@
                     <!--LUGARES DE ENTREGA-->
                     <v-combobox v-model="place.name" :items="suggestions" prepend-icon="receipt" label="Nombre"></v-combobox>
                     <v-combobox v-model="placeDelivery" :items="placesDelivery" prepend-icon="location_on" label="Lugar de entrega"></v-combobox>
-                    <v-combobox v-if="typesPlaces.length > 0" v-model="typeSeleted" :items="typesPlaces" prepend-icon="list_alt" label="Tipo de domicilio"></v-combobox>
+                    <v-layout row wra>
+                      <v-flex xs12 sm12 md6>
+                        <v-combobox v-if="clusters.length > 0" v-model="cluster" :items="clusters" prepend-icon="list_alt" label="Agrupación"></v-combobox>
+                      </v-flex>
+                      <v-flex xs12 sm12 md6>
+                        <v-combobox v-if="typesPlaces.length > 0" v-model="typeSeleted" :items="typesPlaces" prepend-icon="list_alt" label="Tipo de domicilio"></v-combobox>
+                      </v-flex>
+                    </v-layout>
                     <v-combobox v-if="units.length > 0" v-model="place.unit" :items="units" prepend-icon="create" label="Unidad"></v-combobox>
                     <v-btn color="primary" @click="selectedPlace()">Agregar</v-btn>
                     <!--LUGARES DE ENTREGA-->
@@ -91,6 +98,8 @@
         place:{},
         placesDelivery:[],
         typesPlaces:[],
+        clusters:[],
+        cluster:"",
         units:[],
         addPlace:false,
         addNumber:false,
@@ -141,13 +150,19 @@
                 }
             }
         },
+        cluster(val){
+          var lst = [];
+          for(var s = 0; s < val.value.length; s++){
+            lst = this.formatType(val.value[s], 'apto');
+            lst = lst.concat(this.formatType(val.value[s], 'oficina'));
+          }
+          this.typesPlaces = lst;
+        },
         placeDelivery(val){
             if(val){
-                val = val.value;
                 this.typesPlaces = [];
-                for(var r = 0; r < val.clusters.floors.length; r++){
-                  this.typesPlaces.push(this.formatType(val.clusters.floors[r], 'apto'));
-                  this.typesPlaces.push(this.formatType(val.clusters.floors[r], 'oficina'));
+                for(var r = 0; r < val.clusters.length; r++){
+                    this.clusters.push({"text":val.clusters[r].title, "value":val.clusters[r].floors});
                 }
             }
         },
@@ -155,8 +170,8 @@
             if(val){
                 console.log(val);
                 this.units = [];
-                for(var s = 0; s < val.list.length; s++){
-                    this.units.push({"text":val.list[s].u, "value":val.list[s]._id});
+                for(var s = 0; s < val.list.units.length; s++){
+                    this.units.push({"text":val.list.units[s].u, "value":val.list.units[s]._id});
                 }
             }
         },
@@ -179,6 +194,15 @@
             fetchPlaceDelivery: 'placeDelivery/fetchPlaces',
             setWarning: 'setWarning',
         }),
+        groupTypes(lst, type){
+          var list = [];
+          for(var r = 0; r < lst.length; r++){
+            if(lst[r].value == type){
+              list.push({"text":type, "list":lst[r].list});
+            }
+          }
+          return list;
+        },
         formatType(floor, type){
           var lst = [];
           for(var s = 0; s < floor.types.length; s++){
