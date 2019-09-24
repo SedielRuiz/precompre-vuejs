@@ -80,7 +80,7 @@
                     <div v-if="unitsV.length > 0">
                       <h2>Unidades</h2><hr><br><br>
                       <div v-for="(u, index) in unitsV" :key="index">
-                        <v-card class="elevation-8">
+                        <v-card class="elevation-8 scroll">
                           <v-container>
                             <v-layout row wra>
                               <v-flex xs12 sm12 md4>
@@ -128,7 +128,12 @@
     </v-layout>
   </v-container>
 </template>
-
+<style>
+  .scroll{
+    height: 305px;
+    overflow:auto;
+  }
+</style>
 <script>
   import {mapActions,mapState} from 'vuex';
   import GoogleMap from "@/components/GoogleMap";
