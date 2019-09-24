@@ -111,7 +111,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             Vue.http.post('consult_verification_code/'+ data).then(
                 response =>{
-                    var data = User.actions.processResponse(response.data, false);
+                    var data = User.actions.processResponse(response.data, true);
                     resolve(data)
                 }
             ).catch(error=>{
