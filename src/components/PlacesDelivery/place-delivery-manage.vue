@@ -74,7 +74,7 @@
                     </v-layout>
                     <v-layout row wra>
                       <v-spacer></v-spacer>
-                      <v-btn medium color="primary" @click="addUnity('s')">Agregar unidad</v-btn><br><br>
+                      <v-btn medium color="primary" @click="addUnity('s')">Agregar unidades</v-btn><br><br>
                     </v-layout><br>
                     <h3>Individual</h3><hr>
                     <v-layout row wra>
