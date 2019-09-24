@@ -36,9 +36,8 @@
                       @click="center=place.coords">
                   </gmap-marker>
               </gmap-map><br>
-              <h2>Unidades</h2><hr><br>
+              <h2>Unidades</h2><hr><br><br>
               <div v-if="unitsV.length > 0">
-                    <h2>Unidades</h2><hr><br><br>
                     <div v-for="(u, index) in unitsV" :key="index">
                       <v-card class="elevation-8 scroll">
                         <v-container>

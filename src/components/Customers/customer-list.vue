@@ -16,7 +16,7 @@
         hide-actions 
         class="elevation-1">
         <template v-slot:items="props">
-        <td>{{ props.item.created_at }}</td>
+        <td>{{ props.item.created_at.split("T")[0].split("-")[2] +"/"+ props.item.created_at.split("T")[0].split("-")[1] +"/"+ props.item.created_at.split("T")[0].split("-")[0] }}</td>
         <td>{{ props.item.name }} {{ props.item.last_name }}</td>
         <td>{{ props.item.email }}</td>
         <td>{{ props.item.telephones.length > 0 ? (props.item.telephones.find(element=>{return element.main == true}) && props.item.telephones.find(element=>{return element.main == true}).number ? props.item.telephones.find(element=>{return element.main == true}).number : "") : "" }}</td>
