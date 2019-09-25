@@ -8,8 +8,8 @@ import * as VueGoogleMaps from "vue2-google-maps";
 
 Vue.use(VueGoogleMaps, {
   load: {
-    //key: "AIzaSyA2vyjswIPd0gNSIp2cELKhrSfr77nxvWc",
-    key:"AIzaSyD-yDAjo3EPHeDcDNC26zJWuz1XxccTYZY",
+    key: "AIzaSyA2vyjswIPd0gNSIp2cELKhrSfr77nxvWc",
+    //key:"AIzaSyD-yDAjo3EPHeDcDNC26zJWuz1XxccTYZY",
     libraries: "places" // necessary for places input
   }
 });

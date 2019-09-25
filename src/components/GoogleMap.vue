@@ -15,7 +15,9 @@
             style="width:100%;  height: 400px;">
             <gmap-marker
                 :position="marker.position"
-                @click="move()">
+                @click="move()"
+                :clickable="true"
+                :draggable="true">
             </gmap-marker>
         </gmap-map>
     </div>
@@ -104,7 +106,7 @@ export default {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-        });
+            });
         }
     }
 };

@@ -273,7 +273,8 @@
       addUnity(opc){
         var unit = "";
         var units = [];
-        var group = this.group.value ? this.group.value : this.group;
+        var group = this.group && this.group.value ? this.group.value : this.group;
+        group = group ? group : this.place.name;
         var idx = "";
         for(var s = 0; s < this.units.length; s++){
           var tl = this.units[s].title && this.units[s].title.value ? this.units[s].title.value : this.units[s].title;
