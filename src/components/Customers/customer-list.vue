@@ -57,14 +57,14 @@
                   </v-flex>
                 </v-layout><hr>
                 <v-layout row wra v-for="(c, index) in info" :key="index">
-                  <div v-if="c.telephones[0].verified">
-                    <i class="material-icons">check_circle_outline</i>
-                  </div>
-                  <div v-else>
-                    <v-checkbox align-center value @click="verifyNumberCode(c)" style="margin-top: -12px;"></v-checkbox>
-                    <!--v-btn color="success" @click="verifyNumberCode(c)">Validar</v-btn-->
-                  </div>
                   <v-flex xs12 sm12 md4>
+                    <div v-if="c.telephones[0].verified">
+                      <i class="material-icons">check_circle_outline</i>
+                    </div>
+                    <div v-else>
+                      <v-checkbox align-center value @click="verifyNumberCode(c)" style="margin-top: -12px;"></v-checkbox>
+                      <!--v-btn color="success" @click="verifyNumberCode(c)">Validar</v-btn-->
+                    </div>
                   </v-flex>
                   <v-flex xs12 sm12 md5>
                     {{c.name}} {{c.last_name}}
