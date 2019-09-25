@@ -35,12 +35,10 @@ export default {
             placeDir:"",
             placeN:"",
             autocompleteOptions: {
-                //types:['geocode'],
-                componentRestrictions: {
-                    country: [
-                        'col',
-                    ],
-                },
+                location: { lat: 51.98474, lng: 5.906872000000021 },
+                radius: 5000,
+                types: ['establishment'],
+                componentRestrictions: {country: 'col'}
             },
         };
     },
