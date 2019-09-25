@@ -152,26 +152,34 @@
         },
         cluster(val){
           var lst = [];
-          for(var s = 0; s < val.value.length; s++){
-            lst = this.formatType(val.value[s], 'apto');
-            lst = lst.concat(this.formatType(val.value[s], 'oficina'));
-          }
+          console.log(val.value);
+          var com = [];
+          com = this.formatType(val.value, 'apto');
+          if(com.length > 0)
+            lst = com;
+
+          com = this.formatType(val.value, 'oficina');
+          if(com.length > 0)
+            lst = lst.concat(com);
+            
           this.typesPlaces = lst;
         },
         placeDelivery(val){
             if(val){
+                this.clusters = [];
                 this.typesPlaces = [];
                 for(var r = 0; r < val.clusters.length; r++){
-                    this.clusters.push({"text":val.clusters[r].title, "value":val.clusters[r].floors});
+                  this.clusters.push({"text":val.clusters[r].title, "value":val.clusters[r].floors});
                 }
             }
         },
         typeSeleted(val){
             if(val){
-                console.log(val);
                 this.units = [];
-                for(var s = 0; s < val.list.units.length; s++){
-                    this.units.push({"text":val.list.units[s].u, "value":val.list.units[s]._id});
+                for(var s = 0; s < val.list.length; s++){
+                  for(var r = 0; r < val.list[s].units.length; r++){
+                    this.units.push({"text":val.list[s].units[r].u, "value":val.list[s].units[r]._id});
+                  }
                 }
             }
         },
@@ -203,14 +211,18 @@
           }
           return list;
         },
-        formatType(floor, type){
+        formatType(val, type){
           var lst = [];
-          for(var s = 0; s < floor.types.length; s++){
-            if(floor.types[s]._type == type){
-              lst.push({"text":type, "value":type, "list":floor.types[s]});
+          var unt = []
+          for(var s = 0; s < val.length; s++){
+            for(var r = 0; r < val[s].types.length; r++){
+              if(val[s].types[r]._type == type){
+                unt.push(val[s].types[r]);
+              }
             }
           }
-          return lst
+          lst.push({"text":type, "value":type, "list":unt});
+          return lst;
         },
         removePlace(idx){
             this.placesSelected.splice(idx,1);

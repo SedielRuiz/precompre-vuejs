@@ -541,10 +541,10 @@
         var unts = [];
         var compos = {};
         if(this.units.length > 0){
-          compos = this.typeCompos("oficina");
+          this.typeCompos("oficina");
           if(compos){unts.push(compos);}
 
-          compos = this.typeCompos("apto");
+          this.typeCompos("apto");
           if(compos){unts.push(compos);}
         }
       },
