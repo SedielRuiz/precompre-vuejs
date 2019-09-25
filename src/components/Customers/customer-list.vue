@@ -68,7 +68,7 @@
                       <i class="material-icons">check_circle_outline</i>
                     </div>
                     <div v-else>
-                      <v-checkbox align-center value @click="verifyNumberCode(c)"></v-checkbox>
+                      <v-checkbox align-center value @click="verifyNumberCode(c)" style="margin-top: -12px;"></v-checkbox>
                       <!--v-btn color="success" @click="verifyNumberCode(c)">Validar</v-btn-->
                     </div>
                   </v-flex>
