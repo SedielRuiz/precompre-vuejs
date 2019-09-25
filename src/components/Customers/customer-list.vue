@@ -47,7 +47,7 @@
               <v-container>
                 <v-layout row wra>
                   <v-flex xs12 sm12 md4>
-                    <label style="font-size:18px;">Verificar</label>
+                    <label style="font-size:18px;"></label>
                   </v-flex>
                   <v-flex xs12 sm12 md5>
                     <label style="font-size:18px;"> Nombre </label>
