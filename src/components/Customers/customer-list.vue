@@ -53,7 +53,7 @@
                     <label style="font-size:18px;"> Teléfono</label>
                   </v-flex>
                   <v-flex xs12 sm12 md2>
-                    <label style="font-size:18px;"> Verificación</label>
+                    <label style="font-size:18px;"></label>
                   </v-flex>
                 </v-layout><hr>
                 <v-layout row wra v-for="(c, index) in info" :key="index">
