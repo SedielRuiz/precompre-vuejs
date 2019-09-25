@@ -28,12 +28,6 @@
                 </v-flex>
               </v-layout>
               <div v-if="(edit && place && place.address) || (!edit)"><google-map :title="'Dirección'" :direct="place.address" :coords="place.coords" @setAddress="setAddress"/></div><br><!--v-icon medium style="font-size:25px;">email</v-icon-->
-              <v-layout row wra>
-                <v-flex xs12 sm12 md6>
-                </v-flex>
-                <v-flex xs12 sm12 md6>
-                </v-flex>
-              </v-layout>
                 <v-layout row wra>
                   <v-flex xs12 sm12 md12>
                     <h2>Composición</h2><hr><br>
