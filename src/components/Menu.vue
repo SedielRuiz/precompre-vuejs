@@ -16,6 +16,15 @@
                 </v-list-tile-content>
             </v-list-tile>
             <v-divider></v-divider>
+            <v-list-tile @click="dirigir('/')">
+                <v-list-tile-action>
+                <v-icon>assignment</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                <v-list-tile-title>Registro rápido</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+            <v-divider></v-divider>
             <v-list-group prepend-icon="assignment" value="true">
               <template v-slot:activator>
                 <v-list-tile>
@@ -25,7 +34,6 @@
 
               <v-list-tile class="subMenu" @click="dirigir('/atributesProductList')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Atributos de producto</v-list-tile-title>
@@ -33,7 +41,6 @@
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/classProductList')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Clases de productos</v-list-tile-title>
@@ -41,7 +48,6 @@
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/categoryList')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Categorias</v-list-tile-title>
@@ -49,7 +55,6 @@
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/productList')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Lista de productos</v-list-tile-title>
@@ -57,7 +62,6 @@
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/productListList')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Filtros de productos</v-list-tile-title>
@@ -83,7 +87,6 @@
               </template>
               <v-list-tile class="subMenu" @click="dirigir('/groupList')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Grupo</v-list-tile-title>
@@ -91,7 +94,6 @@
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/customerListList')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Filtros de clientes</v-list-tile-title>
@@ -120,7 +122,6 @@
               </template>
               <v-list-tile class="subMenu" @click="dirigir('/comanda')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Comanda</v-list-tile-title>
@@ -128,7 +129,6 @@
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/ordersList')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Filtro de ordenes</v-list-tile-title>
@@ -146,7 +146,6 @@
               </template>
               <v-list-tile class="subMenu" @click="dirigir('/campaignList')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Campañas</v-list-tile-title>
@@ -154,7 +153,6 @@
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/ordersList')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Filtro de ventas</v-list-tile-title>
@@ -172,7 +170,6 @@
               </template>
               <v-list-tile class="subMenu" @click="dirigir('/inputList')">
                 <v-list-tile-action>
-                <v-icon>assignment</v-icon>
                 </v-list-tile-action>
                 <v-list-tile-content>
                 <v-list-tile-title>Insumos</v-list-tile-title>
@@ -180,7 +177,6 @@
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/inputList')">
                 <v-list-tile-action>
-                <v-icon>assignment</v-icon>
                 </v-list-tile-action>
                 <v-list-tile-content>
                 <v-list-tile-title>Pagos</v-list-tile-title>
@@ -232,7 +228,6 @@
 
               <v-list-tile class="subMenu" @click="dirigir('/permissionList')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Permisos</v-list-tile-title>
@@ -241,7 +236,6 @@
 
               <v-list-tile class="subMenu" @click="dirigir('/roleList')">
                   <v-list-tile-action>
-                  <v-icon>assignment</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Roles</v-list-tile-title>
@@ -289,7 +283,6 @@
 </template>
 <style>
   .subMenu{
-    margin-left:27px;
   }
 </style>
 <script>
