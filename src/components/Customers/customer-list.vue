@@ -42,36 +42,38 @@
             <v-layout row wra>
               <v-text-field v-model="verify_code" prepend-icon="email" @change="" name="title" label="Código" type="text"></v-text-field><br>
             </v-layout>
-            <v-btn color="primary" :disabled="verify_code ? false : true" @click="findVerifyCode()">Consultar</v-btn>
-            <div v-if="info" style="overflow: auto;width: 388px;">
-              <v-layout row wra>
-                <v-flex xs12 sm12 md4>
-                  <label style="font-size:18px;"> Nombre </label>
-                </v-flex>
-                <v-flex xs12 sm12 md3>
-                  <label style="font-size:18px;"> Teléfono</label>
-                </v-flex>
-                <v-flex xs12 sm12 md2>
-                  <label style="font-size:18px;"> Verificación</label>
-                </v-flex>
-              </v-layout><hr>
-              <v-layout row wra v-for="(c, index) in info" :key="index">
-                <v-flex xs12 sm12 md4>
-                  {{c.name}} {{c.last_name}}
-                </v-flex>
-                <v-flex xs12 sm12 md3>
-                  {{c.telephones[0].number}}
-                </v-flex>
-                <v-flex xs12 sm12 md4>
-                  <div v-if="c.telephones[0].verified">
-                    <i class="material-icons">check_circle_outline</i>
-                  </div>
-                  <div v-else>
-                    <v-btn color="success" @click="verifyNumberCode(c)">Validar</v-btn>
-                  </div>
-                </v-flex>
-              </v-layout>
-            </div>
+            <v-btn color="primary" :disabled="verify_code ? false : true" @click="findVerifyCode()">Consultar</v-btn><br>
+            <v-card style="overflow: auto;max-width: 100%;" v-if="info">
+              <v-container>
+                <v-layout row wra>
+                  <v-flex xs12 sm12 md5>
+                    <label style="font-size:18px;"> Nombre </label>
+                  </v-flex>
+                  <v-flex xs12 sm12 md3>
+                    <label style="font-size:18px;"> Teléfono</label>
+                  </v-flex>
+                  <v-flex xs12 sm12 md2>
+                    <label style="font-size:18px;"> Verificación</label>
+                  </v-flex>
+                </v-layout><hr>
+                <v-layout row wra v-for="(c, index) in info" :key="index">
+                  <v-flex xs12 sm12 md5>
+                    {{c.name}} {{c.last_name}}
+                  </v-flex>
+                  <v-flex xs12 sm12 md3>
+                    {{c.telephones[0].number}}
+                  </v-flex>
+                  <v-flex xs12 sm12 md4>
+                    <div v-if="c.telephones[0].verified">
+                      <i class="material-icons">check_circle_outline</i>
+                    </div>
+                    <div v-else>
+                      <v-btn color="success" @click="verifyNumberCode(c)">Validar</v-btn>
+                    </div>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card>
           </v-form>
         </v-card-text>
         <v-card-actions>
