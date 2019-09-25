@@ -28,14 +28,14 @@ export default {
     props:['title', 'direct', 'coords'],
     data() {
         return {
-            center: { lat: 45.508, lng: -73.587 },
+            center: {},
             marker: {},
             places: [],
             currentPlace: null,
             placeDir:"",
             placeN:"",
             autocompleteOptions: {
-                types:['geocode'],
+                //types:['geocode'],
                 componentRestrictions: {
                     country: [
                         'col',

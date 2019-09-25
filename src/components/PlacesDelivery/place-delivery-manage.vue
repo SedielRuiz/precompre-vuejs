@@ -226,50 +226,6 @@
         this.place.address = obj.name;
         this.place.coords = {"lat":obj.position.lat, "long":obj.position.lng}
       },
-      formatFloors(array, type){
-        var types = "";
-        var unit = "";
-        var units = [];
-        for(var r = 0; r < array.floors.length; r++){
-          for(var g = 0; g < array.floors[r].types.length; g++){
-            if(array.floors[r].types[g]._type == type){
-
-              var type = array.floors[r].types[g]._type;
-              for(var j = 0; j < array.floors[r].types[g].units.length; j++){
-                unit = array.floors[r].types[g].units[j].u;
-                units.push({observations:"", unity:unit, state:true});
-              }
-              types = {"type":type , "units": units};
-
-            }
-          }
-        }
-        return types;
-      },
-      formatUnits(){
-        this.unitsV = [];
-        var tps = [];
-        var type = "";
-        for(var s = 0; s < this.units.length; s++){
-          var name = this.units[s].title.value ? this.units[s].title.value : this.units[s].title;
-          this.inside.push({text:name, value:name});
-          tps = [];
-          type = this.formatFloors(this.units[s], 'apto');
-          if(type != ""){
-            tps.push(type);
-          }
-          type = this.formatFloors(this.units[s], 'oficina');
-          if(type != ""){
-            tps.push(type);
-          }
-
-          if(tps.length > 0){
-            this.unitsV.push({"name":name, "types":tps});
-          }
-        }
-        this.unitsV.push();
-        console.log(this.unitsV);
-      },
       addUnity(opc){
         var unit = "";
         var units = [];
@@ -487,6 +443,50 @@
         this.formatUnits();
         console.log(this.units);
       },
+      formatUnits(){
+        this.unitsV = [];
+        var tps = [];
+        var type = "";
+        for(var s = 0; s < this.units.length; s++){
+          var name = this.units[s].title.value ? this.units[s].title.value : this.units[s].title;
+          this.inside.push({text:name, value:name});
+          tps = [];
+          type = this.formatFloors(this.units[s], 'apto');
+          if(type != ""){
+            tps.push(type);
+          }
+          type = this.formatFloors(this.units[s], 'oficina');
+          if(type != ""){
+            tps.push(type);
+          }
+
+          if(tps.length > 0){
+            this.unitsV.push({"name":name, "types":tps});
+          }
+        }
+        this.unitsV.push();
+        console.log(this.unitsV);
+      },
+      formatFloors(array, type){
+        var types = "";
+        var unit = "";
+        var units = [];
+        for(var r = 0; r < array.floors.length; r++){
+          for(var g = 0; g < array.floors[r].types.length; g++){
+            if(array.floors[r].types[g]._type == type){
+
+              var type = array.floors[r].types[g]._type;
+              for(var j = 0; j < array.floors[r].types[g].units.length; j++){
+                unit = array.floors[r].types[g].units[j].u;
+                units.push({observations:"", unity:unit, state:true, type:array.floors[r].types[g]._type, floor:array.floors[r]});
+              }
+              types = {"type":type , "units": units};
+
+            }
+          }
+        }
+        return types;
+      },
       removeUnity(code){
         var key = code.split("_");
         code = key[0]+"_"+key[1].split(" ").join("");
@@ -504,6 +504,7 @@
           for(var g = 0; g < unit2.length; g++){
             if(unit1[r].unity == unit2[g].unity && unit2[g].state){
               unit1[r].observations = unit2[g].observations;
+              unit1[r].u = unit2[g].unity;
             }
           }
         }
@@ -549,6 +550,7 @@
       },
       buildPlace(){
         this.buildUnities();
+          console.log(this.units);
         this.place.clusters = this.units;
         this.place.country = this.place.country.value;
         this.place.city = this.place.city.value;
