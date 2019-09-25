@@ -43,7 +43,7 @@
               <v-text-field v-model="verify_code" prepend-icon="email" @change="" name="title" label="Código" type="text"></v-text-field><br>
             </v-layout>
             <v-btn color="primary" :disabled="verify_code ? false : true" @click="findVerifyCode()">Consultar</v-btn>
-            <div v-if="info">
+            <div v-if="info" style="overflow: auto;width: 388px;">
               <v-layout row wra>
                 <v-flex xs12 sm12 md4>
                   <label style="font-size:18px;"> Nombre </label>
