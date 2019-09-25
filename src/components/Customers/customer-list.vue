@@ -64,7 +64,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md4>
                   <div v-if="c.telephones[0].verified">
-                    Ya se encuentra verificado
+                    <i class="material-icons">check_circle_outline</i>
                   </div>
                   <div v-else>
                     <v-btn color="success" @click="verifyNumberCode(c)">Validar</v-btn>
