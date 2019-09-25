@@ -46,7 +46,7 @@
             <v-card style="overflow: auto;max-width: 100%;" v-if="info">
               <v-container>
                 <v-layout row wra>
-                  <v-flex xs12 sm12 md2>
+                  <v-flex xs12 sm12 md4>
                     <label style="font-size:18px;"></label>
                   </v-flex>
                   <v-flex xs12 sm12 md5>
