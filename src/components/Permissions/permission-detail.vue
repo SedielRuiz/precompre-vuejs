@@ -11,10 +11,10 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-text-field :disabled="true" v-model="permission.title" prepend-icon="title" name="title" label="Titulo" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-model="permission.code" prepend-icon="code" name="code" label="Código" type="text"></v-text-field>
-                <v-text-field :disabled="true" v-model="permission.description" prepend-icon="library_books" name="description" label="Descripción" type="text"></v-text-field>
-                <v-combobox :disabled="true" v-model="permission.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
+                <v-text-field readonly v-model="permission.title" prepend-icon="title" name="title" label="Titulo" type="text"></v-text-field>
+                <v-text-field readonly v-model="permission.code" prepend-icon="code" name="code" label="Código" type="text"></v-text-field>
+                <v-text-field readonly v-model="permission.description" prepend-icon="library_books" name="description" label="Descripción" type="text"></v-text-field>
+                <v-combobox readonly v-model="permission.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
             </v-form>
           </v-card-text>
           <v-card-actions>

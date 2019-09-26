@@ -13,21 +13,21 @@
             <v-form>
               <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
-                  <v-text-field :disabled="true" v-model="place.country" prepend-icon="email" name="country" label="País" type="text"></v-text-field>
+                  <v-text-field readonly v-model="place.country" prepend-icon="email" name="country" label="País" type="text"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm12 md6>
-                  <v-text-field :disabled="true" v-model="place.city" prepend-icon="email" name="city" label="ciudad" type="text"></v-text-field>
+                  <v-text-field readonly v-model="place.city" prepend-icon="email" name="city" label="ciudad" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
               <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
-                  <v-text-field :disabled="true" v-model="place.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
+                  <v-text-field readonly v-model="place.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm12 md6>
-                  <v-text-field :disabled="true" v-model="place.welcome_code" prepend-icon="email" name="welcome_code" label="Código de bienvenida" type="text"></v-text-field>
+                  <v-text-field readonly v-model="place.welcome_code" prepend-icon="email" name="welcome_code" label="Código de bienvenida" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
-              <v-text-field :disabled="true" v-model="place.address" prepend-icon="email" name="address" label="Dirección" type="text"></v-text-field>
+              <v-text-field readonly v-model="place.address" prepend-icon="email" name="address" label="Dirección" type="text"></v-text-field>
               <gmap-map v-if="place.coords"
                   :center="center" :zoom="12"
                   style="width:100%;  height: 400px;">
@@ -58,10 +58,10 @@
 
                             <v-layout row wrap v-for="(n, index) in t.units" :key="index">
                               <v-flex xs12 sm12 md6>
-                                <v-text-field :disabled="true" v-model="n.unity" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
+                                <v-text-field readonly v-model="n.unity" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
                               </v-flex>
                               <v-flex xs12 sm12 md6>
-                                <v-text-field :disabled="true" v-model="n.observations" prepend-icon="email" name="observations" label="Observaciones" type="text"></v-text-field>
+                                <v-text-field readonly v-model="n.observations" prepend-icon="email" name="observations" label="Observaciones" type="text"></v-text-field>
                               </v-flex>
                             </v-layout>
 

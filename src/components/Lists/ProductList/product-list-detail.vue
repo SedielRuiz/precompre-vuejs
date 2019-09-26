@@ -11,7 +11,7 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-text-field :disabled="true" v-model="filter.title" prepend-icon="title" name="title" label="Nombre" type="text"></v-text-field>
+                <v-text-field readonly v-model="filter.title" prepend-icon="title" name="title" label="Nombre" type="text"></v-text-field>
             </v-form>
             <v-data-table :headers="headers" :items="products" class="elevation-1">
             <template v-slot:items="props">

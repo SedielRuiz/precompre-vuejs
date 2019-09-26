@@ -11,7 +11,7 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-text-field :disabled="true" v-model="group._type" prepend-icon="email" name="name" label="Tipo" type="text"></v-text-field>
+                <v-text-field readonly v-model="group._type" prepend-icon="email" name="name" label="Tipo" type="text"></v-text-field>
                 <h2>Clientes</h2><hr><br>
                 <div v-if="customers">
                     <v-chip v-for="(c, index) in customers" :key="index" class="custom" >{{c.id_type.toUpperCase()}} {{c.id_description}} - {{c.name}} {{c.last_name}}</v-chip>
