@@ -58,7 +58,7 @@
                     <v-layout row wrap>
                       <v-spacer></v-spacer>
                       <v-btn medium color="primary" @click="addUnity('m')">Agregar unidades</v-btn><br><br>
-                      <v-btn medium color="primary" :disabled="units.length > 0 ? false : true" @click="unitsV = []">Limpiar</v-btn><br><br>
+                      <v-btn medium color="primary" :disabled="units.length > 0 ? false : true" @click="unitsV = []; units = [];">Limpiar</v-btn><br><br>
                     </v-layout><br>
                     <h3>Unidades por piso</h3><hr>
                     <v-layout row wrap>
