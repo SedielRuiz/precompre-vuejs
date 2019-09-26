@@ -52,7 +52,7 @@
                         <v-text-field v-model="unity.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
                       </v-flex>
                       <v-flex xs12 sm12 md4>
-                        <v-text-field v-model="unity.start ? unity.start : unity.start = 1" prepend-icon="email" name="start" label="Inicio" type="number"></v-text-field>
+                        <v-text-field v-model="unity.start" prepend-icon="email" name="start" label="Inicio (opcional)" type="number"></v-text-field>
                       </v-flex>
                     </v-layout>
                     <v-layout row wrap>
@@ -250,7 +250,7 @@
             //Lleno las unidades
             for(var p = 1; p <= this.floor; p++){
               units = [];
-              var n = this.unity.start ? this.unity.start : 1;
+              var n = this.unity && this.unity.start ? this.unity.start : 1;
               var j = 1;
               for(var s = 1; s <= this.unity.quantity; s++){
                 j = Number(s) + Number(this.unity.start) - 1;
@@ -265,7 +265,7 @@
               floors:floorss
             });
             this.floor = "";
-            this.unity.start = 1;
+            this.unity.start = "";
           }else{
             var flr = this.floor ? this.floor : this.unity.floor_unit;
             //Lleno las unidades
@@ -305,7 +305,7 @@
 
               //Lleno las unidades
               units = [];
-              var n = this.unity.start ? this.unity.start : 1;
+              var n = this.unity && this.unity.start ? this.unity.start : 1;
               var j = 1;
               for(var s; s <= this.unity.quantity; s++){
                 j = Number(s) + Number(this.unity.start) - 1;
@@ -363,7 +363,7 @@
               }
               
             }
-            this.unity.start = 1;
+            this.unity.start = "";
           }else{
             var flr = -1;
             units = [];
