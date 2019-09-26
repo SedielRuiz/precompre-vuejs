@@ -23,12 +23,12 @@
                   <v-card style="overflow: auto;max-width: 100%;" v-if="info">
                       <v-container><hr>
                           <v-layout row wrap v-for="(c, index) in info" style="text-align:center;" :key="index">
-                              <v-flex xs12 sm12 md1 style="text-align:center;">
+                              <v-flex xs12 sm12 md1 >
                                   <div v-if="c.telephones[0].verified">
                                   <i class="material-icons">check_circle_outline</i>
                                   </div>
                                   <div v-else>
-                                  <v-checkbox value @click="verifyNumberCode(c)"></v-checkbox>
+                                  <v-checkbox style="margin-top:-12px;" value @click="verifyNumberCode(c)"></v-checkbox>
                                   <!--v-btn color="success" @click="verifyNumberCode(c)">Validar</v-btn-->
                                   </div>
                               </v-flex>
