@@ -30,9 +30,9 @@
                         </v-toolbar>
                         <v-card-text>
                         <v-form>
-                             <v-layout row wra>
+                             <v-layout row wrap>
                                 <v-flex xs12 md12>
-                                    <v-layout row wra>
+                                    <v-layout row wrap>
                                         <div v-if="ingredient && subProducts[ingredient.idx] && subProducts[ingredient.idx].ingredients.length > 0">
                                             <v-chip v-for="(i, index) in subProducts[ingredient.idx].ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}}</v-chip>
                                         </div>
@@ -52,8 +52,8 @@
                 </v-dialog>
                 <h2>Sub productos</h2><br>
                 <div v-if="subProducts"> 
-                    <div row wra>
-                        <v-layout align-center row wra >   
+                    <div row wrap>
+                        <v-layout align-center row wrap >   
                             <v-flex class="alignGrid" v-for="h in subProducts[0]" :key="h.code" xs12 md2>
                                 <label class="col-md-2">{{h.code.split("_").join(" ").charAt(0).toUpperCase() + h.code.split("_").join(" ").slice(1)}}</label>
                             </v-flex>
@@ -68,8 +68,8 @@
                             </v-flex>
                         </v-layout><hr><br>
                         <div v-for="(sub, index) in subProducts" :key="index">
-                            <v-layout align-center row wra >       
-                                <v-flex v-for="(attr, index) in sub" row wra :key="index" xs12 md2>
+                            <v-layout align-center row wrap >       
+                                <v-flex v-for="(attr, index) in sub" row wrap :key="index" xs12 md2>
                                     <div v-if="attr.options && attr.options.length > 0">
                                         <v-flex xs12 md12>
                                             {{attr.value ? attr.value : attr.default_value}}

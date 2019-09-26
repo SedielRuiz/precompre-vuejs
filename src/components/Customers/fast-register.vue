@@ -10,7 +10,7 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-layout row wra>
+                <v-layout row wrap>
                     <v-flex xs12 sm12 md6>
                     <v-text-field v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
                     </v-flex>
@@ -19,7 +19,7 @@
                     </v-flex>
                 </v-layout>
                 <v-text-field v-model="phone" prepend-icon="person" name="phone" label="Teléfono" type="number"></v-text-field>
-                <v-layout row wra>
+                <v-layout row wrap>
                     <v-flex xs12 sm12 md6>
                     <v-select v-model="campaigCode" :items="campaigCodes" prepend-icon="featured_play_list" label="Código de campaña"></v-select>
                     </v-flex>

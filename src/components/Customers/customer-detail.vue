@@ -15,7 +15,7 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-              <v-layout row wra>
+              <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
                   <v-text-field :disabled="true" v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
                 </v-flex>
@@ -23,7 +23,7 @@
                   <v-text-field :disabled="true" v-model="customer.last_name" prepend-icon="person" name="last_name" label="Apellidos" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
-              <v-layout row wra>
+              <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
                   <v-combobox :disabled="true" v-model="customer.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
                 </v-flex>

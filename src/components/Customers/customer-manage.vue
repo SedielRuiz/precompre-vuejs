@@ -11,7 +11,7 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-              <v-layout row wra>
+              <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
                   <v-text-field v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
                 </v-flex>
@@ -19,7 +19,7 @@
                   <v-text-field v-model="customer.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
-              <v-layout row wra>
+              <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
                   <v-select v-model="customer.id_type" :items="typesIdentification" prepend-icon="featured_play_list" label="Tipo de identificación"></v-select>
                 </v-flex>
@@ -28,7 +28,7 @@
                 </v-flex>
               </v-layout>
               <v-text-field v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
-              <v-layout row wra>
+              <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
                   <v-select v-model="customer.gender" prepend-icon="account_box" :items="genders" label="Genero"></v-select>
                 </v-flex>
@@ -64,7 +64,7 @@
                     <!--LUGARES DE ENTREGA-->
                     <v-combobox v-model="place.name" :items="suggestions" prepend-icon="receipt" label="Nombre"></v-combobox>
                     <v-combobox v-model="placeDelivery" :items="placesDelivery" prepend-icon="location_on" label="Lugar de entrega"></v-combobox>
-                    <v-layout row wra>
+                    <v-layout row wrap>
                       <v-flex xs12 sm12 md6>
                         <v-combobox v-if="clusters.length > 0" v-model="cluster" :items="clusters" prepend-icon="list_alt" label="Agrupación"></v-combobox>
                       </v-flex>

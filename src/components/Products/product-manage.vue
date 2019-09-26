@@ -11,7 +11,7 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-                <v-layout row wra>
+                <v-layout row wrap>
                     <v-flex xs12 md6>
                         <v-text-field v-model="product.name" prepend-icon="person" name="name" label="Nombre del producto" type="text"></v-text-field>
                     </v-flex>
@@ -19,7 +19,7 @@
                         <v-select v-model="product.type" :items="typesProduct" prepend-icon="featured_play_list" label="Tipo de producto"></v-select>
                     </v-flex>
                 </v-layout>
-                <v-layout row wra>
+                <v-layout row wrap>
                     <v-flex xs12 md6>
                         <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio base" type="number"></v-text-field>
                     </v-flex>
@@ -58,7 +58,7 @@
                 </div>
                 <div v-if="class_id && (valRecipe())">
                     <h2>Receta</h2><hr><br>
-                    <v-layout  row wra>
+                    <v-layout  row wrap>
                         <v-flex xs12 md4>
                             <v-combobox prepend-icon="filter_list" v-model="ingredient.input" :items="inputs" label="Insumos"></v-combobox>
                         </v-flex>
@@ -66,7 +66,7 @@
                             <v-text-field v-model="ingredient.quantity" prepend-icon="featured_play_list" name="quantity" label="Cantidad" type="number"></v-text-field>
                         </v-flex>
                         <v-flex xs12 md2>
-                            <v-layout row wra>
+                            <v-layout row wrap>
                                 <v-icon medium @click="addArray('i', 'general')">add</v-icon>
                                 <v-chip v-for="(i, index) in ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index, true)">close</v-icon></v-chip>
                             </v-layout>
@@ -105,11 +105,11 @@
                 <!--ATRIBUTOS Personalizables-->
                 <!--SUB PRODUCTOS-->
                 <div v-if="class_id">
-                    <v-layout row wra>
+                    <v-layout row wrap>
                         <v-flex xs12 md12>
                             <h2>Sub productos <v-icon medium @click="addSub ? addSub = false : addSub = true">keyboard_arrow_down</v-icon></h2><br>
-                            <div row wra v-if="addSub && subProductsAttribute">
-                                <v-layout align-center row wra >   
+                            <div row wrap v-if="addSub && subProductsAttribute">
+                                <v-layout align-center row wrap >   
                                     <v-flex class="alignGrid" v-for="h in subProductsAttribute[0]" :key="h.code" xs12 md1>
                                         <label class="col-md-2">{{h.code.split("_").join(" ").charAt(0).toUpperCase() + h.code.split("_").join(" ").slice(1)}}</label>
                                     </v-flex>
@@ -128,8 +128,8 @@
                                     </v-flex>
                                 </v-layout>
                                 <div v-for="(sub, index) in subProductsAttribute" :key="index">
-                                    <v-layout align-center row wra >       
-                                        <v-flex v-for="(attr, index) in sub" row wra :key="index" xs12 md1>
+                                    <v-layout align-center row wrap >       
+                                        <v-flex v-for="(attr, index) in sub" row wrap :key="index" xs12 md1>
                                             <div v-if="attr.options && attr.options.length > 0">
                                                 <v-flex xs12 md12>
                                                     {{attr && attr.value ? attr.value : (attr.default_value ? attr.default_value : "")}}
@@ -191,7 +191,7 @@
                         </v-toolbar>
                         <v-card-text>
                         <v-form>
-                             <v-layout row wra>
+                             <v-layout row wrap>
                                 <v-flex xs12 md4>
                                     <v-combobox prepend-icon="filter_list" v-model="ingredient.input" :items="inputs" label="Insumos"></v-combobox>
                                 </v-flex>
@@ -199,7 +199,7 @@
                                     <v-text-field v-model="ingredient.quantity" prepend-icon="featured_play_list" name="quantity" label="Cantidad" type="number"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 md2>
-                                    <v-layout row wra>
+                                    <v-layout row wrap>
                                         <v-icon medium @click="addArray('i', ingredient.idx)">add</v-icon>
                                         <div v-if="ingredient && subProductsAttribute[ingredient.idx] && subProductsAttribute[ingredient.idx].inputs">
                                             <v-chip v-for="(i, index) in subProductsAttribute[ingredient.idx].inputs" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip>

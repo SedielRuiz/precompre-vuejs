@@ -11,7 +11,7 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-              <v-layout row wra>
+              <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
                   <v-text-field :disabled="true" v-model="place.country" prepend-icon="email" name="country" label="País" type="text"></v-text-field>
                 </v-flex>
@@ -19,7 +19,7 @@
                   <v-text-field :disabled="true" v-model="place.city" prepend-icon="email" name="city" label="ciudad" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
-              <v-layout row wra>
+              <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
                   <v-text-field :disabled="true" v-model="place.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
                 </v-flex>
@@ -41,7 +41,7 @@
                     <div v-for="(u, index) in unitsV" :key="index">
                       <v-card class="elevation-8 scroll">
                         <v-container>
-                          <v-layout row wra>
+                          <v-layout row wrap>
                             <v-flex xs12 sm12 md4>
                               <label style="font-size:20px;"> Unidad </label>
                             </v-flex>
@@ -52,11 +52,11 @@
                               <label style="font-size:20px;"> Disponible</label>
                             </v-flex>
                           </v-layout>
-                          <div row wra v-for="(t, index) in u.types" :key="index">
+                          <div row wrap v-for="(t, index) in u.types" :key="index">
 
                             <h3>{{u.name}} - {{t.type}}</h3><br>
 
-                            <v-layout row wra v-for="(n, index) in t.units" :key="index">
+                            <v-layout row wrap v-for="(n, index) in t.units" :key="index">
                               <v-flex xs12 sm12 md6>
                                 <v-text-field :disabled="true" v-model="n.unity" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
                               </v-flex>

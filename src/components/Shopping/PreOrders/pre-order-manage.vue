@@ -14,7 +14,7 @@
                         <v-card v-if="customer_id" class="pa-2" outlined tile>
                             <h3>Datos pre orden</h3>
                             <v-text-field :disabled="preOrder.finish" v-model="preOrder.name" prepend-icon="library_books" name="title" label="Nombre" type="text"></v-text-field>
-                            <v-layout row wra>
+                            <v-layout row wrap>
                                 <v-flex xs12 md6>
                                     <v-combobox :disabled="preOrder.finish" prepend-icon="filter_list" v-model="preOrder.deliveryPlace" :items="formatList(customer.delivery_places, 'name', 'id', 'unit_name')" label="Lugares de entrega"></v-combobox>
                                 </v-flex>
@@ -23,7 +23,7 @@
                                 </v-flex>
                             </v-layout><br>
                             <h3>Productos pre orden</h3>
-                            <v-layout row wra>
+                            <v-layout row wrap>
                                 <v-flex xs12 md4>
                                     <v-combobox prepend-icon="filter_list" v-model="product" :items="products" label="Producto"></v-combobox>
                                 </v-flex>  
@@ -34,7 +34,7 @@
                                     <v-text-field :disabled="true" v-model="product.price" prepend-icon="library_books" name="title" label="Precio unitario" type="text"></v-text-field>
                                 </v-flex>        
                             </v-layout>
-                            <v-layout row wra>
+                            <v-layout row wrap>
                                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code+'_other'" v-if="(!attr.custom && !attr.pivot)">
                                     <div v-if="attr.visible && attr.code != 'photo'">
                                         <div v-if="attr.options && attr.options.length > 0">
@@ -70,7 +70,7 @@
                                 </div>
                             </v-layout>
                             <label v-if="attributes.length > 0" style="font-size:15px;">Atributos </label><br>
-                            <v-layout row wra v-if="attributes">
+                            <v-layout row wrap v-if="attributes">
                                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code">
                                     <div v-if="attr.visible && attr.code != 'photo' && ( (attr.custom && attr.variable) || (!attr.custom && attr.pivot) )">
                                         <div v-if="attr.options && attr.options.length > 0">
@@ -105,13 +105,13 @@
                                     </div>
                                 </div>
                             </v-layout>
-                            <v-layout row wra>
+                            <v-layout row wrap>
                                 <v-spacer></v-spacer>
                                 <v-btn color="primary" :disabled="preOrder.name && preOrder.deliveryPlace && preOrder.hour ? false : true" @click="addArray('p')">Agregar producto</v-btn>
                             </v-layout><br>
                             <h3 v-if="productsCart.length > 0">Programa tu semana</h3><br>
                             <div v-for="(sc, index) in productsCart">
-                                <v-layout row wra>
+                                <v-layout row wrap>
                                     <v-flex xs12 md1>
                                         <v-text-field v-model="sc.quantity" name="quantity" label="Cantidad" type="number"></v-text-field>
                                     </v-flex> 
@@ -125,7 +125,7 @@
                                         <v-text-field :disabled="true" v-model="sc.price" name="price" label="Precio" type="number"></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 md10>
-                                        <v-layout justify-center row wra>
+                                        <v-layout justify-center row wrap>
                                             <v-flex xs12 md2 cols="12" sm="4" md="2">
                                                 <label>Lunes</label>
                                                 <v-checkbox v-model="sc.lunes"></v-checkbox>
@@ -157,14 +157,14 @@
                                         </v-layout>
                                     </v-flex>
                                     <v-flex align-center  xs12 md1>
-                                        <v-layout justify-center row wra>
+                                        <v-layout justify-center row wrap>
                                             <v-icon medium @click="removeArray('g', 'productsCart', index)">close</v-icon></v-chip>
                                         </v-layout>
                                     </v-flex>
                                 </v-layout>
-                                <v-layout row wra>
+                                <v-layout row wrap>
                                     <div v-if="sc.viewAtt">
-                                        <v-layout row wra>
+                                        <v-layout row wrap>
                                             <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code+'_other'" v-if="(!attr.custom && !attr.pivot)">
                                                 <div v-if="attr.visible && attr.code != 'photo'">
                                                     <div v-if="attr.options && attr.options.length > 0">
@@ -201,10 +201,10 @@
                                         </v-layout>
                                     </div>
                                 </v-layout>
-                                <v-layout justify-center row wra>
+                                <v-layout justify-center row wrap>
                                     <v-flex xs12 md12>
                                         <div v-if="sc.viewAtt">
-                                            <v-layout row wra>
+                                            <v-layout row wrap>
                                                 <div v-for="(attrr, index) in sc.attributes" :key="index+'_'+attrr.code+'_prg'" class="row col-md-8">
                                                     <div v-if="attrr.visible && attrr.code != 'photo' && ( (attrr.custom && attrr.variable) || (!attrr.custom && attrr.pivot) )">
                                                         <div v-if="attrr.options && attrr.options.length > 0">
@@ -233,7 +233,7 @@
                                     </v-flex>
                                 </v-layout>
                             </div><br>
-                             <v-layout row wra>
+                             <v-layout row wrap>
                                 <v-btn style="width:100%" :disabled="productsCart.length == 0 ? true : false" color="primary" @click="addArray('cart')">Agregar pre orden</v-btn>
                             </v-layout><br>
                         </v-card><br>
@@ -241,7 +241,7 @@
                             <h2>Pre ordenes</h2><hr><br>
                             <div v-for="(sh, index) in shoppingCart" :key="index">
                                 <v-card class="pa-2" outlined tile >
-                                    <v-layout row wra>
+                                    <v-layout row wrap>
                                         <v-flex xs12 md8>
                                             <h2>{{sh.name}}</h2>
                                             Lugar de entrega: {{sh.delivery_place.text}}<br>
@@ -256,7 +256,7 @@
                                     </v-layout>
                                     
                                     <div v-if="sh.addProduct">
-                                        <v-layout row wra>
+                                        <v-layout row wrap>
                                             <v-flex xs12 md4>
                                                 <v-combobox prepend-icon="filter_list" v-model="product" :items="products" label="Producto"></v-combobox>
                                             </v-flex>  
@@ -270,7 +270,7 @@
                                                 <v-btn color="primary" :disabled="!product ? true : false" @click="addArray('p', true, index)">Agregar</v-btn>
                                             </v-flex>        
                                         </v-layout>
-                                        <v-layout row wra v-if="attributes">
+                                        <v-layout row wrap v-if="attributes">
                                             <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code">
                                                 <div v-if="attr.visible && attr.code != 'photo'">
                                                     <div v-if="attr.options && attr.options.length > 0">
@@ -309,7 +309,7 @@
 
                                     <hr><br>
                                     <div v-for="(sc, index) in sh.productsCart" :key="index">
-                                        <v-layout row wra>
+                                        <v-layout row wrap>
                                             <v-flex xs12 md1>
                                                 <v-text-field v-model="sc.quantity" @change="calculatePrice(sh.index, index)" name="quantity" label="Cantidad" type="number"></v-text-field>
                                             </v-flex> 
@@ -323,7 +323,7 @@
                                                 <v-text-field :disabled="true" v-model="sc.price" name="price" label="Precio" type="number"></v-text-field>
                                             </v-flex>
                                             <v-flex xs12 md10>
-                                                <v-layout justify-center row wra>
+                                                <v-layout justify-center row wrap>
                                                     <v-flex xs12 md2 cols="12" sm="4" md="2">
                                                         <label>Lunes</label>
                                                         <v-checkbox v-model="sc.lunes"></v-checkbox>
@@ -355,16 +355,16 @@
                                                 </v-layout>
                                             </v-flex>
                                             <v-flex align-center  xs12 md1>
-                                                <v-layout justify-center row wra>
+                                                <v-layout justify-center row wrap>
                                                     <v-icon medium @click="removeArray('p', 'productsCart', sh.index, index)">close</v-icon></v-chip>
                                                 </v-layout>
                                             </v-flex>
                                         </v-layout>
                                         
-                                        <v-layout justify-center row wra>
+                                        <v-layout justify-center row wrap>
                                             <v-flex xs12 md12>
                                                 <div v-if="sc.viewAtt">
-                                                    <v-layout row wra>
+                                                    <v-layout row wrap>
                                                         <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code" class="row col-md-8">
                                                             <div v-if="attr.visible && attr.code != 'photo'">
                                                                 <div v-if="attr.options && attr.options.length > 0">
@@ -393,7 +393,7 @@
                                             </v-flex>
                                         </v-layout>
                                     </div>
-                                     <v-layout justify-center row wra>
+                                     <v-layout justify-center row wrap>
                                         <v-spacer></v-spacer>
                                         
                                     </v-layout>
@@ -402,7 +402,7 @@
                         </div><br>
                         
                         <v-card class="pa-2" outlined tile v-if="preOrders.length > 0">
-                            <v-layout row wra>
+                            <v-layout row wrap>
                                 <v-flex v-for="(day, index) in preOrders" :key="index" xs12 sm12 md2>
                                     <v-card class="mx-auto">
                                         <v-card-title><h1>{{formarDay(day.pre_orders)}}</h1></v-card-title>

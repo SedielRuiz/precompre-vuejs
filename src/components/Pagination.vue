@@ -6,7 +6,7 @@
             :length="total_pages"
             circle
         ></v-pagination>
-        <v-layout align-center justify-center row wra>
+        <v-layout align-center justify-center row wrap>
             <v-flex xs12 md1></v-flex>
             <v-flex xs12 md1>
                 <v-text-field v-model="rows" @change="updateRegister()" name="row" label="Registros" type="number"></v-text-field>

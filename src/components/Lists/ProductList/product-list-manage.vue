@@ -14,7 +14,7 @@
               <v-text-field v-model="nameFilter" prepend-icon="title" name="title" label="Nombre" type="text"></v-text-field>
               <div v-if="filters">
                 <div v-for="(f, index) in filters">
-                  <v-layout align-center justify-center row wra>
+                  <v-layout align-center justify-center row wrap>
                       <v-flex xs4 md4>
                         <v-combobox :disabled="true" @change="updateFilter('name', f.name, index, false, false)" v-model="f.name" :items="itemsFilter" prepend-icon="filter_list" label="Filtro"></v-combobox>
                       </v-flex>
@@ -37,7 +37,7 @@
                           </div>
                           <div v-else-if="f.type=='Array'">
                             <div v-if="f.value && f.name != 'attributes'">
-                              <v-layout row wra>
+                              <v-layout row wrap>
                                 <v-chip v-for="lst in f.value" :key="lst.value">{{lst.text}} <v-icon medium @click="updateFilter('value', lst.value, index, true, false)">close</v-icon></v-chip>
                               </v-layout>
                             </div>
@@ -70,7 +70,7 @@
                         </div>
                       </v-flex>
                       <div v-show="f.name == 'attributes' ? true : false">
-                        <v-layout row wra>
+                        <v-layout row wrap>
                             <v-chip v-for="lst in f.value" :key="lst.value">{{lst.text}} <v-icon medium @click="updateFilter('value', lst.value, index, true, false)">close</v-icon></v-chip>
                         </v-layout>
                       </div>
@@ -78,7 +78,7 @@
                   </v-layout>  
                 </div>
               </div>
-              <v-layout align-center justify-center row wra>
+              <v-layout align-center justify-center row wrap>
                 <v-flex xs4 md4>
                   <v-combobox v-model="itemFilter" :items="itemsFilter" prepend-icon="filter_list" label="Filtro"></v-combobox>
                 </v-flex>
@@ -100,7 +100,7 @@
                     </div>
                     <div v-else-if="itemFilter.type=='Array'">
                       <div v-if="selectedList && itemFilter.value != 'attributes'">
-                        <v-layout row wra>
+                        <v-layout row wrap>
                           <v-chip v-for="(lst, index) in selectedList" :key="index">{{lst.text}} <v-icon medium @click="removeFilter(index, true)">close</v-icon></v-chip>
                         </v-layout>
                       </div>
@@ -132,7 +132,7 @@
                   </div>
                 </v-flex>
                 <div v-show="itemFilter && itemFilter.value == 'attributes' ? true : false" v-if="filter.operator">
-                  <v-layout row wra>
+                  <v-layout row wrap>
                       <v-chip v-for="(lst, index) in selectedList" :key="index">{{lst.text}} <v-icon medium @click="removeFilter(index, true)">close</v-icon></v-chip>
                   </v-layout>
                 </div>

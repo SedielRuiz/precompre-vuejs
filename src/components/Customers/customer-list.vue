@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout row wra>
+    <v-layout row wrap>
         <v-flex xs12 sm12 md2>
             <h1>Clientes</h1>
         </v-flex>
@@ -11,7 +11,7 @@
     </v-layout>
     <div v-if="filt"><br>
       <label style="font-size:20px;">Filtros</label><hr>
-      <v-layout row wra>
+      <v-layout row wrap>
         <v-flex xs12 sm12 md4>
           <v-text-field v-model="filter.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
         </v-flex>
@@ -22,7 +22,7 @@
           <v-text-field v-model="filter.phone" prepend-icon="phone" name="phone" label="Teléfono" type="number"></v-text-field>
         </v-flex>
       </v-layout>
-      <v-layout row wra>
+      <v-layout row wrap>
         <v-flex xs12 sm12 md3>
           <v-select v-model="filter.campaign" prepend-icon="account_box" :items="campaigns" label="Código de campaña"></v-select>
         </v-flex>

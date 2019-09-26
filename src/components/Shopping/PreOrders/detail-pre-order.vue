@@ -8,7 +8,7 @@
     <v-card-text>
         <v-form>
             <v-card class="pa-2" outlined tile v-if="sc">
-                <v-layout row wra>
+                <v-layout row wrap>
                     <v-flex xs12 md1>
                         <v-text-field v-model="sc[0].quantity" name="quantity" label="Cantidad" type="number"></v-text-field>
                     </v-flex> 
@@ -16,7 +16,7 @@
                         <v-combobox :disabled="true" prepend-icon="filter_list" v-model="sc[0].text" label="Producto"></v-combobox>
                     </v-flex>
                     <v-flex xs12 md10>
-                        <v-layout justify-center row wra>
+                        <v-layout justify-center row wrap>
                             <v-flex xs12 md2 cols="12" sm="4" md="2">
                                 <label>Lunes</label>
                                 <v-checkbox style="5px 7px 0px !important" v-model="sc[0].lunes"></v-checkbox>
@@ -50,11 +50,11 @@
                     <v-flex xs12 md1>
                     </v-flex>
                 </v-layout>
-                <v-layout justify-center row wra>
+                <v-layout justify-center row wrap>
                     <v-flex xs12 md12>
                         <label class="subTitle">Caracteristicas</label><v-icon medium @click="attrs ? attrs = false : attrs = true">add</v-icon>
                         <div v-if="attrs">
-                            <v-layout row wra>
+                            <v-layout row wrap>
                                 <div v-for="(attr, index) in sc[0].attributes" :key="index+'_'+attr.code" class="row col-md-8">
                                     <div v-if="attr.options && attr.options.length > 0">
                                         <v-combobox  :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
@@ -80,7 +80,7 @@
                         </div>
                     </v-flex>
                 </v-layout>
-                <v-layout row wra>
+                <v-layout row wrap>
                     <v-combobox prepend-icon="filter_list" v-model="sc[0].delivery_place" :items="formatList(customer.delivery_places, 'name', 'id', 'unit_name')" label="Lugares de entrega"></v-combobox>
                 </v-layout><hr><br>
             </v-card>

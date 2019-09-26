@@ -14,7 +14,7 @@
                     <detailPreOrder @closeModal = "closeModal" :info="info"></detailPreOrder>
                 </v-dialog>
                 <v-card class="pa-2" outlined tile>
-                    <v-layout justify-center row wra>
+                    <v-layout justify-center row wrap>
                         <v-flex xs12 md1>
                             Horas
                             <div v-for="sp in stripes" :key="sp">
@@ -22,7 +22,7 @@
                             </div> 
                         </v-flex>
                         <v-flex xs12 md10>
-                            <v-layout justify-center row wra>
+                            <v-layout justify-center row wrap>
                                 <v-flex xs12 md2 v-for="(or, index) in preOrders" :key="index">
                                     <label>{{or.day}}</label>
                                     <div v-for="sp in stripes" :key="sp">

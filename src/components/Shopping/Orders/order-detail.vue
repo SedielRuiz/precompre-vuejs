@@ -13,13 +13,13 @@
                 <v-text-field :disabled="true"  v-model="order.date" prepend-icon="library_books" name="title" label="Fecha" type="date"></v-text-field>
                 <h2>Productos</h2><hr><br>
                 <div v-if="order.products">
-                     <v-layout row wra v-for="(prd, index) in order.products">
+                     <v-layout row wrap v-for="(prd, index) in order.products">
                         <v-flex xs12 md12>
                             <v-card class="pa-2" outlined tile :key="index">
                                 <h2>{{prd.product.name}}</h2><br>
-                                <v-layout row wra>
+                                <v-layout row wrap>
                                     <v-flex  xs12 md8>
-                                        <v-layout row wra >
+                                        <v-layout row wrap >
                                             <v-flex xs12 m12 v-for="opc in prd.sub_product.options">
                                                 <label>{{buildNameProduct(prd.product, opc)}}</label>
                                             </v-flex><br>

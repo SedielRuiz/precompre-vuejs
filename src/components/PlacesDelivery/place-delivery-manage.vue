@@ -11,7 +11,7 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-              <v-layout row wra>
+              <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
                   <v-combobox v-model="place.country" prepend-icon="email" :items="countries" label="País"></v-combobox>
                 </v-flex>
@@ -19,7 +19,7 @@
                   <v-combobox v-model="place.city" prepend-icon="email" :items="cities" label="Ciudad"></v-combobox>
                 </v-flex>
               </v-layout>
-              <v-layout row wra>
+              <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
                   <v-text-field v-model="place.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
                 </v-flex>
@@ -28,14 +28,14 @@
                 </v-flex>
               </v-layout>
               <div v-if="(edit && place && place.address) || (!edit)"><google-map :title="'Dirección'" :direct="place.address" :coords="place.coords" @setAddress="setAddress"/></div><br><!--v-icon medium style="font-size:25px;">email</v-icon-->
-                <v-layout row wra>
+                <v-layout row wrap>
                   <v-flex xs12 sm12 md12>
                     <h2>Composición</h2><hr><br>
                     <!--v-alert :value="u.msgError ? true : false" type="error">{{u.msgError}}</v-alert>
                     <div v-if="u.list">
                       <v-chip v-for="(lst, index) in getList(index)" :key="index">{{lst.name}} <v-icon medium @click="removeUnity(index+'_'+lst.name)">close</v-icon></v-chip>
                     </div-->
-                    <v-layout row wra>
+                    <v-layout row wrap>
                       <v-flex xs12 sm12 md6>
                         <v-combobox v-model="group" prepend-icon="email" name="group" :items="inside" label="Agrupación Ej(Torre)"></v-combobox>
                       </v-flex>
@@ -44,7 +44,7 @@
                       </v-flex>
                     </v-layout>
                     <h3>Masivo</h3><hr>
-                    <v-layout row wra>
+                    <v-layout row wrap>
                       <v-flex xs12 sm12 md6>
                         <v-combobox v-model="floor" prepend-icon="email" name="floor" :items="floors" label="Pisos"></v-combobox>
                       </v-flex>
@@ -52,13 +52,13 @@
                         <v-text-field v-model="unity.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
                       </v-flex>
                     </v-layout>
-                    <v-layout row wra>
+                    <v-layout row wrap>
                       <v-spacer></v-spacer>
                       <v-btn medium color="primary" @click="addUnity('m')">Agregar unidades</v-btn><br><br>
                       <v-btn medium color="primary" :disabled="units.length > 0 ? false : true" @click="unitsV = []">Limpiar</v-btn><br><br>
                     </v-layout><br>
                     <h3>Unidades por piso</h3><hr>
-                    <v-layout row wra>
+                    <v-layout row wrap>
                       <v-flex xs12 sm12 md6>
                         <v-combobox v-model="unity.floor_unit" prepend-icon="email" name="floor" :items="floors" label="Piso"></v-combobox>
                       </v-flex>
@@ -66,12 +66,12 @@
                         <v-text-field v-model="unity.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
                       </v-flex>
                     </v-layout>
-                    <v-layout row wra>
+                    <v-layout row wrap>
                       <v-spacer></v-spacer>
                       <v-btn medium color="primary" :disabled="unity && unity.floor_unit ? false : true" @click="addUnity('s')">Agregar unidades</v-btn><br><br>
                     </v-layout><br>
                     <h3>Individual</h3><hr>
-                    <v-layout row wra>
+                    <v-layout row wrap>
                       <v-flex xs12 sm12 md6>
                         <v-combobox v-model="unity.floor_only" prepend-icon="email" name="floor" :items="floors" label="Piso"></v-combobox>
                       </v-flex>
@@ -79,7 +79,7 @@
                         <v-text-field v-model="unity.unt" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
                       </v-flex>
                     </v-layout>
-                    <v-layout row wra>
+                    <v-layout row wrap>
                       <v-spacer></v-spacer>
                       <v-btn medium color="primary":disabled="unity && unity.floor_only  && unity.unt? false : true" @click="addUnity('r')">Agregar unidad</v-btn><br><br>
                     </v-layout>
@@ -89,7 +89,7 @@
                       <div v-for="(u, index) in unitsV" :key="index">
                         <v-card class="elevation-8 scroll">
                           <v-container>
-                            <v-layout row wra>
+                            <v-layout row wrap>
                               <v-flex xs12 sm12 md4>
                                 <label style="font-size:20px;"> Unidad </label>
                               </v-flex>
@@ -100,11 +100,11 @@
                                 <label style="font-size:20px;"> Disponible</label>
                               </v-flex>
                             </v-layout>
-                            <div row wra v-for="(t, index) in u.types" :key="index">
+                            <div row wrap v-for="(t, index) in u.types" :key="index">
 
                               <h3>{{u.name}} - {{t.type}}</h3><br>
 
-                              <v-layout row wra v-for="(n, index) in t.units" :key="index">
+                              <v-layout row wrap v-for="(n, index) in t.units" :key="index">
                                 <v-flex xs12 sm12 md4>
                                   <v-text-field v-model="n.unity" prepend-icon="email" name="address" label="Unidad" type="text"></v-text-field>
                                 </v-flex>

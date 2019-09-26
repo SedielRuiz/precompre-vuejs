@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout row wra justify-center>
+    <v-layout row wrap justify-center>
       <v-flex sm12 xs12 md10>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
@@ -10,7 +10,7 @@
             <v-btn v-if="edit == 0" color="error" @click="redirect(false)">Cancelar</v-btn>
           </v-toolbar>
           <v-card-text>
-              <v-layout row wra>
+              <v-layout row wrap>
                 <v-flex sm12 xs12 md6>
                   <v-text-field class="col-xs-12 col-sm-12 col-md-12" v-model="user.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
                 </v-flex>
@@ -18,7 +18,7 @@
                   <v-text-field class="col-xs-12 col-sm-12 col-md-12" v-model="user.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
-              <v-layout row wra>
+              <v-layout row wrap>
                 <v-flex sm12 xs12 md6>
                   <v-combobox class="col-xs-12 col-sm-12 col-md-12" v-model="user.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
                 </v-flex>

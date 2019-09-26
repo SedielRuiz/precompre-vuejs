@@ -12,7 +12,7 @@
           <v-card-text>
             <v-form>
                 <v-text-field v-model="attribute.code" prepend-icon="person" name="name" label="Nombre" type="text"></v-text-field>
-                <v-layout row wra>
+                <v-layout row wrap>
                     <v-flex xs12 md6>
                       <v-combobox v-model="attribute.type" :items="types" prepend-icon="reorder" label="Tipo"></v-combobox>
                     </v-flex>
@@ -27,7 +27,7 @@
                       </div>
                     </v-flex>
                 </v-layout>
-                <v-layout row wra>
+                <v-layout row wrap>
                     <v-flex xs12 md6>
                       <v-switch v-model="attribute.required" :label="'Requerido'"></v-switch>
                     </v-flex>

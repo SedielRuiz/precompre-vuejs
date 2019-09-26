@@ -12,7 +12,7 @@
           <v-card-text>
             <v-form>
                 <v-text-field :disabled="true" v-model="attribute.code" prepend-icon="person" name="name" label="Nombre" type="text"></v-text-field>
-                <v-layout row wra>
+                <v-layout row wrap>
                   <v-flex xs12 md6>
                     <v-combobox :disabled="true" v-model="attribute.type" :items="types" prepend-icon="reorder" label="Tipo"></v-combobox>
                   </v-flex>
@@ -26,7 +26,7 @@
                     <v-text-field v-show="false" :disabled="true" v-model="attribute.length_text" prepend-icon="view_module" name="length_text" label="Longitud" type="text"></v-text-field>
                 </div>
                 <v-text-field v-show="false" :disabled="true" v-model="attribute.default_value" prepend-icon="speaker_notes" name="name" label="Valor por defecto" type="text"></v-text-field>
-                <v-layout row wra>
+                <v-layout row wrap>
                   <v-flex xs12 md6>
                     <v-switch :disabled="true" v-model="attribute.required" :label="'Requerido'"></v-switch>
                   </v-flex>
