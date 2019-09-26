@@ -47,7 +47,7 @@
               </div>  
               <h2>Lugares de entrega</h2><hr><br>
               <div v-if="deliveryPlaces">
-                <v-chip v-for="(l, index) in deliveryPlaces" height="40px" width="115px" :key="index">{{l.name}} - {{l.unit_name}}</v-chip>
+                <v-chip v-for="(l, index) in deliveryPlaces" height="40px" width="115px" :key="index">{{l.name}} - {{l.cluster_title}}  {{l.unit_u}}</v-chip>
               </div>
             </v-form>
           </v-card-text>
