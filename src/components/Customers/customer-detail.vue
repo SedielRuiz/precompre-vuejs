@@ -4,15 +4,17 @@
       <v-flex xs12 sm8 md10>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
+            <v-icon large @click="redirect('back')">keyboard_backspace</v-icon>
             <v-toolbar-title>Detalle cliente</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn color="success" @click="resetPass()">Recuperar contraseña</v-btn>
             <v-btn color="success" v-show="false" click="redirect('pre')">Pre ordenes</v-btn>
             <v-btn color="success" v-show="false" @click="redirect('order')">Ordenes</v-btn>
             <v-btn color="success" v-show="false" @click="redirect('bill')">Facturas</v-btn>
-            <v-btn color="success" @click="redirect('edit')">Editar</v-btn>
-            <v-btn color="success" @click="redirect('back')">Volver</v-btn>
           </v-toolbar>
+          <div style="text-align:right;">
+            <v-btn color="success" @click="resetPass()">Recuperar contraseña</v-btn>
+            <v-btn color="success" @click="redirect('edit')">Editar</v-btn>
+          </div>
           <v-card-text>
             <v-form>
               <v-layout row wrap>
