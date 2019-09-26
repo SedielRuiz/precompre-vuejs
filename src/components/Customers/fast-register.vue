@@ -85,7 +85,9 @@
         buildCustomer(){
             this.customer.telephones = [{number:this.phone, main:true}]
             this.customer.campaign_code = this.campaigCode;
-            this.customer.code_delivery_place = this.deliveryCode;
+            if(this.deliveryCode){
+              this.customer.code_delivery_place = this.deliveryCode;
+            }
             return this.customer;
         },
         processCustomer () {
@@ -114,7 +116,7 @@
         if(this.edit){
           return false;
         }else{
-          if(this.customer && this.customer.name && this.campaigCode && this.deliveryCode){
+          if(this.customer && this.customer.name && this.campaigCode){
             return false; 
           }
           return true;
