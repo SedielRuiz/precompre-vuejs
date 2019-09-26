@@ -6,7 +6,6 @@
         </v-flex>
         <v-flex xs12 sm12 md10>
             <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
-            <v-btn color="success" @click="verify = true">Verificar código</v-btn>
             <v-btn color="success" @click="filt ? filt = false : filt = true">Filtrar</v-btn>
         </v-flex>
     </v-layout>
@@ -20,15 +19,18 @@
           <v-text-field v-model="filter.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
         </v-flex>
         <v-flex xs12 sm12 md4>
-          <v-text-field v-model="filter.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
+          <v-text-field v-model="filter.phone" prepend-icon="phone" name="phone" label="Teléfono" type="number"></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout row wra>
-        <v-flex xs12 sm12 md4>
+        <v-flex xs12 sm12 md3>
           <v-select v-model="filter.campaign" prepend-icon="account_box" :items="campaigns" label="Código de campaña"></v-select>
         </v-flex>
         <v-flex xs12 sm12 md2>
           <v-text-field v-model="filter.verify_code" prepend-icon="email" name="email" label="Código de verificación" type="text"></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm12 md3>
+          <v-text-field v-model="filter.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
         </v-flex>
         <v-flex xs12 sm12 md2>
           <v-spacer></v-spacer>
@@ -56,59 +58,6 @@
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
-    
-    <v-dialog v-model="verify" persistent>
-      <v-card class="elevation-12">
-        <v-toolbar dark color="primary">
-          <v-toolbar-title>Verificación</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn color="error" @click="verify = false">Cerrar</v-btn>
-        </v-toolbar>
-        <v-card-text>
-          <v-form>
-            <v-layout row wra>
-              <v-text-field v-model="verify_code" prepend-icon="email" @change="" name="title" label="Código" type="text"></v-text-field><br>
-            </v-layout>
-            <v-btn color="primary" :disabled="verify_code ? false : true" @click="findVerifyCode()">Consultar</v-btn><br>
-            <v-card style="overflow: auto;max-width: 100%;" v-if="info">
-              <v-container>
-                <v-layout row wra>
-                  <v-flex xs12 sm12 md4>
-                    <label style="font-size:18px;"></label>
-                  </v-flex>
-                  <v-flex xs12 sm12 md5>
-                    <label style="font-size:18px;"> Nombre </label>
-                  </v-flex>
-                  <v-flex xs12 sm12 md3>
-                    <label style="font-size:18px;"> Teléfono</label>
-                  </v-flex>
-                </v-layout><hr>
-                <v-layout row wra v-for="(c, index) in info" :key="index">
-                  <v-flex xs12 sm12 md4>
-                    <div v-if="c.telephones[0].verified">
-                      <i class="material-icons">check_circle_outline</i>
-                    </div>
-                    <div v-else>
-                      <v-checkbox align-center value @click="verifyNumberCode(c)" style="margin-top: -12px;"></v-checkbox>
-                      <!--v-btn color="success" @click="verifyNumberCode(c)">Validar</v-btn-->
-                    </div>
-                  </v-flex>
-                  <v-flex xs12 sm12 md5>
-                    {{c.name}} {{c.last_name}}
-                  </v-flex>
-                  <v-flex xs12 sm12 md3>
-                    {{c.telephones[0].number}}
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
@@ -156,35 +105,12 @@
     methods: {
       ...mapActions({
         fetchCustomers: 'customer/fetchCustomers',
-        verifyCode: 'customer/verifyCode',
-        findCode: 'customer/findCode',
         fetchCampaigns: 'campaign/fetchCampaigns',
         delete: 'customer/delete',
         setWarning: 'setWarning',
       }),
       searchFilter(){
         this.fetchCustomers();
-      },
-      verifyNumberCode(data){
-        this.verifyCode(data).then(
-          data => {
-            this.info = "";
-            this.verify_code = "";
-            this.verify = false;
-            this.fetchCustomers();
-          },
-          error => {
-            console.log(error);
-        });
-      },
-      findVerifyCode(){
-        this.findCode(this.verify_code).then(
-          data => {
-            this.info = data.result_set;
-          },
-          error => {
-            console.log(error);
-        });
       },
       deleteCustomer(id){
         if(confirm("¿ Seguro que desea eliminar este registro ? ")){

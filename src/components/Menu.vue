@@ -16,15 +16,6 @@
                 </v-list-tile-content>
             </v-list-tile>
             <v-divider></v-divider>
-            <v-list-tile @click="dirigir('/customerFastRegister')">
-                <v-list-tile-action>
-                <v-icon>assignment</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                <v-list-tile-title>Registro rápido</v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
-            <v-divider></v-divider>
             <v-list-group prepend-icon="assignment" value="true">
               <template v-slot:activator>
                 <v-list-tile>
@@ -85,12 +76,26 @@
                   <v-list-tile-title>Clientes</v-list-tile-title>
                 </v-list-tile>
               </template>
+              <v-list-tile @click="dirigir('/customerFastRegister')">
+                <v-list-tile-action>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                <v-list-tile-title>Registro rápido</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile @click="dirigir('/verifyCode')">
+                <v-list-tile-action>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                <v-list-tile-title>Verificar código</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/groupList')">
-                  <v-list-tile-action>
-                  </v-list-tile-action>
-                  <v-list-tile-content>
-                  <v-list-tile-title>Grupo</v-list-tile-title>
-                  </v-list-tile-content>
+                <v-list-tile-action>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                <v-list-tile-title>Grupo</v-list-tile-title>
+                </v-list-tile-content>
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/customerList')">
                   <v-list-tile-action>

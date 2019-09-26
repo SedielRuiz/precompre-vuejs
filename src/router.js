@@ -39,6 +39,7 @@ import CustomerList from '@/components/Customers/customer-list';
 import CustomerManage from '@/components/Customers/customer-manage';
 import CustomerDetail from '@/components/Customers/customer-detail';
 import CustomerFastRegister from '@/components/Customers/fast-register';
+import CustomerverifyCode from '@/components/Customers/verify-code';
 /**Grupos**/
 import GroupList from '@/components/Groups/group-list';
 import GroupManage from '@/components/Groups/group-manage';
@@ -292,6 +293,12 @@ const router = new Router({
         name: 'customerFastRegister',
         component: CustomerFastRegister,
         meta: { Auth: true, title: 'Registro rápido' },
+    },
+    {
+        path: '/verifyCode',
+        name: 'verifyCode',
+        component: CustomerverifyCode,
+        meta: { Auth: true, title: 'Verificar código' },
     },
     /**Grupos**/
     {
