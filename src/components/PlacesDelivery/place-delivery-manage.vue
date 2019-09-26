@@ -45,11 +45,14 @@
                     </v-layout>
                     <h3>Masivo</h3><hr>
                     <v-layout row wrap>
-                      <v-flex xs12 sm12 md6>
+                      <v-flex xs12 sm12 md4>
                         <v-combobox v-model="floor" prepend-icon="email" name="floor" :items="floors" label="Pisos"></v-combobox>
                       </v-flex>
-                      <v-flex xs12 sm12 md6>
+                      <v-flex xs12 sm12 md4>
                         <v-text-field v-model="unity.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
+                      </v-flex>
+                      <v-flex xs12 sm12 md4>
+                        <v-text-field v-model="unity.start" prepend-icon="email" name="start" label="Inicio" type="number"></v-text-field>
                       </v-flex>
                     </v-layout>
                     <v-layout row wrap>
@@ -243,12 +246,15 @@
         if(idx === ""){
           if(opc == "m"){
             this.inside.push({text:group, value:group});
-            var floorss = []
+            var floorss = [];
             //Lleno las unidades
             for(var p = 1; p <= this.floor; p++){
               units = [];
+              var n = this.unity.start ? this.unity.start : 1;
+              var j = 1;
               for(var s = 1; s <= this.unity.quantity; s++){
-                unit = p+(s < 10 ? "0"+s : s);
+                j = Number(s) + Number(this.unity.start) - 1;
+                unit = p+""+( j < 10 ? "0"+j : j);
                 units.push({u: unit,observations:"",state:true});
               }
               floorss.push({"number":p, "types":[ {"_type":this.unity.type.value, "units": units} ] });
@@ -259,6 +265,7 @@
               floors:floorss
             });
             this.floor = "";
+            this.unity.start = "";
           }else{
             var flr = this.floor ? this.floor : this.unity.floor_unit;
             //Lleno las unidades
@@ -298,8 +305,11 @@
 
               //Lleno las unidades
               units = [];
-              for(var s = 1; s <= this.unity.quantity; s++){
-                unit = p+(s < 10 ? "0"+s : s);
+              var n = this.unity.start ? this.unity.start : 1;
+              var j = 1;
+              for(var s; s <= this.unity.quantity; s++){
+                j = Number(s) + Number(this.unity.start) - 1;
+                unit = p +""+( j < 10 ? "0"+j : j );
                 units.push({u: unit,observations:"",state:true});
               }
 
@@ -547,6 +557,7 @@
           this.typeCompos("apto");
           if(compos){unts.push(compos);}
         }
+        this.units.push();
       },
       buildPlace(){
         this.buildUnities();

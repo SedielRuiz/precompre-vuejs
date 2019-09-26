@@ -4,7 +4,12 @@
       <v-flex xs12 sm8 md10>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
-            <v-icon large @click="redirect('back')">keyboard_backspace</v-icon>
+          <v-tooltip>
+            <template v-slot:activator="{ on }">
+              <v-icon large @click="redirect('back')" v-on="on" >keyboard_backspace</v-icon>
+            </template>
+            <span>Volver</span>
+          </v-tooltip>
             <v-toolbar-title>Detalle cliente</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn color="success" v-show="false" click="redirect('pre')">Pre ordenes</v-btn>
