@@ -146,7 +146,7 @@
               this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type });
             this.phones = val.telephones;
             for(var s = 0; s < val.delivery_places.length; s++){
-              this.placesSelected.push({"name":val.delivery_places[s].name, "id":val.delivery_places[s].id, "unit":val.delivery_places[s].unit, "_type":val.delivery_places[s]._type});
+              this.placesSelected.push({"name":val.delivery_places[s].name, "floor":val.delivery_places[s].floor, "cluster":val.delivery_places[s].cluster, "id":val.delivery_places[s].id, "unit":val.delivery_places[s].unit, "_type":val.delivery_places[s]._type});
             }
           }
         },
@@ -176,7 +176,7 @@
                 this.clusters = [];
                 this.typesPlaces = [];
                 for(var r = 0; r < val.clusters.length; r++){
-                  this.clusters.push({"text":val.clusters[r].title, "value":val.clusters[r].floors});
+                  this.clusters.push({"text":val.clusters[r].title, "id":val.clusters[r]._id, "value":val.clusters[r].floors});
                 }
             }
         },
@@ -184,8 +184,8 @@
             if(val){
                 this.units = [];
                 for(var s = 0; s < val.list.length; s++){
-                  for(var r = 0; r < val.list[s].units.length; r++){
-                    this.units.push({"text":val.list[s].units[r].u, "value":val.list[s].units[r]._id});
+                  for(var r = 0; r < val.list[s].unities.units.length; r++){
+                    this.units.push({"text":val.list[s].unities.units[r].u, "floor":val.list[s].floor, "value":val.list[s].unities.units[r]._id});
                   }
                 }
             }
@@ -224,7 +224,7 @@
           for(var s = 0; s < val.length; s++){
             for(var r = 0; r < val[s].types.length; r++){
               if(val[s].types[r]._type == type){
-                unt.push(val[s].types[r]);
+                unt.push({floor:val[s]._id, unities:val[s].types[r]});
               }
             }
           }
@@ -239,12 +239,15 @@
         selectedPlace(){
             this.place.id = this.placeDelivery.value;
             this.place._type = this.typeSeleted.value;
+            this.place.floor = this.place.unit.floor;
             this.place.unit = this.place.unit.value;
+            this.place.cluster = this.cluster.id;
             this.place.name = this.place.name && this.place.name.value ? this.place.name.value : this.place.name;
             this.placesSelected.push(this.place);
             this.place = {};
             this.typeSeleted = "";
             this.addPlace = false;
+            this.placesSelected.push();
         },
         addPhone(){
           if(this.phone.number){
