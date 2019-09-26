@@ -36,49 +36,49 @@
                   <v-text-field v-model="customer.campaign_code" prepend-icon="person" name="id_description" label="Código de campaña" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
-                <v-combobox v-if="edit!=''" v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-                <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
-                <div v-if="phones.length > 0">
-                  <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
-                </div>
-                <br>
-                <div v-if="addNumber" class="row col-md-8">
-                  <v-card style="height: 100%;width: 84%; padding: 31px;">
-                    <!--TELEFONOS-->
-                    <label style="font-size: 18px;">Nuevo teléfono</label><hr>
-                    <v-text-field v-model="phone.number" prepend-icon="call" name="number" label="Número" type="number"></v-text-field>
-                    <v-combobox v-model="!phone.type ? phone.type = 'Movil' : phone.type" :items="typesPhone" prepend-icon="call" label="Tipo de número"></v-combobox>
-                    <v-switch v-model="phones.length == 0 ? phone.main = true : phone.main" :label="'Principal'"></v-switch>
-                    <label v-if="phones.length > 0">Recuerde que si selecciona este como principal se anularan los anteriores como principal.</label>
-                    <v-btn color="primary" :disabled="phone.number ? false : true" @click="addPhone()">Agregar</v-btn>
-                    <!--TELEFONOS-->
-                  </v-card><br>
-                </div>
-                <h2>Lugares de entrega <v-icon medium @click="addPlace ? addPlace = false : addPlace = true">add</v-icon></h2><br>
-                <div v-if="placesSelected.length > 0">
-                  <v-chip v-for="(p, index) in placesSelected" :key="index">{{p.name}} <v-icon medium @click="removePlace(index)">close</v-icon></v-chip>
-                </div>
-                <div v-if="addPlace" class="row col-md-8">
-                  <v-card style="height: 100%;width: 84%; padding: 31px;">
-                    <label style="font-size: 18px;">Nuevo lugar de entrega</label><hr>
-                    <!--LUGARES DE ENTREGA-->
-                    <v-combobox v-model="place.name" :items="suggestions" prepend-icon="receipt" label="Nombre"></v-combobox>
-                    <v-combobox v-model="placeDelivery" :items="placesDelivery" prepend-icon="location_on" label="Lugar de entrega"></v-combobox>
-                    <v-layout row wrap>
-                      <v-flex xs12 sm12 md6>
-                        <v-combobox v-if="clusters.length > 0" v-model="cluster" :items="clusters" prepend-icon="list_alt" label="Agrupación"></v-combobox>
-                      </v-flex>
-                      <v-flex xs12 sm12 md6>
-                        <v-combobox v-if="typesPlaces.length > 0" v-model="typeSeleted" :items="typesPlaces" prepend-icon="list_alt" label="Tipo de domicilio"></v-combobox>
-                      </v-flex>
-                    </v-layout>
-                    <v-combobox v-if="units.length > 0" v-model="place.unit" :items="units" prepend-icon="create" label="Unidad"></v-combobox>
-                    <v-btn color="primary" @click="selectedPlace()">Agregar</v-btn>
-                    <!--LUGARES DE ENTREGA-->
-                  </v-card><br>
-                </div>
-              <label style="font-size: 19px;">Fecha de nacimiento.</label><br>
-              <v-date-picker v-model="customer.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker>
+              <v-text-field v-model="customer.birth_date" prepend-icon="email" name="birth_date" label="Fecha de nacimiento" type="date"></v-text-field>
+              <v-combobox v-if="edit!=''" v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
+              <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
+              <div v-if="phones.length > 0">
+                <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
+              </div>
+              <br>
+              <div v-if="addNumber" class="row col-md-8">
+                <v-card style="height: 100%;width: 84%; padding: 31px;">
+                  <!--TELEFONOS-->
+                  <label style="font-size: 18px;">Nuevo teléfono</label><hr>
+                  <v-text-field v-model="phone.number" prepend-icon="call" name="number" label="Número" type="number"></v-text-field>
+                  <v-combobox v-model="!phone.type ? phone.type = 'Movil' : phone.type" :items="typesPhone" prepend-icon="call" label="Tipo de número"></v-combobox>
+                  <v-switch v-model="phones.length == 0 ? phone.main = true : phone.main" :label="'Principal'"></v-switch>
+                  <label v-if="phones.length > 0">Recuerde que si selecciona este como principal se anularan los anteriores como principal.</label>
+                  <v-btn color="primary" :disabled="phone.number ? false : true" @click="addPhone()">Agregar</v-btn>
+                  <!--TELEFONOS-->
+                </v-card><br>
+              </div>
+              <h2>Lugares de entrega <v-icon medium @click="addPlace ? addPlace = false : addPlace = true">add</v-icon></h2><br>
+              <div v-if="placesSelected.length > 0">
+                <v-chip v-for="(p, index) in placesSelected" :key="index">{{p.name}} <v-icon medium @click="removePlace(index)">close</v-icon></v-chip>
+              </div>
+              <div v-if="addPlace" class="row col-md-8">
+                <v-card style="height: 100%;width: 84%; padding: 31px;">
+                  <label style="font-size: 18px;">Nuevo lugar de entrega</label><hr>
+                  <!--LUGARES DE ENTREGA-->
+                  <v-combobox v-model="place.name" :items="suggestions" prepend-icon="receipt" label="Nombre"></v-combobox>
+                  <v-combobox v-model="placeDelivery" :items="placesDelivery" prepend-icon="location_on" label="Lugar de entrega"></v-combobox>
+                  <v-layout row wrap>
+                    <v-flex xs12 sm12 md6>
+                      <v-combobox v-if="clusters.length > 0" v-model="cluster" :items="clusters" prepend-icon="list_alt" label="Agrupación"></v-combobox>
+                    </v-flex>
+                    <v-flex xs12 sm12 md6>
+                      <v-combobox v-if="typesPlaces.length > 0" v-model="typeSeleted" :items="typesPlaces" prepend-icon="list_alt" label="Tipo de domicilio"></v-combobox>
+                    </v-flex>
+                  </v-layout>
+                  <v-combobox v-if="units.length > 0" v-model="place.unit" :items="units" prepend-icon="create" label="Unidad"></v-combobox>
+                  <v-btn color="primary" @click="selectedPlace()">Agregar</v-btn>
+                  <!--LUGARES DE ENTREGA-->
+                </v-card><br>
+              </div>
+              <!--v-date-picker v-model="customer.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker-->
             </v-form>
           </v-card-text>
           <v-card-actions>

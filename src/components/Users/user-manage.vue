@@ -10,45 +10,45 @@
             <v-btn v-if="edit == 0" color="error" @click="redirect(false)">Cancelar</v-btn>
           </v-toolbar>
           <v-card-text>
-              <v-layout row wrap>
-                <v-flex sm12 xs12 md6>
-                  <v-text-field class="col-xs-12 col-sm-12 col-md-12" v-model="user.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
-                </v-flex>
-                <v-flex sm12 xs12 md6>
-                  <v-text-field class="col-xs-12 col-sm-12 col-md-12" v-model="user.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
-                </v-flex>
-              </v-layout>
-              <v-layout row wrap>
-                <v-flex sm12 xs12 md6>
-                  <v-combobox class="col-xs-12 col-sm-12 col-md-12" v-model="user.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
-                </v-flex>
-                <v-flex sm12 xs12 md6>
-                  <v-text-field class="col-xs-12 col-sm-12 col-md-12" v-model="user.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
-                </v-flex>
-              </v-layout>
-                <v-text-field v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
-                <v-combobox class="col-xs-12 col-sm-12 col-md-12" v-model="user.role_id" prepend-icon="account_box" :items="roles" label="Rol"></v-combobox>
-                <v-combobox v-if="edit!=''" v-model="user.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-                <!--v-text-field v-if="edit==''" v-model="user.password" prepend-icon="lock" name="password" label="Contraseña" type="password"></v-text-field-->
-                <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
-                <div v-if="phones.length > 0">
-                  <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
-                </div>
-                <br>
-                <div v-if="addNumber" class="row col-md-8">
-                  <v-card style="height: 100%;width: 84%; padding: 31px;">
-                    <!--TELEFONOS-->
-                    <label style="font-size: 18px;">Nuevo teléfono</label><hr>
-                    <v-text-field v-model="phone.number" prepend-icon="call" name="number" label="Número" type="number"></v-text-field>
-                    <v-combobox v-model="!phone.type ? phone.type = 'Movil' : phone.type" :items="typesPhone" prepend-icon="call" label="Tipo de número"></v-combobox>
-                    <label v-if="phones.length > 0">Recuerde que si selecciona este como principal se anularan los anteriores como principal.</label>
-                    <v-switch v-model="phones.length == 0 ? phone.main = true : phone.main" :label="'Principal'"></v-switch>
-                    <v-btn color="primary" :disabled="phone.number ? false : true" @click="addPhone()">Agregar</v-btn>
-                    <!--TELEFONOS-->
-                  </v-card><br>
-                </div>
-                <label style="font-size: 19px;">Fecha de nacimiento.</label><br>
-                <v-date-picker v-model="user.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker>
+          <v-layout row wrap>
+            <v-flex sm12 xs12 md6>
+              <v-text-field class="col-xs-12 col-sm-12 col-md-12" v-model="user.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
+            </v-flex>
+            <v-flex sm12 xs12 md6>
+              <v-text-field class="col-xs-12 col-sm-12 col-md-12" v-model="user.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
+            </v-flex>
+          </v-layout>
+          <v-layout row wrap>
+            <v-flex sm12 xs12 md6>
+              <v-combobox class="col-xs-12 col-sm-12 col-md-12" v-model="user.id_type" prepend-icon="account_box" :items="typesIdentification" label="Tipo de identificación"></v-combobox>
+            </v-flex>
+            <v-flex sm12 xs12 md6>
+              <v-text-field class="col-xs-12 col-sm-12 col-md-12" v-model="user.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
+            </v-flex>
+          </v-layout>
+          <v-text-field v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
+          <v-combobox class="col-xs-12 col-sm-12 col-md-12" v-model="user.role_id" prepend-icon="account_box" :items="roles" label="Rol"></v-combobox>
+          <v-text-field v-model="user.birth_date" prepend-icon="email" name="birth_date" label="Fecha de nacimiento" type="date"></v-text-field>
+          <v-combobox v-if="edit!=''" v-model="user.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
+          <!--v-text-field v-if="edit==''" v-model="user.password" prepend-icon="lock" name="password" label="Contraseña" type="password"></v-text-field-->
+          <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
+          <div v-if="phones.length > 0">
+            <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
+          </div>
+          <br>
+          <div v-if="addNumber" class="row col-md-8">
+            <v-card style="height: 100%;width: 84%; padding: 31px;">
+              <!--TELEFONOS-->
+              <label style="font-size: 18px;">Nuevo teléfono</label><hr>
+              <v-text-field v-model="phone.number" prepend-icon="call" name="number" label="Número" type="number"></v-text-field>
+              <v-combobox v-model="!phone.type ? phone.type = 'Movil' : phone.type" :items="typesPhone" prepend-icon="call" label="Tipo de número"></v-combobox>
+              <label v-if="phones.length > 0">Recuerde que si selecciona este como principal se anularan los anteriores como principal.</label>
+              <v-switch v-model="phones.length == 0 ? phone.main = true : phone.main" :label="'Principal'"></v-switch>
+              <v-btn color="primary" :disabled="phone.number ? false : true" @click="addPhone()">Agregar</v-btn>
+              <!--TELEFONOS-->
+            </v-card><br>
+          </div>
+          <!--v-date-picker v-model="user.birth_date" :landscape="true" :reactive="true" label="Fecha de nacimiento"></v-date-picker-->
           </v-card-text>
           <v-card-actions>
             <v-btn color="primary" :disabled="trySend" style="width: 100%;" @click="processUser()">Guardar</v-btn>
