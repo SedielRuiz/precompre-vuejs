@@ -1,13 +1,40 @@
 <template>
   <v-container>
-    <div class="row col-md-10">
-        <div class="col-md-8">
+    <v-layout row wra>
+        <v-flex xs12 sm12 md2>
             <h1>Clientes</h1>
-        </div>
-        <div class="col-md-2">
+        </v-flex>
+        <v-flex xs12 sm12 md10>
             <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
             <v-btn color="success" @click="verify = true">Verificar código</v-btn>
-        </div>
+            <v-btn color="success" @click="filt ? filt = false : filt = true">Filtrar</v-btn>
+        </v-flex>
+    </v-layout>
+    <div v-if="filt"><br>
+      <label style="font-size:20px;">Filtros</label><hr>
+      <v-layout row wra>
+        <v-flex xs12 sm12 md4>
+          <v-text-field v-model="filter.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm12 md4>
+          <v-text-field v-model="filter.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm12 md4>
+          <v-text-field v-model="filter.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
+        </v-flex>
+      </v-layout>
+      <v-layout row wra>
+        <v-flex xs12 sm12 md4>
+          <v-select v-model="filter.campaign" prepend-icon="account_box" :items="campaigns" label="Código de campaña"></v-select>
+        </v-flex>
+        <v-flex xs12 sm12 md2>
+          <v-text-field v-model="filter.verify_code" prepend-icon="email" name="email" label="Código de verificación" type="text"></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm12 md2>
+          <v-spacer></v-spacer>
+          <v-btn color="success" @click="searchFilter()"><v-icon medium>search</v-icon></v-btn>
+        </v-flex>
+      </v-layout>
     </div>
     <hr><br>
     <v-data-table
@@ -108,19 +135,36 @@
         verify:false,
         verify_code:"",
         info:"",
+        filt:false,
+        filter:{},
+        campaigns:[],
       }
+    },
+    watch:{
+        campa(val){
+            if(val){
+                for(var s = 0; s < val.length; s++){
+                    this.campaigns.push({ "text":val[s].code_promo, "value":val[s]._id });
+                }
+            }
+        },
     },
     mounted () {
       this.fetchCustomers();
+      this.fetchCampaigns();
     },
     methods: {
       ...mapActions({
         fetchCustomers: 'customer/fetchCustomers',
         verifyCode: 'customer/verifyCode',
         findCode: 'customer/findCode',
+        fetchCampaigns: 'campaign/fetchCampaigns',
         delete: 'customer/delete',
         setWarning: 'setWarning',
       }),
+      searchFilter(){
+        this.fetchCustomers();
+      },
       verifyNumberCode(data){
         this.verifyCode(data).then(
           data => {
@@ -173,6 +217,7 @@
         page_size: state => state.customer.page_size,
         total_items: state => state.customer.total_items,
         total_pages: state => state.customer.total_pages,
+        campa: state => state.campaign.campaigns,
       }),
     },
   }

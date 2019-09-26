@@ -81,7 +81,7 @@
             <v-divider></v-divider>
             <v-list-group prepend-icon="assignment" value="true">
               <template v-slot:activator>
-                <v-list-tile @click="dirigir('/customerList')">
+                <v-list-tile>
                   <v-list-tile-title>Clientes</v-list-tile-title>
                 </v-list-tile>
               </template>
@@ -90,6 +90,13 @@
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Grupo</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile class="subMenu" @click="dirigir('/customerList')">
+                  <v-list-tile-action>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Lista de clientes</v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/customerListList')">
@@ -221,7 +228,7 @@
             
             <v-list-group prepend-icon="assignment" value="true">
               <template v-slot:activator>
-                <v-list-tile @click="dirigir('/userList')">
+                <v-list-tile>
                   <v-list-tile-title>Usuarios</v-list-tile-title>
                 </v-list-tile>
               </template>
@@ -233,12 +240,18 @@
                   <v-list-tile-title>Permisos</v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
-
               <v-list-tile class="subMenu" @click="dirigir('/roleList')">
                   <v-list-tile-action>
                   </v-list-tile-action>
                   <v-list-tile-content>
                   <v-list-tile-title>Roles</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile class="subMenu" @click="dirigir('/userList')">
+                  <v-list-tile-action>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Lista de usuarios</v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
             </v-list-group>
