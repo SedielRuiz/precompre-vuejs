@@ -52,7 +52,7 @@
                         <v-text-field v-model="unity.quantity" prepend-icon="email" name="address" label="Cantidad" type="number"></v-text-field>
                       </v-flex>
                       <v-flex xs12 sm12 md4>
-                        <v-text-field v-model="unity.start" prepend-icon="email" name="start" label="Inicio" type="number"></v-text-field>
+                        <v-text-field v-model="unity.start ? unity.start : unity.start = 1" prepend-icon="email" name="start" label="Inicio" type="number"></v-text-field>
                       </v-flex>
                     </v-layout>
                     <v-layout row wrap>
@@ -265,7 +265,7 @@
               floors:floorss
             });
             this.floor = "";
-            this.unity.start = "";
+            this.unity.start = 1;
           }else{
             var flr = this.floor ? this.floor : this.unity.floor_unit;
             //Lleno las unidades
@@ -363,6 +363,7 @@
               }
               
             }
+            this.unity.start = 1;
           }else{
             var flr = -1;
             units = [];
