@@ -21,10 +21,10 @@
             <v-btn color="success" @click="redirect('edit')">Editar</v-btn>
           </div>
           <v-card-text>
-            <v-form>
-              <v-layout row wrap>
+            <v-form style="">
+              <v-layout row wrap >
                 <v-flex xs12 sm12 md6>
-                  <v-text-field :disabled="true" v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
+                  <v-text-field :disabled="true" class="word" style="color:#363333;" v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm12 md6>
                   <v-text-field :disabled="true" v-model="customer.last_name" prepend-icon="person" name="last_name" label="Apellidos" type="text"></v-text-field>
@@ -59,7 +59,12 @@
     </v-layout>
   </v-container>
 </template>
-
+<style>
+  .theme--light {
+    color: none important;
+    background: none important;
+  }
+</style>
 <script>
   import {mapActions,mapState} from 'vuex';
   
