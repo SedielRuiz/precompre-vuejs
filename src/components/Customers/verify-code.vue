@@ -23,7 +23,7 @@
                   <v-card style="overflow: auto;max-width: 100%;" v-if="info">
                       <v-container><hr>
                           <v-layout row wrap v-for="(c, index) in info" style="text-align:center;" :key="index">
-                              <v-flex xs12 sm12 md3>
+                              <v-flex xs12 sm12 md1>
                                   <div v-if="c.telephones[0].verified">
                                   <i class="material-icons">check_circle_outline</i>
                                   </div>
