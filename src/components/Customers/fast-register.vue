@@ -59,7 +59,7 @@
         places(val){
             if(val){
                 for(var s = 0; s < val.length; s++){
-                    this.deliveryCodes.push({ "text":val[s].welcome_code, "value":val[s].welcome_code });
+                    this.deliveryCodes.push({ "text":val[s].welcome_code, "value":val[s]._id });
                 }
             }
         },
