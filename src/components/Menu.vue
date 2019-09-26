@@ -16,7 +16,7 @@
                 </v-list-tile-content>
             </v-list-tile>
             <v-divider></v-divider>
-            <v-list-tile @click="dirigir('/')">
+            <v-list-tile @click="dirigir('/customerFastRegister')">
                 <v-list-tile-action>
                 <v-icon>assignment</v-icon>
                 </v-list-tile-action>
@@ -277,7 +277,7 @@
       <router-view></router-view>
     </v-content>
     <v-footer color="indigo" app>
-      <span class="white--text">&copy; v0.0.34</span>
+      <span class="white--text">&copy; v0.0.35</span>
     </v-footer>
   </v-app>
 </template>

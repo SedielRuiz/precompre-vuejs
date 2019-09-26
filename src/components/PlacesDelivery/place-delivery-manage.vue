@@ -554,6 +554,7 @@
         this.place.clusters = this.units;
         this.place.country = this.place.country.value;
         this.place.city = this.place.city.value;
+        this.place.welcome_code = this.place.welcome_code.toLowerCase().split(" ").join("_");
         return this.place;
       },
       processPlace () {

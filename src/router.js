@@ -38,6 +38,7 @@ import PlaceDeliveryDetail from '@/components/PlacesDelivery/place-delivery-deta
 import CustomerList from '@/components/Customers/customer-list';
 import CustomerManage from '@/components/Customers/customer-manage';
 import CustomerDetail from '@/components/Customers/customer-detail';
+import CustomerFastRegister from '@/components/Customers/fast-register';
 /**Grupos**/
 import GroupList from '@/components/Groups/group-list';
 import GroupManage from '@/components/Groups/group-manage';
@@ -285,6 +286,12 @@ const router = new Router({
         name: 'customerManageUpdate',
         component: CustomerManage,
         meta: { Auth: true, title: 'Editar cliente' },
+    },
+    {
+        path: '/customerFastRegister',
+        name: 'customerFastRegister',
+        component: CustomerFastRegister,
+        meta: { Auth: true, title: 'Registro rápido' },
     },
     /**Grupos**/
     {
