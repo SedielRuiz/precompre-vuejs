@@ -253,7 +253,7 @@
               var n = this.unity && this.unity.start ? this.unity.start : 1;
               var j = 1;
               for(var s = 1; s <= this.unity.quantity; s++){
-                j = Number(s) + Number(this.unity.start) - 1;
+                j = Number(s) + Number(n) - 1;
                 unit = p+""+( j < 10 ? "0"+j : j);
                 units.push({u: unit,observations:"",state:true});
               }
@@ -308,7 +308,7 @@
               var n = this.unity && this.unity.start ? this.unity.start : 1;
               var j = 1;
               for(var s; s <= this.unity.quantity; s++){
-                j = Number(s) + Number(this.unity.start) - 1;
+                j = Number(s) + Number(n) - 1;
                 unit = p +""+( j < 10 ? "0"+j : j );
                 units.push({u: unit,observations:"",state:true});
               }
