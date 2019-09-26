@@ -22,13 +22,13 @@
                   </v-layout>
                   <v-card style="overflow: auto;max-width: 100%;" v-if="info">
                       <v-container><hr>
-                          <v-layout row wrap v-for="(c, index) in info" :key="index">
+                          <v-layout row wrap v-for="(c, index) in info" align-center :key="index">
                               <v-flex xs12 sm12 md3>
                                   <div v-if="c.telephones[0].verified">
                                   <i class="material-icons">check_circle_outline</i>
                                   </div>
                                   <div v-else>
-                                  <v-checkbox align-center value @click="verifyNumberCode(c)" style="margin-top: -12px;"></v-checkbox>
+                                  <v-checkbox align-center value @click="verifyNumberCode(c)"></v-checkbox>
                                   <!--v-btn color="success" @click="verifyNumberCode(c)">Validar</v-btn-->
                                   </div>
                               </v-flex>
@@ -45,7 +45,7 @@
                       </v-container>
                   </v-card>
               </div><br>
-              <label style="font-size:20px;">Reenviar código de teléfono</label><v-icon medium @click="send ? send = false : send = true">keyboard_arrow_down</v-icon><hr>
+              <label style="font-size:20px;">Buscar por teléfono</label><v-icon medium @click="send ? send = false : send = true">keyboard_arrow_down</v-icon><hr>
               <div v-if="send">
                   <v-layout row wrap>
                     <v-flex sm12 xs12 md8>
