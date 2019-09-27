@@ -55,9 +55,10 @@
             },
             sendObservation(){
                 var data = {
+                    _id: this.id,
                     observations: { description: this.observation },
                 };
-                Vue.http.post(this.routeEdit+"/"+this.id, data).then(
+                Vue.http.post(this.routeEdit, data).then(
                     response =>{
                         this.fetchObservations();
                     }).catch(error=>{
