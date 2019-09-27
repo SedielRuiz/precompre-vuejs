@@ -123,16 +123,16 @@
       },
       searchFilter(){
         if(this.numberPhone || this.verifyCode){
-          var telephones = { number:"", verification_code:"" };
+          var telephones =  { $elemMatch: { number:"", verification_code:"" } };
         }
         if(this.numberPhone){
-          telephones.number = this.numberPhone;
+          telephones.$elemMatch.number = this.numberPhone;
         }
         if(this.verifyCode){
-          telephones.verification_code = this.verifyCode;
+          telephones.$elemMatch.verification_code = this.verifyCode;
         }
+        console.log(telephones);
         this.fetchFilter({"filters":this.filter, "telephones":telephones});
-        //this.filter = {};
       },
       deleteCustomer(id){
         if(confirm("¿ Seguro que desea eliminar este registro ? ")){
