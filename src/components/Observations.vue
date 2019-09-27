@@ -106,7 +106,7 @@
                 console.log(this.observations);
             },
             fetchObservations(){
-                /*Vue.http.post(this.route+"/"+id).then(
+                /*Vue.http.post(this.route+"/"+this.id).then(
                     response =>{
                         this.observations = response.data;
                     }).catch(error=>{
@@ -115,7 +115,7 @@
                 });*/
             },
             sendObservation(){
-                /*Vue.http.post(this.route+"/"+id).then(
+                /*Vue.http.post(this.route+"/"+this.id).then(
                     response =>{
                         this.fetchObservations();
                     }).catch(error=>{

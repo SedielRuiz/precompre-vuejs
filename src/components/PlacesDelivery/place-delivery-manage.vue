@@ -261,7 +261,13 @@
             this.floor = "";
             this.unity.start = "";
           }else{
-            var flr = this.floor ? this.floor : this.unity.floor_unit;
+            var flr = "";
+            if(opc == "s"){
+              flr = this.unity.floor_unit;
+            }else if(opc == "r"){
+              flr = this.unity.floor_only;
+            }
+
             //Lleno las unidades
             for(var s = 1; s <= this.unity.quantity; s++){
               unit = flr+(s < 10 ? "0"+s : s);
