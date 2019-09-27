@@ -36,6 +36,9 @@
                       @click="center=place.coords">
                   </gmap-marker>
               </gmap-map><br>
+              <div>
+                <observations></observations>
+              </div>
               <h2>Unidades</h2><hr><br><br>
               <div v-if="unitsV.length > 0">
                     <div v-for="(u, index) in unitsV" :key="index">
@@ -89,10 +92,13 @@
 </style>
 <script>
   import {mapActions,mapState} from 'vuex';
+  import Observations from "@/components/Observations";
   
   export default {
-    
     name: 'user-manage',
+    components:{
+      Observations,
+    },
     data () {
       return {
         center: {},

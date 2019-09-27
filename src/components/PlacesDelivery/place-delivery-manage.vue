@@ -138,12 +138,6 @@
     </v-layout>
   </v-container>
 </template>
-<style>
-  .scroll{
-    height: 305px;
-    overflow:auto;
-  }
-</style>
 <script>
   import {mapActions,mapState} from 'vuex';
   import GoogleMap from "@/components/GoogleMap";
@@ -151,7 +145,7 @@
   export default {
     name: 'place-manage',
     components: {
-      GoogleMap
+      GoogleMap,
     },
     data () {
       return {
@@ -427,8 +421,16 @@
                 units.push({u: this.unity.unt, observations:"", state:true});
               }
               //Si el piso no existe
+              var pss = "";
+              if(opc == "s"){
+                pss = this.unity.floor_unit;
+              }else if(opc == "m"){
+                pss = this.floor
+              }else if(opc == "r"){
+                pss = this.unity.floor_only;
+              }
               var floor = {
-                number:this.floor, 
+                number:pss, 
                 types:[{
                     _type: this.unity.type.value,
                     units:units
