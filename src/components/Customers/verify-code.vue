@@ -10,7 +10,7 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
-              <label style="font-size:20px;">Verificar código de teléfono</label><v-icon medium @click="verify ? verify = false : verify = true">keyboard_arrow_down</v-icon><hr>
+              <label style="font-size:20px;">Validación de registro</label><v-icon medium @click="verify ? verify = false : verify = true">keyboard_arrow_down</v-icon><hr>
               <div v-if="verify">
                   <v-layout row wrap>
                     <v-flex sm12 xs12 md8>
