@@ -104,7 +104,7 @@
         campa(val){
             if(val){
                 for(var s = 0; s < val.length; s++){
-                    this.campaigns.push({ "text":val[s].code_promo, "value":val[s]._id });
+                    this.campaigns.push({ "text":val[s].code_promo, "value":val[s].code_promo });
                 }
             }
         },
