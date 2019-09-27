@@ -42,20 +42,20 @@
     <v-data-table
         :headers="headers"
         :items="rows"
-        :pagination.sync="pagination"
         hide-actions
+        :pagination.sync="pagination"
         class="elevation-1">
         <template v-slot:items="props">
-        <td>{{ props.item.created_at.split("T")[0].split("-")[2] +"/"+ props.item.created_at.split("T")[0].split("-")[1] +"/"+ props.item.created_at.split("T")[0].split("-")[0]}} <br>{{getHour(props.item.created_at)}}</td>
-        <td>{{ props.item.name }} {{ props.item.last_name }}</td>
-        <td>{{ props.item.email }}</td>
-        <td>{{ props.item.telephones.length > 0 ? (props.item.telephones.find(element=>{return element.main == true}) && props.item.telephones.find(element=>{return element.main == true}).number ? props.item.telephones.find(element=>{return element.main == true}).number : "") : "" }}</td>
-        <td>{{ props.item.campaign_code ? props.item.campaign_code : ""}}</td>
-        <td>{{ props.item.telephones.length > 0 ? (props.item.telephones.find(element=>{return element.main == true}) && props.item.telephones.find(element=>{return element.main == true}).verification_code ? props.item.telephones.find(element=>{return element.main == true}).verification_code : "") : "" }}</td>
-        <td>
-          <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
-          <v-icon style="color:#bf1526;" medium @click="deleteCustomer(props.item._id)">delete</v-icon>
-        </td>
+          <td>{{ props.item.created_at.split("T")[0].split("-")[2] +"/"+ props.item.created_at.split("T")[0].split("-")[1] +"/"+ props.item.created_at.split("T")[0].split("-")[0]}} <br>{{getHour(props.item.created_at)}}</td>
+          <td>{{ props.item.name }} {{ props.item.last_name }}</td>
+          <td>{{ props.item.email }}</td>
+          <td>{{ props.item.telephones.length > 0 ? (props.item.telephones.find(element=>{return element.main == true}) && props.item.telephones.find(element=>{return element.main == true}).number ? props.item.telephones.find(element=>{return element.main == true}).number : "") : "" }}</td>
+          <td>{{ props.item.campaign_code ? props.item.campaign_code : ""}}</td>
+          <td>{{ props.item.telephones.length > 0 ? (props.item.telephones.find(element=>{return element.main == true}) && props.item.telephones.find(element=>{return element.main == true}).verification_code ? props.item.telephones.find(element=>{return element.main == true}).verification_code : "") : "" }}</td>
+          <td>
+            <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
+            <v-icon style="color:#bf1526;" medium @click="deleteCustomer(props.item._id)">delete</v-icon>
+          </td>
         </template>
     </v-data-table>
     <!--pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination-->
@@ -83,7 +83,8 @@
           {text:"Acciones", value:"actons"}
         ],
         pagination:{
-          descending:true
+          descending:true,
+          rowsPerPage:-1,
         },
         verify:false,
         verify_code:"",
