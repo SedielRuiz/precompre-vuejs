@@ -138,7 +138,7 @@
         console.log(telephones);
         this.fetchFilter({"filters":this.filter, "telephones":telephones});
         if(!this.filter && !telephones){
-          this.fetchCustomers();
+          this.fetchCustomers({page_size:-1});
         }
       },
       deleteCustomer(id){
@@ -146,7 +146,7 @@
           this.delete(id).then(
             data => {
               this.setWarning(data, { root: true }).then(()=>{
-                this.fetchCustomers();
+                this.fetchCustomers({page_size:-1});
               })
             },
             error => {
