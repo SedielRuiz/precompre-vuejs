@@ -42,7 +42,8 @@
     <v-data-table
         :headers="headers"
         :items="rows"
-        hide-actions 
+        :pagination.sync="pagination"
+        hide-actions
         class="elevation-1">
         <template v-slot:items="props">
         <td>{{ props.item.created_at.split("T")[0].split("-")[2] +"/"+ props.item.created_at.split("T")[0].split("-")[1] +"/"+ props.item.created_at.split("T")[0].split("-")[0]}} <br>{{getHour(props.item.created_at)}}</td>
@@ -68,7 +69,7 @@
   export default {
     name: 'customer-list',
     components: {
-      pagination,
+      //pagination,
     },
     data () {
       return {
@@ -81,6 +82,9 @@
           {text:"Código de verificación", value:"telephones"},
           {text:"Acciones", value:"actons"}
         ],
+        pagination:{
+          descending:true
+        },
         verify:false,
         verify_code:"",
         info:"",
@@ -118,15 +122,15 @@
       },
       searchFilter(){
         if(this.numberPhone || this.verifyCode){
-          this.filter.telephones = {};
+          var telephones = { number:"", verification_code:"" };
         }
         if(this.numberPhone){
-          this.filter.telephones.number = this.numberPhone;
+          telephones.number = this.numberPhone;
         }
         if(this.verifyCode){
-          this.filter.telephones.verification_code = this.verifyCode;
+          telephones.verification_code = this.verifyCode;
         }
-        this.fetchFilter({"filters":this.filter});
+        this.fetchFilter({"filters":this.filter, "telephones":telephones});
         //this.filter = {};
       },
       deleteCustomer(id){
