@@ -21,10 +21,10 @@
                 <v-text-field v-model="phone" prepend-icon="person" name="phone" label="Teléfono" type="number"></v-text-field>
                 <v-layout row wrap>
                     <v-flex xs12 sm12 md6>
-                    <v-select v-model="campaigCode" :items="campaigCodes" prepend-icon="featured_play_list" label="Código de campaña"></v-select>
+                      <v-combobox v-model="campaigCode" :items="campaigCodes" prepend-icon="featured_play_list" label="Código de campaña"></v-combobox>
                     </v-flex>
                     <v-flex xs12 sm12 md6>
-                        <v-select v-model="deliveryCode" prepend-icon="account_box" :items="deliveryCodes" label="Código de lugar de entrega"></v-select>
+                        <v-combobox v-model="deliveryCode" prepend-icon="account_box" :items="deliveryCodes" label="Código de lugar de entrega"></v-combobox>
                     </v-flex>
                 </v-layout>
             </v-form>
@@ -72,8 +72,8 @@
         },
     },
     mounted () {
-        this.fetchPlaceDelivery();
-        this.fetchCampaigns();
+        this.fetchPlaceDelivery({page_size:-1});
+        this.fetchCampaigns({page_size:-1});
     },
     methods: {
         ...mapActions({
