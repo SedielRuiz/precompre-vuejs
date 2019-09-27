@@ -7,9 +7,9 @@
         <v-card class="elevation-5 scroll">
             <v-container v-if="observations && observations.length > 0">
                 <div v-for="(ob, index) in observations" :key="index">
-                    Usuario: {{ob.user}}<br>
-                    Fecha: {{ob.date}}<br>
-                    Hora: {{ob.date}} <br>
+                    Usuario: {{ob.user ? ob.user : ""}}<br>
+                    Fecha: {{ob.date ? ob.date : ""}}<br>
+                    Hora: {{ob.date ? ob.date : ""}} <br>
                     Observación: {{ob.description}}<br><hr><br>
                 </div>   
             </v-container>
