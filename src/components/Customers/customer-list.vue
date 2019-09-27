@@ -24,7 +24,7 @@
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12 sm12 md3>
-          <v-select v-model="filter.campaign_code" prepend-icon="account_box" :items="campaigns" label="Código de campaña"></v-select>
+          <v-combobox v-model="filter.campaign_code" prepend-icon="account_box" :items="campaigns" label="Código de campaña"></v-combobox>
         </v-flex>
         <v-flex xs12 sm12 md2>
           <v-text-field v-model="verifyCode" prepend-icon="email" name="email" label="Código de verificación" type="text"></v-text-field>
@@ -136,6 +136,7 @@
           telephones.$elemMatch.verification_code = this.verifyCode;
         }
         console.log(telephones);
+        this.filter.campaign_code = this.filter.campaign_code && this.filter.campaign_code.value ? this.filter.campaign_code.value : this.filter.campaign_code;
         this.fetchFilter({"filters":this.filter, "telephones":telephones});
         if(!this.filter && !telephones){
           this.fetchCustomers({page_size:-1});
