@@ -122,7 +122,7 @@
           this.filter.telephones.number = this.numberPhone;
           this.filter.telephones.verification_code = this.verifyCode;
         }
-        this.fetchFilter(this.filter);
+        this.fetchFilter({"filters":this.filter});
       },
       deleteCustomer(id){
         if(confirm("¿ Seguro que desea eliminar este registro ? ")){
