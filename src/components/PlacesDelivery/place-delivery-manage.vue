@@ -489,7 +489,7 @@
               var type = array.floors[r].types[g]._type;
               for(var j = 0; j < array.floors[r].types[g].units.length; j++){
                 unit = array.floors[r].types[g].units[j].u;
-                units.push({observations:"", unity:unit, state:true, type:array.floors[r].types[g]._type, floor:array.floors[r]});
+                units.push({observations:array.floors[r].types[g].units[j].observations, unity_base:unit, unity:unit, state:true, type:array.floors[r].types[g]._type, floor:array.floors[r]});
               }
               types = {"type":type , "units": units};
 
@@ -514,7 +514,7 @@
         if(unit1){
           for(var r = 0; r < unit1.length; r++){
             for(var g = 0; g < unit2.length; g++){
-              if(unit1[r] && unit1[r].u == unit2[g].unity && unit2[g].type == type){
+              if(unit1[r] && unit1[r].u == unit2[g].unity_base && unit2[g].type == type){
                 if(!unit2[g].state){
                   unit1.splice(r, 1);
                 }else{
