@@ -41,6 +41,20 @@ const actions = {
             })
         });
     },
+    fetchFilter:({commit}, data) => {
+        return new Promise((resolve, reject) => {
+        Vue.http.post('consult_filter', data).then(
+            response =>{
+                var data = User.actions.processResponse(response.data, true);
+                commit('setCustomers',data);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+            })
+        });
+    },
     create:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {

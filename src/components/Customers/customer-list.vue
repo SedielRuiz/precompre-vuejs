@@ -19,15 +19,15 @@
           <v-text-field v-model="filter.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
         </v-flex>
         <v-flex xs12 sm12 md4>
-          <v-text-field v-model="filter.phone" prepend-icon="phone" name="phone" label="Teléfono" type="number"></v-text-field>
+          <v-text-field v-model="filter.telephones.number" prepend-icon="phone" name="phone" label="Teléfono" type="number"></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12 sm12 md3>
-          <v-select v-model="filter.campaign" prepend-icon="account_box" :items="campaigns" label="Código de campaña"></v-select>
+          <v-select v-model="filter.campaign_code" prepend-icon="account_box" :items="campaigns" label="Código de campaña"></v-select>
         </v-flex>
         <v-flex xs12 sm12 md2>
-          <v-text-field v-model="filter.verify_code" prepend-icon="email" name="email" label="Código de verificación" type="text"></v-text-field>
+          <v-text-field v-model="filter.telephones.verification_code" prepend-icon="email" name="email" label="Código de verificación" type="text"></v-text-field>
         </v-flex>
         <v-flex xs12 sm12 md3>
           <v-text-field v-model="filter.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
@@ -105,6 +105,7 @@
     methods: {
       ...mapActions({
         fetchCustomers: 'customer/fetchCustomers',
+        fetchFilter: 'customer/fetchFilter',
         fetchCampaigns: 'campaign/fetchCampaigns',
         delete: 'customer/delete',
         setWarning: 'setWarning',
@@ -114,7 +115,7 @@
         return dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
       },
       searchFilter(){
-        this.fetchCustomers();
+        this.fetchFilter(this.filter);
       },
       deleteCustomer(id){
         if(confirm("¿ Seguro que desea eliminar este registro ? ")){
