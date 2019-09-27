@@ -87,14 +87,7 @@
                 <v-list-tile-action>
                 </v-list-tile-action>
                 <v-list-tile-content>
-                <v-list-tile-title>Verificar código</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile class="subMenu" @click="dirigir('/groupList')">
-                <v-list-tile-action>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                <v-list-tile-title>Grupo</v-list-tile-title>
+                <v-list-tile-title>Validación de registro</v-list-tile-title>
                 </v-list-tile-content>
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/customerList')">
@@ -103,6 +96,13 @@
                   <v-list-tile-content>
                   <v-list-tile-title>Lista de clientes</v-list-tile-title>
                   </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile class="subMenu" @click="dirigir('/groupList')">
+                <v-list-tile-action>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                <v-list-tile-title>Grupo</v-list-tile-title>
+                </v-list-tile-content>
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/customerListList')">
                   <v-list-tile-action>
@@ -295,7 +295,7 @@
       <router-view></router-view>
     </v-content>
     <v-footer color="indigo" app>
-      <span class="white--text">&copy; v0.0.35</span>
+      <span class="white--text">&copy; v0.0.36</span>
     </v-footer>
   </v-app>
 </template>
