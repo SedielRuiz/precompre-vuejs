@@ -136,7 +136,7 @@
               var type = array.floors[r].types[g]._type;
               for(var j = 0; j < array.floors[r].types[g].units.length; j++){
                 unit = array.floors[r].types[g].units[j].u;
-                units.push({observations:"", unity:unit, state:true});
+                units.push({observations:array.floors[r].types[g].units[j].observations, unity:unit, state:true});
               }
               types = {"type":type , "units": units};
 

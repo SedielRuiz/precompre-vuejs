@@ -510,12 +510,18 @@
         }
         this.units.splice(idx,1);
       },
-      replaceUnities(unit1, unit2){
-        for(var r = 0; r < unit1.length; r++){
-          for(var g = 0; g < unit2.length; g++){
-            if(unit1[r].unity == unit2[g].unity && unit2[g].state){
-              unit1[r].observations = unit2[g].observations;
-              unit1[r].u = unit2[g].unity;
+      replaceUnities(unit1, unit2, type){
+        if(unit1){
+          for(var r = 0; r < unit1.length; r++){
+            for(var g = 0; g < unit2.length; g++){
+              if(unit1[r] && unit1[r].u == unit2[g].unity && unit2[g].type == type){
+                if(!unit2[g].state){
+                  unit1.splice(r, 1);
+                }else{
+                  unit1[r].observations = unit2[g].observations;
+                  unit1[r].u = unit2[g].unity;
+                }
+              }
             }
           }
         }
@@ -535,7 +541,7 @@
                   for(var p = 0; p < this.unitsV[s].types.length; p++){
 
                     if( this.units[r].floors[g].types[j]._type == type && this.unitsV[s].types[p].type == type ){
-                      this.units[r].floors[g].types[j].units = this.replaceUnities(this.units[r].floors[g].types[j].units, this.unitsV[s].types[p].units);
+                      this.units[r].floors[g].types[j].units = this.replaceUnities(this.units[r].floors[g].types[j].units, this.unitsV[s].types[p].units, type);
                     }
 
                   }
