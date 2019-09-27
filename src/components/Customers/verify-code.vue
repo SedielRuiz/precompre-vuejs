@@ -24,13 +24,13 @@
                       <v-container><hr>
                           <v-layout row wrap v-for="(c, index) in info" style="text-align:center;" :key="index">
                               <v-flex xs12 sm12 md1 >
-                                  <div v-if="c.telephones[0].verified">
+                                <div v-if="c.telephones[0].verified">
                                   <i class="material-icons">check_circle_outline</i>
-                                  </div>
-                                  <div v-else>
+                                </div>
+                                <div v-else>
                                   <v-checkbox style="margin-top:-12px;" value @click="verifyNumberCode(c)"></v-checkbox>
-                                  <!--v-btn color="success" @click="verifyNumberCode(c)">Validar</v-btn-->
-                                  </div>
+                                <!--v-btn color="success" @click="verifyNumberCode(c)">Validar</v-btn-->
+                                </div>
                               </v-flex>
                               <v-flex xs12 sm12 md5>
                                   {{c.name}} {{c.last_name}}
@@ -52,9 +52,27 @@
                       <v-text-field v-model="phone" prepend-icon="phone" name="title" label="Teléfono" type="number"></v-text-field><br>
                     </v-flex>
                     <v-flex sm12 xs12 md4>
-                      <v-btn color="primary" :disabled="verify_code ? false : true" @click="findVerifyCode()">Consultar</v-btn><br>
+                      <v-btn color="primary" :disabled="phone ? false : true" @click="findPhone()">Consultar</v-btn><br>
                     </v-flex>
                   </v-layout>
+                  <v-card style="overflow: auto;max-width: 100%;" v-if="customers">
+                      <v-container><hr>
+                          <v-layout row wrap v-for="(c, index) in customers" style="text-align:center;" :key="index">
+                              <v-flex xs12 sm12 md1 >
+                                <v-checkbox style="margin-top:-12px;" value @click="sendVerify(c.telephones[0].number)"></v-checkbox>
+                              </v-flex>
+                              <v-flex xs12 sm12 md5>
+                                  {{c.name}} {{c.last_name}}
+                              </v-flex>
+                              <v-flex xs12 sm12 md3>
+                                  {{c.telephones.lenght > 0 ? c.telephones[0].number : ""}}
+                              </v-flex>
+                              <v-flex xs12 sm12 md3>
+                                  {{c.email}}
+                              </v-flex>
+                          </v-layout>
+                      </v-container>
+                  </v-card>
               </div>
             </v-form>
           </v-card-text>
@@ -78,6 +96,7 @@
         verify:true,
         send:false,
         verify_code:"",
+        send_verify:[],
         info:"",
         phone:"",
       }
@@ -88,21 +107,39 @@
         ...mapActions({
             verifyCode: 'customer/verifyCode',
             findCode: 'customer/findCode',
+            fetchFilter: 'customer/fetchFilter',
+            sendVerifyCode: 'customer/sendVerifyCode',
             setWarning: 'setWarning',
         }),
-        verifyNumberCode(data){
-            this.verifyCode(data).then(
+        sendVerify(number){
+          this.sendVerifyCode({"number":number}).then(
             data => {
-                this.info = "";
-                this.verify_code = "";
-                this.fetchCustomers();
+                this.setWarning(data.result_set, { root: true }).then(()=>{
+                  this.info = "";
+                  this.verify_code = "";
+                });
+            },
+            error => {
+                console.log(error);
+            });
+        },
+        findPhone(){
+          this.fetchFilter({ "telephones": { $elemMatch: { number:this.phone} } });
+        },
+        verifyNumberCode(data){
+          this.verifyCode(data).then(
+            data => {
+                this.setWarning("Validación exitosa", { root: true }).then(()=>{
+                  this.info = "";
+                  this.verify_code = "";
+                });
             },
             error => {
                 console.log(error);
             });
         },
         findVerifyCode(){
-            this.findCode(this.verify_code).then(
+          this.findCode(this.verify_code).then(
             data => {
                 this.info = data.result_set;
             },
@@ -117,6 +154,7 @@
     computed:{
       ...mapState({
         warning: state => state.warning,
+        customers: state => state.customer.customers,
       }),
     },
   }

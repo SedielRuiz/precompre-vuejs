@@ -133,13 +133,16 @@
         }
         console.log(telephones);
         this.fetchFilter({"filters":this.filter, "telephones":telephones});
+        if(!this.filter && !telephones){
+          this.fetchCustomers();
+        }
       },
       deleteCustomer(id){
         if(confirm("¿ Seguro que desea eliminar este registro ? ")){
           this.delete(id).then(
             data => {
               this.setWarning(data, { root: true }).then(()=>{
-                  this.fetchCustomers();
+                this.fetchCustomers();
               })
             },
             error => {

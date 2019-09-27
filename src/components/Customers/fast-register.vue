@@ -95,7 +95,7 @@
             this.create(this.customer).then(
                 data => {
                     this.setWarning(data, { root: true }).then(()=>{
-                        this.$router.push('/')
+                        this.$router.push('/verifyCode')
                     })
                 },
                 error => {
@@ -116,7 +116,7 @@
         if(this.edit){
           return false;
         }else{
-          if(this.customer && this.customer.name && this.campaigCode){
+          if(this.customer && this.customer.name){
             return false; 
           }
           return true;
