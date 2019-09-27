@@ -269,8 +269,11 @@
             }
 
             //Lleno las unidades
+            if(opc == "r"){
+              this.unity.quantity = 1;
+            }
             for(var s = 1; s <= this.unity.quantity; s++){
-              unit = flr+(s < 10 ? "0"+s : s);
+              unit = flr+ (opc == "r" ? this.unity.unt : (s < 10 ? "0"+s : s));
               units.push({u: unit,observations:"",state:true});
             }
             //cargo el nuevo interior
