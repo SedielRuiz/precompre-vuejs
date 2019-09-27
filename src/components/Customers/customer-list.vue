@@ -61,7 +61,11 @@
     <!--pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination-->
   </v-container>
 </template>
-
+<style>
+  .*, :after, :before{
+    box-sizing: content-box !important;
+  }
+</style>
 <script>
   import {mapActions,mapState} from 'vuex';
   import pagination from '@/components/Pagination';
@@ -123,7 +127,7 @@
       },
       searchFilter(){
         if(this.numberPhone || this.verifyCode){
-          var telephones =  { $elemMatch: { number:"", verification_code:"" } };
+          var telephones =  { $elemMatch: { } };
         }
         if(this.numberPhone){
           telephones.$elemMatch.number = this.numberPhone;
