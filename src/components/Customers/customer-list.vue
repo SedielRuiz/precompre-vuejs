@@ -57,7 +57,7 @@
         </td>
         </template>
     </v-data-table>
-    <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
+    <!--pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination-->
   </v-container>
 </template>
 
@@ -101,7 +101,7 @@
         },
     },
     mounted () {
-      this.fetchCustomers();
+      this.fetchCustomers({page_size:-1});
       this.fetchCampaigns();
     },
     methods: {
@@ -119,10 +119,15 @@
       searchFilter(){
         if(this.numberPhone || this.verifyCode){
           this.filter.telephones = {};
+        }
+        if(this.numberPhone){
           this.filter.telephones.number = this.numberPhone;
+        }
+        if(this.verifyCode){
           this.filter.telephones.verification_code = this.verifyCode;
         }
         this.fetchFilter({"filters":this.filter});
+        //this.filter = {};
       },
       deleteCustomer(id){
         if(confirm("¿ Seguro que desea eliminar este registro ? ")){
