@@ -192,7 +192,7 @@
         },
     },
     mounted () {
-        this.fetchPlaceDelivery();
+        this.fetchPlaceDelivery({page_size:-1});
         this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
         if(this.edit!=""){
             this.titleText="Editar cliente"
