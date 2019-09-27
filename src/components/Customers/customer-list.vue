@@ -19,7 +19,7 @@
           <v-text-field v-model="filter.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
         </v-flex>
         <v-flex xs12 sm12 md4>
-          <v-text-field v-model="filter.telephones.number" prepend-icon="phone" name="phone" label="Teléfono" type="number"></v-text-field>
+          <v-text-field v-model="numberPhone" prepend-icon="phone" name="phone" label="Teléfono" type="number"></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout row wrap>
@@ -27,7 +27,7 @@
           <v-select v-model="filter.campaign_code" prepend-icon="account_box" :items="campaigns" label="Código de campaña"></v-select>
         </v-flex>
         <v-flex xs12 sm12 md2>
-          <v-text-field v-model="filter.telephones.verification_code" prepend-icon="email" name="email" label="Código de verificación" type="text"></v-text-field>
+          <v-text-field v-model="verifyCode" prepend-icon="email" name="email" label="Código de verificación" type="text"></v-text-field>
         </v-flex>
         <v-flex xs12 sm12 md3>
           <v-text-field v-model="filter.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
@@ -87,6 +87,8 @@
         filt:false,
         filter:{},
         campaigns:[],
+        numberPhone:"",
+        verifyCode:"",
       }
     },
     watch:{
@@ -115,6 +117,11 @@
         return dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
       },
       searchFilter(){
+        if(this.numberPhone || this.verifyCode){
+          this.filter.telephones = {};
+          this.filter.telephones.number = this.numberPhone;
+          this.filter.telephones.verification_code = this.verifyCode;
+        }
         this.fetchFilter(this.filter);
       },
       deleteCustomer(id){
