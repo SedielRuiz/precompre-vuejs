@@ -37,7 +37,6 @@
                   </gmap-marker>
               </gmap-map><br>
               <div>
-              {{place}}
                 <observations :routeFetch="'delivery_places'" :routeEdit="'edit_delivery_place'" :obs="place.observations ? place.observations : []" :id="this.$route.params.id == undefined ? 0 : this.$route.params.id"></observations>
               </div>
               <h2>Unidades</h2><hr><br><br>

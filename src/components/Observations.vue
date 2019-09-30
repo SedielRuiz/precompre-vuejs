@@ -44,6 +44,7 @@
         }
         },
         mounted () {
+            console.log(this.obs);
             if(this.obs){
                 this.observations = this.obs;
             }else{
