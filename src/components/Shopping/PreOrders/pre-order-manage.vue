@@ -693,20 +693,22 @@
             }
         },
         formarDay(day){
-            var name = "";
-            if(day.length > 0){
-                day = day && day[0].days || day[0].days == 0 ? day[0].days : "";
-                switch(day){
-                    case 0: name = "Domingo"; break;
-                    case 1: name = "Lunes"; break;
-                    case 2: name = "Martes"; break;
-                    case 3: name = "Miercoles"; break;
-                    case 4: name = "Jueves"; break;
-                    case 5: name = "Viernes"; break;
-                    case 6: name = "Sabado"; break;
+            if(day){
+                var name = "";
+                if(day.length > 0){
+                    day = day && day[0].days || day[0].days == 0 ? day[0].days : "";
+                    switch(day){
+                        case 0: name = "Domingo"; break;
+                        case 1: name = "Lunes"; break;
+                        case 2: name = "Martes"; break;
+                        case 3: name = "Miercoles"; break;
+                        case 4: name = "Jueves"; break;
+                        case 5: name = "Viernes"; break;
+                        case 6: name = "Sabado"; break;
+                    }
                 }
+                return name == "" ? "No hay" : name;
             }
-            return name == "" ? "No hay" : name;
         },
         formatList(list, name, code, secondName = ""){
             var lst = [];

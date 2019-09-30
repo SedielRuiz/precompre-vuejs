@@ -126,6 +126,7 @@ import Vue from 'vue'
             }
         },
         rows(val){  
+          this.customers = [];
           for(var s = 0; s < val.length; s++){
             val[s].hour = this.getHour(val[s].created_at);
             val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
