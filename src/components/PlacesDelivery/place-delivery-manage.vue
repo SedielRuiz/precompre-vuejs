@@ -27,15 +27,6 @@
                   <v-text-field v-if="edit" v-model="place.welcome_code" prepend-icon="email" name="welcome_code" label="Código de bienvenida" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
-              <h2>Administración</h2><hr><br>
-              <v-layout row wrap>
-                <v-flex xs12 sm12 md6>
-                  <v-text-field v-model="place.administration.name" prepend-icon="email" name="name" label="Nombre del administrador" type="text"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm12 md6>
-                  <v-text-field v-model="place.administration.phone" prepend-icon="email" name="phone" label="Teléfono" type="number"></v-text-field>
-                </v-flex>
-              </v-layout><br>
               <v-select v-model="place.input_type" prepend-icon="email" :items="locationTypes" label="Tipo de localización"></v-select>
               <div v-if="place.input_type == 'manual'">
                 <v-text-field v-model="place.address" prepend-icon="email" name="address" label="Dirección" type="text"></v-text-field>
@@ -51,6 +42,15 @@
               <div v-else-if="place.input_type == 'google'">
                 <div v-if="(edit && place && place.address) || (!edit)"><google-map :title="'Dirección'" :direct="place.address" :coords="place.coords" @setAddress="setAddress"/></div><br><!--v-icon medium style="font-size:25px;">email</v-icon-->
               </div>
+              <h2>Administración</h2><hr><br>
+              <v-layout row wrap>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field v-model="place.administration.name" prepend-icon="email" name="name" label="Nombre del administrador" type="text"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field v-model="place.administration.phone" prepend-icon="email" name="phone" label="Teléfono" type="number"></v-text-field>
+                </v-flex>
+              </v-layout><br>
                 <v-layout row wrap>
                   <v-flex xs12 sm12 md12>
                     <h2>Composición</h2><hr><br>
@@ -230,7 +230,7 @@
     mounted () {
       this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
       this.place.coords = {lat:"", long:""};
-      this.place.administration = {};
+      this.place.administration = {name:"", phone:""};
       if(this.edit!=""){
           this.titleText="Editar lugar de entrega"
           this.getPlace(this.edit);
