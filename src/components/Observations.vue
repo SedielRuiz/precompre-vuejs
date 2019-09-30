@@ -45,7 +45,7 @@
         },
         mounted () {
             console.log(this.obs);
-            if(this.obs){
+            if(this.obs.length > 0){
                 this.observations = this.obs;
             }else{
                 this.fetchObservations();
