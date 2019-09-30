@@ -174,7 +174,7 @@ import Vue from 'vue'
             this.filters[flt] = null;
         }
         if(JSON.stringify(this.filter)!='{}'){
-          this.fetchFilter({"filters":this.filter, "telephones":telephones});
+          this.fetchFilter({"page_size":-1,"filters":this.filter, "telephones":telephones});
         }
         if(JSON.stringify(this.filter)=='{}' && !telephones){
           this.fetchCustomers({page_size:-1});
