@@ -7,6 +7,9 @@
         <v-flex xs12 sm12 md10>
             <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
             <v-btn color="success" @click="filt ? filt = false : filt = true">Filtrar</v-btn>
+            <v-btn color="success">
+              <downloadExcel class = "btn btn-default" :fields = "headersExcel" :data = "customers" name = "clientes.xls">Exportar a excel</downloadExcel>
+            </v-btn>
         </v-flex>
     </v-layout>
     <div v-if="filt"><br>
@@ -41,17 +44,17 @@
     <hr><br>
     <v-data-table
         :headers="headers"
-        :items="rows"
+        :items="customers"
         hide-actions
         :pagination.sync="pagination"
         class="elevation-1">
         <template v-slot:items="props">
-          <td>{{ props.item.created_at.split("T")[0].split("-")[2] +"/"+ props.item.created_at.split("T")[0].split("-")[1] +"/"+ props.item.created_at.split("T")[0].split("-")[0]}} <br>{{getHour(props.item.created_at)}}</td>
+          <td>{{ props.item.date }} <br> {{ props.item.hour }}</td>
           <td>{{ props.item.name }} {{ props.item.last_name }}</td>
           <td>{{ props.item.email }}</td>
-          <td>{{ props.item.telephones.length > 0 ? (props.item.telephones.find(element=>{return element.main == true}) && props.item.telephones.find(element=>{return element.main == true}).number ? props.item.telephones.find(element=>{return element.main == true}).number : "") : "" }}</td>
+          <td>{{ props.item.telephone }}</td>
           <td>{{ props.item.campaign_code ? props.item.campaign_code : ""}}</td>
-          <td>{{ props.item.telephones.length > 0 ? (props.item.telephones.find(element=>{return element.main == true}) && props.item.telephones.find(element=>{return element.main == true}).verification_code ? props.item.telephones.find(element=>{return element.main == true}).verification_code : "") : "" }}</td>
+          <td>{{ props.item.verify_code }}</td>
           <td>
             <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
             <v-icon style="color:#bf1526;" medium @click="deleteCustomer(props.item._id)">delete</v-icon>
@@ -67,9 +70,12 @@
   }
 </style>
 <script>
+import Vue from 'vue'
   import {mapActions,mapState} from 'vuex';
   import pagination from '@/components/Pagination';
-  
+  import JsonExcel from 'vue-json-excel'
+  Vue.component('downloadExcel', JsonExcel)
+
   export default {
     name: 'customer-list',
     components: {
@@ -78,18 +84,29 @@
     data () {
       return {
         headers: [
-          {text:"Fecha de ingreso", value:"created_at"},
+          {text:"Fecha de ingreso", value:"date"},
           {text:"Nombre", value:"name"},
           {text:"Correo", value:"email"},
-          {text:"Teléfono", value:"telephones"},
+          {text:"Teléfono", value:"telephone"},
           {text:"Campaña", value:"campaign_code"},
-          {text:"Código de verificación", value:"telephones"},
+          {text:"Código de verificación", value:"verify_code"},
           {text:"Acciones", value:"actons"}
         ],
+        headersExcel:{
+          "Fecha de ingreso":"date",
+          "Hora de ingreso":"hour",
+          "Nombre":"name",
+          "Apellido":"last_name",
+          "Correo":"email",
+          "Teléfono":"telephone",
+          "Campaña":"campaign_code",
+          "Código de verificación":"verify_code"
+        },
         pagination:{
           descending:true,
           rowsPerPage:-1,
         },
+        customers:[],
         verify:false,
         verify_code:"",
         info:"",
@@ -108,6 +125,15 @@
                 }
             }
         },
+        rows(val){  
+          for(var s = 0; s < val.length; s++){
+            val[s].hour = this.getHour(val[s].created_at);
+            val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
+            val[s].telephone = val[s].telephones.length > 0 ? (val[s].telephones.find(element=>{return element.main == true}) && val[s].telephones.find(element=>{return element.main == true}).number ? val[s].telephones.find(element=>{return element.main == true}).number : "") : "";
+            val[s].verify_code = val[s].telephones.length > 0 ? (val[s].telephones.find(element=>{return element.main == true}) && val[s].telephones.find(element=>{return element.main == true}).verification_code ? val[s].telephones.find(element=>{return element.main == true}).verification_code : "") : "";
+            this.customers.push(val[s]);
+          }
+        }
     },
     mounted () {
       this.fetchCustomers({page_size:-1});
