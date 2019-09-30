@@ -21,7 +21,7 @@
               </v-layout>
               <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
-                  <v-select v-model="customer.id_type" :items="typesIdentification" prepend-icon="featured_play_list" label="Tipo de identificación"></v-select>
+                  <v-select v-model="customer.id_type" :items="typesIdentification" name="type_identification" prepend-icon="featured_play_list" label="Tipo de identificación"></v-select>
                 </v-flex>
                 <v-flex xs12 sm12 md6>
                   <v-text-field v-model="customer.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
@@ -30,7 +30,7 @@
               <v-text-field v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
               <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
-                  <v-select v-model="customer.gender" prepend-icon="account_box" :items="genders" label="Genero"></v-select>
+                  <v-select v-model="customer.gender" prepend-icon="account_box" name="gender" :items="genders" label="Genero"></v-select>
                 </v-flex>
                 <v-flex xs12 sm12 md6>
                   <v-text-field v-model="customer.campaign_code" prepend-icon="person" name="id_description" label="Código de campaña" type="text"></v-text-field>
@@ -275,6 +275,7 @@
         buildCustomer(){
             this.customer.telephones = this.formatPhones();
             this.customer.id_type = this.customer.id_type && this.customer.id_type.value ? this.customer.id_type.value : this.customer.id_type;
+            this.customer.gender = this.customer.gender && this.customer.gender.value ? this.customer.gender.value : this.customer.gender;
             if(this.edit)
               this.customer.status = this.customer.status.value;
             this.customer.delivery_places = this.placesSelected;
