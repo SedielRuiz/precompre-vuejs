@@ -27,7 +27,7 @@
                   <v-text-field readonly v-model="place.welcome_code" prepend-icon="email" name="welcome_code" label="Código de bienvenida" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
-              <v-select v-model="place.input_type" prepend-icon="email" :items="locationTypes" label="Tipo de localización"></v-select>
+              <v-select readonly v-model="place.input_type" prepend-icon="email" :items="locationTypes" label="Tipo de localización"></v-select>
               <div v-if="place.input_type == 'manual'">
                 <v-text-field readonly v-model="place.address" prepend-icon="email" name="address" label="Dirección" type="text"></v-text-field>
                 <v-layout row wrap>
