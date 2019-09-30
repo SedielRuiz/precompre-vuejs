@@ -129,6 +129,10 @@
         unities:[],
         unitsV:[],
         edit:"",
+        locationTypes:[
+          {text:"Manual", value:"manual"},
+          {text:"Google", value:"google"},
+        ],
       }
     },
     watch:{
