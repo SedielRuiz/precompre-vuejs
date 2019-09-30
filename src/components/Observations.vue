@@ -35,7 +35,7 @@
 
     export default {
         name: 'observation',
-        props:['routeFetch', 'routeEdit',  'id'],
+        props:['routeFetch', 'routeEdit',  'id', 'obs'],
         data () {
         return {
             observation:"",
@@ -44,9 +44,7 @@
         }
         },
         mounted () {
-            this.fetchObservations();
-        },
-        watch:{
+            this.observations = this.obs ? this.obs : [];
         },
         methods: {
             getHour(date){
