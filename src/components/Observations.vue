@@ -57,6 +57,9 @@
                 Vue.http.post(this.routeFetch+"/"+this.id).then(
                     response =>{
                         this.observations = response.data.result_set[0].observations;
+                        if(this.observations == undefined){
+                            this.observations = [];
+                        }
                     }).catch(error=>{
                         console.log(error);
                     });
