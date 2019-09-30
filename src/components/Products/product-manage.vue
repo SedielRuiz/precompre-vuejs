@@ -63,7 +63,7 @@
                             <v-combobox prepend-icon="filter_list" v-model="ingredient.input" :items="inputs" label="Insumos"></v-combobox>
                         </v-flex>
                         <v-flex xs12 md2>
-                            <v-text-field v-model="ingredient.quantity" prepend-icon="featured_play_list" name="quantity" label="Cantidad" type="number"></v-text-field>
+                            <v-text-field v-model="ingredient.quantity" prepend-icon="featured_play_list" name="quantity" label="Porcentaje" type="number"></v-text-field>
                         </v-flex>
                         <v-flex xs12 md2>
                             <v-layout row wrap>
@@ -463,7 +463,7 @@
             formatSubProducts(attributes){
                 this.subProductsAttribute = this.complement(attributes);
                 for(var s = 0; s < this.subProductsAttribute.length; s++){
-                    this.subProductsAttribute[s].ingredients = this.ingredients ? this.ingredients : [];
+                    this.subProductsAttribute[s].inputs = this.ingredients ? this.ingredients : [];
                 }
             },
             editSubProducts(subs, attrs){
@@ -520,6 +520,17 @@
                 console.log(lst);
                 return lst;
             },
+            updateSubProduct(inp){
+                var ingrs = [];
+                for(var g = 0; g < this.subProductsAttribute.length; g++){
+                    var j = this.subProductsAttribute[g].inputs.find(element=>{return element.id == inp.id});
+                    if(!j){
+                        ingrs = Array.isArray(this.subProductsAttribute[g].inputs) ? this.subProductsAttribute[g].inputs : [];
+                        ingrs.push(Object.assign({...inp}));
+                        this.subProductsAttribute[g].inputs = ingrs;
+                    }
+                }
+            },
             addArray(arr, idx){
                 switch(arr) {
                     case "i":
@@ -532,7 +543,10 @@
                             "metric": ingr.input.text.split("-")[1],
                         }
                         if(idx == "general"){
+                            //Agrego el insumo
                             this.ingredients.push(Object.assign({...obj}));
+                            //Actualizo los sub productos con el nuevo insumo general
+                            //this.updateSubProduct(obj);
                         }else{
                             ing = Array.isArray(this.subProductsAttribute[idx].inputs) ? this.subProductsAttribute[idx].inputs : [];
                             ing.push(Object.assign({...obj}));

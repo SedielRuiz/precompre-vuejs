@@ -55,6 +55,7 @@
           <td>{{ props.item.telephone }}</td>
           <td>{{ props.item.campaign_code ? props.item.campaign_code : ""}}</td>
           <td>{{ props.item.verify_code }}</td>
+          <td>{{ props.item.delivery }}</td>
           <td>
             <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
             <v-icon style="color:#bf1526;" medium @click="deleteCustomer(props.item._id)">delete</v-icon>
@@ -90,6 +91,7 @@ import Vue from 'vue'
           {text:"Teléfono", value:"telephone"},
           {text:"Campaña", value:"campaign_code"},
           {text:"Código de verificación", value:"verify_code"},
+          {text:"Lugar de entrega", value:"delivery"},
           {text:"Acciones", value:"actons"}
         ],
         headersExcel:{
@@ -100,7 +102,8 @@ import Vue from 'vue'
           "Correo":"email",
           "Teléfono":"telephone",
           "Campaña":"campaign_code",
-          "Código de verificación":"verify_code"
+          "Código de verificación":"verify_code",
+          "Lugar de entrega":"delivery",
         },
         pagination:{
           descending:true,
@@ -119,17 +122,18 @@ import Vue from 'vue'
     },
     watch:{
         campa(val){
-            if(val){
-                for(var s = 0; s < val.length; s++){
-                    this.campaigns.push({ "text":val[s].code_promo, "value":val[s].code_promo });
-                }
-            }
+          if(val){
+              for(var s = 0; s < val.length; s++){
+                this.campaigns.push({ "text":val[s].code_promo, "value":val[s].code_promo });
+              }
+          }
         },
         rows(val){  
           this.customers = [];
           for(var s = 0; s < val.length; s++){
             val[s].hour = this.getHour(val[s].created_at);
             val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
+            val[s].delivery = val[s].delivery_places[0].name;
             var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
             if(tel != ""){
               val[s].telephone = tel.number;

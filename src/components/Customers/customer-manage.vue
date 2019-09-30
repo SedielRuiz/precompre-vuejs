@@ -324,7 +324,7 @@
         if(this.edit){
           return false;
         }else{
-          if(this.customer && this.customer.id_type && this.customer.id_description && this.customer.email && this.customer.name){
+          if(this.customer && this.customer.id_type && this.customer.id_description && this.customer.email && this.customer.name && this.customer.campaign_code){
             return false; 
           }
           return true;
