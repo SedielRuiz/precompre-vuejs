@@ -4,7 +4,7 @@
         <div v-if="view">
         <v-textarea class="box" v-model="observation" placeholder="Escriba su observación" prepend-icon="library_books" name="observation"></v-textarea>
         <v-btn medium color="primary" @click="sendObservation()">Agregar observación</v-btn><br><br>
-        <v-card class="elevation-5 scroll">
+        <v-card class="elevation-5 scrollObs">
             <v-container v-if="observations && observations.length > 0">
                 <div v-for="(ob, index) in observations" :key="index">
                     Usuario: {{ob.user ? ob.user : ""}}<br>
@@ -23,6 +23,10 @@
     }
     .scroll{
         height: 229px;
+        overflow:auto;
+    }
+    .scrollObs{
+        height: 168px;
         overflow:auto;
     }
 </style>
@@ -48,7 +52,7 @@
             fetchObservations(){
                 Vue.http.post(this.routeFetch+"/"+this.id).then(
                     response =>{
-                        this.observations = response.data.observations;
+                        this.observations = response.data.result_set[0].observations;
                     }).catch(error=>{
                         console.log(error);
                     });
