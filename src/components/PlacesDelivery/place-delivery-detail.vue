@@ -60,7 +60,7 @@
                 </v-flex>
               </v-layout><br>
               <div>
-                <observations :routeFetch="'delivery_places'" :routeEdit="'edit_delivery_place'" :obs="place.observations.length > 0 ? place.observations : []" :id="this.$route.params.id == undefined ? 0 : this.$route.params.id"></observations>
+                <observations :routeFetch="'delivery_places'" :routeEdit="'edit_delivery_place'" :obs="place.observations && place.observations.length > 0 ? place.observations : []" :id="this.$route.params.id == undefined ? 0 : this.$route.params.id"></observations>
               </div>
               <h2>Unidades</h2><hr><br><br>
               <div v-if="unitsV.length > 0">

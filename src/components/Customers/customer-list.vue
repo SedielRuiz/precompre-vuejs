@@ -167,10 +167,16 @@ import Vue from 'vue'
         if(this.verifyCode){
           telephones.$elemMatch.verification_code = this.verifyCode;
         }
-        console.log(telephones);
         this.filter.campaign_code = this.filter.campaign_code && this.filter.campaign_code.value ? this.filter.campaign_code.value : this.filter.campaign_code;
-        this.fetchFilter({"filters":this.filter, "telephones":telephones});
-        if(!this.filter && !telephones){
+
+        /*for (const flt in this.filters) {
+          if(this.filters[flt] && this.filters[flt] == "")
+            this.filters[flt] = null;
+        }*/
+        if(JSON.stringify(this.filter)!='{}'){
+          this.fetchFilter({"filters":this.filter, "telephones":telephones});
+        }
+        if(JSON.stringify(this.filter)=='{}' && !telephones){
           this.fetchCustomers({page_size:-1});
         }
       },
