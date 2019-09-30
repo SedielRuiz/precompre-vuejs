@@ -35,7 +35,7 @@
 
     export default {
         name: 'observation',
-        props:['routeFetch', 'routeEdit',  'id', 'obs'],
+        props:['routeFetch', 'routeEdit', 'obs', 'id'],
         data () {
         return {
             observation:"",
