@@ -171,11 +171,11 @@ import Vue from 'vue'
         if(this.filter.campaign_code){
           this.filter.campaign_code = this.filter.campaign_code && this.filter.campaign_code.value ? this.filter.campaign_code.value : this.filter.campaign_code;
         }
-
-        for (const flt in this.filters) {
-          if(this.filters[flt] && this.filters[flt] == "")
-            delete this.filters[flt];
+        for (const flt in this.filter) {
+          if(this.filter[flt] && this.filter[flt] == "")
+            delete this.filter[flt];
         }
+        console.log(this.filter)
 
         if(JSON.stringify(this.filter)!='{}'){
           this.fetchFilter({"filters":this.filter, "telephones":telephones});
