@@ -129,8 +129,14 @@ import Vue from 'vue'
           for(var s = 0; s < val.length; s++){
             val[s].hour = this.getHour(val[s].created_at);
             val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
-            val[s].telephone = val[s].telephones.length > 0 ? (val[s].telephones.find(element=>{return element.main == true}) && val[s].telephones.find(element=>{return element.main == true}).number ? val[s].telephones.find(element=>{return element.main == true}).number : "") : "";
-            val[s].verify_code = val[s].telephones.length > 0 ? (val[s].telephones.find(element=>{return element.main == true}) && val[s].telephones.find(element=>{return element.main == true}).verification_code ? val[s].telephones.find(element=>{return element.main == true}).verification_code : "") : "";
+            var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
+            if(tel != ""){
+              val[s].telephone = tel.number;
+              val[s].verify_code = tel.verification_code;
+            }else{
+              val[s].telephone = "";
+              val[s].verify_code = "";
+            }
             this.customers.push(val[s]);
           }
         }
