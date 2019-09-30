@@ -169,10 +169,10 @@ import Vue from 'vue'
         }
         this.filter.campaign_code = this.filter.campaign_code && this.filter.campaign_code.value ? this.filter.campaign_code.value : this.filter.campaign_code;
 
-        for (const flt in this.filters) {
+        /*for (const flt in this.filters) {
           if(this.filters[flt] && this.filters[flt] == "")
             this.filters[flt] = null;
-        }
+        }*/
         if(JSON.stringify(this.filter)!='{}'){
           this.fetchFilter({"page_size":-1,"filters":this.filter, "telephones":telephones});
         }
