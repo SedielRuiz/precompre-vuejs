@@ -21,7 +21,7 @@
               </v-layout>
               <v-layout row wrap>
                 <v-flex xs12 sm12 md6>
-                  <v-select v-model="customer.id_type" :items="typesIdentification" name="type_identification" prepend-icon="featured_play_list" label="Tipo de identificación"></v-select>
+                  <v-combobox v-model="customer.id_type" :items="typesIdentification" name="type_identification" prepend-icon="featured_play_list" label="Tipo de identificación"></v-combobox>
                 </v-flex>
                 <v-flex xs12 sm12 md6>
                   <v-text-field v-model="customer.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
