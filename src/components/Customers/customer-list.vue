@@ -132,7 +132,7 @@ import Vue from 'vue'
             var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
             if(tel != ""){
               val[s].telephone = tel.number;
-              val[s].verify_code = val[s].verified ? "Verificado" : tel.verification_code;
+              val[s].verify_code = tel.verified ? "Verificado" : tel.verification_code;
             }else{
               val[s].telephone = "";
               val[s].verify_code = ""; 
