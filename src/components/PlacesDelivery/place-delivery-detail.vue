@@ -27,15 +27,38 @@
                   <v-text-field readonly v-model="place.welcome_code" prepend-icon="email" name="welcome_code" label="Código de bienvenida" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
-              <v-text-field readonly v-model="place.address" prepend-icon="email" name="address" label="Dirección" type="text"></v-text-field>
-              <gmap-map v-if="place.coords"
-                  :center="center" :zoom="12"
-                  style="width:100%;  height: 400px;">
-                  <gmap-marker
-                      :position="place.coords"
-                      @click="center=place.coords">
-                  </gmap-marker>
-              </gmap-map><br>
+              <v-select v-model="place.input_type" prepend-icon="email" :items="locationTypes" label="Tipo de localización"></v-select>
+              <div v-if="place.input_type == 'manual'">
+                <v-text-field readonly v-model="place.address" prepend-icon="email" name="address" label="Dirección" type="text"></v-text-field>
+                <v-layout row wrap>
+                  <v-flex xs12 sm12 md6>
+                    <v-text-field readonly v-model="place.coords.lat" prepend-icon="email" name="lat" label="Latitud" type="text"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm12 md6>
+                    <v-text-field readonly v-model="place.coords.long" prepend-icon="email" name="long" label="Longitud" type="text"></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </div>
+              <div v-else-if="place.input_type == 'google'">
+                <v-text-field readonly v-model="place.address" prepend-icon="email" name="address" label="Dirección" type="text"></v-text-field>
+                <gmap-map v-if="place.coords"
+                    :center="center" :zoom="12"
+                    style="width:100%;  height: 400px;">
+                    <gmap-marker
+                        :position="place.coords"
+                        @click="center=place.coords">
+                    </gmap-marker>
+                </gmap-map><br>
+              </div>
+              <h2>Administración</h2><hr><br>
+              <v-layout row wrap>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field readonly v-model="place.administration.name" prepend-icon="email" name="name" label="Nombre del administrador" type="text"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field readonly v-model="place.administration.phone" prepend-icon="email" name="phone" label="Teléfono" type="number"></v-text-field>
+                </v-flex>
+              </v-layout><br>
               <div>
                 <observations :routeFetch="'delivery_places'" :routeEdit="'edit_delivery_place'" :obs="place.observations.length > 0 ? place.observations : []" :id="this.$route.params.id == undefined ? 0 : this.$route.params.id"></observations>
               </div>
@@ -95,7 +118,7 @@
   import Observations from "@/components/Observations";
   
   export default {
-    name: 'user-manage',
+    name: 'delivery-place-manage',
     components:{
       Observations,
     },
@@ -112,6 +135,8 @@
         pl(val){
           if(val){
             this.place = val;
+            if(!this.place.administration)
+              this.place.administration = {name:"", phone:""};
             if(this.place.coords)
               this.place.coords = {"lat":Number(this.place.coords.lat), "lng":Number(this.place.coords.long)};
             this.center = this.place.coords;
@@ -122,6 +147,7 @@
     },
     mounted () {
         this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
+        //this.place.administration = {name:"", phone:""};
         if(this.edit!=""){
             this.getPlace(this.edit);
         }
