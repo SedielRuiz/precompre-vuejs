@@ -54,7 +54,7 @@
           <td>{{ props.item.email }}</td>
           <td>{{ props.item.telephone }}</td>
           <td>{{ props.item.campaign_code ? props.item.campaign_code : ""}}</td>
-          <td>{{ props.item.verify_code }}</td>
+          <td>{{ props.item.verified ?  <i class="material-icons">check_circle_outline</i> : props.item.verify_code }}</td>
           <td>
             <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
             <v-icon style="color:#bf1526;" medium @click="deleteCustomer(props.item._id)">delete</v-icon>
@@ -169,10 +169,10 @@ import Vue from 'vue'
         }
         this.filter.campaign_code = this.filter.campaign_code && this.filter.campaign_code.value ? this.filter.campaign_code.value : this.filter.campaign_code;
 
-        /*for (const flt in this.filters) {
+        for (const flt in this.filters) {
           if(this.filters[flt] && this.filters[flt] == "")
             this.filters[flt] = null;
-        }*/
+        }
         if(JSON.stringify(this.filter)!='{}'){
           this.fetchFilter({"filters":this.filter, "telephones":telephones});
         }
