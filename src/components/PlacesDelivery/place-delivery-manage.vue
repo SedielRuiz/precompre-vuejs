@@ -202,6 +202,9 @@
         pl(val){
           if(val){
             this.place = val;
+            if(!this.place.administration){
+              this.place.administration = {name:"", phone:""};
+            }
             if(val.clusters){
               this.units = val.clusters;
               this.formatUnits();
