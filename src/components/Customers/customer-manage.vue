@@ -142,6 +142,8 @@
         cu(val){
           if(val){
             this.customer = val;
+            if(val.gender)
+              this.customer.gender = this.genders.find(element=>{return element.value == val.gender });
             if(val.id_type)
               this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type });
             this.phones = val.telephones;
