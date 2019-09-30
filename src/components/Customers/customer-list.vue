@@ -123,7 +123,7 @@
       }),
       getHour(date){
         var dt = new Date(date);
-        return dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
+        return (dt.getHours() < 10 ? "0"+dt.getHours() : dt.getHours())+":"+(dt.getMinutes() < 10 ? "0"+dt.getMinutes() : dt.getMinutes())+":"+(dt.getSeconds() < 10 ? "0"+dt.getSeconds() :dt.getSeconds());
       },
       searchFilter(){
         if(this.numberPhone || this.verifyCode){
