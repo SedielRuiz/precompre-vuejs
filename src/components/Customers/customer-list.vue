@@ -172,12 +172,9 @@ import Vue from 'vue'
           this.filter.campaign_code = this.filter.campaign_code && this.filter.campaign_code.value ? this.filter.campaign_code.value : this.filter.campaign_code;
         }
         for (const flt in this.filter) {
-          console.log(this.filter)
-          console.log(this.filter[flt]);
           if(this.filter[flt] == "")
             delete this.filter[flt];
         }
-        console.log(this.filter)
 
         if(JSON.stringify(this.filter)!='{}'){
           this.fetchFilter({"filters":this.filter, "telephones":telephones});

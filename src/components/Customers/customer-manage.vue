@@ -148,7 +148,7 @@
               this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type });
             this.phones = val.telephones;
             for(var s = 0; s < val.delivery_places.length; s++){
-              this.placesSelected.push({"name":val.delivery_places[s].name, "floor":val.delivery_places[s].floor, "cluster":val.delivery_places[s].cluster, "id":val.delivery_places[s].id, "unit":val.delivery_places[s].unit, "_type":val.delivery_places[s]._type});
+              this.placesSelected.push({"name":val.delivery_places[s].name, "floor":val.delivery_places[s].floor, "cluster":val.delivery_places[s].cluster, "id":val.delivery_places[s]._id, "unit":val.delivery_places[s].unit, "_type":val.delivery_places[s].type});
             }
           }
         },
