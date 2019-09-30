@@ -44,7 +44,11 @@
         }
         },
         mounted () {
-            this.observations = this.obs ? this.obs : [];
+            if(this.obs){
+                this.observations = this.obs;
+            }else{
+                this.fetchObservations();
+            }
         },
         methods: {
             getHour(date){
