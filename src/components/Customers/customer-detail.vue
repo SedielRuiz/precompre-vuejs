@@ -41,6 +41,9 @@
               <v-text-field readonly v-model="customer.campaign_code" prepend-icon="person" name="campaign_code" label="Campaña" type="text"></v-text-field>
               <v-text-field readonly v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
               <v-combobox readonly v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
+              <div>
+                <observations :routeFetch="'customers'" :routeEdit="'edit_customer'" :obs="customer.observations && customer.observations.length > 0 ? customer.observations : []" :id="this.$route.params.id == undefined ? 0 : this.$route.params.id"></observations>
+              </div>
               <h2>Teléfonos</h2><hr><br>
               <div v-if="phones">
                 <v-chip v-for="(p, index) in phones" :key="index">{{p.number}}</v-chip>
@@ -62,10 +65,13 @@
 
 <script>
   import {mapActions,mapState} from 'vuex';
-  
+  import Observations from "@/components/Observations";
+
   export default {
-    
     name: 'user-detail',
+    components:{
+      Observations,
+    },
     data () {
       return {
         customer: {},

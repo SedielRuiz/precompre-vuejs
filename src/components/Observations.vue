@@ -44,8 +44,8 @@
         }
         },
         mounted () {
-            console.log(this.obs);
-            console.log(this.id);
+            //console.log(this.obs);
+            //console.log(this.id);
             if(this.obs.length > 0){
                 this.observations = this.obs;
             }else{
