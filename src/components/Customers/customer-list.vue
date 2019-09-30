@@ -168,7 +168,9 @@ import Vue from 'vue'
         if(this.verifyCode){
           telephones.$elemMatch.verification_code = this.verifyCode;
         }
-        this.filter.campaign_code = this.filter.campaign_code && this.filter.campaign_code.value ? this.filter.campaign_code.value : this.filter.campaign_code;
+        if(this.filter.campaign_code){
+          this.filter.campaign_code = this.filter.campaign_code && this.filter.campaign_code.value ? this.filter.campaign_code.value : this.filter.campaign_code;
+        }
 
         /*for (const flt in this.filters) {
           if(this.filters[flt] && this.filters[flt] == "")
