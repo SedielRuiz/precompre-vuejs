@@ -133,7 +133,7 @@ import Vue from 'vue'
           for(var s = 0; s < val.length; s++){
             val[s].hour = this.getHour(val[s].created_at);
             val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
-            val[s].delivery = val[s].delivery_places && val[s].delivery_places.length > 0 && val[s].delivery_places[0].name;
+            val[s].delivery = val[s].delivery_places && val[s].delivery_places.length > 0 ? val[s].delivery_places[0].name : "";
             var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
             if(tel != ""){
               val[s].telephone = tel.number;
