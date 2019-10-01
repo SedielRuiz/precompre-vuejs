@@ -16,51 +16,15 @@
                 </v-list-tile-content>
             </v-list-tile>
             <v-divider></v-divider>
-            <v-list-group prepend-icon="assignment" value="true">
-              <template v-slot:activator>
-                <v-list-tile>
-                  <v-list-tile-title>Productos</v-list-tile-title>
-                </v-list-tile>
-              </template>
-
-              <v-list-tile class="subMenu" @click="dirigir('/atributesProductList')">
-                  <v-list-tile-action>
-                  </v-list-tile-action>
-                  <v-list-tile-content>
-                  <v-list-tile-title>Atributos de producto</v-list-tile-title>
-                  </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile class="subMenu" @click="dirigir('/classProductList')">
-                  <v-list-tile-action>
-                  </v-list-tile-action>
-                  <v-list-tile-content>
-                  <v-list-tile-title>Clases de productos</v-list-tile-title>
-                  </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile class="subMenu" @click="dirigir('/categoryList')">
-                  <v-list-tile-action>
-                  </v-list-tile-action>
-                  <v-list-tile-content>
-                  <v-list-tile-title>Categorias</v-list-tile-title>
-                  </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile class="subMenu" @click="dirigir('/productList')">
-                  <v-list-tile-action>
-                  </v-list-tile-action>
-                  <v-list-tile-content>
-                  <v-list-tile-title>Lista de productos</v-list-tile-title>
-                  </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile class="subMenu" @click="dirigir('/productListList')">
-                  <v-list-tile-action>
-                  </v-list-tile-action>
-                  <v-list-tile-content>
-                  <v-list-tile-title>Filtros de productos</v-list-tile-title>
-                  </v-list-tile-content>
-              </v-list-tile>
-            </v-list-group>
+            <v-list-tile @click="dirigir('/storeList')">
+                <v-list-tile-action>
+                <v-icon>assignment</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                <v-list-tile-title>Tiendas</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
             <v-divider></v-divider>
-            
             <v-list-tile @click="dirigir('/placeDeliveryList')">
                 <v-list-tile-action>
                 <v-icon>assignment</v-icon>
@@ -112,7 +76,50 @@
                   </v-list-tile-content>
               </v-list-tile>
             </v-list-group>
+            <v-divider></v-divider>
+            <v-list-group prepend-icon="assignment" value="true">
+              <template v-slot:activator>
+                <v-list-tile>
+                  <v-list-tile-title>Productos</v-list-tile-title>
+                </v-list-tile>
+              </template>
 
+              <v-list-tile class="subMenu" @click="dirigir('/atributesProductList')">
+                  <v-list-tile-action>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Atributos de producto</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile class="subMenu" @click="dirigir('/classProductList')">
+                  <v-list-tile-action>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Clases de productos</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile class="subMenu" @click="dirigir('/categoryList')">
+                  <v-list-tile-action>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Categorias</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile class="subMenu" @click="dirigir('/productList')">
+                  <v-list-tile-action>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Lista de productos</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile class="subMenu" @click="dirigir('/productListList')">
+                  <v-list-tile-action>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                  <v-list-tile-title>Filtros de productos</v-list-tile-title>
+                  </v-list-tile-content>
+              </v-list-tile>
+            </v-list-group>
             <v-divider></v-divider>
 
             <v-list-tile @click="dirigir('/preOrderList')">
@@ -153,7 +160,7 @@
             <v-list-group prepend-icon="assignment" value="true">
               <template v-slot:activator>
                 <v-list-tile>
-                  <v-list-tile-title>Ventas</v-list-tile-title>
+                  <v-list-tile-title>Mercadeo</v-list-tile-title>
                 </v-list-tile>
               </template>
               <v-list-tile class="subMenu" @click="dirigir('/campaignList')">
