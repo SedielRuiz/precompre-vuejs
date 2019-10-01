@@ -120,7 +120,7 @@ import Vue from 'vue'
           "Estado":"state",
         },
         pagination:{
-          descending:true,
+          descending:false,
           rowsPerPage:-1,
         },
         customers:[],
@@ -174,7 +174,6 @@ import Vue from 'vue'
                 val[s].verify_code = ""; 
               }
               this.customers.push(val[s]);
-              console.log(this.customers);
             }
           }
         }
