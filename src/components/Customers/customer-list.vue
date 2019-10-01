@@ -45,7 +45,7 @@
         </v-flex>
         <v-spacer></v-spacer>
         <v-btn color="success" @click="searchFilter()"><v-icon medium>search</v-icon></v-btn>
-        <v-btn color="success" @click="filter = {}"><v-icon medium>delete</v-icon></v-btn>
+        <v-btn color="success" @click="clearFilter()"><v-icon medium>delete</v-icon></v-btn>
       </v-layout>
     </div>
     <hr><br>
@@ -191,6 +191,12 @@ import Vue from 'vue'
         delete: 'customer/delete',
         setWarning: 'setWarning',
       }),
+      clearFilter(){
+        this.filter = {};
+        this.verifyCode = "";
+        this.delivery_place = "";
+        this,numberPhone = "";
+      },
       deliveryPlace(place){
         var delivery = "";
         if(place){
