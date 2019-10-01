@@ -17,7 +17,7 @@
         <template v-slot:items="props">
         <td>{{ props.item.code }}</td>
         <td>{{ props.item.name }}</td>
-        <td>{{ props.item.description }}</td>
+        <td>{{ props.item.url }}</td>
         <td>
           <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
           <v-icon style="color:#bf1526;" medium @click="deleteStore(props.item._id)">delete</v-icon>
@@ -42,7 +42,7 @@
         headers: [
             {text:"Código", value:"code"},
             {text:"Nombre", value:"name"},
-            {text:"Descripción", value:"description"},
+            {text:"URL", value:"url"},
             {text:"Acciones", value:"actons"}
         ]
       }

@@ -14,6 +14,7 @@
                 <v-text-field readonly v-model="store.code" prepend-icon="email" name="code" label="Código" type="text"></v-text-field>
                 <v-text-field readonly v-model="store.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
                 <v-textarea readonly v-model="store.description" prepend-icon="library_books"name="description" label="Descripción"></v-textarea>
+                <v-text-field readonly v-model="store.url" prepend-icon="email" name="name" label="Url" type="text"></v-text-field>
             </v-form>
           </v-card-text>
           <v-card-actions>
