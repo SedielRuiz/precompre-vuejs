@@ -2,7 +2,7 @@
   <v-container>
     <div class="row col-md-10">
         <div class="col-md-8">
-            <h1>Campañas</h1>
+            <h1>Tiendas</h1>
         </div>
         <div class="col-md-2">
             <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
@@ -15,12 +15,12 @@
         hide-actions disable-initial-sort
         class="elevation-1">
         <template v-slot:items="props">
+        <td>{{ props.item.code }}</td>
         <td>{{ props.item.name }}</td>
         <td>{{ props.item.description }}</td>
-        <td>{{ props.item.code_promo }}</td>
         <td>
           <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
-          <v-icon style="color:#bf1526;" medium @click="deleteCampaign(props.item._id)">delete</v-icon>
+          <v-icon style="color:#bf1526;" medium @click="deleteStore(props.item._id)">delete</v-icon>
         </td>
         </template>
     </v-data-table>
@@ -33,35 +33,35 @@
   import pagination from '@/components/Pagination';
   
   export default {
-    name: 'campaign-list',
+    name: 'store-list',
     components: {
       pagination,
     },
     data () {
       return {
         headers: [
+            {text:"Código", value:"code"},
             {text:"Nombre", value:"name"},
             {text:"Descripción", value:"description"},
-            {text:"Código de promoción", value:"code_promo"},
             {text:"Acciones", value:"actons"}
         ]
       }
     },
     mounted () {
-      this.fetchCampaigns();
+      this.fetchStores();
     },
     methods: {
       ...mapActions({
-        fetchCampaigns: 'campaign/fetchCampaigns',
-        delete: 'campaign/delete',
+        fetchStores: 'stores/fetchStores',
+        delete: 'stores/delete',
         setWarning: 'setWarning',
       }),
-      deleteCampaign(id){
+      deleteStore(id){
         if(confirm("¿ Seguro que desea eliminar este registro ? ")){
           this.delete(id).then(
             data => {
               this.setWarning(data, { root: true }).then(()=>{
-                  this.fetchCampaigns();
+                  this.fetchStores();
               })
             },
             error => {
@@ -70,23 +70,23 @@
         }
       },
       search(pagination){
-        this.fetchCampaigns(pagination);
+        this.fetchStores(pagination);
       },
       redirect(page,id){
         if(!page){
-            this.$router.push('/campaignManage')
+            this.$router.push('/storeManage')
         }else{
-            this.$router.push('/campaignDetail/'+id)
+            this.$router.push('/storeDetail/'+id)
         }
       }
     },
     computed:{
       ...mapState({
         warning: state => state.warning,
-        rows: state => state.campaign.campaigns,
-        page_size: state => state.campaign.page_size,
-        total_items: state => state.campaign.total_items,
-        total_pages: state => state.campaign.total_pages,
+        rows: state => state.stores.stores,
+        page_size: state => state.stores.page_size,
+        total_items: state => state.stores.total_items,
+        total_pages: state => state.stores.total_pages,
       }),
     },
   }

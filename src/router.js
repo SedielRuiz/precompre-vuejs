@@ -71,6 +71,10 @@ import InputList from '@/components/Inputs/input-list';
 import CampaignList from '@/components/Campaigns/campaign-list';
 import CampaignManage from '@/components/Campaigns/campaign-manage';
 import CampaignDetail from '@/components/Campaigns/campaign-detail';
+/**Tiendas**/
+import StoreList from '@/components/Stores/store-list';
+import StoreManage from '@/components/Stores/store-manage';
+import StoreDetail from '@/components/Stores/store-detail';
 
 const router = new Router({
   routes: [
@@ -453,6 +457,31 @@ const router = new Router({
         name: 'campaignManageUpdate',
         component: CampaignManage,
         meta: { Auth: true, title: 'Editar camapaña' },
+    },
+    /**Tiendas**/
+    {
+        path: '/storeList',
+        name: 'storeList',
+        component: StoreList,
+        meta: { Auth: true, title: 'Tiendas' },
+    },
+    {
+        path: '/storeDetail/:id',
+        name: 'storeDetail',
+        component: StoreDetail,
+        meta: { Auth: true, title: 'Tienda' },
+    },
+    {
+        path: '/storeManage/',
+        name: 'storeManageCreate',
+        component: StoreManage,
+        meta: { Auth: true, title: 'Crear tiendas' },
+    },
+    {
+        path: '/storeManage/:id/',
+        name: 'storeManageUpdate',
+        component: StoreManage,
+        meta: { Auth: true, title: 'Editar tiendas' },
     },
     
   ]

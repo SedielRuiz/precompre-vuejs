@@ -22,6 +22,7 @@ import preOrder from '@/modules/preOrder';
 import comanda from '@/modules/comanda';
 import input from '@/modules/input';
 import campaign from '@/modules/campaign';
+import stores from '@/modules/store';
 
 const store = new Vuex.Store({  
   state: {
@@ -96,6 +97,7 @@ const store = new Vuex.Store({
     comanda,
     input,
     campaign,
+    stores,
   }
 })
 
