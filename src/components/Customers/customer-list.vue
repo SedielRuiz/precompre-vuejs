@@ -45,6 +45,7 @@
         </v-flex>
         <v-spacer></v-spacer>
         <v-btn color="success" @click="searchFilter()"><v-icon medium>search</v-icon></v-btn>
+        <v-btn color="success" @click="filter = {}"><v-icon medium>delete</v-icon></v-btn>
       </v-layout>
     </div>
     <hr><br>
@@ -139,7 +140,6 @@ import Vue from 'vue'
     watch:{
         campa(val){
           if(val){ 
-              this.campaigns.push({ text:"Vacio", value:"" });
               for(var s = 0; s < val.length; s++){
                 this.campaigns.push({ "text":val[s].code_promo, "value":val[s].code_promo });
               }
@@ -147,7 +147,6 @@ import Vue from 'vue'
         },
         places(val){
           if(val){
-            this.delivery_places.push({ text:"Vacio", value:"" });
             for(var s = 0; s < val.length; s++){
               this.delivery_places.push({ text:val[s].name, value:val[s]._id });
             }
