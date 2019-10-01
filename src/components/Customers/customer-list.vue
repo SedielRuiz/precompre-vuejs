@@ -238,7 +238,7 @@ import Vue from 'vue'
           this.filter.campaign_code = this.filter.campaign_code && this.filter.campaign_code.value ? this.filter.campaign_code.value : this.filter.campaign_code;
         }
         if(this.delivery_place){
-          this.filter.delivery = { id: this.delivery_place && this.delivery_place.value ? this.delivery_place.value : this.delivery_place };
+          this.filter.delivery = { $elemMatch: { id: this.delivery_place && this.delivery_place.value ? this.delivery_place.value : this.delivery_place } };
         }
         for (const flt in this.filter) {
           if(this.filter[flt] == "")
