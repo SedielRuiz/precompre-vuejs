@@ -195,7 +195,7 @@ import Vue from 'vue'
         this.filter = {};
         this.verifyCode = "";
         this.delivery_place = "";
-        this,numberPhone = "";
+        this.numberPhone = "";
       },
       deliveryPlace(place){
         var delivery = "";
