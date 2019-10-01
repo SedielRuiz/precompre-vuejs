@@ -165,7 +165,7 @@ import Vue from 'vue'
                 case "interested": val[s].state = "Interesado"; break;
               }
               var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
-              if(tel != ""){
+              if(tel != "" && tel != undefined){
                 val[s].telephone = tel.number;
                 val[s].verify_code = tel.verified ? "Verificado" : tel.verification_code;
               }else{
