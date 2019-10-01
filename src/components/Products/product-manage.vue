@@ -162,6 +162,39 @@
                                         </v-flex> 
                                         <v-flex class="alignGrid" xs12 md1>
                                             <v-icon  @click="formRecipe(index)">add</v-icon>
+                                            <v-dialog v-model="sub.recipe" persistent>
+                                                <v-card class="elevation-12">
+                                                    <v-toolbar dark color="primary">
+                                                    <v-toolbar-title>Receta</v-toolbar-title>
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn color="success" @click="closeModal(index)">Ok</v-btn>
+                                                    </v-toolbar>
+                                                    <v-card-text>
+                                                    <v-form>
+                                                        <v-layout row wrap>
+                                                            <v-flex xs12 md4>
+                                                                <v-combobox prepend-icon="filter_list" v-model="sub.input" :items="inputsp" id="inputModal" name="inputModal" label="Insumos"></v-combobox>
+                                                            </v-flex>
+                                                            <v-flex xs12 md2>
+                                                                <v-text-field v-model="sub.quantity" prepend-icon="featured_play_list" id="quantityModal" name="quantityModal" label="Cantidad" type="number"></v-text-field>
+                                                            </v-flex>
+                                                            <v-flex xs12 md2>
+                                                                <v-layout row wrap>
+                                                                    <v-icon medium @click="addArray('i', index)">add</v-icon>
+                                                                    <div v-if="sub && sub.inputs">
+                                                                        <v-chip v-for="(i, index) in sub.inputs" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip>
+                                                                    </div>
+                                                                </v-layout>
+                                                            </v-flex>
+                                                        </v-layout>
+                                                    </v-form>
+                                                    </v-card-text>
+                                                    <v-card-actions>
+                                                        <v-spacer></v-spacer>
+                                                        <!--v-btn color="primary" @click="processInput(ingredient.idx)" style="width: 100%;" >Guardar</v-btn-->
+                                                    </v-card-actions>
+                                                </v-card>
+                                            </v-dialog>
                                         </v-flex>
                                         <v-flex class="alignGrid" xs12 md1>
                                             <!--label class="text-reader">
@@ -182,39 +215,6 @@
                         </v-flex>
                     </v-layout><br>
                 </div>
-                <v-dialog v-model="recipe" persistent>
-                    <v-card class="elevation-12">
-                        <v-toolbar dark color="primary">
-                        <v-toolbar-title>Receta</v-toolbar-title>
-                            <v-spacer></v-spacer>
-                            <v-btn color="success" @click="closeModal()">Ok</v-btn>
-                        </v-toolbar>
-                        <v-card-text>
-                        <v-form>
-                             <v-layout row wrap>
-                                <v-flex xs12 md4>
-                                    <v-combobox prepend-icon="filter_list" v-model="ingredient.input" :items="inputs" label="Insumos"></v-combobox>
-                                </v-flex>
-                                <v-flex xs12 md2>
-                                    <v-text-field v-model="ingredient.quantity" prepend-icon="featured_play_list" name="quantity" label="Cantidad" type="number"></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 md2>
-                                    <v-layout row wrap>
-                                        <v-icon medium @click="addArray('i', ingredient.idx)">add</v-icon>
-                                        <div v-if="ingredient && subProductsAttribute[ingredient.idx] && subProductsAttribute[ingredient.idx].inputs">
-                                            <v-chip v-for="(i, index) in subProductsAttribute[ingredient.idx].inputs" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip>
-                                        </div>
-                                    </v-layout>
-                                </v-flex>
-                            </v-layout>
-                        </v-form>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <!--v-btn color="primary" @click="processInput(ingredient.idx)" style="width: 100%;" >Guardar</v-btn-->
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
                 <h2>Categorias</h2><hr><br>
                 <div class="row col-md-8">
                     <v-card style="height: 100%;width: 84%; padding: 31px;">
@@ -297,6 +297,7 @@
                 ingredient:{},
                 ingredients:[],
                 inputs:[],
+                inputsp:[],
                 subProductsAttribute:[],
                 sub:"",
                 addSub:"",
@@ -374,7 +375,8 @@
             inp(val){
                 if(val){
                     for(var s = 0; s < val.length; s++){
-                        this.inputs.push({"text":val[s].name +" - "+ val[s].metric, "value":val[s]._id});
+                        this.inputs.push({"text":val[s].name, "value":val[s]._id});
+                        this.inputsp.push({"text":val[s].name +" - "+ val[s].metric, "value":val[s]._id});
                     }
                 }
             }
@@ -415,11 +417,15 @@
                 var at = this.attributes.find(element=>{return element.code == "photo"});
                 return at && at.default_value ? at.default_value : at.value;
             },
-            closeModal(){
+            closeModal(idx){
+                this.subProductsAttribute[idx].recipe = false;
+                this.subProductsAttribute.push();
                 this.recipe = false;
             },
             formRecipe(idx){
-                this.ingredient.idx = idx;
+                this.subProductsAttribute[idx].recipe = true;
+                this.subProductsAttribute.push();
+                //this.ingredientp.idx = idx;
                 this.recipe = true;
             },
             complement(array){
@@ -464,6 +470,7 @@
                 this.subProductsAttribute = this.complement(attributes);
                 for(var s = 0; s < this.subProductsAttribute.length; s++){
                     this.subProductsAttribute[s].inputs = this.ingredients ? this.ingredients : [];
+                    this.subProductsAttribute[s].recipe = false;
                 }
             },
             editSubProducts(subs, attrs){
@@ -535,27 +542,39 @@
                 switch(arr) {
                     case "i":
                         let ing = [];
-                        let ingr = Object.assign({...this.ingredient});
-                        let obj = {
-                            "id": ingr.input.value,
-                            "quantity":ingr.quantity,
-                            "name": ingr.input.text.split("-")[0], 
-                            "metric": ingr.input.text.split("-")[1],
-                        }
+                        var aux = [];
                         if(idx == "general"){
+                            console.log("en algunh moernyto de la creacion dle mundo etre aqui");
+                            let ingr = {...this.ingredient};
+                            const obj = {
+                                "id": ingr.input.value,
+                                "quantity":ingr.quantity,
+                                "name": ingr.input.text.split("-")[0], 
+                                "metric": ingr.input.text.split("-")[1],
+                            }
                             //Agrego el insumo
-                            this.ingredients.push(Object.assign({...obj}));
+                            this.ingredients.push({...obj});
                             //Actualizo los sub productos con el nuevo insumo general
                             //this.updateSubProduct(obj);
+                            this.ingredients.push();
+                            this.ingredient.input = "";
+                            this.ingredient.quantity = "";
                         }else{
-                            ing = Array.isArray(this.subProductsAttribute[idx].inputs) ? this.subProductsAttribute[idx].inputs : [];
-                            ing.push(Object.assign({...obj}));
-                            this.subProductsAttribute[idx].inputs = ing;
+                            const objp = {
+                                "id": this.subProductsAttribute[idx].input.value,
+                                "quantity":this.subProductsAttribute[idx].quantity,
+                                "name": this.subProductsAttribute[idx].input.text.split("-")[0], 
+                                "metric": this.subProductsAttribute[idx].input.text.split("-")[1],
+                            }
+                            aux = this.ingredients;
+                            this.subProductsAttribute[idx].inputss = Array.isArray(this.subProductsAttribute[idx].inputs) ? this.subProductsAttribute[idx].inputs : [];
+                            this.subProductsAttribute[idx].inputss.push({...objp});
+                            this.subProductsAttribute[idx].inputs = this.subProductsAttribute[idx].inputss;
+                            this.subProductsAttribute[idx].input = "";
+                            this.subProductsAttribute[idx].quantity = "";
+                            this.subProductsAttribute.push();
+                            this.ingredients = aux;
                         }
-                        this.ingredients.push();
-                        this.subProductsAttribute.push();
-                        this.ingredient.input = "";
-                        this.ingredient.quantity = "";
                         break;
                 }
             },
@@ -565,11 +584,11 @@
                         if(gn){
                             this.ingredients.splice(idx, 1);
                         }else{
-                            var ing = Array.isArray(this.subProductsAttribute[idx].ingredients) ? this.subProductsAttribute[idx].ingredients : [];
+                            var ing = Array.isArray(this.subProductsAttribute[idx].inputs) ? this.subProductsAttribute[idx].inputs : [];
                             ing.splice(idx,1);
                             this.ingredient.input = "";
                             this.ingredient.quantity = "";
-                            this.subProductsAttribute[idx].ingredients = ing;
+                            this.subProductsAttribute[idx].inputs = ing;
                             this.subProductsAttribute.push();
                         }
                         break;

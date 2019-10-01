@@ -174,13 +174,14 @@ import Vue from 'vue'
                 val[s].verify_code = ""; 
               }
               this.customers.push(val[s]);
+              console.log(this.customers);
             }
           }
         }
     },
     mounted () {
       this.fetchPlaceDelivery({page_size:-1});
-      this.fetchCustomers({page_size:-1});
+      this.fetchCustomers({page_size:50});
       this.fetchCampaigns({page_size:-1});
     },
     methods: {
@@ -249,7 +250,7 @@ import Vue from 'vue'
           this.fetchFilter({"filters":this.filter, "telephones":telephones, "delivery": delivery});
         }
         if(JSON.stringify(this.filter)=='{}' && !telephones && !delivery){
-          this.fetchCustomers({page_size:-1});
+          this.fetchCustomers({page_size:50});
         }
       },
       deleteCustomer(id){
@@ -257,7 +258,7 @@ import Vue from 'vue'
           this.delete(id).then(
             data => {
               this.setWarning(data, { root: true }).then(()=>{
-                this.fetchCustomers({page_size:-1});
+                this.fetchCustomers({page_size:50});
               })
             },
             error => {
