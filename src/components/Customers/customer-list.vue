@@ -8,7 +8,7 @@
             <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
             <v-btn color="success" @click="filt ? filt = false : filt = true">Filtrar</v-btn>
             <v-btn color="success">
-              <downloadExcel class = "btn btn-default" :fields = "headersExcel" :data = "customers" name = "clientes.xls">Exportar a excel</downloadExcel>
+              <downloadExcel class = "btn btn-default" :fields = "headersExcel" :data = "customers" name = "clientes.xls" type = "csv">Exportar a excel</downloadExcel>
             </v-btn>
         </v-flex>
     </v-layout>
@@ -26,19 +26,25 @@
         </v-flex>
       </v-layout>
       <v-layout row wrap>
+        <v-flex xs12 sm12 md4>
+          <v-text-field v-model="filter.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm12 md4>
+          <v-select v-model="filter.status" prepend-icon="account_box" :items="status" label="Estado"></v-select>
+        </v-flex>
+        <v-flex xs12 sm12 md4>
+          <v-combobox v-model="delivery_place" prepend-icon="account_box" :items="delivery_places" label="Lugar de entrega"></v-combobox>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
         <v-flex xs12 sm12 md3>
           <v-combobox v-model="filter.campaign_code" prepend-icon="account_box" :items="campaigns" label="Código de campaña"></v-combobox>
         </v-flex>
-        <v-flex xs12 sm12 md2>
+        <v-flex xs12 sm12 md3>
           <v-text-field v-model="verifyCode" prepend-icon="email" name="email" label="Código de verificación" type="text"></v-text-field>
         </v-flex>
-        <v-flex xs12 sm12 md3>
-          <v-text-field v-model="filter.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
-        </v-flex>
-        <v-flex xs12 sm12 md2>
-          <v-spacer></v-spacer>
-          <v-btn color="success" @click="searchFilter()"><v-icon medium>search</v-icon></v-btn>
-        </v-flex>
+        <v-spacer></v-spacer>
+        <v-btn color="success" @click="searchFilter()"><v-icon medium>search</v-icon></v-btn>
       </v-layout>
     </div>
     <hr><br>
@@ -56,6 +62,7 @@
           <td>{{ props.item.campaign_code ? props.item.campaign_code : ""}}</td>
           <td>{{ props.item.delivery }}</td>
           <td>{{ props.item.verify_code }}</td>
+          <td>{{ props.item.state }}</td>
           <td>
             <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
             <v-icon style="color:#bf1526;" medium @click="deleteCustomer(props.item._id)">delete</v-icon>
@@ -84,6 +91,11 @@ import Vue from 'vue'
     },
     data () {
       return {
+        status:[
+          {text: 'Activo', value:'enabled'},
+          {text: 'Inactivo', value:'disabled'},
+          {text: 'Interesado', value:'interested'},
+        ],
         headers: [
           {text:"Fecha de ingreso", value:"date"},
           {text:"Nombre", value:"name"},
@@ -92,6 +104,7 @@ import Vue from 'vue'
           {text:"Campaña", value:"campaign_code"},
           {text:"Lugar de entrega", value:"delivery"},
           {text:"Código de verificación", value:"verify_code"},
+          {text:"Estado", value:"state"},
           {text:"Acciones", value:"actons"}
         ],
         headersExcel:{
@@ -104,6 +117,7 @@ import Vue from 'vue'
           "Campaña":"campaign_code",
           "Lugar de entrega":"delivery",
           "Código de verificación":"verify_code",
+          "Estado":"state",
         },
         pagination:{
           descending:true,
@@ -118,6 +132,8 @@ import Vue from 'vue'
         campaigns:[],
         numberPhone:"",
         verifyCode:"",
+        delivery_place:"",
+        delivery_places:[],
       }
     },
     watch:{
@@ -128,6 +144,13 @@ import Vue from 'vue'
               }
           }
         },
+        places(val){
+          if(val){
+            for(var s = 0; s < val.length; s++){
+              this.delivery_places.push({ text:val[s].name, value:val[s]._id });
+            }
+          }
+        },
         rows(val){  
           if(val && this.places){
             this.customers = [];
@@ -135,6 +158,11 @@ import Vue from 'vue'
               val[s].hour = this.getHour(val[s].created_at);
               val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
               val[s].delivery = this.deliveryPlace(val[s].delivery_places && val[s].delivery_places.length > 0 ? val[s].delivery_places[0] : 0);
+              switch(val[s].status){
+                case "enable": val[s].state = "Activo"; break;
+                case "disabled": val[s].state = "Inactivo"; break;
+                case "interested": val[s].state = "Interesado"; break;
+              }
               var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
               if(tel != ""){
                 val[s].telephone = tel.number;
@@ -206,6 +234,9 @@ import Vue from 'vue'
         }
         if(this.filter.campaign_code){
           this.filter.campaign_code = this.filter.campaign_code && this.filter.campaign_code.value ? this.filter.campaign_code.value : this.filter.campaign_code;
+        }
+        if(this.delivery_place){
+          this.filter.delivery = { id: this.delivery_place && this.delivery_place.value ? this.delivery_place.value : this.delivery_place };
         }
         for (const flt in this.filter) {
           if(this.filter[flt] == "")

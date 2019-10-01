@@ -133,6 +133,7 @@
         status:[
           {text: 'Activo', value:'enabled'},
           {text: 'Inactivo', value:'disabled'},
+          {text: 'Interesado', value:'interested'},
         ],
         edit:"",
         titleText:""
