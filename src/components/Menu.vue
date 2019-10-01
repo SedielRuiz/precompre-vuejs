@@ -97,13 +97,13 @@
                   <v-list-tile-title>Busqueda de clientes</v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile class="subMenu" @click="dirigir('/groupList')">
+              <!--v-list-tile class="subMenu" @click="dirigir('/groupList')">
                 <v-list-tile-action>
                 </v-list-tile-action>
                 <v-list-tile-content>
                 <v-list-tile-title>Grupo</v-list-tile-title>
                 </v-list-tile-content>
-              </v-list-tile>
+              </v-list-tile-->
               <v-list-tile class="subMenu" @click="dirigir('/customerListList')">
                   <v-list-tile-action>
                   </v-list-tile-action>
