@@ -138,7 +138,8 @@ import Vue from 'vue'
     },
     watch:{
         campa(val){
-          if(val){
+          if(val){ 
+              this.campaigns.push({ text:"Vacio", value:"" });
               for(var s = 0; s < val.length; s++){
                 this.campaigns.push({ "text":val[s].code_promo, "value":val[s].code_promo });
               }
