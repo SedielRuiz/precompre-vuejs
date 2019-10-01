@@ -161,7 +161,7 @@ import Vue from 'vue'
               val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
               val[s].delivery = this.deliveryPlace(val[s].delivery_places && val[s].delivery_places.length > 0 ? val[s].delivery_places[0] : 0);
               switch(val[s].status){
-                case "enable": val[s].state = "Activo"; break;
+                case "enabled": val[s].state = "Activo"; break;
                 case "disabled": val[s].state = "Inactivo"; break;
                 case "interested": val[s].state = "Interesado"; break;
               }
