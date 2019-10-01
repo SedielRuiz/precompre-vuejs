@@ -164,27 +164,29 @@ import Vue from 'vue'
       }),
       deliveryPlace(place){
         var delivery = "";
-        var c;
-        var f;
-        var t;
-        var u;
-        var p = this.places.find(element=>{return element._id == place.id});
-        if(p){
-          c = p.clusters.find(element=>{return element._id == place.cluster});
-        }
-        if(c){
-          delivery += p.name + " ";
-          delivery += c.title + " ";
-          f = c.floors.find(element=>{return element._id == place.floor});
-        }
-        if(f){
-          t = f.types.find(element=>{return element._type == place._type});
-        }
-        if(t){
-          u = t.units.find(element=>{return element._id == place.unit});
-        }
-        if(u){
-          delivery += u.u;
+        if(place){
+          var c;
+          var f;
+          var t;
+          var u;
+          var p = this.places.find(element=>{return element._id == place.id});
+          if(p){
+            c = p.clusters.find(element=>{return element._id == place.cluster});
+          }
+          if(c){
+            delivery += p.name + " - ";
+            delivery += c.title + " - ";
+            f = c.floors.find(element=>{return element._id == place.floor});
+          }
+          if(f){
+            t = f.types.find(element=>{return element._type == place._type});
+          }
+          if(t){
+            u = t.units.find(element=>{return element._id == place.unit});
+          }
+          if(u){
+            delivery += u.u;
+          }
         }
         return delivery;
       },
