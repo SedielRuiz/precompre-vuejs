@@ -146,6 +146,7 @@ import Vue from 'vue'
         },
         places(val){
           if(val){
+            this.delivery_places.push({ text:"Vacio", value:"" });
             for(var s = 0; s < val.length; s++){
               this.delivery_places.push({ text:val[s].name, value:val[s]._id });
             }
