@@ -196,6 +196,7 @@ import Vue from 'vue'
         this.verifyCode = "";
         this.delivery_place = "";
         this.numberPhone = "";
+        this.fetchCustomers({page_size:50});
       },
       deliveryPlace(place){
         var delivery = "";
