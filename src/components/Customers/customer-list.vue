@@ -129,35 +129,65 @@ import Vue from 'vue'
           }
         },
         rows(val){  
-          this.customers = [];
-          for(var s = 0; s < val.length; s++){
-            val[s].hour = this.getHour(val[s].created_at);
-            val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
-            val[s].delivery = val[s].delivery_places && val[s].delivery_places.length > 0 ? val[s].delivery_places[0].name : "";
-            var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
-            if(tel != ""){
-              val[s].telephone = tel.number;
-              val[s].verify_code = tel.verified ? "Verificado" : tel.verification_code;
-            }else{
-              val[s].telephone = "";
-              val[s].verify_code = ""; 
+          if(val && this.places){
+            this.customers = [];
+            for(var s = 0; s < val.length; s++){
+              val[s].hour = this.getHour(val[s].created_at);
+              val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
+              val[s].delivery = this.deliveryPlace(val[s].delivery_places && val[s].delivery_places.length > 0 ? val[s].delivery_places[0] : 0);
+              var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
+              if(tel != ""){
+                val[s].telephone = tel.number;
+                val[s].verify_code = tel.verified ? "Verificado" : tel.verification_code;
+              }else{
+                val[s].telephone = "";
+                val[s].verify_code = ""; 
+              }
+              this.customers.push(val[s]);
             }
-            this.customers.push(val[s]);
           }
         }
     },
     mounted () {
+      this.fetchPlaceDelivery({page_size:-1});
       this.fetchCustomers({page_size:-1});
-      this.fetchCampaigns();
+      this.fetchCampaigns({page_size:-1});
     },
     methods: {
       ...mapActions({
         fetchCustomers: 'customer/fetchCustomers',
         fetchFilter: 'customer/fetchFilter',
         fetchCampaigns: 'campaign/fetchCampaigns',
+        fetchPlaceDelivery: 'placeDelivery/fetchPlaces',
         delete: 'customer/delete',
         setWarning: 'setWarning',
       }),
+      deliveryPlace(place){
+        var delivery = "";
+        var c;
+        var f;
+        var t;
+        var u;
+        var p = this.places.find(element=>{return element._id == place.id});
+        if(p){
+          c = p.clusters.find(element=>{return element._id == place.cluster});
+        }
+        if(c){
+          delivery += p.name + " ";
+          delivery += c.title + " ";
+          f = c.floors.find(element=>{return element._id == place.floor});
+        }
+        if(f){
+          t = f.types.find(element=>{return element._type == place._type});
+        }
+        if(t){
+          u = t.units.find(element=>{return element._id == place.unit});
+        }
+        if(u){
+          delivery += u.u;
+        }
+        return delivery;
+      },
       getHour(date){
         var dt = new Date(date);
         return (dt.getHours() < 10 ? "0"+dt.getHours() : dt.getHours())+":"+(dt.getMinutes() < 10 ? "0"+dt.getMinutes() : dt.getMinutes())+":"+(dt.getSeconds() < 10 ? "0"+dt.getSeconds() :dt.getSeconds());
@@ -219,6 +249,7 @@ import Vue from 'vue'
         total_items: state => state.customer.total_items,
         total_pages: state => state.customer.total_pages,
         campa: state => state.campaign.campaigns,
+        places: state => state.placeDelivery.places,
       }),
     },
   }
