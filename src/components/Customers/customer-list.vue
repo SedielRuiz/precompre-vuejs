@@ -238,7 +238,7 @@ import Vue from 'vue'
           this.filter.campaign_code = this.filter.campaign_code && this.filter.campaign_code.value ? this.filter.campaign_code.value : this.filter.campaign_code;
         }
         if(this.delivery_place){
-          this.filter.delivery = { $elemMatch: { id: this.delivery_place && this.delivery_place.value ? this.delivery_place.value : this.delivery_place } };
+          var delivery = { $elemMatch: { id: this.delivery_place && this.delivery_place.value ? this.delivery_place.value : this.delivery_place } };
         }
         for (const flt in this.filter) {
           if(this.filter[flt] == "")
@@ -246,7 +246,7 @@ import Vue from 'vue'
         }
 
         if(JSON.stringify(this.filter)!='{}'){
-          this.fetchFilter({"filters":this.filter, "telephones":telephones});
+          this.fetchFilter({"filters":this.filter, "telephones":telephones, "delivery": delivery});
         }
         if(JSON.stringify(this.filter)=='{}' && !telephones){
           this.fetchCustomers({page_size:-1});
