@@ -245,10 +245,10 @@ import Vue from 'vue'
             delete this.filter[flt];
         }
 
-        if(JSON.stringify(this.filter)!='{}'){
+        if(JSON.stringify(this.filter)!='{}' || JSON.stringify(telephones)!='{}' || JSON.stringify(delivery)!='{}'){
           this.fetchFilter({"filters":this.filter, "telephones":telephones, "delivery": delivery});
         }
-        if(JSON.stringify(this.filter)=='{}' && !telephones){
+        if(JSON.stringify(this.filter)=='{}' && !telephones && !delivery){
           this.fetchCustomers({page_size:-1});
         }
       },
