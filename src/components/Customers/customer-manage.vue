@@ -37,7 +37,7 @@
                 </v-flex>
               </v-layout>
               <v-text-field v-model="customer.birth_date" prepend-icon="email" name="birth_date" label="Fecha de nacimiento" type="date"></v-text-field>
-              <v-combobox v-if="edit!=''" v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
+              <v-combobox v-if="edit!=''" v-model="customer.status" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
               <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
               <div v-if="phones.length > 0">
                 <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
@@ -143,6 +143,8 @@
         cu(val){
           if(val){
             this.customer = val;
+            if(val.status)
+              this.customer.status = this.status.find(element=>{return element.value == val.status });
             if(val.gender)
               this.customer.gender = this.genders.find(element=>{return element.value == val.gender });
             if(val.id_type)
@@ -279,9 +281,11 @@
             this.customer.telephones = this.formatPhones();
             this.customer.id_type = this.customer.id_type && this.customer.id_type.value ? this.customer.id_type.value : this.customer.id_type;
             this.customer.gender = this.customer.gender && this.customer.gender.value ? this.customer.gender.value : this.customer.gender;
-            this.customer.status = "interested";
-            if(this.edit)
-              this.customer.status = this.customer.status.value;
+            if(this.edit){
+              this.customer.status = this.customer.status && this.customer.status.value ? this.customer.status.value : this.customer.status;
+            }else{
+              this.customer.status = "interested";
+            }
             this.customer.delivery_places = this.placesSelected;
             return this.customer;
         },

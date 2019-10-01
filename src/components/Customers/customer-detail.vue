@@ -40,7 +40,7 @@
               </v-layout>
               <v-text-field readonly v-model="customer.campaign_code" prepend-icon="person" name="campaign_code" label="Campaña" type="text"></v-text-field>
               <v-text-field readonly v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
-              <v-combobox readonly v-model="customer.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
+              <v-combobox readonly v-model="customer.status" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
               <div>
                 <observations :routeFetch="'customers'" :routeEdit="'edit_customer'" :obs="customer.observations && customer.observations.length > 0 ? customer.observations : []" :id="this.$route.params.id == undefined ? 0 : this.$route.params.id"></observations>
               </div>
@@ -87,12 +87,19 @@
             {text: 'Cedula de ciudadania', value:'cc'},
             {text: 'Cedula de extranjeria', value:'ce'}
         ],
+        status:[
+          {text: 'Activo', value:'enabled'},
+          {text: 'Inactivo', value:'disabled'},
+          {text: 'Interesado', value:'interested'},
+        ],
         edit:"",
       }
     },
     watch:{
         cu(val){
             this.customer = val;
+             if(val.status)
+              this.customer.status = this.status.find(element=>{return element.value == val.status });
             if(val.id_type){
               this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
             }
