@@ -94,7 +94,7 @@
                   <v-list-tile-action>
                   </v-list-tile-action>
                   <v-list-tile-content>
-                  <v-list-tile-title>Lista de clientes</v-list-tile-title>
+                  <v-list-tile-title>Busqueda de clientes</v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
               <v-list-tile class="subMenu" @click="dirigir('/groupList')">
@@ -108,7 +108,7 @@
                   <v-list-tile-action>
                   </v-list-tile-action>
                   <v-list-tile-content>
-                  <v-list-tile-title>Filtros de clientes</v-list-tile-title>
+                  <v-list-tile-title>Listas de clientes</v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
             </v-list-group>
@@ -295,7 +295,7 @@
       <router-view></router-view>
     </v-content>
     <v-footer color="indigo" app>
-      <span class="white--text">&copy; v0.0.42</span>
+      <span class="white--text">&copy; v0.0.43</span>
     </v-footer>
   </v-app>
 </template>
