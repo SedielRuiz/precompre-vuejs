@@ -215,6 +215,7 @@
       this.fetchStores({page_size:-1});
       this.fetchPlaceDelivery({page_size:-1});
       this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
+      this.customer.store_id = this.stores[0];
       if(this.edit!=""){
           this.titleText="Editar cliente"
           this.getCustomer(this.edit);
@@ -349,7 +350,7 @@
         if(this.edit){
           return false;
         }else{
-          if(this.customer && this.customer.id_type && this.customer.id_description && this.customer.email && this.customer.name && this.customer.campaign_code){
+          if(this.customer && this.customer.id_type && this.customer.id_description && this.customer.email && this.customer.name && this.customer.campaign_code && this.customer.store_id){
             return false; 
           }
           return true;
