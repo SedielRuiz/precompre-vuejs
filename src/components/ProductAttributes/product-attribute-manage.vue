@@ -129,7 +129,7 @@
             this.option = {};
         },
         buildAttribute(){
-          //this.attribute.sku = this.attribute.code.substring(0, 3);
+          this.attribute.sku = this.attribute.code.substring(0, 3);
           this.attribute.title = this.attribute.code;
           this.attribute.code = this.attribute.code.toLowerCase().split(" ").join("_");
           this.attribute.options = this.options;
