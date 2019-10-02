@@ -122,6 +122,7 @@ import Vue from 'vue'
           "Hora de ingreso":"hour",
           "Nombre":"name",
           "Apellido":"last_name",
+          "Tipo de documento":"id_type",
           "Documento":"id_description",
           "Fecha de nacimiento":"birth_date",
           "Genero":"gender",
