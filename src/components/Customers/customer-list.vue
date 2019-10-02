@@ -174,16 +174,16 @@ import Vue from 'vue'
         }
     },
     mounted () {
+      this.fetchStores();
+      this.fetchPlaceDelivery({page_size:-1});
+      this.fetchCustomers({page_size:50});
+      this.fetchCampaigns({page_size:-1});
       Vue.http.post('customers', {page_size:-1}).then(
         response =>{
           this.formatCustomers(response.data.result_set, true);
         }).catch(error=>{
           console.log(error);
         });
-      this.fetchStores();
-      this.fetchPlaceDelivery({page_size:-1});
-      this.fetchCustomers({page_size:50});
-      this.fetchCampaigns({page_size:-1});
     },
     methods: {
       ...mapActions({
