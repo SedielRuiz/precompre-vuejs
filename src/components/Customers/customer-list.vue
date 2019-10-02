@@ -207,8 +207,9 @@ import Vue from 'vue'
             val[s].verify_code = ""; 
           }
           if(excel){
-            val[s].birth_date = val[s].birth_date.split("T")[0].split("-")[2] +"/"+val[s].birth_date.split("T")[0].split("-")[1] +"/"+val[s].birth_date.split("T")[0].split("-")[0];
-            val[s].gender = gender == "f" ? "Femenino" : "Masculino";
+            if(val[s].birth_date)
+              val[s].birth_date = val[s].birth_date.split("T")[0].split("-")[2] +"/"+val[s].birth_date.split("T")[0].split("-")[1] +"/"+val[s].birth_date.split("T")[0].split("-")[0];
+            val[s].gender = val[s].gender == "f" ? "Femenino" : "Masculino";
             if(this.stores)
               val[s].store_id = this.stores.find(element=>{return element.value == val[s].store_id });
             this.customersExcel.push(val[s]);
