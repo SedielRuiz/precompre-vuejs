@@ -117,6 +117,11 @@ import Vue from 'vue'
           "Hora de ingreso":"hour",
           "Nombre":"name",
           "Apellido":"last_name",
+          "Documento":"id_description",
+          "Fecha de nacimiento":"birth_date",
+          "Genero":"gender",
+          "Código de promoción":"promo_code",
+          "Tienda":"store_id",
           "Correo":"email",
           "Teléfono":"telephone",
           "Campaña":"campaign_code",
@@ -168,7 +173,7 @@ import Vue from 'vue'
         }).catch(error=>{
           console.log(error);
         });
-
+      this.fetchStores();
       this.fetchPlaceDelivery({page_size:-1});
       this.fetchCustomers({page_size:50});
       this.fetchCampaigns({page_size:-1});
@@ -177,6 +182,7 @@ import Vue from 'vue'
       ...mapActions({
         fetchCustomers: 'customer/fetchCustomers',
         fetchFilter: 'customer/fetchFilter',
+        fetchStores: 'stores/fetchStores',
         fetchCampaigns: 'campaign/fetchCampaigns',
         fetchPlaceDelivery: 'placeDelivery/fetchPlaces',
         delete: 'customer/delete',
@@ -201,6 +207,10 @@ import Vue from 'vue'
             val[s].verify_code = ""; 
           }
           if(excel){
+            val[s].birth_date = val[s].birth_date.split("T")[0].split("-")[2] +"/"+val[s].birth_date.split("T")[0].split("-")[1] +"/"+val[s].birth_date.split("T")[0].split("-")[0];
+            val[s].gender = gender == "f" ? "Femenino" : "Masculino";
+            if(this.stores)
+              val[s].store_id = this.stores.find(element=>{return element.value == val[s].store_id });
             this.customersExcel.push(val[s]);
           }else{
             this.customers.push(val[s]);
@@ -307,6 +317,7 @@ import Vue from 'vue'
         total_pages: state => state.customer.total_pages,
         campa: state => state.campaign.campaigns,
         places: state => state.placeDelivery.places,
+        stores: state => state.stores.stores,
       }),
     },
   }
