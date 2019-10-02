@@ -165,7 +165,7 @@ import Vue from 'vue'
           }
         },
         rows(val){  
-          if(val && this.places){
+          if(val && this.places && this.places.length > 0){
             this.customers = [];
             this.formatCustomers(val);
             console.log(this.customers);
