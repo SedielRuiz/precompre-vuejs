@@ -48,7 +48,11 @@
         <v-btn color="success" @click="clearFilter()"><v-icon medium>delete</v-icon></v-btn>
       </v-layout>
     </div>
-    <hr><br>
+    <hr>
+    <v-layout>
+      <v-spacer></v-spacer>
+      <strong style="font-size:19px;">Total: {{customersExcel.length}}</strong>
+    </v-layout>
     <v-data-table
         :headers="headers"
         :items="customers"
