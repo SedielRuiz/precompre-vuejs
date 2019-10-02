@@ -96,6 +96,11 @@ import Vue from 'vue'
     },
     data () {
       return {
+        typesIdentification: [
+          {text: 'Tarjeta de identidad', value:'ti'},
+          {text: 'Cedula de ciudadania', value:'cc'},
+          {text: 'Cedula de extranjeria', value:'ce'}
+        ],
         status:[
           {text: 'Activo', value:'enabled'},
           {text: 'Inactivo', value:'disabled'},
@@ -211,7 +216,9 @@ import Vue from 'vue'
               val[s].birth_date = val[s].birth_date.split("T")[0].split("-")[2] +"/"+val[s].birth_date.split("T")[0].split("-")[1] +"/"+val[s].birth_date.split("T")[0].split("-")[0];
             val[s].gender = val[s].gender == "f" ? "Femenino" : "Masculino";
             if(this.stores)
-              val[s].store_id = this.stores.find(element=>{return element.value == val[s].store_id });
+              val[s].store_id = this.stores.find(element=>{return element.value == val[s].store_id }).name;
+            if(val[s].id_type)
+              val[s].id_type = this.typesIdentification.find(element=>{return element.value == val[s].id_type }).text;
             this.customersExcel.push(val[s]);
           }else{
             this.customers.push(val[s]);
