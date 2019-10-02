@@ -151,12 +151,12 @@
       resetPass(){
         if(confirm("¿ Seguro desea recuperar su contraseña. ?")){
           this.resetPassword({"id":this.customer._id}).then(
-                data => {
-                    this.setWarning(data, { root: true }).then(()=>{
-                    })
-                },
-                error => {
-            })
+            data => {
+                this.setWarning(data, { root: true }).then(()=>{
+                })
+            },
+            error => {
+          })
         }
       },
       redirect(page){

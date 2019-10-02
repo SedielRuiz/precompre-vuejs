@@ -48,11 +48,26 @@
             //console.log(this.id);
             if(this.obs.length > 0){
                 this.observations = this.obs;
+                this.formatObs();
             }else{
                 this.fetchObservations();
             }
         },
         methods: {
+            formatObs(){
+                if(this.observations){
+                    var lst = [];
+                    var m = this.observations.length;
+                    var i = 0;
+                    do{
+                        var p = (m-1) < 0 ? 0 : (m-1);
+                        lst.push(this.observations[p]);
+                        i++;
+                        m = m - 1;
+                    } while(i <= m);
+                    this.observations = lst;
+                }
+            },
             getHour(date){
                 var dt = new Date(date);
                 return (dt.getHours() < 10 ? "0"+dt.getHours() : dt.getHours())+":"+(dt.getMinutes() < 10 ? "0"+dt.getMinutes() : dt.getMinutes())+":"+(dt.getSeconds() < 10 ? "0"+dt.getSeconds() :dt.getSeconds());
@@ -63,6 +78,8 @@
                         this.observations = response.data.result_set[0].observations;
                         if(this.observations == undefined){
                             this.observations = [];
+                        }else{
+                            this.formatObs();
                         }
                     }).catch(error=>{
                         console.log(error);
