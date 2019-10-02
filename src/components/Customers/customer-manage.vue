@@ -208,6 +208,7 @@
         strs(val){
           for(var s = 0; s < val.length; s++){
             this.stores.push({text:val[s].name, value:val[s]._id});
+            this.customer.store_id = this.stores[0];
           }
         },
     },
@@ -215,7 +216,6 @@
       this.fetchStores({page_size:-1});
       this.fetchPlaceDelivery({page_size:-1});
       this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
-      this.customer.store_id = this.stores[0];
       if(this.edit!=""){
           this.titleText="Editar cliente"
           this.getCustomer(this.edit);
