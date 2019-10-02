@@ -169,7 +169,7 @@ import Vue from 'vue'
               }
               this.customers.push(val[s]);
             }
-            console.log(this.customers));
+            console.log(this.customers);
           }
         }
     },
