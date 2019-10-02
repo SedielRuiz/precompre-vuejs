@@ -196,38 +196,7 @@ import Vue from 'vue'
       }),
       formatCustomers(val, excel = false){
         for(var s = 0; s < val.length; s++){
-          val[s].hour = this.getHour(val[s].created_at);
-          val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
-          val[s].delivery = this.deliveryPlace(val[s].delivery_places && val[s].delivery_places.length > 0 ? val[s].delivery_places[0] : 0);
-          if(  !val[s].delivery_places || ( val[s].delivery_places && val[s].delivery_places.length==0) || (val[s].delivery_places && val[s].delivery) ){
-            switch(val[s].status){
-              case "enabled": val[s].state = "Activo"; break;
-              case "disabled": val[s].state = "Inactivo"; break;
-              case "interested": val[s].state = "Interesado"; break;
-            }
-            var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
-            if(tel != "" && tel != undefined){
-              val[s].telephone = tel.number;
-              val[s].verify_code = tel.verified ? "Verificado" : tel.verification_code;
-            }else{
-              val[s].telephone = "";
-              val[s].verify_code = ""; 
-            }
-            if(excel){
-              if(val[s].birth_date)
-                val[s].birth_date = val[s].birth_date.split("T")[0].split("-")[2] +"/"+val[s].birth_date.split("T")[0].split("-")[1] +"/"+val[s].birth_date.split("T")[0].split("-")[0];
-              val[s].gender = val[s].gender == "f" ? "Femenino" : "Masculino";
-              if(this.stores){
-                var str = this.stores.find(element=>{return element._id == val[s].store_id });
-                if(str) val[s].store_id = str.name
-              }
-              if(val[s].id_type)
-                val[s].id_type = this.typesIdentification.find(element=>{return element.value == val[s].id_type }).text;
-              this.customersExcel.push(val[s]);
-            }else{
-              this.customers.push(val[s]);
-            }
-          }
+          val[s] = this.deliveryPlace(val[s].delivery_places && val[s].delivery_places.length > 0 ? val[s].delivery_places[0] : 0, val[s], excel);
         }
       },
       clearFilter(){
@@ -237,7 +206,7 @@ import Vue from 'vue'
         this.numberPhone = "";
         this.fetchCustomers({page_size:50});
       },
-      deliveryPlace(place){
+      deliveryPlace(place, val, excel){
         var delivery = "";
         if(place){
           var c;
@@ -263,7 +232,37 @@ import Vue from 'vue'
             delivery += u.u;
           }
         }
-        return delivery;
+        val.hour = this.getHour(val.created_at);
+        val.date = val.created_at.split("T")[0].split("-")[2] +"/"+val.created_at.split("T")[0].split("-")[1] +"/"+val.created_at.split("T")[0].split("-")[0];
+        switch(val.status){
+          case "enabled": val.state = "Activo"; break;
+          case "disabled": val.state = "Inactivo"; break;
+          case "interested": val.state = "Interesado"; break;
+        }
+        var tel = val.telephones.length > 0 ? val.telephones.find(element=>{return element.main == true}) : "";
+        if(tel != "" && tel != undefined){
+          val.telephone = tel.number;
+          val.verify_code = tel.verified ? "Verificado" : tel.verification_code;
+        }else{
+          val.telephone = "";
+          val.verify_code = ""; 
+        }
+        if(excel){
+          if(val.birth_date)
+            val.birth_date = val.birth_date.split("T")[0].split("-")[2] +"/"+val.birth_date.split("T")[0].split("-")[1] +"/"+val.birth_date.split("T")[0].split("-")[0];
+          val.gender = val.gender == "f" ? "Femenino" : "Masculino";
+          if(this.stores){
+            var str = this.stores.find(element=>{return element._id == val.store_id });
+            if(str) val.store_id = str.name
+          }
+          if(val.id_type)
+            val.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
+          this.customersExcel.push(val);
+        }else{
+          this.customers.push(val);
+        }
+        val.delivery = delivery;
+        return val;
       },
       getHour(date){
         var dt = new Date(date);
