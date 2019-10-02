@@ -53,7 +53,6 @@
         :headers="headers"
         :items="customers"
         hide-actions
-        :pagination.sync="pagination"
         class="elevation-1">
         <template v-slot:items="props">
           <td>{{ props.item.date }} <br> {{ props.item.hour }}</td>
@@ -119,10 +118,6 @@ import Vue from 'vue'
           "Lugar de entrega":"delivery",
           "Código de verificación":"verify_code",
           "Estado":"state",
-        },
-        pagination:{
-          descending:false,
-          rowsPerPage:-1,
         },
         customers:[],
         verify:false,
