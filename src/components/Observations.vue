@@ -58,13 +58,11 @@
                 if(this.observations){
                     var lst = [];
                     var m = this.observations.length;
-                    var i = 0;
                     do{
                         var p = (m-1) < 0 ? 0 : (m-1);
                         lst.push(this.observations[p]);
-                        i++;
                         m = m - 1;
-                    } while(i <= m);
+                    } while(m >= 0);
                     this.observations = lst;
                 }
             },
