@@ -53,7 +53,7 @@
         :headers="headers"
         :items="customers"
         hide-actions
-        disable-initial-sort
+        :disable-initial-sort="true"
         class="elevation-1">
         <template v-slot:items="props">
           <td>{{ props.item.date }} <br> {{ props.item.hour }}</td>
