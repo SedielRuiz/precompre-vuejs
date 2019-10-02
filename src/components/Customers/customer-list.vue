@@ -216,8 +216,10 @@ import Vue from 'vue'
             if(val[s].birth_date)
               val[s].birth_date = val[s].birth_date.split("T")[0].split("-")[2] +"/"+val[s].birth_date.split("T")[0].split("-")[1] +"/"+val[s].birth_date.split("T")[0].split("-")[0];
             val[s].gender = val[s].gender == "f" ? "Femenino" : "Masculino";
-            if(this.stores)
-              val[s].store_id = this.stores.find(element=>{return element._id == val[s].store_id }).name;
+            if(this.stores){
+              var str = this.stores.find(element=>{return element._id == val[s].store_id });
+              if(str) val[s].store_id = str.name
+            }
             if(val[s].id_type)
               val[s].id_type = this.typesIdentification.find(element=>{return element.value == val[s].id_type }).text;
             this.customersExcel.push(val[s]);
