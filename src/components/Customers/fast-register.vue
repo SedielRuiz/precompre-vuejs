@@ -11,20 +11,27 @@
           <v-card-text>
             <v-form>
                 <v-layout row wrap>
-                    <v-flex xs12 sm12 md6>
+                  <v-flex xs12 sm12 md6>
                     <v-text-field v-model="customer.name" prepend-icon="person" name="name" label="Nombres" type="text"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm12 md6>
+                  </v-flex>
+                  <v-flex xs12 sm12 md6>
                     <v-text-field v-model="customer.last_name" prepend-icon="person" name="last_mame" label="Apellidos" type="text"></v-text-field>
-                    </v-flex>
+                  </v-flex>
                 </v-layout>
-                <v-text-field v-model="phone" prepend-icon="person" name="phone" label="Teléfono" type="number"></v-text-field>
+                <v-layout row wrap>
+                  <v-flex xs12 sm12 md6>
+                    <v-text-field v-model="phone" prepend-icon="person" name="phone" label="Teléfono" type="number"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm12 md6>
+                      <v-combobox v-model="deliveryCode" prepend-icon="account_box" :items="deliveryCodes" label="Código de lugar de entrega"></v-combobox>
+                  </v-flex>
+                </v-layout>
                 <v-layout row wrap>
                     <v-flex xs12 sm12 md6>
                       <v-combobox v-model="campaigCode" :items="campaigCodes" prepend-icon="featured_play_list" label="Código de campaña"></v-combobox>
                     </v-flex>
                     <v-flex xs12 sm12 md6>
-                        <v-combobox v-model="deliveryCode" prepend-icon="account_box" :items="deliveryCodes" label="Código de lugar de entrega"></v-combobox>
+                      <v-select v-model="customer.store_id" prepend-icon="account_box" name="store" :items="stores" label="Tienda"></v-select>
                     </v-flex>
                 </v-layout>
             </v-form>
@@ -53,34 +60,42 @@
         deliveryCodes:[],
         customer: {},
         phone:"",
+        stores:[],
       }
     },
     watch:{
-        places(val){
-            if(val){
-                for(var s = 0; s < val.length; s++){
-                    this.deliveryCodes.push({ "text":val[s].welcome_code, "value":val[s]._id });
-                }
-            }
-        },
-        campa(val){
-            if(val){
-                for(var s = 0; s < val.length; s++){
-                    this.campaigCodes.push({ "text":val[s].code_promo, "value":val[s].code_promo });
-                }
-            }
-        },
+      places(val){
+          if(val){
+              for(var s = 0; s < val.length; s++){
+                  this.deliveryCodes.push({ "text":val[s].welcome_code, "value":val[s]._id });
+              }
+          }
+      },
+      campa(val){
+          if(val){
+              for(var s = 0; s < val.length; s++){
+                  this.campaigCodes.push({ "text":val[s].code_promo, "value":val[s].code_promo });
+              }
+          }
+      },
+      strs(val){
+        for(var s = 0; s < val.length; s++){
+          this.stores.push({text:val[s].name, value:val[s]._id});
+        }
+      },
     },
     mounted () {
-        this.fetchPlaceDelivery({page_size:-1});
-        this.fetchCampaigns({page_size:-1});
+      this.fetchStores({page_size:-1});
+      this.fetchPlaceDelivery({page_size:-1});
+      this.fetchCampaigns({page_size:-1});
     },
     methods: {
         ...mapActions({
-            create: 'customer/create',
-            fetchPlaceDelivery: 'placeDelivery/fetchPlaces',
-            fetchCampaigns: 'campaign/fetchCampaigns',
-            setWarning: 'setWarning',
+          create: 'customer/create',
+          fetchPlaceDelivery: 'placeDelivery/fetchPlaces',
+          fetchCampaigns: 'campaign/fetchCampaigns',
+          fetchStores: 'stores/fetchStores',
+          setWarning: 'setWarning',
         }),
         buildCustomer(){
             this.customer.telephones = [{number:this.phone, main:true}]
@@ -110,7 +125,8 @@
         warning: state => state.warning,
         cu: state => state.customer.customer, 
         places: state => state.placeDelivery.places,
-        campa: state => state.campaign.campaigns
+        campa: state => state.campaign.campaigns,
+        strs: state => state.stores.stores,
       }),
       trySend(){
         if(this.edit){

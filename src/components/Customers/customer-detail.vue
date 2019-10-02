@@ -38,8 +38,23 @@
                   <v-text-field readonly v-model="customer.id_description" prepend-icon="person" name="id_description" label="Número de identificación" type="text"></v-text-field>
                 </v-flex>
               </v-layout>
-              <v-text-field readonly v-model="customer.campaign_code" prepend-icon="person" name="campaign_code" label="Campaña" type="text"></v-text-field>
               <v-text-field readonly v-model="customer.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
+              <v-layout row wrap>
+                <v-flex xs12 sm12 md6>
+                  <v-combobox readonly v-model="customer.gender" prepend-icon="account_box" :items="genders" label="Genero"></v-combobox>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field readonly v-model="customer.birth_date" prepend-icon="person" name="birth_date" label="Fecha de nacimiento" type="date"></v-text-field>
+                </v-flex>
+              </v-layout>
+              <v-layout row wrap>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field readonly v-model="customer.campaign_code" prepend-icon="person" name="campaign_code" label="Campaña" type="text"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-select v-model="customer.store_id" prepend-icon="account_box" name="store" :items="stores" label="Tienda"></v-select>
+                </v-flex>
+              </v-layout>
               <v-combobox readonly v-model="customer.status" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
               <div>
                 <observations :routeFetch="'customers'" :routeEdit="'edit_customer'" :obs="customer.observations && customer.observations.length > 0 ? customer.observations : []" :id="this.$route.params.id == undefined ? 0 : this.$route.params.id"></observations>
@@ -78,19 +93,24 @@
         phone:{},
         phones:[],
         deliveryPlaces:[],
+        stores:[],
         typesPhone: [
-            {text: 'Fijo', value:'fijo'},
-            {text: 'Celular', value:'movil'}
+          {text: 'Fijo', value:'fijo'},
+          {text: 'Celular', value:'movil'}
         ],
         typesIdentification: [
-            {text: 'Tarjeta de identidad', value:'ti'},
-            {text: 'Cedula de ciudadania', value:'cc'},
-            {text: 'Cedula de extranjeria', value:'ce'}
+          {text: 'Tarjeta de identidad', value:'ti'},
+          {text: 'Cedula de ciudadania', value:'cc'},
+          {text: 'Cedula de extranjeria', value:'ce'}
         ],
         status:[
           {text: 'Activo', value:'enabled'},
           {text: 'Inactivo', value:'disabled'},
           {text: 'Interesado', value:'interested'},
+        ],
+        genders:[
+          {text: 'Masculino', value:'m'},
+          {text: 'Femenino', value:'f'}  
         ],
         edit:"",
       }
@@ -98,7 +118,11 @@
     watch:{
         cu(val){
             this.customer = val;
-             if(val.status)
+            if(val.store_id)
+              this.customer.store_id = this.stores.find(element=>{return element.value == val.store_id });
+            if(val.gender)
+              this.customer.gender = this.genders.find(element=>{return element.value == val.gender });
+            if(val.status)
               this.customer.status = this.status.find(element=>{return element.value == val.status });
             if(val.id_type){
               this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
@@ -106,15 +130,22 @@
             this.phones = val.telephones;
             this.deliveryPlaces = val.delivery_places;
         },
+        strs(val){
+          for(var s = 0; s < val.length; s++){
+            this.stores.push({text:val[s].name, value:val[s]._id});
+          }
+        },
     },
     mounted () {
-        this.edit = this.$route.params.id;
-        this.getCustomer(this.edit);
+      this.fetchStores({page_size:-1});
+      this.edit = this.$route.params.id;
+      this.getCustomer(this.edit);
     },
     methods: {
       ...mapActions({
         setWarning: 'setWarning',
         getCustomer: 'customer/getCustomer', 
+        fetchStores: 'stores/fetchStores',
         resetPassword: 'customer/resetPassword', 
       }),
       resetPass(){
@@ -154,6 +185,7 @@
       ...mapState({
         warning: state => state.warning,
         cu: state => state.customer.customer, 
+        strs: state => state.stores.stores,
       }),
     },
   }

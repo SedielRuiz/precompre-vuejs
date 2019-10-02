@@ -33,10 +33,17 @@
                   <v-select v-model="customer.gender" prepend-icon="account_box" name="gender" :items="genders" label="Genero"></v-select>
                 </v-flex>
                 <v-flex xs12 sm12 md6>
-                  <v-text-field v-model="customer.campaign_code" prepend-icon="person" name="id_description" label="Código de campaña" type="text"></v-text-field>
+                  <v-text-field v-model="customer.birth_date" prepend-icon="email" name="birth_date" label="Fecha de nacimiento" type="date"></v-text-field>
                 </v-flex>
               </v-layout>
-              <v-text-field v-model="customer.birth_date" prepend-icon="email" name="birth_date" label="Fecha de nacimiento" type="date"></v-text-field>
+              <v-layout row wrap>
+                <v-flex xs12 sm12 md6>
+                  <v-text-field v-model="customer.campaign_code" prepend-icon="person" name="id_description" label="Código de campaña" type="text"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md6>
+                  <v-select v-model="customer.store_id" prepend-icon="account_box" name="store" :items="stores" label="Tienda"></v-select>
+                </v-flex>
+              </v-layout>
               <v-combobox v-if="edit!=''" v-model="customer.status" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
               <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
               <div v-if="phones.length > 0">
@@ -99,6 +106,7 @@
     name: 'customer-manage',
     data () {
       return {
+        stores:[],
         customer: {},
         phone:{},
         phones:[],
@@ -143,6 +151,8 @@
         cu(val){
           if(val){
             this.customer = val;
+            if(val.store_id)
+              this.customer.store_id = this.stores.find(element=>{return element.value == val.store_id });
             if(val.status)
               this.customer.status = this.status.find(element=>{return element.value == val.status });
             if(val.gender)
@@ -195,16 +205,22 @@
                 }
             }
         },
+        strs(val){
+          for(var s = 0; s < val.length; s++){
+            this.stores.push({text:val[s].name, value:val[s]._id});
+          }
+        },
     },
     mounted () {
-        this.fetchPlaceDelivery({page_size:-1});
-        this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
-        if(this.edit!=""){
-            this.titleText="Editar cliente"
-            this.getCustomer(this.edit);
-        }else{
-          this.titleText="Nuevo cliente"
-        }
+      this.fetchStores({page_size:-1});
+      this.fetchPlaceDelivery({page_size:-1});
+      this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
+      if(this.edit!=""){
+          this.titleText="Editar cliente"
+          this.getCustomer(this.edit);
+      }else{
+        this.titleText="Nuevo cliente"
+      }
     },
     methods: {
         ...mapActions({
@@ -212,6 +228,7 @@
             update: 'customer/update',
             getCustomer: 'customer/getCustomer', 
             fetchPlaceDelivery: 'placeDelivery/fetchPlaces',
+            fetchStores: 'stores/fetchStores',
             setWarning: 'setWarning',
         }),
         groupTypes(lst, type){
@@ -281,6 +298,7 @@
             this.customer.telephones = this.formatPhones();
             this.customer.id_type = this.customer.id_type && this.customer.id_type.value ? this.customer.id_type.value : this.customer.id_type;
             this.customer.gender = this.customer.gender && this.customer.gender.value ? this.customer.gender.value : this.customer.gender;
+            this.customer.store_id = this.customer.store_id && this.customer.store_id.value ? this.customer.store_id.value : this.customer.store_id;
             if(this.edit){
               this.customer.status = this.customer.status && this.customer.status.value ? this.customer.status.value : this.customer.status;
             }else{
@@ -324,7 +342,8 @@
       ...mapState({
         warning: state => state.warning,
         cu: state => state.customer.customer, 
-        places: state => state.placeDelivery.places
+        places: state => state.placeDelivery.places,
+        strs: state => state.stores.stores,
       }),
       trySend(){
         if(this.edit){
