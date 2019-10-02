@@ -199,32 +199,34 @@ import Vue from 'vue'
           val[s].hour = this.getHour(val[s].created_at);
           val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
           val[s].delivery = this.deliveryPlace(val[s].delivery_places && val[s].delivery_places.length > 0 ? val[s].delivery_places[0] : 0);
-          switch(val[s].status){
-            case "enabled": val[s].state = "Activo"; break;
-            case "disabled": val[s].state = "Inactivo"; break;
-            case "interested": val[s].state = "Interesado"; break;
-          }
-          var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
-          if(tel != "" && tel != undefined){
-            val[s].telephone = tel.number;
-            val[s].verify_code = tel.verified ? "Verificado" : tel.verification_code;
-          }else{
-            val[s].telephone = "";
-            val[s].verify_code = ""; 
-          }
-          if(excel){
-            if(val[s].birth_date)
-              val[s].birth_date = val[s].birth_date.split("T")[0].split("-")[2] +"/"+val[s].birth_date.split("T")[0].split("-")[1] +"/"+val[s].birth_date.split("T")[0].split("-")[0];
-            val[s].gender = val[s].gender == "f" ? "Femenino" : "Masculino";
-            if(this.stores){
-              var str = this.stores.find(element=>{return element._id == val[s].store_id });
-              if(str) val[s].store_id = str.name
+          if(  !val[s].delivery_places || ( val[s].delivery_places && val[s].delivery_places.length==0) || (val[s].delivery_places && val[s].delivery) ){
+            switch(val[s].status){
+              case "enabled": val[s].state = "Activo"; break;
+              case "disabled": val[s].state = "Inactivo"; break;
+              case "interested": val[s].state = "Interesado"; break;
             }
-            if(val[s].id_type)
-              val[s].id_type = this.typesIdentification.find(element=>{return element.value == val[s].id_type }).text;
-            this.customersExcel.push(val[s]);
-          }else{
-            this.customers.push(val[s]);
+            var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
+            if(tel != "" && tel != undefined){
+              val[s].telephone = tel.number;
+              val[s].verify_code = tel.verified ? "Verificado" : tel.verification_code;
+            }else{
+              val[s].telephone = "";
+              val[s].verify_code = ""; 
+            }
+            if(excel){
+              if(val[s].birth_date)
+                val[s].birth_date = val[s].birth_date.split("T")[0].split("-")[2] +"/"+val[s].birth_date.split("T")[0].split("-")[1] +"/"+val[s].birth_date.split("T")[0].split("-")[0];
+              val[s].gender = val[s].gender == "f" ? "Femenino" : "Masculino";
+              if(this.stores){
+                var str = this.stores.find(element=>{return element._id == val[s].store_id });
+                if(str) val[s].store_id = str.name
+              }
+              if(val[s].id_type)
+                val[s].id_type = this.typesIdentification.find(element=>{return element.value == val[s].id_type }).text;
+              this.customersExcel.push(val[s]);
+            }else{
+              this.customers.push(val[s]);
+            }
           }
         }
       },
