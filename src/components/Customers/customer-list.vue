@@ -8,7 +8,7 @@
             <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
             <v-btn color="success" @click="filt ? filt = false : filt = true">Filtrar</v-btn>
             <v-btn color="success">
-              <downloadExcel class = "btn btn-default" :fields = "headersExcel" :data = "customers" name = "clientes.xls" type = "csv">Exportar a excel</downloadExcel>
+              <downloadExcel class = "btn btn-default" :fields = "headersExcel" :data = "customersExcel" name = "clientes.xls" type = "csv">Exportar a excel</downloadExcel>
             </v-btn>
         </v-flex>
     </v-layout>
@@ -121,6 +121,7 @@ import Vue from 'vue'
           "Estado":"state",
         },
         customers:[],
+        customersExcel:[],
         verify:false,
         verify_code:"",
         info:"",
@@ -151,30 +152,19 @@ import Vue from 'vue'
         rows(val){  
           if(val && this.places){
             this.customers = [];
-            for(var s = 0; s < val.length; s++){
-              val[s].hour = this.getHour(val[s].created_at);
-              val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
-              val[s].delivery = this.deliveryPlace(val[s].delivery_places && val[s].delivery_places.length > 0 ? val[s].delivery_places[0] : 0);
-              switch(val[s].status){
-                case "enabled": val[s].state = "Activo"; break;
-                case "disabled": val[s].state = "Inactivo"; break;
-                case "interested": val[s].state = "Interesado"; break;
-              }
-              var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
-              if(tel != "" && tel != undefined){
-                val[s].telephone = tel.number;
-                val[s].verify_code = tel.verified ? "Verificado" : tel.verification_code;
-              }else{
-                val[s].telephone = "";
-                val[s].verify_code = ""; 
-              }
-              this.customers.push(val[s]);
-            }
+            this.formatCustomers(val);
             console.log(this.customers);
           }
         }
     },
     mounted () {
+      Vue.http.post('customers', {page_size:-1}).then(
+        response =>{
+          this.formatCustomers(response.data.result_set, true);
+        }).catch(error=>{
+          console.log(error);
+        });
+
       this.fetchPlaceDelivery({page_size:-1});
       this.fetchCustomers({page_size:50});
       this.fetchCampaigns({page_size:-1});
@@ -188,6 +178,31 @@ import Vue from 'vue'
         delete: 'customer/delete',
         setWarning: 'setWarning',
       }),
+      formatCustomers(val, excel = false){
+        for(var s = 0; s < val.length; s++){
+          val[s].hour = this.getHour(val[s].created_at);
+          val[s].date = val[s].created_at.split("T")[0].split("-")[2] +"/"+val[s].created_at.split("T")[0].split("-")[1] +"/"+val[s].created_at.split("T")[0].split("-")[0];
+          val[s].delivery = this.deliveryPlace(val[s].delivery_places && val[s].delivery_places.length > 0 ? val[s].delivery_places[0] : 0);
+          switch(val[s].status){
+            case "enabled": val[s].state = "Activo"; break;
+            case "disabled": val[s].state = "Inactivo"; break;
+            case "interested": val[s].state = "Interesado"; break;
+          }
+          var tel = val[s].telephones.length > 0 ? val[s].telephones.find(element=>{return element.main == true}) : "";
+          if(tel != "" && tel != undefined){
+            val[s].telephone = tel.number;
+            val[s].verify_code = tel.verified ? "Verificado" : tel.verification_code;
+          }else{
+            val[s].telephone = "";
+            val[s].verify_code = ""; 
+          }
+          if(excel){
+            this.customersExcel.push(val[s]);
+          }else{
+            this.customers.push(val[s]);
+          }
+        }
+      },
       clearFilter(){
         this.filter = {};
         this.verifyCode = "";
