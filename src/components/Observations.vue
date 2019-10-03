@@ -56,14 +56,11 @@
         methods: {
             formatObs(){
                 if(this.observations){
-                    var lst = [];
-                    var m = this.observations.length;
-                    do{
-                        var p = (m-1) < 0 ? 0 : (m-1);
-                        lst.push(this.observations[p]);
-                        m = m - 1;
-                    } while(m >= 0);
-                    this.observations = lst;
+                    this.observations.sort(function(a, b) {
+                        a = new Date(a.date);
+                        b = new Date(b.date);
+                        return a>b ? -1 : a<b ? 1 : 0;
+                    });
                 }
             },
             getHour(date){
