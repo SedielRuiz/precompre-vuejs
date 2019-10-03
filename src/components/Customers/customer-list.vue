@@ -144,6 +144,7 @@ import Vue from 'vue'
           "Campaña":"campaign_code",
           "Lugar de entrega":"delivery",
           "Código de verificación":"verify_code",
+          "Último contacto":"last_contact",
           "Estado":"state",
         },
         customers:[],
@@ -269,6 +270,18 @@ import Vue from 'vue'
           }
           if(val.id_type)
             val.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
+          if(val.observations && val.observations.length > 0){
+            var obs = [];
+            for(var s = 0; s < val.observations.length; s++){
+              if(val.observations[s].hasOwnProperty("last_contact")){
+                obs.push(val.observations[s]);
+              }
+            }
+            if(obs && obs.length > 0){
+              var p = (obs.length - 1) < 0 ? 0 : (obs.length - 1);
+              val.last_contact = obs[p].last_contact;
+            }
+          }
           this.customersExcel.push(val);
         }else{
           this.customers.push(val);
