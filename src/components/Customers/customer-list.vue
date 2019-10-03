@@ -82,6 +82,16 @@
   .*, :after, :before{
     box-sizing: content-box !important;
   }
+  table.v-table thead th {
+    font-weight: 500;
+    font-size: 12px;
+    transition: .3s cubic-bezier(.25,.8,.5,1);
+    white-space: normal;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 </style>
 <script>
 import Vue from 'vue'
