@@ -279,7 +279,7 @@ import Vue from 'vue'
             }
             if(obs && obs.length > 0){
               var p = (obs.length - 1) < 0 ? 0 : (obs.length - 1);
-              val.last_contact = obs[p].last_contact;
+              val.last_contact = obs[p].last_contact.split("T")[0] +" "+ getHour(ob.last_contact);
             }
           }
           this.customersExcel.push(val);
