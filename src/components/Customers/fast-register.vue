@@ -81,6 +81,7 @@
       strs(val){
         for(var s = 0; s < val.length; s++){
           this.stores.push({text:val[s].name, value:val[s]._id});
+          this.customer.store_id = this.stores[0];
         }
       },
     },
