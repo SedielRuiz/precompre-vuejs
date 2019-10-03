@@ -1,13 +1,14 @@
 <template>
   <v-container>
-    <div class="row col-md-10">
-        <div class="col-md-8">
-            <h1>Campañas</h1>
-        </div>
-        <div class="col-md-2">
-            <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
-        </div>
-    </div>
+    <v-layout row wrap>
+        <v-flex xs12 sm12 md2>
+          <h1>Campañas</h1>
+        </v-flex>
+        <v-flex xs12 sm12 md10>
+          <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
+          <v-btn color="success"><v-icon medium @click="search({page_size:10})"tooltip="Detalle">refresh</v-icon></v-btn>
+        </v-flex>
+    </v-layout>
     <hr><br>
     <v-data-table
         :headers="headers"
