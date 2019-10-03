@@ -10,7 +10,7 @@
             <v-btn color="success">
               <downloadExcel class = "btn btn-default" :fields = "headersExcel" :data = "customersExcel" name = "clientes.xls" type = "csv">Exportar a excel</downloadExcel>
             </v-btn>
-            <v-btn color="success"><v-icon medium @click="search({page_size:10})"tooltip="Detalle">refresh</v-icon></v-btn>
+            <v-btn color="success"><v-icon medium @click="search({page_size:50})"tooltip="Detalle">refresh</v-icon></v-btn>
         </v-flex>
     </v-layout>
     <div v-if="filt"><br>
