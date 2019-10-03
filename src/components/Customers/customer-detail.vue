@@ -57,7 +57,7 @@
               </v-layout>
               <v-combobox readonly v-model="customer.status" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
               <div>
-                <observations :routeFetch="'customers'" :routeEdit="'edit_customer'" :obs="customer.observations && customer.observations.length > 0 ? customer.observations : []" :id="this.$route.params.id == undefined ? 0 : this.$route.params.id"></observations>
+                <observations :routeFetch="'customers'" :routeEdit="'edit_customer'" :obs="customer.observations && customer.observations.length > 0 ? customer.observations : []" :id="this.$route.params.id == undefined ? 0 : this.$route.params.id" :last="true"></observations>
               </div>
               <h2>Teléfonos</h2><hr><br>
               <div v-if="phones">

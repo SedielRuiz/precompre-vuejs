@@ -2,19 +2,25 @@
     <div>
         <h2>Observaciones <v-icon medium @click="view ? view = false : view = true">keyboard_arrow_down</v-icon></h2><hr><br>
         <div v-if="view">
-        <v-textarea class="box" v-model="observation" placeholder="Escriba su observación" prepend-icon="library_books" name="observation"></v-textarea>
-        <v-btn medium color="primary" @click="sendObservation()">Agregar observación</v-btn><br><br>
-        <v-card class="elevation-5 scrollObs">
-            <v-container v-if="observations && observations.length > 0">
-                <div v-for="(ob, index) in observations" :key="index">
-                    Usuario: {{ob.user ? ob.user : ""}}<br>
-                    Fecha: {{ob.date ? ob.date.split("T")[0] : ""}}<br>
-                    Hora: {{ob.date ? getHour(ob.date) : ""}} <br>
-                    Observación: {{ob.description}}<br><hr><br>
-                </div>   
-            </v-container>
-        </v-card><br>
-    </div>
+            <div v-if="last">
+                <v-checkbox align-center value input-value="true" label="Último contacto" v-model="last_cont"></v-checkbox>
+            </div>
+            <v-textarea class="box" v-model="observation" placeholder="Escriba su observación" prepend-icon="library_books" name="observation"></v-textarea>
+            <v-btn medium color="primary" @click="sendObservation()">Agregar observación</v-btn><br><br>
+            <v-card class="elevation-5 scrollObs">
+                <v-container v-if="observations && observations.length > 0">
+                    <div v-for="(ob, index) in observations" :key="index">
+                        Usuario: {{ob.user ? ob.user : ""}}<br>
+                        Fecha: {{ob.date ? ob.date.split("T")[0] : ""}}<br>
+                        Hora: {{ob.date ? getHour(ob.date) : ""}} <br>
+                        <div v-if="last">
+                            Último contacto: {{ !ob.hasOwnProperty("last_contact") ? "No" : ob.last_contact.split("T")[0] +" "+ getHour(ob.last_contact)}} <br>
+                        </div>
+                        Observación: {{ob.description}}<br><hr><br>
+                    </div>   
+                </v-container>
+            </v-card><br>
+        </div>
     </div>
 </template>
 <style>
@@ -35,13 +41,14 @@
 
     export default {
         name: 'observation',
-        props:['routeFetch', 'routeEdit', 'obs', 'id'],
+        props:['routeFetch', 'routeEdit', 'obs', 'id', 'last'],
         data () {
-        return {
-            observation:"",
-            observations:[],
-            view:false,
-        }
+            return {
+                observation:"",
+                observations:[],
+                view:false,
+                last_cont:false,
+            }
         },
         mounted () {
             //console.log(this.obs);
@@ -81,7 +88,12 @@
                     });
             },
             sendObservation(){
-                this.observations.push({ description: this.observation });
+                var obj = { description: this.observation };
+                console.log(this.last);
+                console.log(this.last_cont);
+                if(this.last)
+                    obj.last_contact = this.last_cont;
+                this.observations.push(obj);
                 var data = {
                     _id: this.id,
                     observations: this.observations,
