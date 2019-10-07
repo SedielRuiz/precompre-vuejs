@@ -115,7 +115,25 @@
                                         <v-icon>add</v-icon>
                                         <v-text-field v-model="sub.photo" name="photo" type="file"></v-text-field>
                                     </label-->
-                                    <img :src="sub.photo ? sub.photo : 'No hay foto' "/>
+                                    <v-icon @click="viewPhoto(index)">image</v-icon>
+                                    <v-dialog v-model="sub.view_photo" persistent>
+                                        <v-card class="elevation-12">
+                                            <v-toolbar dark color="primary">
+                                            <v-toolbar-title>Foto</v-toolbar-title>
+                                                <v-spacer></v-spacer>
+                                                <v-btn color="error" @click="closeModal(index)">Cerrar</v-btn>
+                                            </v-toolbar>
+                                            <v-card-text>
+                                            <v-form>
+                                                <img :src="sub.photo ? sub.photo : 'No hay foto' "/>
+                                            </v-form>
+                                            </v-card-text>
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <!--v-btn color="primary" @click="processInput(ingredient.idx)" style="width: 100%;" >Guardar</v-btn-->
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-dialog>
                                 </v-flex>
                                 <v-flex class="alignGrid" xs12 md2>
                                     {{!sub.price ? sub.price = '$ '+product.default_price : '$ '+sub.price}}
@@ -203,6 +221,14 @@
                 fetchInputs: 'input/fetchInputs', 
                 setWarning: 'setWarning',
             }),
+            closeModal(idx){
+                this.subProducts[idx].view_photo = false;
+                this.subProducts.push();
+            },
+            viewPhoto(idx){
+                this.subProducts[idx].view_photo = true;
+                this.subProducts.push();
+            },
             formRecipe(idx){
                 this.ingredient.idx = idx;
                 this.recipe = true;
