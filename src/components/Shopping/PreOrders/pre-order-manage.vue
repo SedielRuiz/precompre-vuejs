@@ -10,6 +10,7 @@
                 </v-toolbar>
                 <v-card-text>
                     <v-form>
+                        <v-alert :value="customer && customer.delivery_places && customer.delivery_places.length == 0" type="info">Este cliente no tiene lugares de entrega.</v-alert>
                         <v-combobox prepend-icon="filter_list" v-if="!this.$route.params.id" v-model="customer_id" :items="customers" label="Cliente"></v-combobox>
                         <v-card v-if="customer_id" class="pa-2" outlined tile>
                             <h3>Datos pre orden</h3>
