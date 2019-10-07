@@ -124,7 +124,7 @@
                                     </v-flex>
                                     <v-flex class="alignGrid" xs12 md1>
                                         <label class="col-md-2">Disponible</label>
-                                        <v-checkbox v-model="activeCheck" @click="activeAll()" label="Todos"></v-checkbox>
+                                        <span @click="activeAll()"><v-checkbox v-model="activeCheck" label="Todos"></v-checkbox></span>
                                     </v-flex>
                                 </v-layout>
                                 <div v-for="(sub, index) in subProductsAttribute" :key="index">
@@ -429,6 +429,7 @@
                 setWarning: 'setWarning',
             }),
             activeAll(){
+                console.log(this.activeCheck);
                 for(let i = 0; i < this.subProductsAttribute.length; i++){
                     this.subProductsAttribute[i].active = this.activeCheck;
                 }
