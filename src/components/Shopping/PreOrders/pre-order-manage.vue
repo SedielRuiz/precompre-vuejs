@@ -116,42 +116,42 @@
                                     <v-flex xs12 md1>
                                         <v-text-field v-model="sc.quantity" name="quantity" label="Cantidad" type="number"></v-text-field>
                                     </v-flex> 
-                                    <v-flex xs12 md3>
+                                    <v-flex xs12 md2>
                                         <v-combobox :disabled="true" prepend-icon="filter_list" v-model="sc.text" label="Producto"></v-combobox>
                                     </v-flex>
                                     <v-flex align-center xs12 md1>
                                         <v-icon medium @click="sc.viewAtt ? sc.viewAtt = false : sc.viewAtt = true">add</v-icon>
                                     </v-flex>
-                                    <v-flex xs12 md2>
+                                    <v-flex xs12 md1>
                                         <v-text-field :disabled="true" v-model="sc.price" name="price" label="Precio" type="number"></v-text-field>
                                     </v-flex>
-                                    <v-flex xs12 md10>
+                                    <v-flex xs12 md6>
                                         <v-layout justify-center row wrap>
-                                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                            <v-flex>
                                                 <label>Lunes</label>
                                                 <v-checkbox v-model="sc.lunes"></v-checkbox>
                                             </v-flex>
-                                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                            <v-flex>
                                                 <label>Martes</label>
                                                 <v-checkbox v-model="sc.martes"></v-checkbox>
                                             </v-flex>
-                                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                            <v-flex>
                                                 <label>Miercoles</label>
                                                 <v-checkbox v-model="sc.miercoles"></v-checkbox>
                                             </v-flex>
-                                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                            <v-flex>
                                                 <label>Jueves</label>
                                                 <v-checkbox v-model="sc.jueves"></v-checkbox>
                                             </v-flex>
-                                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                            <v-flex>
                                                 <label>Viernes</label>
                                                 <v-checkbox v-model="sc.viernes"></v-checkbox>
                                             </v-flex>
-                                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                            <v-flex>
                                                 <label>Sabados</label>
                                                 <v-checkbox v-model="sc.sabado"></v-checkbox>
                                             </v-flex>
-                                            <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                            <v-flex>
                                                 <label>Domingos</label>
                                                 <v-checkbox v-model="sc.domingo"></v-checkbox>
                                             </v-flex>
@@ -320,36 +320,36 @@
                                             <v-flex align-center xs12 md1>
                                                 <v-icon medium @click="sc.viewAtt ? sc.viewAtt = false : sc.viewAtt = true">add</v-icon>
                                             </v-flex>
-                                            <v-flex xs12 md2>
+                                            <v-flex xs12 md1>
                                                 <v-text-field :disabled="true" v-model="sc.price" name="price" label="Precio" type="number"></v-text-field>
                                             </v-flex>
-                                            <v-flex xs12 md10>
+                                            <v-flex xs12 md5>
                                                 <v-layout justify-center row wrap>
-                                                    <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                                    <v-flex>
                                                         <label>Lunes</label>
                                                         <v-checkbox v-model="sc.lunes"></v-checkbox>
                                                     </v-flex>
-                                                    <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                                    <v-flex>
                                                         <label>Martes</label>
                                                         <v-checkbox v-model="sc.martes"></v-checkbox>
                                                     </v-flex>
-                                                    <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                                    <v-flex>
                                                         <label>Miercoles</label>
                                                         <v-checkbox v-model="sc.miercoles"></v-checkbox>
                                                     </v-flex>
-                                                    <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                                    <v-flex>
                                                         <label>Jueves</label>
                                                         <v-checkbox v-model="sc.jueves"></v-checkbox>
                                                     </v-flex>
-                                                    <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                                    <v-flex>
                                                         <label>Viernes</label>
                                                         <v-checkbox v-model="sc.viernes"></v-checkbox>
                                                     </v-flex>
-                                                    <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                                    <v-flex>
                                                         <label>Sabados</label>
                                                         <v-checkbox v-model="sc.sabado"></v-checkbox>
                                                     </v-flex>
-                                                    <v-flex xs12 md2 cols="12" sm="4" md="2">
+                                                    <v-flex>
                                                         <label>Domingos</label>
                                                         <v-checkbox v-model="sc.domingo"></v-checkbox>
                                                     </v-flex>
