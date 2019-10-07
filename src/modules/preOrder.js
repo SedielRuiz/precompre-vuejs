@@ -43,7 +43,7 @@ const actions = {
     },
     fetchPreOrdersCustomer:({commit}, id) => {
         return new Promise((resolve, reject) => {
-        Vue.http.post('pre_orders_customer/'+id).then(
+        Vue.http.post('pre_orders').then(
             response =>{
                 var data = User.actions.processResponse(response.data, true);
                 commit('setPreOrders',data);

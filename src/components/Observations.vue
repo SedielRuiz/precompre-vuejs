@@ -10,9 +10,7 @@
             <v-card class="elevation-5 scrollObs">
                 <v-container v-if="observations && observations.length > 0">
                     <div v-for="(ob, index) in observations" :key="index">
-                        Usuario: {{ob.user ? ob.user : ""}}<br>
-                        Fecha: {{ob.date ? ob.date.split("T")[0] : ""}}<br>
-                        Hora: {{ob.date ? getHour(ob.date) : ""}} <br>
+                        Datos: {{ob.user ? ob.user : ""}}, {{ob.date ? ob.date.split("T")[0] : ""}},  {{ob.date ? getHour(ob.date) : ""}}<br>
                         <div v-if="last">
                             Último contacto: {{ !ob.hasOwnProperty("last_contact") ? "No" : ob.last_contact.split("T")[0] +" "+ getHour(ob.last_contact)}} <br>
                         </div>
