@@ -314,10 +314,10 @@
                                             <v-flex xs12 md1>
                                                 <v-text-field v-model="sc.quantity" @change="calculatePrice(sh.index, index)" name="quantity" label="Cantidad" type="number"></v-text-field>
                                             </v-flex> 
-                                            <v-flex xs12 md3>
+                                            <v-flex xs10 md3>
                                                 <v-combobox :disabled="true" prepend-icon="filter_list" v-model="sc.text" label="Producto"></v-combobox>
                                             </v-flex>
-                                            <v-flex align-center xs12 md1>
+                                            <v-flex xs2 md1>
                                                 <v-icon medium @click="sc.viewAtt ? sc.viewAtt = false : sc.viewAtt = true">add</v-icon>
                                             </v-flex>
                                             <v-flex xs12 md1>
@@ -759,11 +759,11 @@
                         var idxp = "";
                         console.log(this.product);
                         var obj={
-                                    "delivery_place":this.preOrder.deliveryPlace, "attributes":this.product.attributes, "categories":this.product.categories, "class":this.product.class, "customer_id":this.product.customer_id,
-                                    "days":this.product.days, "price":this.product.price, "principal_value":this.product.principal_value, "product_id":this.product.product_id,
-                                    "quantity":this.product.quantity, "sub_products":this.product.sub_products, "sub_product":this.product.sub_product, "text":this.product.text,
-                                    "unit_value":this.product.price, "viewAtt":this.product.viewAtt,
-                                };
+                            "delivery_place":this.preOrder.deliveryPlace, "attributes":this.product.attributes, "categories":this.product.categories, "class":this.product.class, "customer_id":this.product.customer_id,
+                            "days":this.product.days, "price":this.product.price, "principal_value":this.product.principal_value, "product_id":this.product.product_id,
+                            "quantity":this.product.quantity, "sub_products":this.product.sub_products, "sub_product":this.product.sub_product, "text":this.product.text,
+                            "unit_value":this.product.price, "viewAtt":this.product.viewAtt,
+                        };
                         if(!inside){
                             idxp = this.productsCart.length == 1 ? 0 : this.productsCart.length - 1;
                             obj.index = idxp < 0 ? 0 : idxp;
