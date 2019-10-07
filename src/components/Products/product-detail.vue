@@ -16,7 +16,14 @@
                 <v-text-field readonly v-model="product.price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
                 <v-combobox readonly v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <div v-if="attributes"> 
-                    <v-chip v-for="(attr, index) in attributes" :key="index">{{attr.name.charAt(0).toUpperCase() + attr.name.slice(1)}} - {{attr.value.charAt(0).toUpperCase() + attr.value.slice(1)}}</v-chip>
+                    <div v-for="(attr, index) in attributes" :key="index"> 
+                        <div v-if="attr.name == 'photo'"> 
+                            <img :src="attr.value ? attr.value : 'No hay foto' "/>
+                        </div>  
+                        <div v-else> 
+                            <v-text-field  readonly v-model="attr.value.charAt(0).toUpperCase() + attr.value.slice(1)" prepend-icon="person" name="name" :label="attr.name.charAt(0).toUpperCase() + attr.name.slice(1)" type="text"></v-text-field>
+                        </div>
+                    </div>    
                 </div><hr><br>
                 <div v-if="order_attributes">
                     <v-chip v-for="(attrc, index) in order_attributes" :key="index">{{attrc.name.charAt(0).toUpperCase() + attrc.name.slice(1)}} - {{attrc.value.charAt(0).toUpperCase() + attrc.value.slice(1)}}</v-chip>
@@ -167,6 +174,9 @@
                     this.formatAttributes("order_attributes", val.attributes);
                     var att = this.product.product_class.order_attributes;
                     att = att.concat(this.product.product_class.attributes);
+                    var s = att.find(element=>{return element.attribute[0].code == "price" });
+                    var atp = val.attributes.find(element=>{return element.code == s.attribute[0]._id });
+                    this.product.price = atp.value;
                     if(this.inputs){
                         this.formatInputs();
                         this.subProducts = this.detailSubProducts(val.sub_products, att);
@@ -271,13 +281,15 @@
                 var attrs = [];
                 for(var s = 0; s < arr.length; s++){
                     for(var r = 0; r < this.product.product_class[varArr].length; r++){
-                        if(arr[s].code == this.product.product_class[varArr][r]._id){
-                            var val = arr[s].value;
-                            if(this.product.product_class[varArr][r].type == "boolean")
-                                val = val ? 'Si' : 'No';
-                            else
-                                val = arr[s].value;
-                            attrs.push({"name": this.product.product_class[varArr][r].code, "value": val});
+                        if(arr[s].code == this.product.product_class[varArr][r].attribute[0]._id && this.product.product_class[varArr][r].attribute[0].visible){
+                            if(this.product.product_class[varArr][r].variable){
+                                var val = arr[s].value;
+                                if(this.product.product_class[varArr][r].attribute[0].type == "boolean")
+                                    val = val ? 'Si' : 'No';
+                                else
+                                    val = arr[s].value;
+                                attrs.push({"name": this.product.product_class[varArr][r].attribute[0].code, "value": val});
+                            }
                         }
                     }
                 }

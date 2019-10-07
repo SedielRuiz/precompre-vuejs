@@ -30,12 +30,12 @@
                                 <v-flex xs12 md4>
                                     <v-text-field v-model="product.quantity" prepend-icon="library_books" name="title" label="Cantidad" type="number"></v-text-field>
                                 </v-flex>  
-                                <v-flex xs12 md6>
+                                <v-flex xs12 md4>
                                     <v-text-field :disabled="true" v-model="product.price" prepend-icon="library_books" name="title" label="Precio unitario" type="text"></v-text-field>
                                 </v-flex>        
                             </v-layout>
                             <v-layout row wrap>
-                                <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code+'_other'" v-if="(!attr.custom && !attr.pivot)">
+                                <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code+'_other'" v-if="(attr.custom && attr.variable) || (!attr.custom && attr.variable == false)">
                                     <div v-if="attr.visible && attr.code != 'photo'">
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
@@ -72,7 +72,7 @@
                             <label v-if="attributes.length > 0" style="font-size:15px;">Atributos </label><br>
                             <v-layout row wrap v-if="attributes">
                                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code">
-                                    <div v-if="attr.visible && attr.code != 'photo' && ( (attr.custom && attr.variable) || (!attr.custom && attr.pivot) )">
+                                    <div v-if="attr.visible && attr.code != 'photo' && (!attr.custom && attr.pivot || !attr.custom && !attr.pivot)">
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
                                                 <v-combobox :disabled="attr.custom" @change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
@@ -832,8 +832,11 @@
                     if(this.attributes[s].attribute.length > 0 && this.attributes[s].attribute[0]._id == attrs[r].code){
                         this.attributes[s].attribute[0].value = attrs[r].value && attrs[r].value.value ? attrs[r].value.value : attrs[r].value;
                         this.attributes[s].attribute[0].custom = !attrs[r].customizable ? true : false;
-                        this.attributes[s].attribute[0].variable = this.attributes[s].variable;
-                        this.attributes[s].attribute[0].pivot = this.attributes[s].pivot;
+                        if(!attrs[r].customizable){
+                            this.attributes[s].attribute[0].variable = this.attributes[s].variable;
+                        }else{
+                            this.attributes[s].attribute[0].pivot = this.attributes[s].pivot;
+                        }
                     }
 
                 }
@@ -844,7 +847,10 @@
                     atrs.push(this.attributes[r].attribute[0]);
                 }
             }
+            this.attributes = [];
             this.attributes = atrs;
+            this.attributes.push();
+            console.log(this.attributes);
         },
         formatAttributes(lst){
             var list = [];

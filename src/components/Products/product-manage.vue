@@ -30,7 +30,7 @@
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
-                    <div v-if="attr.visible && attr.code != 'price'">
+                    <div v-if="attr.visible && attr.code != 'price' && attr.variable">
                         <!--ATRIBUTOS-->
                         <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
                         <div v-if="attr.options.length > 0">
@@ -377,9 +377,9 @@
             },
             attr(val){
                 if(val){
-                    this.attributes = val.attributes.attribute;
+                    this.attributes = val.attributes;
                     this.formatAttributes("attributes");
-                    this.attributesCustomisable = val.order_attributes.attribute;
+                    this.attributesCustomisable = val.order_attributes;
                     this.formatAttributes("attributesCustomisable");
                     if(this.edit){
                         this.formatAttributeEdit("attributes");
@@ -388,10 +388,10 @@
                         att = att.concat(this.product.product_class.attributes);
                         this.subProductsAttribute = this.editSubProducts(this.product.sub_products, att);
                         if(this.class_id.value != this.product.product_class._id){
-                            this.formatSubProducts(val.order_attributes.attribute);    
+                            this.formatSubProducts(val.order_attributes);    
                         }
                     }else{
-                        this.formatSubProducts(val.order_attributes.attribute);
+                        this.formatSubProducts(val.order_attributes);
                     }
                     if(this.subProductsAttribute.length > 0)this.addSub = true;
                 }
@@ -456,22 +456,22 @@
                 console.log(array);
                 let permutations = []; 
                 for(let i = 0; i < array.length; i++){
-                    if(array[i].visible){
+                    if(array[i].attribute[0].visible){
                         let i_permutations = [...permutations];
-                        for(let j = 0; j < array[i].options.length; j++){
+                        for(let j = 0; j < array[i].attribute[0].options.length; j++){
                             if(i==0){
-                                array[i].active = true;
-                                const option = array[i]
+                                array[i].attribute[0].active = true;
+                                const option = array[i].attribute[0]
                                 permutations.push([{...option, default_value:option.options[j].value}]);
                             }else{
                                 if(j>0) permutations = [...permutations.concat([...i_permutations])]
                             }
                         }
-                        for(let j = 0; j < array[i].options.length; j++){
+                        for(let j = 0; j < array[i].attribute[0].options.length; j++){
                             for(let k = i_permutations.length*j; k < i_permutations.length*(j+1); k++){
                                 let x = [...permutations[k]] 
-                                array[i].active = true;
-                                const option = array[i]
+                                array[i].attribute[0].active = true;
+                                const option = array[i].attribute[0]
                                 x.push({...option, default_value:option.options[j].value});
                                 permutations[k] = [...x]
                             }
@@ -651,13 +651,23 @@
                 }
             },
             formatAttributes(arr){
+                var lst = [];
                 for(var s = 0; s < this[arr].length; s++){
                     var opc = []
-                    for(var r = 0; r < this[arr][s].options.length; r++){
-                        opc.push({"text":this[arr][s].options[r].code.charAt(0).toUpperCase() + this[arr][s].options[r].code.slice(1), "value":this[arr][s].options[r].code});
+                    if(this[arr][s].attribute[0].options){
+                        for(var r = 0; r < this[arr][s].attribute[0].options.length; r++){
+                            opc.push({"text":this[arr][s].attribute[0].options[r].code.charAt(0).toUpperCase() + this[arr][s].attribute[0].options[r].code.slice(1), "value":this[arr][s].attribute[0].options[r].code});
+                        }
+                        this[arr][s].attribute[0].options = opc;
                     }
-                    this[arr][s].options = opc
+                    if(arr == "attributesCustomisable"){
+                        this[arr][s].attribute[0].pivot = this[arr][s].pivot;
+                    }else{
+                        this[arr][s].attribute[0].variable = this[arr][s].variable;
+                    }
+                    lst.push(this[arr][s].attribute[0]);
                 }
+                this[arr] = lst;
             },
             valAttrRequired(attr){
                 var next = false;
@@ -674,23 +684,32 @@
             },
             buildAttr(attr){
                 var obj = {};
+                console.log(this[attr])
                 this.msgError = false;
                 for(var s = 0; s < this[attr].length; s++){
-                    var val  = this[attr][s].options.length > 0 && this[attr][s].value.value ? this[attr][s].value.value : this[attr][s].value;
-                    if( (this[attr][s].code == "recipe" || this[attr][s].required && this.valAttrRequired(this[attr][s])) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){
-                        val = this[attr][s].code == "price" ? this.product.default_price : val;
-                        val = this[attr][s].code == "recipe" ? this.formatIngredients(this.ingredients) : val;
-                        this[attr][s].msgError = "";
+                    if(attr == "attributesCustomisable"){
                         obj = {};
                         obj.code = this[attr][s]._id;
-                        obj.value = val;
+                        obj.value = this[attr][s].default_value;
                         obj.customizable = attr == 'attributes' ? false : true;
                         attrs.push(obj);
                     }else{
-                        if(this[attr][s].required){
-                            this.msgError = true;
-                            this[attr][s].msgError = "Este atributo es obligatorio";
-                            break;
+                        var val  = this[attr][s].options.length > 0 && this[attr][s].value.value ? this[attr][s].value.value : this[attr][s].value;
+                        if( !this[attr][s].variable || (this[attr][s].code == "recipe" || this[attr][s].required && this.valAttrRequired(this[attr][s])) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){
+                            val = this[attr][s].code == "price" ? this.product.default_price : val;
+                            val = this[attr][s].code == "recipe" ? this.formatIngredients(this.ingredients) : val;
+                            this[attr][s].msgError = "";
+                            obj = {};
+                            obj.code = this[attr][s]._id;
+                            obj.value = val;
+                            obj.customizable = attr == 'attributes' ? false : true;
+                            attrs.push(obj);
+                        }else{
+                            if(this[attr][s].required){
+                                this.msgError = true;
+                                this[attr][s].msgError = "Este atributo es obligatorio";
+                                break;
+                            }
                         }
                     }
                 }
@@ -700,8 +719,8 @@
                 //Armo atributos no personalizables
                 this.buildAttr("attributes");
                 //Armo atributos personalizables
-                //if(!this.msgError)
-                    //this.buildAttr("attributesCustomisable");
+                if(!this.msgError)
+                    this.buildAttr("attributesCustomisable");
             },
             formatCategories(){
                 var ct = [];
