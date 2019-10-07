@@ -181,12 +181,33 @@
                                                             <v-flex xs12 md2>
                                                                 <v-layout row wrap>
                                                                     <v-icon medium @click="addArray('i', index)">add</v-icon>
-                                                                    <div v-if="sub && sub.inputs">
-                                                                        <v-chip v-for="(i, index) in sub.inputs" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip>
-                                                                    </div>
+                                                                    <!--v-chip v-for="(i, index) in sub.inputs" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip-->
                                                                 </v-layout>
                                                             </v-flex>
                                                         </v-layout>
+                                                        <div v-if="sub && sub.inputs">
+                                                            <v-layout align-center row wrap>
+                                                                <v-flex xs12 md4>
+                                                                    <label class="text">Insumo</label>
+                                                                </v-flex>
+                                                                <v-flex xs12 md4>
+                                                                    <label class="text">Cantidad</label>
+                                                                </v-flex> 
+                                                                <v-flex xs12 md2>
+                                                                </v-flex> 
+                                                            </v-layout><hr><br>
+                                                            <v-layout v-for="(i, index) in sub.inputs" :key="index" align-center row wrap>
+                                                                <v-flex xs12 md4>
+                                                                    <label>{{i.name}}  {{i.metric}}</label>
+                                                                </v-flex>
+                                                                <v-flex xs6 md4>
+                                                                    <v-text-field v-model="i.quantity" prepend-icon="featured_play_list" id="quantityWay" name="quantityWay" label="Cantidad" type="number"></v-text-field>
+                                                                </v-flex>
+                                                                <v-flex xs6 md2>
+                                                                    <v-icon medium @click="removeArray('i', index)">close</v-icon>
+                                                                </v-flex> 
+                                                            </v-layout><br>
+                                                        </div>
                                                     </v-form>
                                                     </v-card-text>
                                                     <v-card-actions>
@@ -256,6 +277,9 @@
   </v-container>
 </template>
 <style>
+    .text{
+        font-size:20px;
+    }
     .alignGrid{
         /*text-align:center !important;*/
         font-size:20px !important;
@@ -468,10 +492,6 @@
             },
             formatSubProducts(attributes){
                 this.subProductsAttribute = this.complement(attributes);
-                for(var s = 0; s < this.subProductsAttribute.length; s++){
-                    this.subProductsAttribute[s].inputs = this.ingredients ? this.ingredients : [];
-                    this.subProductsAttribute[s].recipe = false;
-                }
             },
             editSubProducts(subs, attrs){
                 console.log(attrs);
@@ -529,8 +549,10 @@
             },
             updateSubProduct(inp){
                 var ingrs = [];
+                var arr = [];
                 for(var g = 0; g < this.subProductsAttribute.length; g++){
-                    var j = this.subProductsAttribute[g].inputs.find(element=>{return element.id == inp.id});
+                    arr = Array.isArray(this.subProductsAttribute[g].inputs) ? this.subProductsAttribute[g].inputs : [];
+                    var j = arr.find(element=>{return element.id == inp.id});
                     if(!j){
                         ingrs = Array.isArray(this.subProductsAttribute[g].inputs) ? this.subProductsAttribute[g].inputs : [];
                         ingrs.push(Object.assign({...inp}));
@@ -555,7 +577,7 @@
                             //Agrego el insumo
                             this.ingredients.push({...obj});
                             //Actualizo los sub productos con el nuevo insumo general
-                            //this.updateSubProduct(obj);
+                            this.updateSubProduct(obj);
                             this.ingredients.push();
                             this.ingredient.input = "";
                             this.ingredient.quantity = "";
