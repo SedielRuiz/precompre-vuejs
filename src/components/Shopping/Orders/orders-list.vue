@@ -1,13 +1,13 @@
 <template>
   <v-container>
-    <div class="row col-md-10">
-        <div class="col-md-8">
-            <h1>Ordenes</h1>
-        </div>
-        <div class="col-md-2">
-            <v-btn color="success" @click="redirect(true)">Volver</v-btn>
-        </div>
-    </div>
+    <v-layout row wrap>
+        <v-flex xs12 sm12 md2>
+          <h1>Ordenes</h1>
+        </v-flex>
+        <v-flex xs12 sm12 md10>
+          <v-btn color="success" @click="redirect(true)">Nueva</v-btn>
+        </v-flex>
+    </v-layout>
     <hr><br>
     <v-data-table
         :headers="headers"
@@ -46,20 +46,19 @@
       }
     },
     mounted () {
-      this.customer_id = this.$route.params.id == undefined ? 0 : this.$route.params.id;
-      this.fetchOrdersCustomer(this.customer_id);
+      this.fetchOrders();
     },
     methods: {
       ...mapActions({
-        fetchOrdersCustomer: 'order/fetchOrdersCustomer',
+        fetchOrders: 'order/fetchOrders',
         setWarning: 'setWarning',
       }),
       search(pagination){
-        this.fetchOrdersCustomer(pagination);
+        this.fetchOrders(pagination);
       },
       redirect(page,id){
         if(page){
-          this.$router.push('/customerDetail/'+this.customer_id)
+          this.$router.push('/orderManage')
         }else{
           this.$router.push('/orderDetail/'+id)
         }
