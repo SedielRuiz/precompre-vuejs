@@ -17,7 +17,7 @@
                             <v-text-field :disabled="preOrder.finish" v-model="preOrder.name" prepend-icon="library_books" name="title" label="Nombre" type="text"></v-text-field>
                             <v-layout row wrap>
                                 <v-flex xs12 md6>
-                                    <v-combobox :disabled="preOrder.finish" prepend-icon="filter_list" v-model="preOrder.deliveryPlace" :items="formatList(customer.delivery_places, 'name', 'id', 'unit_name')" label="Lugares de entrega"></v-combobox>
+                                    <v-combobox :disabled="preOrder.finish" prepend-icon="filter_list" v-model="preOrder.deliveryPlace" :items="formatList(customer.delivery_places, 'name', 'id', 'unit_u')" label="Lugares de entrega"></v-combobox>
                                 </v-flex>
                                 <v-flex xs12 md6>
                                     <v-combobox :disabled="preOrder.finish" prepend-icon="filter_list" v-model="preOrder.hour" :items="hours" label="Hora"></v-combobox>

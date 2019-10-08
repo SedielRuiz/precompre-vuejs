@@ -124,9 +124,7 @@
                                                 <v-btn color="error" @click="closeModal(index)">Cerrar</v-btn>
                                             </v-toolbar>
                                             <v-card-text>
-                                            <v-form>
                                                 <img :src="sub.photo ? sub.photo : 'No hay foto' "/>
-                                            </v-form>
                                             </v-card-text>
                                             <v-card-actions>
                                                 <v-spacer></v-spacer>

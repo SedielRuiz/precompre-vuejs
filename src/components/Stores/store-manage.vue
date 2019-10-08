@@ -63,11 +63,11 @@
             getStore: 'stores/getStore', 
             setWarning: 'setWarning',
         }),
-        buildCampaign(){
+        buildStore(){
             return this.store;
         },
         processStore () {
-            this.store = this.buildCampaign();
+            this.store = this.buildStore();
             if(this.edit){
                 this.update(this.store).then(
                     data => {

@@ -75,6 +75,10 @@ import CampaignDetail from '@/components/Campaigns/campaign-detail';
 import StoreList from '@/components/Stores/store-list';
 import StoreManage from '@/components/Stores/store-manage';
 import StoreDetail from '@/components/Stores/store-detail';
+/**Rutas**/
+import RouteList from '@/components/Routes/route-list';
+import RouteManage from '@/components/Routes/route-manage';
+import RouteDetail from '@/components/Routes/route-detail';
 
 const router = new Router({
   routes: [
@@ -482,6 +486,31 @@ const router = new Router({
         name: 'storeManageUpdate',
         component: StoreManage,
         meta: { Auth: true, title: 'Editar tiendas' },
+    },
+    /**Rutas**/
+    {
+        path: '/routeList',
+        name: 'routeList',
+        component: RouteList,
+        meta: { Auth: true, title: 'Rutas' },
+    },
+    {
+        path: '/routeDetail/:id',
+        name: 'routeDetail',
+        component: RouteDetail,
+        meta: { Auth: true, title: 'Ruta' },
+    },
+    {
+        path: '/routeManage/',
+        name: 'routeManageCreate',
+        component: RouteManage,
+        meta: { Auth: true, title: 'Crear ruta' },
+    },
+    {
+        path: '/routeManage/:id/',
+        name: 'routeManageUpdate',
+        component: RouteManage,
+        meta: { Auth: true, title: 'Editar ruta' },
     },
     
   ]

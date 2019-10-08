@@ -23,6 +23,7 @@ import comanda from '@/modules/comanda';
 import input from '@/modules/input';
 import campaign from '@/modules/campaign';
 import stores from '@/modules/store';
+import route from '@/modules/route';
 
 const store = new Vuex.Store({  
   state: {
@@ -98,6 +99,7 @@ const store = new Vuex.Store({
     input,
     campaign,
     stores,
+    route,
   }
 })
 

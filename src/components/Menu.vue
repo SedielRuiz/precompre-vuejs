@@ -227,7 +227,7 @@
 
             <v-divider></v-divider>
 
-            <v-list-tile @click="dirigir('/categoryList')">
+            <v-list-tile @click="dirigir('/routeList')">
                 <v-list-tile-action>
                 <v-icon>assignment</v-icon>
                 </v-list-tile-action>
