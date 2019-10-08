@@ -22,7 +22,8 @@
                     </v-flex>
                 </v-layout>
                 <v-chip v-for="(h, index) in schedules" :key="index">{{h}} <v-icon medium @click="removeArray('h', index)">close</v-icon></v-chip>
-                <h2>Edificios <v-icon medium @click="addBuilding ? addBuilding = false : addBuilding = true">add</v-icon></h2><br>
+                <hr><br><br>
+                <h2>Edificios <v-icon medium @click="addBuilding ? addBuilding = false : addBuilding = true">keyboard_arrow_down</v-icon></h2><br>
                 <div v-if="buildingsSelected.length > 0">
                     <v-chip v-for="(p, index) in buildingsSelected" :key="index">{{p.text}} <v-icon medium @click="removeArray('p', index)">close</v-icon></v-chip>
                 </div>
@@ -30,8 +31,14 @@
                 <div v-if="addBuilding" class="row col-md-8">
                     <v-card style="height: 100%;width: 84%; padding: 31px;">
                         <!--EDIFICIOS-->
-                        <v-combobox v-model="building" prepend-icon="account_box" :items="buildings" label="Edificio"></v-combobox>
-                        <v-btn color="primary" :disabled="building ? false : true" @click="addArray('p')">Agregar</v-btn>
+                        <v-layout row wrap>
+                            <v-flex xs12 sm12 md10>
+                                <v-combobox v-model="building" prepend-icon="account_box" :items="buildings" label="Edificio"></v-combobox>
+                            </v-flex>
+                            <v-flex xs12 sm12 md2>
+                                <v-btn color="primary" :disabled="building ? false : true" @click="addArray('p')">Agregar</v-btn>
+                            </v-flex>
+                        </v-layout>
                     </v-card><br>
                 </div>
             </v-form>
