@@ -119,7 +119,7 @@
         }),
         addOption(){
           if(this.option.code != ""){
-            this.option.code = this.option.code.toLowerCase().split(" ").join("_");
+            //this.option.code = this.option.code.toLowerCase().split(" ").join("_");
             this.options.push(this.option);
             this.option = {};
           }
