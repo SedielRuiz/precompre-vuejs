@@ -78,7 +78,7 @@
             this.route = val;
             this.schedules = val.schedule;
             for(var s = 0; s < val.delivery_places.length; s++){
-                this.buildingsSelected.push({text:this.buildings.name, value:this.buildings._id});
+                this.buildingsSelected.push({text:val.delivery_places[s].name, value:val.delivery_places[s]._id});
             }
           }
         },

@@ -34,6 +34,7 @@
                     <v-switch readonly v-model="attribute.visible" :label="'Visible'"></v-switch>
                   </v-flex>
                 </v-layout>
+                <v-switch readonly v-model="attribute.array" :label="'Arreglo'"></v-switch>
                 <h2>Opciones</h2>
                 <div v-if="options.length > 0">
                   <v-chip v-for="(opc, index) in options" :key="index">{{opc.code}}</v-chip>
