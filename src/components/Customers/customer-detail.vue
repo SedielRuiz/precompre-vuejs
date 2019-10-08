@@ -61,12 +61,38 @@
               </div>
               <h2>Teléfonos</h2><hr><br>
               <div v-if="phones">
-                <v-chip v-for="(p, index) in phones" :key="index">{{p.number}}</v-chip>
+                <v-data-table
+                  :headers="headers_tel"
+                  :items="phones"
+                  hide-actions disable-initial-sort
+                  class="elevation-1">
+                  <template v-slot:items="props">
+                    <td>
+                        <v-icon medium>{{props.item.main ? "check" : "" }}</v-icon> 
+                    </td>
+                    <td>{{ props.item.number }}</td>
+                    <td>{{ props.item.verification_code}}</td>
+                    <td>
+                      <v-icon medium>{{props.item.verified ? "check" : "close" }}</v-icon> 
+                    </td>
+                  </template>
+                </v-data-table>
               </div>  
               <h2>Lugares de entrega</h2><hr><br>
-              <div v-if="deliveryPlaces">
-                <v-chip v-for="(l, index) in deliveryPlaces" height="40px" width="115px" :key="index">{{l.name}} - {{l.cluster_title}}  {{l.unit_u}}</v-chip>
-              </div>
+              <v-data-table
+                :headers="headers_places"
+                :items="deliveryPlaces"
+                hide-actions disable-initial-sort
+                class="elevation-1">
+                <template v-slot:items="props">
+                  <td> {{props.item.name}} </td>
+                  <td> {{props.item.place_name}} </td>
+                  <td> {{props.item.cluster_title}} </td>
+                  <td> {{props.item._type}} </td>
+                  <td> {{props.item.floor_number}} </td>
+                  <td>{{ props.item.unit_u}}</td>
+                </template>
+              </v-data-table>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -113,6 +139,20 @@
           {text: 'Femenino', value:'f'}  
         ],
         edit:"",
+        headers_tel: [
+            {text:"Principal", value:"code"},
+            {text:"Numero", value:"number"},
+            {text:"Codigo", value:"verification_code"},
+            {text:"Verificado", value:"verified"},
+        ],
+        headers_places: [
+            {text:"Nombre", value:"name"},
+            {text:"Lugar", value:"place"},
+            {text:"Agrupación", value:"cluster"},
+            {text:"Tipo", value:"type"},
+            {text:"Piso", value:"floor"},
+            {text:"Unidad", value:"unit"},
+        ],
       }
     },
     watch:{
