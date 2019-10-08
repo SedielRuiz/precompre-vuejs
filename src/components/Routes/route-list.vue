@@ -18,7 +18,11 @@
             <template v-slot:items="props">
             <td>{{ props.item.name }}</td>
             <td>{{ props.item.sector }}</td>
-            <td>{{ props.item.schedule[0] }}</td>
+            <td>
+                <div v-for="(h, index) in props.item.schedule" :key="index">
+                    {{ h }}
+                </div>
+            </td>
             <td>
             <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
             <v-icon style="color:#bf1526;" medium @click="deleteRoute(props.item._id)">delete</v-icon>
