@@ -15,23 +15,51 @@
                 <v-text-field readonly v-if="classParent" v-model="classParent.code" prepend-icon="ballot" name="code" label="Parent clase" type="text"></v-text-field>
                 <h2>Atributos</h2><hr><br>
                 <div class="row col-md-8">
-                  <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--ATRIBUTOS-->
-                    <div v-if="attributes">
-                        <v-chip v-for="(attr, index) in attributes" :key="index">{{attr ? attr.code.split('_').join(' ') : ""}}</v-chip>
-                    </div>
+                    <v-data-table
+                      :headers="headers_attrs"
+                      :items="attributes"
+                      hide-actions disable-initial-sort
+                      class="elevation-1">
+                      <template v-slot:items="props">
+                        <td>{{ props.item.info.code }}</td>
+                        <td>{{ props.item.info.type }}</td>
+                        <td>{{ props.item.variable ? 'Si' : 'No'}}</td>
+                        <td>{{ props.item.info.visible ? 'Si' : 'No'}}</td>
+                        <td>{{ props.item.info.required ? 'Si' : 'No'}}</td>
+                        <td> 
+                          <p style="max-width: 250px;overflow-x:auto">
+                            <span v-for="(option, index) of props.item.info.options"> {{ option.code }}{{ index===props.item.info.options.length-1 ? "." : ",   " }}  </span>
+                          </p>
+                        </td>
+                      </template>
+                    </v-data-table>
                     <!--ATRIBUTOS-->
-                  </v-card><br>
+                    <br>
                 </div>
                 <h2>Atributos personalizables</h2><hr><br>
                 <div class="row col-md-8">
-                  <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--ATRIBUTOS-->
-                    <div v-if="attributesCustomisables">
-                        <v-chip v-for="(attrC, index) in attributesCustomisables" :key="index">{{attrC ? attrC.code.split('_').join(' ') : ""}}</v-chip>
-                    </div>
+                    <v-data-table
+                      :headers="headers_attrsC"
+                      :items="attributesCustomisables"
+                      hide-actions disable-initial-sort
+                      class="elevation-1">
+                      <template v-slot:items="props">
+                        <td>{{ props.item.info.code }}</td>
+                        <td>{{ props.item.info.type }}</td>
+                        <td>{{ props.item.pivot ? 'Si' : 'No'}}</td>
+                        <td>{{ props.item.info.visible ? 'Si' : 'No'}}</td>
+                        <td>{{ props.item.info.required ? 'Si' : 'No'}}</td>
+                        <td> 
+                          <p style="max-width: 250px;overflow-x:auto">
+                            <span v-for="(option, index) of props.item.info.options"> {{ option.code }}{{ index===props.item.info.options.length-1 ? "." : ",   " }}  </span>
+                          </p>
+                        </td>
+                      </template>
+                    </v-data-table>
                     <!--ATRIBUTOS-->
-                  </v-card><br>
+                    <br>
                 </div>
             </v-form>
           </v-card-text>
@@ -52,6 +80,22 @@
     name: 'rol-detail',
     data () {
       return {
+        headers_attrs: [
+            {text:"Nombre", value:"code"},
+            {text:"Tipo", value:"type"},
+            {text:"Variable", value:"viariable"},
+            {text:"Visible", value:"visible"},
+            {text:"Requerido", value:"required"},
+            {text:"Opciones", value:"options"},
+        ],
+        headers_attrsC: [
+            {text:"Nombre", value:"code"},
+            {text:"Tipo", value:"type"},
+            {text:"Permutable", vale:"permutable"},
+            {text:"Visible", value:"visible"},
+            {text:"Requerido", value:"required"},
+            {text:"Opciones", value:"options"},
+        ],
         classs: {},
         attributesId:[],
         attributesCustomisablesId:[],
@@ -61,7 +105,6 @@
     watch:{
         cl(val){
             if(val){
-              console.log(val);
                 this.classs = val;
                 this.attributesId = val.attributes;
                 this.attributesCustomisablesId = val.order_attributes;
@@ -108,7 +151,7 @@
             if(this.attributesId && this.att){
                 for(var s in this.attributesId){
                     if(this.attributesId[s])
-                        attrs.push(this.getAttributes(this.attributesId[s].id));
+                        attrs.push({ info: this.getAttributes(this.attributesId[s].id), variable: this.attributesId[s].variable});
                 }
                 return attrs;
             }
@@ -118,7 +161,7 @@
             if(this.attributesCustomisablesId && this.att){
                 for(var s in this.attributesCustomisablesId){
                     if(this.attributesCustomisablesId[s])
-                        attrsC.push(this.getAttributes(this.attributesCustomisablesId[s].id));
+                        attrsC.push({ info: this.getAttributes(this.attributesCustomisablesId[s].id), pivot: this.attributesCustomisablesId[s].pivot } );
                 }
                 return attrsC;
             }

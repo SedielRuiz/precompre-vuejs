@@ -17,7 +17,13 @@
         <template v-slot:items="props">
           <td>{{ props.item.code }}</td>
           <td>{{ props.item.type }}</td>
+          <td>{{ props.item.visible ? 'Si' : 'No' }}</td>
           <td>{{ props.item.required ? 'Si' : 'No'}}</td>
+          <td> 
+            <p style="max-width: 250px;overflow-x:auto">
+              <span v-for="(option, index) of props.item.options"> {{ option.code }}{{ index===props.item.options.length-1 ? "." : ",   " }}  </span>
+            </p>
+          </td>
           <td>
             <v-icon medium @click="redirect(true, props.item._id)" tooltip="Detalle">more_vert</v-icon>
             <v-icon v-if="props.item.code != 'price' && props.item.code != 'photo'" @click="deteleAttribute(props.item._id)" style="color:#bf1526;" medium>delete</v-icon>
@@ -42,8 +48,10 @@
         headers: [
             {text:"Nombre", value:"code"},
             {text:"Tipo", value:"type"},
+            {text:"Visible", value:"visible"},
             {text:"Requerido", value:"required"},
-            {text:"Acciones", value:"actons"}
+            {text:"Opciones", value:"actions"},
+            {text:"Acciones", value:"actions"},
         ],
       }
     },
