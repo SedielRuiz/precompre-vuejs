@@ -17,8 +17,8 @@
                 <v-combobox readonly v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <div v-if="attributes"> 
                     <div v-for="(attr, index) in attributes" :key="index"> 
-                        <div v-if="attr.name == 'photo'"> 
-                            <img :src="attr.value ? attr.value : 'No hay foto' "/>
+                        <div v-if="attr.name == 'photo'" style="text-align:center;"> 
+                            <img v-for="pt in attr.value" :src="pt.value ? pt.value : 'No hay foto' "/>
                         </div>  
                         <div v-else> 
                             <v-text-field  readonly v-model="attr.value.charAt(0).toUpperCase() + attr.value.slice(1)" prepend-icon="person" name="name" :label="attr.name.charAt(0).toUpperCase() + attr.name.slice(1)" type="text"></v-text-field>
@@ -28,44 +28,12 @@
                 <div v-if="order_attributes">
                     <v-chip v-for="(attrc, index) in order_attributes" :key="index">{{attrc.name.charAt(0).toUpperCase() + attrc.name.slice(1)}} - {{attrc.value.charAt(0).toUpperCase() + attrc.value.slice(1)}}</v-chip>
                 </div><hr><br>
-                <v-dialog v-model="recipe" persistent>
-                    <v-card class="elevation-12">
-                        <v-toolbar dark color="primary">
-                        <v-toolbar-title>Receta</v-toolbar-title>
-                            <v-spacer></v-spacer>
-                            <v-btn color="error" @click="recipe=false">Cerrar</v-btn>
-                        </v-toolbar>
-                        <v-card-text>
-                        <v-form>
-                             <v-layout row wrap>
-                                <v-flex xs12 md12>
-                                    <v-layout row wrap>
-                                        <div v-if="ingredient && subProducts[ingredient.idx] && subProducts[ingredient.idx].ingredients.length > 0">
-                                            <v-chip v-for="(i, index) in subProducts[ingredient.idx].ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}}</v-chip>
-                                        </div>
-                                        <div v-else>
-                                            No registra
-                                        </div>
-                                    </v-layout>
-                                </v-flex>
-                            </v-layout>
-                        </v-form>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <!--v-btn color="primary" @click="processInput(ingredient.idx)" style="width: 100%;" >Guardar</v-btn-->
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
                 <h2>Sub productos</h2><br>
                 <div v-if="subProducts"> 
                     <div row wrap>
                         <v-layout align-center row wrap >   
                             <v-flex class="alignGrid" v-for="h in subProducts[0]" :key="h.code" xs12 md2>
                                 <label class="col-md-2">{{h.code.split("_").join(" ").charAt(0).toUpperCase() + h.code.split("_").join(" ").slice(1)}}</label>
-                            </v-flex>
-                            <v-flex class="alignGrid" xs12 md2>
-                                <label class="col-md-2">Insumos</label>
                             </v-flex>
                             <v-flex class="alignGrid" xs12 md1>
                                 <label class="col-md-2">Foto</label>
@@ -107,9 +75,6 @@
                                         </div>
                                     </div>            
                                 </v-flex> 
-                                <v-flex class="alignGrid" xs12 md2>
-                                    <v-icon  @click="formRecipe(index)">add</v-icon>
-                                </v-flex>
                                 <v-flex class="alignGrid" xs12 md1>
                                     <!--label class="text-reader">
                                         <v-icon>add</v-icon>
@@ -123,8 +88,8 @@
                                                 <v-spacer></v-spacer>
                                                 <v-btn color="error" @click="closeModal(index)">Cerrar</v-btn>
                                             </v-toolbar>
-                                            <v-card-text>
-                                                <img :src="sub.photo ? sub.photo : 'No hay foto' "/>
+                                            <v-card-text style="text-align:center;">
+                                                <img v-for="ph in sub.photo" :src="ph ? ph : 'No hay foto' " style="width: 30%;height: 45%;"/>
                                             </v-card-text>
                                             <v-card-actions>
                                                 <v-spacer></v-spacer>
@@ -231,6 +196,18 @@
                 this.ingredient.idx = idx;
                 this.recipe = true;
             },
+            addPhotos(){
+                var lst = [];
+                var attrs = this.attributes.find(element=>{return element.name == "photo" });
+                if(attrs){
+                    for(var s = 0; s < attrs.value.length; s++){
+                        if(attrs.value[s].extend){
+                            lst.push(attrs.value[s].value);
+                        }
+                    }
+                }
+                return lst;
+            },
             detailSubProducts(subs, attrs){
                 console.log(attrs);
                 var atts = [];
@@ -243,7 +220,7 @@
                 console.log(attrs);
                 var lst = [];
                 var att = [];
-                var photo = "";
+                var photo = [];
                 var price = "";
                 var recipe = [];
                 if(subs){
@@ -257,21 +234,16 @@
                                     att.push(at)
                                 }
                                 if(at.code == "photo"){
-                                    photo = subs[s].options[r].option;
+                                    for(var g = 0; g < subs[s].options[r].option.length; g++){
+                                        photo.push(subs[s].options[r].option[g].text);
+                                    }
+                                    //Agregar las que heredan del padre
+                                    var tt = this.addPhotos();
+                                    if(tt.length > 0)
+                                        photo = photo.concat(tt);
                                 }
                                 if(at.code == "price"){
                                     price = subs[s].options[r].option;
-                                }
-                                if(at.code == "recipe"){
-                                    recipe = [];
-                                    if(subs[s].options[r].option){
-                                        for(var g = 0; g < subs[s].options[r].option.length; g++){
-                                            var inp = this.inputs.find(element=>{return element._id == subs[s].options[r].option[g].input});
-                                            if(inp){
-                                                recipe.push({"name": inp.name, "metric": inp.metric, "id":inp._id, "quantity":subs[s].options[r].option[g].value});
-                                            }
-                                        }
-                                    }
                                 }
                             }
 
@@ -280,6 +252,7 @@
                         att["photo"] = photo;
                         att["ingredients"] = recipe;
                         lst.push(att);
+                        photo = [];
                         att = [];
                     }
                 }

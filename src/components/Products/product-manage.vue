@@ -580,6 +580,7 @@
                         att["photos"] = photos;
                         att["active"] = true;
                         lst.push(att);
+                        photos = [];
                         att = [];
                     }
                 }
@@ -688,7 +689,18 @@
                 for(var s = 0; s < this[arr1].length; s++){
                     for(var r = 0; r < this.attributesP.length; r++){
                         if(this[arr1][s]._id == this.attributesP[r].code){
-                            this[arr1][s].value = this.attributesP[r].value;
+
+                            if(this[arr1][s].array){
+                                var arr = [];
+                                console.log(this.attributesP[r].value);
+                                for(var g = 0; g < this.attributesP[r].value.length; g++){
+                                    arr = [];
+                                    arr.push({text:this.attributesP[r].value[g].value, extend: this.attributesP[r].value[g].extend});
+                                }
+                                this[arr1][s].fillArray = arr;
+                            }else{
+                                this[arr1][s].value = this.attributesP[r].value;
+                            }
 
                             if(this[arr1][s].code == "price"){
                                 this.product.default_price = this.attributesP[r].value;
@@ -819,7 +831,7 @@
                     }
                     
                     var pht = this.attributes.find(element=>{return element.code == "photo"});
-                    lst.push({"pivot":pht._id, "option":this.subProductsAttribute[s]["photos"] ? this.subProductsAttribute[s]["photos"] : pht.fillArray });
+                    lst.push({"pivot":pht._id, "option":this.subProductsAttribute[s]["photos"] ? this.subProductsAttribute[s]["photos"] : [] });
 
                     var prc = this.attributes.find(element=>{return element.code == "price"});
                     lst.push({ "pivot":prc._id, "option":this.subProductsAttribute[s]["price"] ? this.subProductsAttribute[s]["price"] : product.default_price });
