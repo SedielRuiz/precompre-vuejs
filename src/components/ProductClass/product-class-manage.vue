@@ -150,16 +150,16 @@ var auxArr = ""
         attr(val){
             this.attrN=val;
             this.reserved.push(this.attrN.find(element=>{return element.code == "photo" }));
-            this.reserved.push(this.attrN.find(element=>{return element.code == "recipe" }));
+            //this.reserved.push(this.attrN.find(element=>{return element.code == "recipe" }));
             this.reserved.push(this.attrN.find(element=>{return element.code == "price" }));
             for(var s = 0; s < this.attrN.length; s++){
-                if(this.attrN[s].code == "price" || this.attrN[s].code == "recipe" || this.attrN[s].code == "photo"){
+                if(this.attrN[s].code == "price" || this.attrN[s].code == "photo"){
                     this.attrN.splice(s, 1);
                 }
             }
             this.attrC=val;
             for(var s = 0; s < this.attrC.length; s++){
-                if(this.attrC[s].code == "price" || this.attrC[s].code == "recipe" || this.attrC[s].code == "photo"){
+                if(this.attrC[s].code == "price" || this.attrC[s].code == "photo"){
                     this.attrC.splice(s, 1);
                 }
             }
@@ -380,7 +380,7 @@ var auxArr = ""
                         if(at){
                             at.variable = this.attributesId[s].variable != undefined ? this.attributesId[s].variable : false;
                         }
-                        if(at && at.code != "photo" && at.code != "recipe" && at.code != "price"){
+                        if(at && at.code != "photo" && at.code != "price"){
                             attrs.push(at);
                         }
                     }
@@ -397,7 +397,7 @@ var auxArr = ""
                         if(at){
                             at.pivot = this.attributesCustomisableId[s].pivot != undefined ? this.attributesCustomisableId[s].pivot : false;
                         }
-                        if(at && at.code != "photo" && at.code != "recipe" && at.code != "price"){
+                        if(at && at.code != "photo" && at.code != "price"){
                             attrCs.push(at);
                         }
                     }

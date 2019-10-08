@@ -35,7 +35,14 @@
                       <v-switch v-model="attribute.visible" :label="'Visible'"></v-switch>
                     </v-flex>
                 </v-layout>
-                <v-switch v-model="custom" :label="'Personalizable'"></v-switch>
+                <v-layout row wrap>
+                    <v-flex xs12 md6>
+                      <v-switch v-model="custom" :label="'Personalizable'"></v-switch>
+                    </v-flex>
+                    <v-flex xs12 md6>
+                      <v-switch v-model="attribute.array" :label="'Arreglo'"></v-switch>
+                    </v-flex>
+                </v-layout>
                 <div v-if="custom">
                   <h2>Opciones personalizables</h2>
                   <div v-if="options.length > 0">
@@ -80,7 +87,12 @@
             {text: 'Texto', value:'text'},
             {text: 'Numerico', value:'number'},
             {text: 'Booleano', value:'boolean'},
-            {text: 'Precio', value:'decimal'}
+            {text: 'Precio', value:'decimal'},
+            {text: 'Imagen', value:'image'},
+            {text: 'Video', value:'video'},
+            {text: 'Audio', value:'audio'},
+            {text: 'Link', value:'link'},
+            {text: 'Archivo', value:'file'},
         ],
         sizes:[
             {text: 'Corto', value:'short'},

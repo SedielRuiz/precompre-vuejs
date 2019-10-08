@@ -26,7 +26,7 @@
           </td>
           <td>
             <v-icon medium @click="redirect(true, props.item._id)" tooltip="Detalle">more_vert</v-icon>
-            <v-icon v-if="props.item.code != 'price' && props.item.code != 'recipe' && props.item.code != 'photo'" @click="deteleAttribute(props.item._id)" style="color:#bf1526;" medium>delete</v-icon>
+            <v-icon v-if="props.item.code != 'price' && props.item.code != 'photo'" @click="deteleAttribute(props.item._id)" style="color:#bf1526;" medium>delete</v-icon>
           </td>
         </template>
     </v-data-table>

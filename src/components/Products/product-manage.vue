@@ -16,15 +16,18 @@
                         <v-text-field v-model="product.name" prepend-icon="person" name="name" label="Nombre del producto" type="text"></v-text-field>
                     </v-flex>
                     <v-flex xs12 md6>
-                        <v-select v-model="product.type" :items="typesProduct" prepend-icon="featured_play_list" label="Tipo de producto"></v-select>
+                        <v-select v-model="product.store_id" prepend-icon="account_box" name="store" :items="stores" label="Tienda"></v-select>
                     </v-flex>
                 </v-layout>
                 <v-layout row wrap>
-                    <v-flex xs12 md6>
+                    <v-flex xs12 md4>
+                        <v-select v-model="product.type" :items="typesProduct" prepend-icon="featured_play_list" label="Tipo de producto"></v-select>
+                    </v-flex>
+                    <v-flex xs12 md4>
                         <v-text-field v-model="product.default_price" prepend-icon="featured_play_list" name="price" label="Precio base" type="number"></v-text-field>
                     </v-flex>
-                    <v-flex xs12 md6>
-                        <v-combobox  v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
+                    <v-flex xs12 md4>
+                        <v-combobox v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
                     </v-flex>
                 </v-layout>
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
@@ -42,7 +45,73 @@
                             </div>
                             <div v-else>
                                 <div v-if="attr.size == 'short'">
-                                    <v-text-field :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" prepend-icon="library_books" name="title" :label="attr.code" type="text"></v-text-field>
+                                    <v-layout row wrap>
+                                        <v-flex xs12 md6>
+                                            <v-text-field :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" prepend-icon="library_books" name="title" :label="attr.code" type="text"></v-text-field>
+                                        </v-flex>
+                                        <v-flex xs12 md2 v-if="attr.array">
+                                            <v-icon medium @click="addArray('a', index)">add</v-icon>
+                                        </v-flex>
+                                        <v-flex xs12 md4 v-if="attr.fillArray">
+                                            <div v-if="attr.type == 'image'">
+                                                <v-chip v-if="attr.fillArray.length > 0">
+                                                    <span @click="viewPhoto('o', attr.idx)">Ver detalle<v-icon>image</v-icon></span>
+
+                                                    <v-dialog v-model="attr.view_photo" persistent>
+                                                        <v-card class="elevation-12">
+                                                            <v-toolbar dark color="primary">
+                                                            <v-toolbar-title>Fotos</v-toolbar-title>
+                                                                <v-spacer></v-spacer>
+                                                                <v-btn color="error" @click="viewPhoto('c', attr.idx)">Cerrar</v-btn>
+                                                            </v-toolbar>
+                                                            <v-card-text>
+                                                                <h2>Seleccione la imagenes a heredar</h2>
+                                                                <div v-for="(opc, index) in attr.fillArray" :key="index">
+                                                                    <v-card class="elevation-4">
+                                                                         <v-layout align-center row wrap>
+                                                                            <v-flex xs12 md4>
+                                                                                <img :src="opc.text" style="width: 30%;height: 45%;"/><br>
+                                                                            </v-flex>
+                                                                            <v-flex xs12 md2>
+                                                                                <v-checkbox style="margin-top:27px;" v-model="opc.extend"></v-checkbox>
+                                                                            </v-flex>
+                                                                            <v-flex xs12 md4>
+                                                                                <v-icon medium @click="removeArray('a', attr.idx, index)">close</v-icon>
+                                                                            </v-flex>
+                                                                        </v-layout>
+                                                                    </v-card><br>
+                                                                </div>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </v-dialog>
+
+                                                </v-chip>
+                                                <!--v-layout align-center>
+                                                    <div v-for="(opc, index) in attr.fillArray" :key="index">
+                                                        <v-card class="elevation-3">
+                                                            <v-layout align-center>
+                                                                <v-flex xs12 md3>
+                                                                    <img :src="opc.text" style="width: 50%;height: 50%;"/>
+                                                                    <v-checkbox v-model="opc.extend" label="Heredar"></v-checkbox>
+                                                                </v-flex>
+                                                                <v-flex xs12 md1>
+                                                                    <v-icon medium @click="removeArray('a', attr.idx, index)">close</v-icon>
+                                                                </v-flex>
+                                                            </v-layout>
+                                                        </v-card>
+                                                    </div>
+                                                </v-layout-->
+                                            </div>
+                                            <div v-else-if="attr.type == 'video'">
+                                            </div>
+                                            <div v-else-if="attr.type == 'audio'">
+                                            </div>
+                                            <div v-else-if="attr.type == 'file'">
+                                            </div>
+                                            <div v-else-if="attr.type == 'link'">
+                                            </div>
+                                        </v-flex>
+                                    </v-layout>
                                 </div>
                                 <div v-else-if="attr.size == 'medium'">
                                     <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : '') : attr.value" prepend-icon="library_books" height="77px" name="mediumText" :label="attr.code"></v-textarea>
@@ -56,23 +125,6 @@
                         <!--ATRIBUTOS--><br>
                     </div>
                 </div>
-                <div v-if="class_id && (valRecipe())">
-                    <h2>Receta</h2><hr><br>
-                    <v-layout  row wrap>
-                        <v-flex xs12 md4>
-                            <v-combobox prepend-icon="filter_list" v-model="ingredient.input" :items="inputs" label="Insumos"></v-combobox>
-                        </v-flex>
-                        <v-flex xs12 md2>
-                            <v-text-field v-model="ingredient.quantity" prepend-icon="featured_play_list" name="quantity" label="Porcentaje" type="number"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 md2>
-                            <v-layout row wrap>
-                                <v-icon medium @click="addArray('i', 'general')">add</v-icon>
-                                <v-chip v-for="(i, index) in ingredients" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index, true)">close</v-icon></v-chip>
-                            </v-layout>
-                        </v-flex>
-                    </v-layout>
-                </div><br>
                 <!--h2 v-if="class_id">Atributos personalizados <hr><br></h2>
                 <div v-if="attributes.length > 0">
                   <v-chip v-for="(attr, index) in attributes" :key="index+'_'+attr.code">{{attr.description}} <v-icon medium @click="removeAttribute(index)">close</v-icon></v-chip>
@@ -110,26 +162,24 @@
                             <h2>Sub productos <v-icon medium @click="addSub ? addSub = false : addSub = true">keyboard_arrow_down</v-icon></h2><br>
                             <div row wrap v-if="addSub && subProductsAttribute">
                                 <v-layout align-center row wrap >   
-                                    <v-flex class="alignGrid" v-for="h in subProductsAttribute[0]" :key="h.code" xs12 md1>
+                                    <v-flex class="alignGrid" v-for="h in subProductsAttribute[0]" :key="h.code" xs12 md2>
                                         <label class="col-md-2">{{h.code.split("_").join(" ").charAt(0).toUpperCase() + h.code.split("_").join(" ").slice(1)}}</label>
-                                    </v-flex>
-                                    <v-flex class="alignGrid" xs12 md1>
-                                        <label class="col-md-2">Insumos</label>
                                     </v-flex>
                                     <v-flex class="alignGrid" xs12 md1>
                                         <label class="col-md-2">Foto</label>
                                     </v-flex>
+                                    <v-flex class="alignGrid" xs12 md1></v-flex>
                                     <v-flex class="alignGrid" xs12 md1>
                                         <label class="col-md-2">Precio</label>
                                     </v-flex>
                                     <v-flex class="alignGrid" xs12 md1>
                                         <label class="col-md-2">Disponible</label>
-                                        <span @click="activeAll()"><v-checkbox v-model="activeCheck" label="Todos"></v-checkbox></span>
+                                        <span @click="activeAll()"><v-checkbox v-model="activeCheck"></v-checkbox></span>
                                     </v-flex>
                                 </v-layout>
                                 <div v-for="(sub, index) in subProductsAttribute" :key="index">
                                     <v-layout align-center row wrap >       
-                                        <v-flex v-for="(attr, index) in sub" row wrap :key="index" xs12 md1>
+                                        <v-flex v-for="(attr, index) in sub" row wrap :key="index" xs12 md2>
                                             <div v-if="attr.options && attr.options.length > 0">
                                                 <v-flex xs12 md12>
                                                     {{attr && attr.value ? attr.value : (attr.default_value ? attr.default_value : "")}}
@@ -161,69 +211,46 @@
                                             </div>            
                                         </v-flex> 
                                         <v-flex class="alignGrid" xs12 md1>
-                                            <v-icon  @click="formRecipe(index)">add</v-icon>
-                                            <v-dialog v-model="sub.recipe" persistent>
-                                                <v-card class="elevation-12">
-                                                    <v-toolbar dark color="primary">
-                                                    <v-toolbar-title>Receta</v-toolbar-title>
-                                                        <v-spacer></v-spacer>
-                                                        <v-btn color="success" @click="closeModal(index)">Ok</v-btn>
-                                                    </v-toolbar>
-                                                    <v-card-text>
-                                                    <v-form>
-                                                        <v-layout row wrap>
-                                                            <v-flex xs12 md4>
-                                                                <v-combobox prepend-icon="filter_list" v-model="sub.input" :items="inputsp" id="inputModal" name="inputModal" label="Insumos"></v-combobox>
-                                                            </v-flex>
-                                                            <v-flex xs12 md2>
-                                                                <v-text-field v-model="sub.quantity" prepend-icon="featured_play_list" id="quantityModal" name="quantityModal" label="Cantidad" type="number"></v-text-field>
-                                                            </v-flex>
-                                                            <v-flex xs12 md2>
-                                                                <v-layout row wrap>
-                                                                    <v-icon medium @click="addArray('i', index)">add</v-icon>
-                                                                    <!--v-chip v-for="(i, index) in sub.inputs" :key="index">{{i.quantity}} {{i.metric}} de {{i.name}} <v-icon medium @click="removeArray('i', index)">close</v-icon></v-chip-->
-                                                                </v-layout>
-                                                            </v-flex>
-                                                        </v-layout>
-                                                        <div v-if="sub && sub.inputs">
-                                                            <v-layout align-center row wrap>
-                                                                <v-flex xs12 md4>
-                                                                    <label class="text">Insumo</label>
-                                                                </v-flex>
-                                                                <v-flex xs12 md4>
-                                                                    <label class="text">Cantidad</label>
-                                                                </v-flex> 
-                                                                <v-flex xs12 md2>
-                                                                </v-flex> 
-                                                            </v-layout><hr><br>
-                                                            <v-layout v-for="(i, index) in sub.inputs" :key="index" align-center row wrap>
-                                                                <v-flex xs12 md4>
-                                                                    <label>{{i.name}}  {{i.metric}}</label>
-                                                                </v-flex>
-                                                                <v-flex xs6 md4>
-                                                                    <v-text-field v-model="i.quantity" prepend-icon="featured_play_list" id="quantityWay" name="quantityWay" label="Cantidad" type="number"></v-text-field>
-                                                                </v-flex>
-                                                                <v-flex xs6 md2>
-                                                                    <v-icon medium @click="removeArray('i', index)">close</v-icon>
-                                                                </v-flex> 
-                                                            </v-layout><br>
-                                                        </div>
-                                                    </v-form>
-                                                    </v-card-text>
-                                                    <v-card-actions>
-                                                        <v-spacer></v-spacer>
-                                                        <!--v-btn color="primary" @click="processInput(ingredient.idx)" style="width: 100%;" >Guardar</v-btn-->
-                                                    </v-card-actions>
-                                                </v-card>
-                                            </v-dialog>
-                                        </v-flex>
-                                        <v-flex class="alignGrid" xs12 md1>
                                             <!--label class="text-reader">
                                                 <v-icon>add</v-icon>
                                                 <v-text-field v-model="sub.photo" name="photo" type="file"></v-text-field>
                                             </label-->
-                                            <v-text-field v-model="!sub.photo ? sub.photo = getPhoto() : sub.photo" name="photo" placeholder="URL" type="text"></v-text-field>
+                                            <v-icon @click="viewPhoto('o', index, true)">image</v-icon>
+
+                                            <v-dialog v-model="sub.view_photo" persistent>
+                                                <v-card class="elevation-12">
+                                                    <v-toolbar dark color="primary">
+                                                    <v-toolbar-title>Fotos</v-toolbar-title>
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn color="error" @click="viewPhoto('c', index, true)">Cerrar</v-btn>
+                                                    </v-toolbar>
+                                                    <v-card-text>
+                                                        <v-layout row wrap>
+                                                            <v-flex xs12 md6>
+                                                                <v-text-field v-model="!sub.photo ? sub.photo = getPhoto() : sub.photo" name="photo" label="Foto" type="text"></v-text-field>
+                                                            </v-flex>
+                                                            <v-flex xs12 md2>
+                                                                <v-icon medium @click="addArray('s', index)">add</v-icon>
+                                                            </v-flex>
+                                                        </v-layout>
+                                                        <div v-for="(ph, index) in sub.photos" :key="index">
+                                                            <v-card class="elevation-4">
+                                                                    <v-layout align-center row wrap>
+                                                                    <v-flex xs12 md4>
+                                                                        <img :src="ph.text" style="width: 30%;height: 45%;"/><br>
+                                                                    </v-flex>
+                                                                    <v-flex xs12 md4>
+                                                                        <v-icon medium @click="removeArray('s', index)">close</v-icon>
+                                                                    </v-flex>
+                                                                </v-layout>
+                                                            </v-card><br>
+                                                        </div>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-dialog>
+
                                         </v-flex>
+                                        <v-flex class="alignGrid" xs12 md1></v-flex>
                                         <v-flex class="alignGrid" xs12 md1>
                                             <v-text-field v-model="!sub.price ? sub.price = product.default_price : sub.price" name="price" placeholder="$ 0.000" type="number"></v-text-field>
                                         </v-flex>
@@ -316,8 +343,8 @@
         name: 'product-manage',
         data () {
             return {
+                stores:[],
                 activeCheck:false,
-                recipe:false,
                 ingredient:{},
                 ingredients:[],
                 inputs:[],
@@ -357,6 +384,8 @@
             pro(val){
                 if(val){
                     this.product = val;
+                    if(val.store_id)
+                        this.product.store_id = this.stores.find(element=>{return element.value == val.store_id });
                     this.class_id = {"text":val.product_class.code, "value":val.product_class._id};
                     this.attributesP = val.attributes;
                     this.categories = val.categories;
@@ -403,9 +432,16 @@
                         this.inputsp.push({"text":val[s].name +" - "+ val[s].metric, "value":val[s]._id});
                     }
                 }
-            }
+            },
+            strs(val){
+                for(var s = 0; s < val.length; s++){
+                    this.stores.push({text:val[s].name, value:val[s]._id});
+                    this.product.store_id = this.stores[0];
+                }
+            },
         },
         mounted () {
+            this.fetchStores({page_size:-1});
             this.fetchClasss();
             this.fetchCategories();
             this.fetchInputs();
@@ -424,10 +460,31 @@
                 getProduct: 'product/getProduct', 
                 fetchClasss: 'productClass/fetchClasss', 
                 fetchCategories: 'category/fetchCategories', 
+                fetchStores: 'stores/fetchStores',
                 fetchInputs: 'input/fetchInputs', 
                 getProductClassAttribute: 'product/getProductClassAttribute', 
                 setWarning: 'setWarning',
             }),
+            viewPhoto(opc, idx, sub = false){
+                if(opc == "o"){
+                    if(sub){
+                        this.subProductsAttribute[idx].view_photo = true;
+                    }else{
+                        this.attributes[idx].view_photo = true;
+                    }
+                }else{
+                    if(sub){
+                        this.subProductsAttribute[idx].view_photo = false;
+                    }else{
+                        this.attributes[idx].view_photo = false;
+                    }
+                }
+                if(sub){
+                    this.subProductsAttribute.push();
+                }else{
+                    this.attributes.push();
+                }
+            },
             activeAll(){
                 console.log(this.activeCheck);
                 for(let i = 0; i < this.subProductsAttribute.length; i++){
@@ -435,23 +492,9 @@
                 }
                 this.subProductsAttribute.push();
             },  
-            valRecipe(){
-                return this.attributes.find(element=>{return element.code == "recipe"}) ? true : false;
-            },
             getPhoto(){
                 var at = this.attributes.find(element=>{return element.code == "photo"});
                 return at && at.default_value ? at.default_value : at.value;
-            },
-            closeModal(idx){
-                this.subProductsAttribute[idx].recipe = false;
-                this.subProductsAttribute.push();
-                this.recipe = false;
-            },
-            formRecipe(idx){
-                this.subProductsAttribute[idx].recipe = true;
-                this.subProductsAttribute.push();
-                //this.ingredientp.idx = idx;
-                this.recipe = true;
             },
             complement(array){
                 console.log(array);
@@ -492,6 +535,11 @@
                 return lst;
             },
             formatSubProducts(attributes){
+                for(let i = 0; i < attributes.length; i++){
+                    if(!attributes[i].pivot){
+                        attributes.splice(i, 1);
+                    }
+                }
                 this.subProductsAttribute = this.complement(attributes);
             },
             editSubProducts(subs, attrs){
@@ -505,9 +553,8 @@
                 attrs = atts;
                 var lst = [];
                 var att = [];
-                var photo = "";
+                var photos = [];
                 var price = "";
-                var recipe = [];
                 if(subs){
                     for(var s = 0; s < subs.length; s++){
                         for(var r = 0; r < subs[s].options.length; r++){
@@ -518,30 +565,22 @@
                                     at.value = subs[s].options[r].option;
                                     att.push(at)
                                 }
-                                if(at.code == "photo"){
-                                    photo = subs[s].options[r].option;
+                                if(at.code == "photo"){ 
+                                    for(var g = 0; g < subs[s].options[r].option.length; g++){
+                                        photos.push({text: subs[s].options[r].option[g].text });
+                                    }
                                 }
                                 if(at.code == "price"){
                                     price = subs[s].options[r].option;
-                                }
-                                if(at.code == "recipe"){
-                                    recipe = [];
-                                    if(subs[s].options[r].option){
-                                        for(var g = 0; g < subs[s].options[r].option.length; g++){
-                                            var inp = this.inputs.find(element=>{return element.value == subs[s].options[r].option[g].input});
-                                            if(inp)
-                                                recipe.push({"name": inp.text.split("-")[0], "metric": inp.text.split("-")[1], "id":inp.value, "quantity":subs[s].options[r].option[g].value});
-                                        }
-                                    }
                                 }
                             }
 
                         }
                         att["price"] = price;
-                        att["photo"] = photo;
-                        att["inputs"] = recipe;
+                        att["photos"] = photos;
                         att["active"] = true;
                         lst.push(att);
+                        photos = [];
                         att = [];
                     }
                 }
@@ -599,6 +638,19 @@
                             this.ingredients = aux;
                         }
                         break;
+                    case "a":
+                        this.attributes[idx].fillArray.push({ text: this.attributes[idx].value, extend:false });
+                        this.attributes[idx].value = "";
+                        this.attributes[idx].default_value = "";
+                        this.attributes.push();
+                        break;
+                    case "s":
+                        var lst = Array.isArray(this.subProductsAttribute[idx].photos) ? this.subProductsAttribute[idx].photos : [];
+                        lst.push({ text: this.subProductsAttribute[idx].photo });
+                        this.subProductsAttribute[idx].photos = lst;
+                        this.subProductsAttribute[idx].photo = "";
+                        this.subProductsAttribute.push();
+                        break;
                 }
             },
             removeArray(arr, idx, gn = false){
@@ -614,6 +666,10 @@
                             this.subProductsAttribute[idx].inputs = ing;
                             this.subProductsAttribute.push();
                         }
+                        break;
+                    case "a":
+                        this.attributes[idx].fillArray.splice(gn, 1);
+                        this.attributes.push();
                         break;
                 }
             },
@@ -633,14 +689,17 @@
                 for(var s = 0; s < this[arr1].length; s++){
                     for(var r = 0; r < this.attributesP.length; r++){
                         if(this[arr1][s]._id == this.attributesP[r].code){
-                            this[arr1][s].value = this.attributesP[r].value;
 
-                            if(this[arr1][s].code == "recipe"){
-                                for(var g = 0; g < this.attributesP[r].value.option.length; g++){
-                                    var inp = this.inputs.find(element=>{return element.value == this.attributesP[r].value.option[g].input});
-                                    if(inp)
-                                        this.ingredients.push({"name": inp.text.split("-")[0], "metric": inp.text.split("-")[1], "id":inp.value, "quantity":this.attributesP[r].value.option[g].value});
+                            if(this[arr1][s].array){
+                                var arr = [];
+                                console.log(this.attributesP[r].value);
+                                for(var g = 0; g < this.attributesP[r].value.length; g++){
+                                    arr = [];
+                                    arr.push({text:this.attributesP[r].value[g].value, extend: this.attributesP[r].value[g].extend});
                                 }
+                                this[arr1][s].fillArray = arr;
+                            }else{
+                                this[arr1][s].value = this.attributesP[r].value;
                             }
 
                             if(this[arr1][s].code == "price"){
@@ -666,22 +725,36 @@
                     }else{
                         this[arr][s].attribute[0].variable = this[arr][s].variable;
                     }
+                    if(this[arr][s].attribute[0].array){
+                        this[arr][s].attribute[0].fillArray = [];
+                    }
+                    this[arr][s].attribute[0].idx = s;
                     lst.push(this[arr][s].attribute[0]);
                 }
                 this[arr] = lst;
             },
-            valAttrRequired(attr){
+            valAttrRequired(val){
                 var next = false;
-                var val = attr.options.length > 0 && attr.value.value ? attr.value.value : attr.value;
-                if(val != "" && val != undefined && val.trim() != "")
-                    next = true;
+                if(Array.isArray(val)){
+                    if(val.length > 0){
+                        next = true;
+                    }   
+                }else{
+                    if(val != "" && val != undefined && val.trim() != ""){
+                        next = true;
+                    }
+                }
                 return next;
             },
             valAttrNoRequired(val){
                 var next = true;
-                if(val == "" || val == undefined || val.trim() == "")
-                    next = false;
-                return next;
+                if(Array.isArray(val)){
+                    return next;
+                }else{
+                    if(val == "" || val == undefined || val.trim() == ""){
+                        next = false;
+                    }
+                }
             },
             buildAttr(attr){
                 var obj = {};
@@ -696,9 +769,14 @@
                         attrs.push(obj);
                     }else{
                         var val  = this[attr][s].options.length > 0 && this[attr][s].value.value ? this[attr][s].value.value : this[attr][s].value;
-                        if( !this[attr][s].variable || (this[attr][s].code == "recipe" || this[attr][s].required && this.valAttrRequired(this[attr][s])) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){
+                        if(this[attr][s].array){
+                            val = [];
+                            for(var r = 0; r < this[attr][s].fillArray.length; r++){
+                                val.push({ value: this[attr][s].fillArray[r].text, extend: this[attr][s].fillArray[r].extend });
+                            }
+                        }
+                        if( !this[attr][s].variable || (this[attr][s].required && this.valAttrRequired(val)) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){
                             val = this[attr][s].code == "price" ? this.product.default_price : val;
-                            val = this[attr][s].code == "recipe" ? this.formatIngredients(this.ingredients) : val;
                             this[attr][s].msgError = "";
                             obj = {};
                             obj.code = this[attr][s]._id;
@@ -751,12 +829,9 @@
                             lst.push({"pivot":this.subProductsAttribute[s][r]._id, "option":this.subProductsAttribute[s][r].value ? this.subProductsAttribute[s][r].value : this.subProductsAttribute[s][r].default_value });
                         }
                     }
-                    if(this.subProductsAttribute[s]["inputs"]){
-                        lst.push(this.formatIngredients(this.subProductsAttribute[s]["inputs"]));
-                    }
                     
                     var pht = this.attributes.find(element=>{return element.code == "photo"});
-                    lst.push({"pivot":pht._id, "option":this.subProductsAttribute[s]["photo"] ? this.subProductsAttribute[s]["photo"] : (pht && pht.value ? pht.value : pht.default_value)});
+                    lst.push({"pivot":pht._id, "option":this.subProductsAttribute[s]["photos"] ? this.subProductsAttribute[s]["photos"] : [] });
 
                     var prc = this.attributes.find(element=>{return element.code == "price"});
                     lst.push({ "pivot":prc._id, "option":this.subProductsAttribute[s]["price"] ? this.subProductsAttribute[s]["price"] : product.default_price });
@@ -772,6 +847,7 @@
                 this.product.sub_products = this.buildSubProducts();
                 this.buildAttributes();
                 this.product.product_class = this.class_id.value;
+                this.product.store_id = this.product.store_id && this.product.store_id.value ? this.product.store_id.value : this.product.store_id;
                 this.product.attributes = attrs;
                 this.product.categories = this.formatCategories();
                 if(this.edit)
@@ -819,6 +895,7 @@
                 attr: state => state.product.attrClass, 
                 inp: state => state.input.inputs, 
                 rows: state => state.category.categories, 
+                strs: state => state.stores.stores,
             }),
             trySend(){
                 if(this.edit || this.product && this.product.name && this.product.type && this.product.default_price && this.class_id){

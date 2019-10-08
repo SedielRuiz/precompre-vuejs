@@ -19,8 +19,8 @@
                 </div>
                 <hr><br>
                 <h2>Edificios</h2><br>
-                <div v-if="buildings">
-                    <v-chip v-for="(b, index) in buildings" :key="index">{{b}}</v-chip>
+                <div v-if="route.delivery_places">
+                    <v-chip v-for="(b, index) in route.delivery_places" :key="index">{{b.name}}</v-chip>
                 </div>
                 <hr>
             </v-form>
@@ -48,7 +48,6 @@
       return {
         route: {},
         routes:[],
-        buildings:[],
         edit:"",
       }
     },
@@ -56,9 +55,6 @@
         cmp(val){
           if(val){
             this.route = val;
-            for(var r = 0; r < val.delivery_places.length; r++){
-                this.buildings.push(val.delivery_places[r]);
-            }
           }
         },
     },
