@@ -273,7 +273,7 @@
                                         </v-layout>
                                         <v-layout row wrap v-if="attributes">
                                             <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code">
-                                                <div v-if="attr.visible && attr.code != 'photo'">
+                                                <div v-if="attr.visible && attr.code != 'photo'" && !attr.custom>
                                                     <div v-if="attr.options && attr.options.length > 0">
                                                         <v-flex xs12 md12>
                                                             <v-combobox :disabled="attr.custom" @change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
@@ -367,7 +367,7 @@
                                                 <div v-if="sc.viewAtt">
                                                     <v-layout row wrap>
                                                         <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code" class="row col-md-8">
-                                                            <div v-if="attr.visible && attr.code != 'photo'">
+                                                            <div v-if="attr.visible && attr.code != 'photo' && !attr.custom">
                                                                 <div v-if="attr.options && attr.options.length > 0">
                                                                     <v-combobox @change="findPrice('p', sh.index, sc.index)" :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
                                                                 </div>
@@ -514,6 +514,11 @@
                 this.preOrder.hour = this.hours[0];
                 this.getCustomer(this.customer_id.value ? this.customer_id.value : this.customer_id);
                 this.fetchPreOrdersCustomer(this.customer_id.value ? this.customer_id.value : this.customer_id);
+            }
+        },
+        customer(val){
+            if(val){
+                this.preOrder.name = this.formatList(val.delivery_places, 'name', 'id', 'unit_u')[0].text +" "+ this.hours[0].text;
             }
         },
     },

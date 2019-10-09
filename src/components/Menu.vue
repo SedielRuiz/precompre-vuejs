@@ -135,7 +135,7 @@
 
             <v-list-group prepend-icon="assignment" value="true">
               <template v-slot:activator>
-                <v-list-tile @click="dirigir('/ordersList')">
+                <v-list-tile>
                   <v-list-tile-title>Ordenes</v-list-tile-title>
                 </v-list-tile>
               </template>
@@ -150,7 +150,7 @@
                   <v-list-tile-action>
                   </v-list-tile-action>
                   <v-list-tile-content>
-                  <v-list-tile-title>Filtro de ordenes</v-list-tile-title>
+                  <v-list-tile-title>Lista de ordenes</v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
             </v-list-group>
