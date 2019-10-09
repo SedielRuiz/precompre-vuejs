@@ -565,7 +565,7 @@
                 pivot = true;
                 for(var g = 0; g < subss[r].options.length; g++){
                     for(var s = 0; s < attrs.length; s++){
-                        if(attrs[s].type != "text"){
+                        if(attrs[s].type != "text" || attrs[s].options.length > 0){
                             var prc = subss[r].options.find(element=>{return element.pivot == attrs[s]._id});
                             if(prc && attrs[s].code != "photo" && attrs[s].code != "recipe"){
                                 var valurVal = attrs[s].value && attrs[s].value.value ? attrs[s].value.value : attrs[s].value;
