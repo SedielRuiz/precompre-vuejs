@@ -85,7 +85,6 @@
     },
     mounted () {
       this.fetchCustomers({"page_size":-1});
-      this.clearFilter();
     },
     methods: {
       ...mapActions({
