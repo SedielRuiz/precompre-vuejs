@@ -46,7 +46,7 @@
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
     <v-dialog v-model="viewAttributes">
-      <attributeList :attributes="attributeList" :headers="headers_dialog"></attributeList>
+      <attributeList :attributes="attributesInfo" :headers="headers_dialog"></attributeList>
     </v-dialog>
   </v-container>
 </template>
@@ -66,13 +66,13 @@
       return {
         headers: [
             {text:"Nombre", value:"code"},
-            {text:"Atributos", vale:"attributes"},
-            {text:"Atributos Per.", vale:"order_attributes"},
+            {text:"Atributos estaticos", vale:"attributes"},
+            {text:"Atributos personalizables", vale:"order_attributes"},
             {text:"Acciones", value:"actons"}
         ],
         attributesId:[],
         attributesCustomisablesId:[],
-        attributesList: [],
+        attributesInfo: [],
         viewAttributes: false,
         headers_dialog: [
             {text:"Nombre", value:"info.code"},
@@ -125,15 +125,14 @@
         }
       },
       seeAttritbutes(attributes,type){
-        console.log(type)
         this.viewAttributes = true;
         switch(type){
           case "variables":
-            this.attributeList = attributes;
+            this.attributesInfo = attributes;
             this.headers_dialog[1] = { text: "variable", value: "variable" }
             break;
           case "permutables":
-            this.attributeList = attributes;
+            this.attributesInfo = attributes;
             this.headers_dialog[1] = { text: "permutable", value: "pivot" }
             break;
         }
