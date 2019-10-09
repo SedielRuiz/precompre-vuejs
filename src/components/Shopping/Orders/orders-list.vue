@@ -37,7 +37,7 @@
         <template v-slot:items="props">
           <td>{{ props.item.delivery_date.split("T")[0] }}</td>
           <td>{{ props.item.delivery_place.name }} {{ props.item.delivery_place.unit_name }}</td>
-          <td>{{ props.item.state }}</td>
+          <td>{{ getState(props.item.state) }}</td>
           <td>
             <v-icon medium @click="redirect(false, props.item._id)"tooltip="Detalle">more_vert</v-icon>
             <v-icon v-if="props.item.state == 'cart'" style="color:#bf1526;" medium @click="deleteOrder(props.item._id)">delete</v-icon>
@@ -94,6 +94,14 @@
         fetchCustomers: 'customer/fetchCustomers',
         setWarning: 'setWarning',
       }),
+      getState(state){
+        var name = "";
+        switch(state){
+          case "cart":name="Carrito";break;
+          case "pending":name="Pendiente";break;
+        }
+        return name;
+      },
       deleteOrder(id){
         if(confirm("¿ Seguro que desea eliminar este pedido ? ")){
           this.delete(id).then(
