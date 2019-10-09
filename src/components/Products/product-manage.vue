@@ -233,14 +233,14 @@
                                                                 <v-icon medium @click="addArray('s', index)">add</v-icon>
                                                             </v-flex>
                                                         </v-layout>
-                                                        <div v-for="(ph, index) in sub.photos" :key="index">
+                                                        <div v-for="(ph, ph_index) in sub.photos" :key="index">
                                                             <v-card class="elevation-4">
                                                                     <v-layout align-center row wrap>
                                                                     <v-flex xs12 md4>
                                                                         <img :src="ph.text" style="width: 30%;height: 45%;"/><br>
                                                                     </v-flex>
                                                                     <v-flex xs12 md4>
-                                                                        <v-icon medium @click="removeArray('s', index)">close</v-icon>
+                                                                        <v-icon medium @click="removeArray('photo_sub_product', index, ph_index)">close</v-icon>
                                                                     </v-flex>
                                                                 </v-layout>
                                                             </v-card><br>
@@ -653,7 +653,7 @@
                         break;
                 }
             },
-            removeArray(arr, idx, gn = false){
+            removeArray(arr, idx, gn = false, ){
                 switch(arr) {
                     case "i":
                         if(gn){
@@ -670,6 +670,10 @@
                     case "a":
                         this.attributes[idx].fillArray.splice(gn, 1);
                         this.attributes.push();
+                        break;
+                    case "photo_sub_product":
+                        this.subProductsAttribute[idx].photos.splice(gn, 1);
+                        this.subProductsAttribute.push();
                         break;
                 }
             },
