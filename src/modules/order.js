@@ -87,6 +87,21 @@ const actions = {
             })
         });
     },
+    delete:({commit}, id) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+        store.axio.post('delete_orders/'+id).then(
+            response =>{
+                var data = User.actions.processResponse(response.data, false);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
     /*****************Facturas**************/
     fetchBills:({commit}, data) => {
         return new Promise((resolve, reject) => {
