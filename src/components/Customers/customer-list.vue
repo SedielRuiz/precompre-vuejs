@@ -310,7 +310,7 @@ import Vue from 'vue'
           var delivery = { $elemMatch: { id: this.delivery_place && this.delivery_place.value ? this.delivery_place.value : this.delivery_place } };
         }
         for (const flt in this.filter) {
-          if(this.filter[flt] == "")
+          if(!this.filter[flt] ||this.filter[flt] === "" || this.filter[flt] === null)
             delete this.filter[flt];
         }
 

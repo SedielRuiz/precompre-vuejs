@@ -17,10 +17,26 @@
         <template v-slot:items="props">
         <td>{{ props.item.code }}</td>
         <td>
-          <span style="display: inline-block" v-for="(attr, index) of attributes[props.index]"> {{ attr.info.title }} ({{attr.variable ? "variable" : "estatico" }}){{ index===attributes[props.index].length-1 ? "." : ",   " }} </span>
+          <v-btn
+            class="elevation-0"
+            color="transparent"
+            light
+            @click="seeAttritbutes(attributes[props.index], 'variables')"
+            v-if="attributes[props.index]&&attributes[props.index].length>0"
+            >
+            <v-icon>list</v-icon>
+          </v-btn>
         </td>
         <td>
-          <span v-for="(attrC, index) of attributesCustomisables[props.index]"> {{attrC.info.title}} ({{attrC.pivot ? "permutable" : "personalizable" }}){{ index===attributesCustomisables[props.index].length-1 ? "." : ",   " }} </span>
+          <v-btn
+            class="elevation-0"
+            color="transparent"
+            light
+            @click="seeAttritbutes(attributesCustomisables[props.index], 'permutables')"
+            v-if="attributesCustomisables[props.index]&&attributesCustomisables[props.index].length>0"
+            >
+            <v-icon>list</v-icon>
+          </v-btn>
         </td>
         <td>
           <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
@@ -29,17 +45,22 @@
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
+    <v-dialog v-model="viewAttributes">
+      <attributeList :attributes="attributeList" :headers="headers_dialog"></attributeList>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
   import {mapActions,mapState,mapGetters} from 'vuex';
   import pagination from '@/components/Pagination';
+  import attributeList from '@/components/ProductClass/product-class-attribute-list';
   
   export default {
     name: 'class-list',
     components: {
       pagination,
+      attributeList
     },
     data () {
       return {
@@ -51,6 +72,12 @@
         ],
         attributesId:[],
         attributesCustomisablesId:[],
+        attributesList: [],
+        viewAttributes: false,
+        headers_dialog: [
+            {text:"Nombre", value:"info.code"},
+            {text:"", value:""},
+        ]
       }
     },
     watch:{
@@ -95,6 +122,20 @@
             this.$router.push('/classProductManage')
         }else{
             this.$router.push('/classProductDetail/'+id)
+        }
+      },
+      seeAttritbutes(attributes,type){
+        console.log(type)
+        this.viewAttributes = true;
+        switch(type){
+          case "variables":
+            this.attributeList = attributes;
+            this.headers_dialog[1] = { text: "variable", value: "variable" }
+            break;
+          case "permutables":
+            this.attributeList = attributes;
+            this.headers_dialog[1] = { text: "permutable", value: "pivot" }
+            break;
         }
       }
     },

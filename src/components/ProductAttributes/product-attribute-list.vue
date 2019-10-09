@@ -20,9 +20,7 @@
           <td>{{ props.item.visible ? 'Si' : 'No' }}</td>
           <td>{{ props.item.required ? 'Si' : 'No'}}</td>
           <td> 
-            <p style="max-width: 250px;overflow-x:auto">
-              <span v-for="(option, index) of props.item.options"> {{ option.code }}{{ index===props.item.options.length-1 ? "." : ",   " }}  </span>
-            </p>
+            {{ props.item.options && props.item.options.length > 0 ? 'Si' : 'No'}}
           </td>
           <td>
             <v-icon medium @click="redirect(true, props.item._id)" tooltip="Detalle">more_vert</v-icon>
@@ -50,7 +48,7 @@
             {text:"Tipo", value:"type"},
             {text:"Visible", value:"visible"},
             {text:"Requerido", value:"required"},
-            {text:"Opciones", value:"actions"},
+            {text:"Opciones", value:"options"},
             {text:"Acciones", value:"actions"},
         ],
       }

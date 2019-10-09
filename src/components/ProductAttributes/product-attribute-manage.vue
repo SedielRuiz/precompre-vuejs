@@ -43,12 +43,12 @@
                       <v-switch v-model="attribute.array" :label="'Arreglo'"></v-switch>
                     </v-flex>
                 </v-layout>
+                <h2>Opciones personalizables</h2>
+                <div v-if="options.length > 0">
+                  <v-chip v-for="(opc, index) in options" :key="index">{{opc.code}} <v-icon medium @click="removeOption(index)">close</v-icon></v-chip>
+                </div>
+                <br>
                 <div v-if="custom">
-                  <h2>Opciones personalizables</h2>
-                  <div v-if="options.length > 0">
-                    <v-chip v-for="(opc, index) in options" :key="index">{{opc.code}} <v-icon medium @click="removeOption(index)">close</v-icon></v-chip>
-                  </div>
-                  <br>
                   <div class="row col-md-8">
                     <v-card  style="height: 100%;width: 84%; padding: 31px;">
                       <!--OPCIONES-->
