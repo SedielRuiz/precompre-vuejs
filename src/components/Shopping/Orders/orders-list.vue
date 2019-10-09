@@ -31,12 +31,12 @@
     <hr><br>
     <v-data-table
         :headers="headers"
-        :items="rows"
+        :items="orders"
         hide-actions disable-initial-sort
         class="elevation-1">
         <template v-slot:items="props">
           <td>{{ props.item.delivery_date.split("T")[0] }}</td>
-          <td>{{ props.item.delivery_place.name }} {{ props.item.delivery_place.unit_name }}</td>
+          <td>{{ props.item.delivery_place }}</td>
           <td>{{ getState(props.item.state) }}</td>
           <td>
             <v-icon medium @click="redirect(false, props.item._id)"tooltip="Detalle">more_vert</v-icon>
@@ -59,6 +59,7 @@
     },
     data () {
       return {
+        orders:[],
         customers:[],
         states:[
           {text:"Carrito", value:"cart"},
@@ -77,13 +78,34 @@
     watch:{
       cutms(val){
         if(val){
-            for(var s = 0; s < val.length; s++){
-                this.customers.push({"text":val[s].name+" "+val[s].last_name, value:val[s]._id});
+          for(var s = 0; s < val.length; s++){
+              this.customers.push({"text":val[s].name+" "+val[s].last_name, value:val[s]._id});
+          }
+        }
+      },
+      rows(val){
+        if(val){
+          for(var s = 0; s < val.length; s++){
+            for(var r = 0; r < val[s].orders.length; r++){
+          console.log("aca");
+              this.orders.push({
+                delivery_date:val[s].orders[r].delivery_date,
+                delivery_place:val[s].orders[r].delivery_place,
+                state:val[s].orders[r].state,
+                _id:val[s].orders[r]._id
+              });
+              /*for(var j = 0; j < val[s].orders[r].items.length; j++){
+              }*/
             }
+          }
         }
       },
     },
     mounted () {
+      var date = new Date();
+      date = date.getFullYear()+"-"+((date.getMonth()+1) < 10 ? "0"+(date.getMonth()+1) : (date.getMonth()+1))+"-"+(date.getDate() < 10 ? "0"+date.getDate(): date.getDate());
+      this.filter.date_start = date;
+      this.filter.date_end = date;
       this.fetchCustomers({"page_size":-1});
     },
     methods: {
