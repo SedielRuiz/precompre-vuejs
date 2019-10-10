@@ -129,11 +129,11 @@
         switch(type){
           case "variables":
             this.attributesInfo = attributes;
-            this.headers_dialog[1] = { text: "variable", value: "variable" }
+            this.headers_dialog[1] = { text: "Variable", value: "variable" }
             break;
           case "permutables":
             this.attributesInfo = attributes;
-            this.headers_dialog[1] = { text: "permutable", value: "pivot" }
+            this.headers_dialog[1] = { text: "permite permutación", value: "pivot" }
             break;
         }
       }
