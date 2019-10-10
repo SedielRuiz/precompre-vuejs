@@ -45,7 +45,7 @@
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
-    <v-dialog v-model="viewAttributes">
+    <v-dialog width="400" v-model="viewAttributes">
       <attributeList :attributes="attributesInfo" :headers="headers_dialog"></attributeList>
     </v-dialog>
   </v-container>
@@ -143,8 +143,7 @@
         warning: state => state.warning,
         rows: state => state.productClass.classs,
         page_size: state => state.productClass.page_size,
-        total_items: state => state.productClass.total_items,
-        total_pages: state => state.productClass.total_pages,
+        total_items: state => state.productClass.total_items, 
         att: state => state.productAttribute.attributes, 
       }),
       ...mapGetters({
