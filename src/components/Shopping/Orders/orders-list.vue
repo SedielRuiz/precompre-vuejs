@@ -31,12 +31,27 @@
     <hr><br>
     <v-data-table
         :headers="headers"
-        :items="orders"
+        :items="rows"
         hide-actions disable-initial-sort
         class="elevation-1">
         <template v-slot:items="props">
           <td>{{ props.item.delivery_date.split("T")[0] }}</td>
-          <td>{{ props.item.delivery_place }}</td>
+          <td>{{ props.item.item.product.name }}</td>
+          <td>{{ props.item.customer.name}} {{ props.item.customer.last_name}} </td> 
+          <td>
+             <div v-for="(attr) in props.item.item.attributes[0]" :key="index+1">
+              <div v-for="(att) in attrs" :key="index">
+                <div v-if="attr.attribute == att._id">
+                  <label style="font-size: 12px;">
+                    <div v-if="attr.value && att.visible && att.code != 'photo'">
+                      {{att.code.charAt(0).toUpperCase() + att.code.slice(1)}}: {{attr.value.charAt(0).toUpperCase() + attr.value.slice(1)}}
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>{{ props.item.delivery_place ? props.item.delivery_place.place_name : "" }}</td>
           <td>{{ getState(props.item.state) }}</td>
           <td>
             <v-icon medium @click="redirect(false, props.item._id)"tooltip="Detalle">more_vert</v-icon>
@@ -69,7 +84,10 @@
         customer_id:"",
         headers: [
             {text:"Fecha", value:"delivery_date"},
-            {text:"Lugar de estrega", value:"delivery_place"},
+            {text:"Producto", value:"product"},
+            {text:"Cliente", value:"customer"},
+            {text:"Atributos", value:"attributes"},
+            {text:"Lugar de entrega", value:"delivery_place"},
             {text:"Estado", value:"state"},
             {text:"Acciones", value:"actons"}
         ]
@@ -84,7 +102,7 @@
         }
       },
       rows(val){
-        if(val){
+        if(false){
           for(var s = 0; s < val.length; s++){
             for(var r = 0; r < val[s].orders.length; r++){
           console.log("aca");
@@ -102,6 +120,7 @@
       },
     },
     mounted () {
+      this.fetchAttributes({page_size:-1});
       var date = new Date();
       date = date.getFullYear()+"-"+((date.getMonth()+1) < 10 ? "0"+(date.getMonth()+1) : (date.getMonth()+1))+"-"+(date.getDate() < 10 ? "0"+date.getDate(): date.getDate());
       this.filter.date_start = date;
@@ -114,6 +133,7 @@
         fetchOrders: 'order/fetchOrders',
         fetchCustomers: 'customer/fetchCustomers',
         setWarning: 'setWarning',
+        fetchAttributes: 'productAttribute/fetchAttributes',
       }),
       getState(state){
         var name = "";
@@ -162,6 +182,7 @@
         total_items: state => state.order.total_items,
         total_pages: state => state.order.total_pages,
         cutms: state => state.customer.customers,
+        attrs: state => state.productAttribute.attributes,
       }),
     },
   }
