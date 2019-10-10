@@ -93,7 +93,7 @@
                     <td> {{props.item._type}} </td>
                     <td>{{ props.item.unit_u}}</td>
                     <td>
-                      <v-icon style="color:#bf1526;" medium @click="removePlace(props.item.index)">delete</v-icon>
+                      <v-icon style="color:#bf1526;" medium @click="removePlace(props.index)">delete</v-icon>
                     </td>
                   </template>
                 </v-data-table>
