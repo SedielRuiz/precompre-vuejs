@@ -133,7 +133,7 @@
             break;
           case "permutables":
             this.attributesInfo = attributes;
-            this.headers_dialog[1] = { text: "permite permutación", value: "pivot" }
+            this.headers_dialog[1] = { text: "Permite permutación", value: "pivot" }
             break;
         }
       }
