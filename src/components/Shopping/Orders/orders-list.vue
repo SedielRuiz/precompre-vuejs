@@ -55,7 +55,7 @@
           <td>{{ getState(props.item.state) }}</td>
           <td>
             <v-icon medium @click="redirect(false, props.item._id)"tooltip="Detalle">more_vert</v-icon>
-            <v-icon v-if="props.item.state == 'cart'" style="color:#bf1526;" medium @click="deleteOrder(props.item._id)">delete</v-icon>
+            <v-icon style="color:#bf1526;" medium @click="deleteOrder(props.item._id)">delete</v-icon>
           </td>
         </template>
     </v-data-table>
