@@ -73,7 +73,7 @@
                     <td>{{ props.item.number }}</td>
                     <td>{{ props.item.verification_code}}</td>
                     <td>
-                      <v-icon medium>{{props.item.verified ? "check" : "close" }}</v-icon> 
+                      <v-icon medium>{{props.item.verified ? "check_circle_outline" : "" }}</v-icon> 
                     </td>
                   </template>
                 </v-data-table>

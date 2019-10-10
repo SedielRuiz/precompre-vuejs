@@ -47,7 +47,24 @@
               <v-combobox v-if="edit!=''" v-model="customer.status" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
               <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
               <div v-if="phones.length > 0">
-                <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
+                <div v-if="phones">
+                  <v-data-table
+                    :headers="headers_tel"
+                    :items="phones"
+                    hide-actions disable-initial-sort
+                    class="elevation-1">
+                    <template v-slot:items="props">
+                      <td>
+                          <v-icon medium>{{props.item.main ? "check" : "" }}</v-icon> 
+                      </td>
+                      <td>{{ props.item.number }}</td>
+                      <td>{{ props.item.verification_code}}</td>
+                      <td>
+                        <v-icon medium>{{props.item.verified ? "check_circle_outline" : "" }}</v-icon> 
+                      </td>
+                    </template>
+                  </v-data-table>
+                </div>  
               </div>
               <br>
               <div v-if="addNumber" class="row col-md-8">
@@ -64,7 +81,22 @@
               </div>
               <h2>Lugares de entrega <v-icon medium @click="addPlace ? addPlace = false : addPlace = true">add</v-icon></h2><br>
               <div v-if="placesSelected.length > 0">
-                <v-chip v-for="(p, index) in placesSelected" :key="index">{{p.name}} <v-icon medium @click="removePlace(index)">close</v-icon></v-chip>
+                <v-data-table
+                  :headers="headers_places"
+                  :items="placesSelected"
+                  hide-actions disable-initial-sort
+                  class="elevation-1">
+                  <template v-slot:items="props">
+                    <td> {{props.item.name}} </td>
+                    <td> {{props.item.place_name}} </td>
+                    <td> {{props.item.cluster_title}} </td>
+                    <td> {{props.item._type}} </td>
+                    <td>{{ props.item.unit_u}}</td>
+                    <td>
+                      <v-icon style="color:#bf1526;" medium @click="removePlace(props.item.index)">delete</v-icon>
+                    </td>
+                  </template>
+                </v-data-table>
               </div>
               <div v-if="addPlace" class="row col-md-8">
                 <v-card style="height: 100%;width: 84%; padding: 31px;">
@@ -114,7 +146,7 @@
         placesDelivery:[],
         typesPlaces:[],
         clusters:[],
-        cluster:"",
+        cluster:{},
         units:[],
         addPlace:false,
         addNumber:false,
@@ -127,8 +159,8 @@
           {text: 'Femenino', value:'f'}  
         ],
         placesSelected:[],
-        placeDelivery:"",
-        typeSeleted:"",
+        placeDelivery:{},
+        typeSeleted:{},
         typesPhone: [
           {text: 'Movil', value:'movil'},
           {text: 'Hogar', value:'home'}
@@ -144,10 +176,27 @@
           {text: 'Interesado', value:'interested'},
         ],
         edit:"",
-        titleText:""
+        titleText:"",
+        headers_tel: [
+          {text:"Principal", value:"code"},
+          {text:"Numero", value:"number"},
+          {text:"Codigo", value:"verification_code"},
+          {text:"Verificado", value:"verified"},
+        ],
+        headers_places: [
+          {text:"Nombre", value:"name"},
+          {text:"Lugar", value:"place"},
+          {text:"Agrupación", value:"cluster"},
+          {text:"Tipo", value:"type"},
+          {text:"Unidad", value:"unit"},
+          {text:"Acciones", value:"actions"}
+        ],
       }
     },
     watch:{
+      typesPlaces(val){
+        console.log(val)
+      },
         cu(val){
           if(val){
             this.customer = val;
@@ -160,9 +209,7 @@
             if(val.id_type)
               this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type });
             this.phones = val.telephones;
-            for(var s = 0; s < val.delivery_places.length; s++){
-              this.placesSelected.push({"name":val.delivery_places[s].name, "floor":val.delivery_places[s].floor, "cluster":val.delivery_places[s].cluster, "id":val.delivery_places[s].id, "unit":val.delivery_places[s].unit, "_type":val.delivery_places[s].type});
-            }
+            this.placesSelected = val.delivery_places;
           }
         },
         places(val){
@@ -174,7 +221,6 @@
         },
         cluster(val){
           var lst = [];
-          console.log(val.value);
           var com = [];
           com = this.formatType(val.value, 'apto');
           if(com.length > 0)
@@ -183,13 +229,14 @@
           com = this.formatType(val.value, 'oficina');
           if(com.length > 0)
             lst = lst.concat(com);
-            
+          console.log(lst)
           this.typesPlaces = lst;
         },
         placeDelivery(val){
             if(val){
+              console.log("what")
                 this.clusters = [];
-                this.typesPlaces = [];
+                this.typeSeleted = [];
                 for(var r = 0; r < val.clusters.length; r++){
                   this.clusters.push({"text":val.clusters[r].title, "id":val.clusters[r]._id, "value":val.clusters[r].floors});
                 }
@@ -261,10 +308,13 @@
         },
         selectedPlace(){
             this.place.id = this.placeDelivery.value;
+            this.place.place_name = this.placeDelivery.text;
             this.place._type = this.typeSeleted.value;
             this.place.floor = this.place.unit.floor;
+            this.place.unit_u = this.place.unit.text;
             this.place.unit = this.place.unit.value;
             this.place.cluster = this.cluster.id;
+            this.place.cluster_title = this.cluster.text;
             this.place.name = this.place.name && this.place.name.value ? this.place.name.value : this.place.name;
             this.placesSelected.push(this.place);
             this.place = {};
@@ -310,7 +360,6 @@
         },
         processCustomer () {
             this.customer = this.buildCustomer();
-            console.log(this.customer);
             if(this.edit){
                 this.update(this.customer).then(
                     data => {
@@ -337,7 +386,13 @@
             }else{
                 this.$router.push('/customerList')
             }
-        }
+        },
+        editPLace(place){
+          this.placeDelivery = this.placesDelivery.find(function(pla){return pla.value === place.id});
+          const { title, _id, floors } = this.placeDelivery.clusters.find(function(clu){return clu._id === place.cluster});
+          this.cluster = {"text": title, "value": floors};
+          this.addPlace = true;
+        },
     },
     computed:{
       ...mapState({
