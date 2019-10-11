@@ -413,7 +413,7 @@
             json = {
                 "customer":this.customer_id && this.customer_id.value ? this.customer_id.value : this.customer_id,
                 "state":"cart",
-                "delivery_date": (date.getDate() < 10 ? "0"+date.getDate(): date.getDate()) + "/" + ((date.getMonth()+1) < 10 ? "0"+(date.getMonth()+1) : (date.getMonth()+1)) + "/" + date.getFullYear(),
+                "delivery_date": date.getFullYear()+"-"+((date.getMonth()+1) < 10 ? "0"+(date.getMonth()+1) : (date.getMonth()+1))+"-"+(date.getDate() < 10 ? "0"+date.getDate(): date.getDate()),
                 "delivery_place":place, 
                 "items":items, 
             };
