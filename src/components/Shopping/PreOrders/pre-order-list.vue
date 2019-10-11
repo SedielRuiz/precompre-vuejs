@@ -16,8 +16,8 @@
         hide-actions disable-initial-sort
         class="elevation-1">
         <template v-slot:items="props">
-          <td>{{ props.item.delivery_date.split("T")[0] }}</td>
-          <td>{{ props.item.delivery_place.name }} {{ props.item.delivery_place.unit_name }}</td>
+          <td>{{ props.item.delivery_date ? props.item.delivery_date.split("T")[0] : "" }}</td>
+          <td>{{ props.item.delivery_place ? props.item.delivery_place.name : "" }} {{ props.item.delivery_place ? props.item.delivery_place.unit_name : "" }}</td>
           <td>{{ props.item.state }}</td>
           <td><v-btn color="primary" @click="redirect(false, props.item._id)">Detalle</v-btn></td>
         </template>
