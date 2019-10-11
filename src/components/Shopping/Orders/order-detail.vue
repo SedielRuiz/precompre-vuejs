@@ -6,14 +6,14 @@
                 <v-toolbar dark color="primary">
                     <v-toolbar-title>Orden {{group_name}}</v-toolbar-title>
                     <v-spacer></v-spacer>
+                    <v-btn color="error" @click="deleteOrder(order_id)">Eliminar</v-btn>
                     <v-btn color="error" @click="redirect(true)">Cancelar</v-btn>
                 </v-toolbar>
                 <v-card-text>
                     <v-form>
                         <v-alert :value="customer && customer.delivery_places && customer.delivery_places.length == 0" type="info">Este cliente no tiene lugares de entrega.</v-alert>
-                        <p v-if="order.customer">{{order.customer.name}} {{order.customer.last_name}}</p>
                         <v-card class="pa-2 elevation-0" outlined tile v-if="order.customer">
-                            <h3>Datos cliente</h3>
+                            <h2>Datos cliente</h2>
                             <br>
                             <v-layout row wrap>
                                 <v-flex xs12 sm6 md4 lg4>
@@ -31,10 +31,10 @@
                                   </label>
                                 </v-flex>
                             </v-layout><br>
-                            <h3>Datos orden</h3>
+                            <h2>Datos orden</h2>
                             <v-layout row wrap>
                                 <v-flex xs12 md6>
-                                    <v-combobox prepend-icon="filter_list" v-model="order.deliveryPlace" :items="formatListD(customer.delivery_places, 'place_name', 'cluster_title', 'unit_u', 'id', '_id')"  label="Lugares de entrega"></v-combobox>
+                                    <v-combobox prepend-icon="filter_list" v-model="order.deliveryPlace" :items="formatListD(customer.delivery_places, 'place_name', 'cluster_title', 'unit_u', 'id', '_id')"  label="Lugar de entrega"></v-combobox>
                                 </v-flex>
                                 <v-flex xs12 md6>
                                     <v-combobox v-model="order.hour" :items="schedules" label="Hora"></v-combobox>
@@ -129,7 +129,7 @@
                                 <v-btn color="primary" :disabled="item.quantity && item.price ? false : true" @click="addArray('p')">Agregar producto</v-btn>
                             </v-layout><br>
                             </div>
-                            <h2>Productos</h2><hr>
+                            <h2>Productos <v-icon medium @click="addProduct=!addProduct">add</v-icon></h2><hr>
                             <div v-if="productsCart.length > 0">
                                 <v-layout align-center row wrap>
                                     <v-flex xs12 md4>
@@ -324,6 +324,13 @@
             setWarning: 'setWarning',
             fetchRoutes: 'route/fetchRoutes',
         }),
+        deleteOrder(){
+          this.delete(this.order_id).then(data=>{
+            this.setWarning(data, { root: true }).then(()=>{
+              this.$router.push('/ordersList')
+            })
+          })
+        },
         deleteProduct(index){
           this.order.products.splice(index,1)
         },

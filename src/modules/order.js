@@ -90,7 +90,7 @@ const actions = {
     delete:({commit}, id) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('delete_orders/'+id).then(
+        Vue.http.post('delete_order/'+id).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)
