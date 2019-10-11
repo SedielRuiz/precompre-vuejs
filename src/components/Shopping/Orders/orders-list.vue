@@ -35,12 +35,18 @@
         hide-actions disable-initial-sort
         class="elevation-1">
         <template v-slot:items="props">
-          <td>{{ props.item.delivery_date.split("T")[0] }}</td>
-          <td>{{ props.item.item.product.name }}</td>
-          <td>{{ props.item.customer.name}} {{ props.item.customer.last_name}} </td> 
+          <td> 
+            <p>
+              {{ props.item.delivery_date.substring(0,10) }}
+              <br>
+              {{ props.item.delivery_date.substring(11,16) }}
+            </p>
+          </td>
+          <td>{{ props.item.delivery_place ? props.item.delivery_place.place_name : "" }}</td>
+          <td>{{ props.item.item.product ? props.item.item.product.name : "" }}</td>
           <td>
-             <div v-for="(attr) in props.item.item.attributes[0]" :key="index+1">
-              <div v-for="(att) in attrs" :key="index">
+             <div v-for="(attr, attr_index) in props.item.item.attributes[0]" :key="attr_index+1">
+              <div v-for="(att, att_index) in attrs" :key="`att_index${att_index}`">
                 <div v-if="attr.attribute == att._id">
                   <label style="font-size: 12px;">
                     <div v-if="attr.value && att.visible && att.code != 'photo'">
@@ -51,11 +57,11 @@
               </div>
             </div>
           </td>
-          <td>{{ props.item.delivery_place ? props.item.delivery_place.place_name : "" }}</td>
+          <td>
+          {{ props.item ? props.item.customer.name : ""}} {{props.item ? props.item.customer.last_name :""}} </td> 
           <td>{{ getState(props.item.state) }}</td>
           <td>
             <v-icon medium @click="redirect(false, props.item._id)"tooltip="Detalle">more_vert</v-icon>
-            <v-icon style="color:#bf1526;" medium @click="deleteOrder(props.item._id)">delete</v-icon>
           </td>
         </template>
     </v-data-table>
@@ -84,10 +90,10 @@
         customer_id:"",
         headers: [
             {text:"Fecha", value:"delivery_date"},
-            {text:"Producto", value:"product"},
-            {text:"Cliente", value:"customer"},
-            {text:"Atributos", value:"attributes"},
             {text:"Lugar de entrega", value:"delivery_place"},
+            {text:"Producto", value:"product"},
+            {text:"Atributos", value:"attributes"},
+            {text:"Cliente", value:"customer"},
             {text:"Estado", value:"state"},
             {text:"Acciones", value:"actons"}
         ]
@@ -105,7 +111,6 @@
         if(false){
           for(var s = 0; s < val.length; s++){
             for(var r = 0; r < val[s].orders.length; r++){
-          console.log("aca");
               this.orders.push({
                 delivery_date:val[s].orders[r].delivery_date,
                 delivery_place:val[s].orders[r].delivery_place,
