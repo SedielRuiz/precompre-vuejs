@@ -11,7 +11,7 @@
                 <v-card-text>
                     <v-form>
                         <v-alert :value="customer && customer.delivery_places && customer.delivery_places.length == 0" type="info">Este cliente no tiene lugares de entrega.</v-alert>
-                        <v-combobox prepend-icon="filter_list" v-if="!this.$route.params.id" v-model="customer_id" :items="customers" label="Cliente"></v-combobox>
+                        <v-combobox prepend-icon="filter_list" v-model="customer_id" :items="customers" label="Cliente"></v-combobox>
                         <v-card v-if="customer_id" class="pa-2" outlined tile>
                             <h3>Datos pre orden</h3>
                             <v-text-field :disabled="preOrder.finish" v-model="preOrder.name" prepend-icon="library_books" name="title" label="Nombre" type="text"></v-text-field>
@@ -564,6 +564,9 @@
             if(val){
                 for(var s = 0; s < val.length; s++){
                     this.customers.push({"text":val[s].name+" "+val[s].last_name, value:val[s]._id});
+                }
+                if(this.customer_id != ""){
+                    this.customer_id = this.customers.find(element=>{return element.value == this.customer_id});
                 }
             }
         },
