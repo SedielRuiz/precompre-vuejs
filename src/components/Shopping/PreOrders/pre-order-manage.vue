@@ -470,6 +470,13 @@
             font-size:17px;
         }
     }
+    .titlee{
+        color:black;
+        font-size:18px;
+    }
+    .txt{
+        color:black;
+    }
     .day{
         width:500px !important;
     }
