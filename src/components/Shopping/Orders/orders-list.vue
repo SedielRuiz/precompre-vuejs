@@ -4,8 +4,9 @@
         <v-flex xs12 sm12 md2>
           <h1>Ordenes</h1>
         </v-flex>
-        <v-flex xs12 sm12 md1>
+        <v-flex xs12 sm12 md4>
           <v-btn color="success" @click="redirect(true)">Nueva</v-btn>
+          <v-btn color="success"><v-icon medium @click="search({page_size:-1})"tooltip="Detalle">refresh</v-icon></v-btn>
         </v-flex>
     </v-layout>
     <label style="font-size:20px;">Filtros</label><hr>
