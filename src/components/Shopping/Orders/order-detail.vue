@@ -32,13 +32,25 @@
                                 </v-flex>
                             </v-layout><br>
                             <h2>Datos orden</h2>
+                            <br>
                             <v-layout row wrap>
-                                <v-flex xs12 md6>
-                                    <v-combobox prepend-icon="filter_list" v-model="order.deliveryPlace" :items="formatListD(customer.delivery_places, 'place_name', 'cluster_title', 'unit_u', 'id', '_id')"  label="Lugar de entrega"></v-combobox>
-                                </v-flex>
-                                <v-flex xs12 md6>
-                                    <v-combobox v-model="order.hour" :items="schedules" label="Hora"></v-combobox>
-                                </v-flex>
+                              <v-flex xs12 md6>
+                                <h4>Fecha de creación</h4>
+                                <label>{{ order.created_at.substring(0,10) }}</label>
+                              </v-flex>
+                              <v-flex xs12 md6>
+                                <h4>Fecha de entrega</h4>
+                                <label>{{ order.delivery_date.substring(0,10) }}</label>
+                              </v-flex>
+                            </v-layout>
+                            <br>
+                            <v-layout row wrap>
+                              <v-flex xs12 md6>
+                                <v-combobox prepend-icon="filter_list" v-model="order.deliveryPlace" :items="formatListD(customer.delivery_places, 'place_name', 'cluster_title', 'unit_u', 'id', '_id')"  label="Lugar de entrega"></v-combobox>
+                              </v-flex>
+                              <v-flex xs12 md6>
+                                <v-combobox v-model="order.hour" :items="schedules" label="Hora"></v-combobox>
+                              </v-flex>
                             </v-layout><br>
                             <div v-if="addProduct">
                               <h3>Adicionar producto</h3>
