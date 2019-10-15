@@ -37,6 +37,13 @@
         <template v-slot:items="props">
           <td> 
             <p>
+              <span style="display: inline-block">{{ props.item.created_at.substring(0,10) }}</span>
+              <br>
+              {{ props.item.created_at.substring(11,16) }}
+            </p>
+          </td>
+          <td> 
+            <p>
               {{ props.item.delivery_date.substring(0,10) }}
               <br>
               {{ props.item.delivery_date.substring(11,16) }}
@@ -58,7 +65,7 @@
             </div>
           </td>
           <td>
-          {{ props.item ? props.item.customer.name : ""}} {{props.item ? props.item.customer.last_name :""}} </td> 
+          {{ props.item.customer ? props.item.customer.name : ""}} {{props.item.customer ? props.item.customer.last_name :""}} </td> 
           <td>{{ getState(props.item.state) }}</td>
           <td>
             <v-icon medium @click="redirect(false, props.item._id)"tooltip="Detalle">more_vert</v-icon>
@@ -89,7 +96,8 @@
         filter:{},
         customer_id:"",
         headers: [
-            {text:"Fecha", value:"delivery_date"},
+            {text:"Fecha creación", value:"delivery_date"},
+            {text:"Fecha entrega", value:"delivery_date"},
             {text:"Lugar de entrega", value:"delivery_place"},
             {text:"Producto", value:"product"},
             {text:"Atributos", value:"attributes"},
