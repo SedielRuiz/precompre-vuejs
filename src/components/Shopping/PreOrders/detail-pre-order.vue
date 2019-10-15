@@ -1,98 +1,94 @@
 <template>
   <v-card class="elevation-12">
     <v-toolbar dark color="primary">
-      <v-toolbar-title>Editar pre orden</v-toolbar-title>
+      <v-toolbar-title >Pre compra</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn color="error" @click="closeModal()">Cerrar</v-btn>
+      <v-icon medium @click="closeModal()">close</v-icon>
     </v-toolbar>
     <v-card-text>
         <v-form>
-            <v-card class="pa-2" outlined tile v-if="sc">
-                <v-layout row wrap>
-                    <v-flex xs12 md1>
-                        <v-text-field v-model="sc[0].quantity" name="quantity" label="Cantidad" type="number"></v-text-field>
-                    </v-flex> 
-                    <v-flex xs12 md3>
-                        <v-combobox :disabled="true" prepend-icon="filter_list" v-model="sc[0].text" label="Producto"></v-combobox>
-                    </v-flex>
-                    <v-flex xs12 md10>
-                        <v-layout justify-center row wrap>
-                            <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                <label>Lunes</label>
-                                <v-checkbox style="5px 7px 0px !important" v-model="sc[0].lunes"></v-checkbox>
-                            </v-flex>
-                            <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                <label>Martes</label>
-                                <v-checkbox  v-model="sc[0].martes"></v-checkbox>
-                            </v-flex>
-                            <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                <label>Miercoles</label>
-                                <v-checkbox  v-model="sc[0].miercoles"></v-checkbox>
-                            </v-flex>
-                            <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                <label>Jueves</label>
-                                <v-checkbox  v-model="sc[0].jueves"></v-checkbox>
-                            </v-flex>
-                            <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                <label>Viernes</label>
-                                <v-checkbox  v-model="sc[0].viernes"></v-checkbox>
-                            </v-flex>
-                            <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                <label>Sabados</label>
-                                <v-checkbox  v-model="sc[0].sabado"></v-checkbox>
-                            </v-flex>
-                            <v-flex xs12 md2 cols="12" sm="4" md="2">
-                                <label>Domingos</label>
-                                <v-checkbox  v-model="sc[0].domingo"></v-checkbox>
-                            </v-flex>
-                        </v-layout>
-                    </v-flex>
-                    <v-flex xs12 md1>
-                    </v-flex>
-                </v-layout>
-                <v-layout justify-center row wrap>
-                    <v-flex xs12 md12>
-                        <label class="subTitle">Caracteristicas</label><v-icon medium @click="attrs ? attrs = false : attrs = true">add</v-icon>
-                        <div v-if="attrs">
-                            <v-layout row wrap>
-                                <div v-for="(attr, index) in sc[0].attributes" :key="index+'_'+attr.code" class="row col-md-8">
-                                    <div v-if="attr.options && attr.options.length > 0">
-                                        <v-combobox  :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
+            <v-card class="pa-2" outlined tile v-if="info.length > 0">
+                <v-container>
+                    <h2>{{info[0].text}}</h2><hr><br>
+                    <v-text-field v-model="info[0].quantity" name="quantity" label="Cantidad" type="number"></v-text-field><br>
+                    
+                    <div v-for="(attr, index) in info[0].attributes" :key="index+'_'+attr.code">
+                        <div v-if="attr.code != 'photo' && !attr.custom">
+                            <div v-if="attr.options && attr.options.length > 0">
+                                <v-flex xs12 md12>
+                                    <v-combobox  :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', '', '', '', 'code')" :label="attr.code"></v-combobox>
+                                </v-flex>
+                            </div>
+                            <div v-else>
+                                <div v-if="attr.type == 'boolean'">
+                                    <v-switch :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :label="attr.code"></v-switch>
+                                </div>
+                                <div v-else>
+                                    <div v-if="attr.size == 'short'">
+                                        <v-text-field :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" name="title" :label="attr.code" type="text"></v-text-field>
+                                    </div>
+                                    <div v-else-if="attr.size == 'medium'">
+                                        <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" height="77px" name="mediumText" :label="attr.code"></v-textarea>
                                     </div>
                                     <div v-else>
-                                        <div v-if="attr.type == 'boolean'">
-                                            <v-switch :disabled="attr.custom" :key="index+'_'+attr.code" prepend-icon="title" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :label="attr.code"></v-switch>
-                                        </div>
-                                        <div v-else>
-                                            <div v-if="attr.size == 'short'">
-                                                <v-text-field :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" name="title" :label="attr.code" type="text"></v-text-field>
-                                            </div>
-                                            <div v-else-if="attr.size == 'medium'">
-                                                <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="77px" name="mediumText" :label="attr.code"></v-textarea>
-                                            </div>
-                                            <div v-else>
-                                                <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" prepend-icon="library_books" height="135px" name="mediumText" :label="attr.code"></v-textarea>
-                                            </div>
-                                        </div>
+                                        <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" height="135px" name="mediumText" :label="attr.code"></v-textarea>
                                     </div>
                                 </div>
-                            </v-layout>
+                            </div>
                         </div>
-                    </v-flex>
-                </v-layout>
-                <v-layout row wrap>
-                    <v-combobox prepend-icon="filter_list" v-model="sc[0].delivery_place" :items="formatList(customer.delivery_places, 'name', 'id', 'unit_name')" label="Lugares de entrega"></v-combobox>
-                </v-layout><hr><br>
+                    </div>
+                    <v-layout row wrap>
+                        <v-flex xs12 md12>
+                            <v-layout justify-center row wrap>
+                                <v-flex>
+                                    <label class="title">L</label>
+                                    <v-checkbox color="primary" v-model="info[0].lunes"></v-checkbox>
+                                </v-flex>
+                                <v-flex>
+                                    <label class="title">M</label>
+                                    <v-checkbox color="primary" v-model="info[0].martes"></v-checkbox>
+                                </v-flex>
+                                <v-flex>
+                                    <label class="title">X</label>
+                                    <v-checkbox color="primary" v-model="info[0].miercoles"></v-checkbox>
+                                </v-flex>
+                                <v-flex>
+                                    <label class="title">J</label>
+                                    <v-checkbox color="primary" v-model="info[0].jueves"></v-checkbox>
+                                </v-flex>
+                                <v-flex>
+                                    <label class="title">V</label>
+                                    <v-checkbox color="primary" v-model="info[0].viernes"></v-checkbox>
+                                </v-flex>
+                                <v-flex>
+                                    <label class="title">S</label>
+                                    <v-checkbox color="primary" v-model="info[0].sabado"></v-checkbox>
+                                </v-flex>
+                                <v-flex>
+                                    <label class="title">D</label>
+                                    <v-checkbox color="primary" v-model="info[0].domingo"></v-checkbox>
+                                </v-flex>
+                            </v-layout>
+                        </v-flex>
+                    </v-layout>
+                    <v-layout row wrap>
+                        <!--v-combobox autocomplete="off" v-model="info[0].delivery_place" :items="formatList(customer.delivery_places, 'place_name', 'cluster_title', 'unit_u', 'id', '_id')" label="Lugares de entrega"></v-combobox-->
+                    </v-layout><br>
+                </v-container>
             </v-card>
         </v-form>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="primary" style="width:100%" @click="processPreOrder()">Guardar</v-btn>
+      <v-btn dark color="primary" style="width:100%" @click="processPreOrder()">Guardar</v-btn>
     </v-card-actions>
   </v-card>
 </template>
-
+<style>
+    .title{
+        margin-left:15px;
+    }
+</style>
 <script>
   import {mapActions,mapState} from 'vuex';
   
@@ -102,7 +98,7 @@
     data () {
       return {
         preOrder:{},
-        info:{},
+        info:[],
         days:[],
         attrs:false,
       }
@@ -110,13 +106,15 @@
     watch:{
         sc(val){
             if(val){
-                for(var r = 0; r < val[0].days.length; r++){
+                this.info = [];
+                var days = this.sc[0].days ? this.sc[0].days : this.sc[0].pre_orders[0].days;
+                for(var r = 0; r < days.length; r++){
 
-                    if(val[0].days[r] == 0)
+                    if(days[r] == 0)
                         val[0].domingo = true;
 
-                    if(val[0].days[r]){
-                        switch(val[0].days[r]){
+                    if(days[r]){
+                        switch(days[r]){
                             case 1: val[0].lunes = true; break;
                             case 2: val[0].martes = true; break;
                             case 3: val[0].miercoles = true; break;
@@ -126,24 +124,46 @@
                         }
                     }
                 }
-                this.sc = val;
+                this.info.push(val[0]);
+                //this.sc.push();
+                console.log(this.info);
             }
-        },
+        }
     },
     mounted () {
+        if(this.sc){
+            var days = this.sc[0].days ? this.sc[0].days : this.sc[0].pre_orders[0].days;
+            for(var r = 0; r < days.length; r++){
+                if(days[r] == 0)
+                    this.sc[0].domingo = true;
+
+                if(days[r]){
+                    switch(days[r]){
+                        case 1: this.sc[0].lunes = true; break;
+                        case 2: this.sc[0].martes = true; break;
+                        case 3: this.sc[0].miercoles = true; break;
+                        case 4: this.sc[0].jueves = true; break;
+                        case 5: this.sc[0].viernes = true; break;
+                        case 6: this.sc[0].sabado = true; break;
+                    }
+                }
+            }
+            this.info = this.sc;
+        }
     },
     methods: {
         ...mapActions({
             update: 'preOrder/update',
             setWarning: 'setWarning',
         }),
-        formatList(list, name, code, secondName = ""){
+        formatList(list, name, cluster, secondName, code, code2){
             var lst = [];
             if(list){
                 for(var s = 0; s < list.length; s++){
                     var text = list[s][name];
+                    if(cluster && (list[s][name] != list[s][cluster]))text+= " "+list[s][cluster];
                     if(secondName!="")text+= " "+list[s][secondName];
-                    lst.push({"text":text, "value":list[s][code]});
+                    lst.push({"text":text, "value":list[s][code2], "id":list[s][code]});
                 }
             }
             return lst;
@@ -175,23 +195,22 @@
             var days = [];
             var week = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];  
             for(var s = 0; s < week.length; s++){
-                if(this.sc[0][week[s]] && this.sc[0][week[s]] == true){
+                if(this.info[0][week[s]] && this.info[0][week[s]] == true){
                     var d = this.day(week[s]);
-                    if(d != "")
-                        days.push(d);
+                    days.push(d);
                 }
             }
 
-            var json = {};
+            var json = [];
             var item = {
-                "product": this.sc[0].product_id,
-                "sub_product": this.sc[0].sub_product,
-                "attributes": this.formatAttributes(this.sc[0].attributes),
-                "unit_value": this.sc[0].unit_value,
-                "quantity": this.sc[0].quantity,
+                "product": this.info[0].product_id,
+                "sub_product": this.info[0].sub_product,
+                "attributes": this.formatAttributes(this.info[0].attributes),
+                "unit_value": this.info[0].unit_value,
+                "quantity": this.info[0].quantity,
             };
-            var place = this.sc[0].delivery_place && this.sc[0].delivery_place.value ? this.sc[0].delivery_place.value : this.sc[0].delivery_place;
-            json = {"days":days, "item":item, "delivery_place":place, "customer":this.sc[0].customer_id, "_id":this.sc[0]._id};
+            var place = this.info[0].delivery_place && this.info[0].delivery_place.value ? this.info[0].delivery_place.value : this.info[0].delivery_place;
+            json.push({"days":days, "item":item, "_id":this.info[0]._id});
             return json;
         },
         processPreOrder(){

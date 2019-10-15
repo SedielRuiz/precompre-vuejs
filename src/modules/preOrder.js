@@ -43,7 +43,7 @@ const actions = {
     },
     fetchPreOrdersCustomer:({commit}, id) => {
         return new Promise((resolve, reject) => {
-        Vue.http.post('pre_orders').then(
+        Vue.http.post('pre_orders_customer/'+id).then(
             response =>{
                 var data = User.actions.processResponse(response.data, true);
                 commit('setPreOrders',data);
@@ -74,7 +74,7 @@ const actions = {
     update:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-        Vue.http.post('edit_pre_order',data).then(
+        Vue.http.post('edit_pre_orders',data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)
@@ -91,6 +91,22 @@ const actions = {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
         Vue.http.post('delete_pre_order/'+id).then(
+            response =>{
+                var data = User.actions.processResponse(response.data, false);
+                resolve(data)
+            }).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+
+    deletes:({commit},data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+        store.axio.post('delete_pre_orders', data).then(
             response =>{
                 var data = User.actions.processResponse(response.data, false);
                 resolve(data)
