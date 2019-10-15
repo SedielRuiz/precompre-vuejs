@@ -238,7 +238,7 @@
                                 <v-btn style="width:100%" :disabled="productsCart.length == 0 ? true : false" color="primary" @click="addArray('cart')">Agregar pre orden</v-btn>
                             </v-layout><br>
                         </v-card><br>
-                        <div v-if="shoppingCart.length > 0">
+                        <div v-show="false">
                             <h2>Pre ordenes</h2><hr><br>
                             <div v-for="(sh, index) in shoppingCart" :key="index">
                                 <v-card class="pa-2" outlined tile >
@@ -414,7 +414,7 @@
                                         <label class="titlee" v-if="pre.hour">Hora: {{pre.hour}}</label>
                                     </v-flex>
                                     <v-flex>
-                                        <v-icon style="float: right;" large @click="deletePreOrders(pre)">mdi-delete</v-icon>
+                                        <v-icon style="float: right;" large @click="deletePreOrders(pre)">delete</v-icon>
                                     </v-flex>
                                 </v-layout>
                                 <hr><br>
