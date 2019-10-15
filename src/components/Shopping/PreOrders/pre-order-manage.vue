@@ -1019,6 +1019,7 @@
                         this.deliveryPlace = "";
                         this.preOrder.hour = "";
                         this.productsCart = [];
+                        this.processPreOrder();
                         break;
                 }
             }
