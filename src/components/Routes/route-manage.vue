@@ -27,7 +27,6 @@
                 </v-layout>
                 <hr><br><br>
                 <h2>Edificios <v-icon medium @click="addBuilding ? addBuilding = false : addBuilding = true">keyboard_arrow_down</v-icon></h2><br>
-                <br>
                 <div v-if="addBuilding" class="row col-md-8">
                     <v-card style="height: 100%;width: 84%; padding: 31px;">
                     <!--EDIFICIOS-->
