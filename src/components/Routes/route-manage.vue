@@ -27,22 +27,34 @@
                 </v-layout>
                 <hr><br><br>
                 <h2>Edificios <v-icon medium @click="addBuilding ? addBuilding = false : addBuilding = true">keyboard_arrow_down</v-icon></h2><br>
-                <div v-if="buildingsSelected.length > 0">
-                    <v-chip v-for="(p, index) in buildingsSelected" :key="index">{{p.text}} <v-icon medium @click="removeArray('p', index)">close</v-icon></v-chip>
-                </div>
                 <br>
                 <div v-if="addBuilding" class="row col-md-8">
                     <v-card style="height: 100%;width: 84%; padding: 31px;">
-                        <!--EDIFICIOS-->
-                        <v-layout row wrap>
-                            <v-flex xs12 sm12 md10>
-                                <v-combobox v-model="building" prepend-icon="account_box" :items="buildings" label="Edificio"></v-combobox>
-                            </v-flex>
-                            <v-flex xs12 sm12 md2>
-                                <v-btn color="primary" :disabled="building ? false : true" @click="addArray('p')">Agregar</v-btn>
-                            </v-flex>
-                        </v-layout>
-                    </v-card><br>
+                    <!--EDIFICIOS-->
+                    <v-data-table v-model="buildingsSelected" :headers="headers" :items="places" :pagination.sync="pagination" select-all item-key="address" class="elevation-1">
+                        <template v-slot:headers="props">
+                            <tr>
+                                <th>
+                                    <v-checkbox :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details  @click.stop="removeBuildings"></v-checkbox>
+                                </th>
+                                <th v-for="header in props.headers" :key="header.text" :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']" @click="changeSort(header.value)">
+                                    <v-icon small>arrow_upward</v-icon>
+                                    {{ header.text }}
+                                </th>
+                            </tr>
+                        </template>
+                        <template v-slot:items="props">
+                            <tr :active="props.selected" @click="props.selected = !props.selected">
+                                <td>
+                                    <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
+                                </td>
+                                <td class="text-xs-center">{{ props.item.name }}</td>
+                                <td class="text-xs-center">{{ props.item.address }}</td>
+                            </tr>
+                        </template>
+                    </v-data-table>
+                    <!--EDIFICIOS-->
+                  </v-card><br>
                 </div>
             </v-form>
           </v-card-text>
@@ -64,6 +76,13 @@
     name: 'route-manage',
     data () {
       return {
+        pagination: {
+            sortBy: 'name'
+        },
+        headers: [
+            {text:"Nombre", value:"name"},
+            {text:"Dirección", value:"address"},
+        ],
         route: {},
         building:"",
         addBuilding:false,
@@ -80,18 +99,12 @@
           if(val){
             this.route = val;
             this.schedules = val.schedule;
-            for(var s = 0; s < val.delivery_places.length; s++){
-                this.buildingsSelected.push({text:val.delivery_places[s].name, value:val.delivery_places[s]._id});
+            if(val.delivery_places.length > 0){
+                this.addBuilding = true;
+                this.buildingsSelected = val.delivery_places;
             }
           }
         },
-        places(val){
-            if(val){
-                for(var s = 0; s < val.length; s++){
-                    this.buildings.push({text:val[s].name, value:val[s]._id});
-                }
-            }
-        }
     },
     mounted () {
         this.fetchPlaceDelivery({page_size:-1});
@@ -111,12 +124,20 @@
             fetchPlaceDelivery: 'placeDelivery/fetchPlaces',
             setWarning: 'setWarning',
         }),
+        removeBuildings () {
+            if (this.buildingsSelected.length) this.buildingsSelected = []
+            else this.buildingsSelected = this.places.slice()
+        },
+        changeSort (column) {
+            if (this.pagination.sortBy === column) {
+            this.pagination.descending = !this.pagination.descending
+            } else {
+            this.pagination.sortBy = column
+            this.pagination.descending = false
+            }
+        },
         addArray(opc){
             switch(opc){
-                case "p":
-                    this.buildingsSelected.push(this.building);
-                    this.building = "";
-                    break;
                 case "h":
                     this.schedules.push(this.schedule);
                     this.schedule = "";
@@ -125,9 +146,6 @@
         },
         removeArray(opc, idx){
             switch(opc){
-                case "p":
-                    this.buildingsSelected.splice(idx, 1);
-                    break;
                 case "h":
                     this.schedules.splice(idx, 1);
                     break;
@@ -136,7 +154,7 @@
         formatBuildings(){
             var lst = []
             for(var s = 0; s < this.buildingsSelected.length; s++){
-                lst.push(this.buildingsSelected[s].value);
+                lst.push(this.buildingsSelected[s]._id);
             }
             return lst;
         },
