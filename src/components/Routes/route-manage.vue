@@ -13,6 +13,7 @@
             <v-form>
                 <v-text-field v-model="route.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
                 <v-text-field v-model="route.sector" prepend-icon="library_books" name="sector" label="Sector" type="text"></v-text-field>
+                <h2>Horarios</h2><hr><br>
                 <v-layout row wrap>
                     <v-flex xs12 sm12 md7>
                         <v-time-picker v-model="schedule" :landscape="$vuetify.breakpoint.smAndUp" ampm-in-title ></v-time-picker><br>
