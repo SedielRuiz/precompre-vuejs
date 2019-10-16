@@ -14,14 +14,16 @@
                 <v-text-field v-model="route.name" prepend-icon="email" name="name" label="Nombre" type="text"></v-text-field>
                 <v-text-field v-model="route.sector" prepend-icon="library_books" name="sector" label="Sector" type="text"></v-text-field>
                 <v-layout row wrap>
-                    <v-flex xs12 sm12 md10>
-                        <v-text-field v-model="schedule" prepend-icon="email" name="schedule" label="Horario" type="text"></v-text-field>
+                    <v-flex xs12 sm12 md7>
+                        <v-time-picker v-model="schedule" :landscape="$vuetify.breakpoint.smAndUp" ampm-in-title ></v-time-picker><br>
                     </v-flex>
                     <v-flex xs12 sm12 md2>
-                        <v-icon medium @click="addArray('h')">add</v-icon>
+                        <v-btn color="primary" @click="addArray('h')">Agregar</v-btn>
+                    </v-flex>
+                    <v-flex xs12 sm12 md3>
+                        <v-chip v-for="(h, index) in schedules" :key="index">{{h}} <v-icon medium @click="removeArray('h', index)">close</v-icon></v-chip>
                     </v-flex>
                 </v-layout>
-                <v-chip v-for="(h, index) in schedules" :key="index">{{h}} <v-icon medium @click="removeArray('h', index)">close</v-icon></v-chip>
                 <hr><br><br>
                 <h2>Edificios <v-icon medium @click="addBuilding ? addBuilding = false : addBuilding = true">keyboard_arrow_down</v-icon></h2><br>
                 <div v-if="buildingsSelected.length > 0">
