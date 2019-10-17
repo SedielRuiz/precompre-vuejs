@@ -151,7 +151,11 @@
         fetchAttributes: 'productAttribute/fetchAttributes',
       }),
       custom(id, attrs){
-        return attrs.find(element=>{return element.code == id}).customizable;
+        var r = attrs.find(element=>{return element.code == id})
+        if(r)
+          return r.customizable;
+        else
+          return false;
       },
       getHour(date){
         var dt = new Date(date);
