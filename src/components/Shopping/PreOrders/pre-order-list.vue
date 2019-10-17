@@ -20,7 +20,10 @@
           <td>{{ props.item.date }}</td>
           <td>{{ props.item.delivery}}</td>
           <td>{{ props.item.customer }}</td>
-          <td><v-btn color="primary" @click="redirect(false, props.item.customer_id)">Detalle</v-btn></td>
+          <td>
+            <v-icon medium @click="redirect(false, props.item.customer_id)">more_vert</v-icon>
+            <v-icon style="color:#bf1526;" medium @click="deletePreOrders(props.item)">delete</v-icon>
+          </td>
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
@@ -63,6 +66,7 @@
               customer_id:val[s].pre_orders[0].customer._id,
               date:dt,
               name:val[s].pre_orders[0].group_name,
+              preOrders:val[s],
             });
           }
           this.preOrders = lst;
@@ -75,8 +79,28 @@
     methods: {
       ...mapActions({
         fetchPreOrders: 'preOrder/fetchPreOrders',
+        deletes: 'preOrder/deletes',
         setWarning: 'setWarning',
       }),
+      deletePreOrders(obj){
+        var preOrdersDelete = [];
+        for(var r = 0; r < obj.preOrders.pre_orders.length; r++){
+          var x = preOrdersDelete.find(element=>{return element._id == obj.preOrders.pre_orders[r]._id});
+          if(x == undefined){
+              preOrdersDelete.push({_id:obj.preOrders.pre_orders[r]._id});
+          }
+        }
+        if(confirm("¿Seguro desea eliminar esta pre compra")){
+          this.deletes(preOrdersDelete).then(
+            data => {
+                this.setWarning(data, { root: true }).then(()=>{
+                  this.fetchPreOrders();
+                })
+            },
+            error => {
+          });
+        }
+      },
       search(pagination){
         this.fetchPreOrders(pagination);
       },

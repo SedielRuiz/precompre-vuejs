@@ -459,17 +459,17 @@
             if(val){
                 var names = [];
                 for(var s = 0; s < val.length; s++){
-                    var next = names.find(element=>{return element == val[s]._id.group_name});
+                    var next = names.find(element=>{return element.name == val[s]._id.group_name && element.delivery == val[s]._id.delivery_place._id});
                     if(!next){
-                        names.push(val[s]._id.group_name);
+                        names.push({name:val[s]._id.group_name, delivery:val[s]._id.delivery_place._id});
                     }
                 }
                 this.preOrdersName = [];
                 var preDays;
                 for(var s = 0; s < names.length; s++){
                     if(names[s]){
-                        preDays = this.formatPreorder(names[s]);
-                        this.preOrdersName.push({name:names[s], delivery:preDays.delivery, hour:preDays.hour, preOrders:preDays.preOrders});
+                        preDays = this.formatPreorder(names[s].name, names[s].delivery);
+                        this.preOrdersName.push({name:names[s].name, delivery:preDays.delivery, hour:preDays.hour, preOrders:preDays.preOrders});
                     }
                 }
             }
@@ -571,13 +571,13 @@
             }
             return lst;
         },
-        formatPreorder(name){
+        formatPreorder(name, delivery){
             var pre = [];
             var obj = {};
             var d = [0,1,2,3,4,5,6];
             var y = [];
             for(var s = 0; s < this.preOrders.length; s++){
-                if(this.preOrders[s]._id.group_name == name){
+                if(this.preOrders[s]._id.group_name == name && this.preOrders[s]._id.delivery_place._id == delivery){
                     pre.push(this.preOrders[s]);
                 }
             }
