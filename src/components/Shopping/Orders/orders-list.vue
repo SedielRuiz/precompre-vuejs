@@ -140,6 +140,7 @@
       this.filter.date_start = date;
       this.filter.date_end = date;
       this.fetchCustomers({"page_size":-1});
+      this.rows = [];
     },
     methods: {
       ...mapActions({
