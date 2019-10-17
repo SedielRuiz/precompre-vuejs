@@ -37,7 +37,7 @@
                             </v-layout>
                             <v-layout row wrap>
                                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code+'_other'" v-if="(attr.custom && attr.variable) || (!attr.custom && attr.variable == false) || !attr.custom && !attr.pivot">
-                                    <div v-if="attr.visible && attr.code != 'photo' && attr.variable">
+                                    <div v-if="attr.visible && attr.code != 'photo' && !attr.variable">
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
                                                 <v-select :disabled="attr.custom" @input="findPrice('g')" v-on:change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-select>
@@ -70,10 +70,10 @@
                                     </div>
                                 </div>
                             </v-layout>
-                            <label v-if="attributes.length > 0" style="font-size:15px;">Atributos </label><br>
+                            <label v-show="false" style="font-size:15px;">Atributos </label><br>
                             <v-layout row wrap v-if="attributes">
                                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code">
-                                    <div v-if="attr.visible && attr.code != 'photo' && (!attr.custom && attr.pivot)">
+                                    <div v-if="attr.visible && attr.code != 'photo' && (!attr.custom)">
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
                                                 <v-combobox :disabled="attr.custom" @change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
