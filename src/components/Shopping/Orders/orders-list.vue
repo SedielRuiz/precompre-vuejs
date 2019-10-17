@@ -40,7 +40,7 @@
             <p>
               <span style="display: inline-block">{{ props.item.created_at.substring(0,10) }}</span>
               <br>
-              {{ props.item.created_at.substring(11,16) }}
+              {{ props.item.created_at.substring(11,16) }} <br> {{getHour(props.item.created_at)}}
             </p>
           </td>
           <td> 
@@ -149,6 +149,10 @@
         setWarning: 'setWarning',
         fetchAttributes: 'productAttribute/fetchAttributes',
       }),
+      getHour(date){
+        var dt = new Date(date);
+        return (dt.getHours() < 10 ? "0"+dt.getHours() : dt.getHours())+":"+(dt.getMinutes() < 10 ? "0"+dt.getMinutes() : dt.getMinutes())+":"+(dt.getSeconds() < 10 ? "0"+dt.getSeconds() :dt.getSeconds());
+      },
       getState(state){
         var name = "";
         switch(state){
