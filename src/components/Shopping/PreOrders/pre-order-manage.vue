@@ -130,7 +130,7 @@
                                 <v-layout row wrap>
                                     <div v-if="sc.viewAtt">
                                         <v-layout row wrap>
-                                            <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code+'_other'" v-if="(!attr.custom && !attr.pivot)">
+                                            <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code+'_other'" v-if="(attr.hasOwnProperty('custom') && !attr.custom)">
                                                 <div v-if="attr.visible && attr.code != 'photo'">
                                                     <div v-if="attr.options && attr.options.length > 0">
                                                         <v-flex xs12 md12>
@@ -165,37 +165,6 @@
                                             </div>
                                         </v-layout>
                                     </div>
-                                </v-layout>
-                                <v-layout justify-center row wrap>
-                                    <v-flex xs12 md12>
-                                        <div v-if="sc.viewAtt">
-                                            <v-layout row wrap>
-                                                <div v-for="(attrr, index) in sc.attributes" :key="index+'_'+attrr.code+'_prg'" class="row col-md-8">
-                                                    <div v-if="attrr.visible && attrr.code != 'photo' && ( (attrr.custom && attrr.variable) || (!attrr.custom && attrr.pivot) )">
-                                                        <div v-if="attrr.options && attrr.options.length > 0">
-                                                            <v-combobox @change="findPrice('e', sc.index)" :disabled="attrr.custom" :key="index+'_'+attrr.code+'_prg'" v-model="!attrr.value && attrr.value != ''? attrr.value = attrr.default_value : attrr.value" :items="formatList(attrr.options, 'code', 'code')" prepend-icon="filter_list" :label="attrr.code"></v-combobox>
-                                                        </div>
-                                                        <div v-else>
-                                                            <div v-if="attrr.type == 'boolean'">
-                                                                <v-switch :disabled="attrr.custom" :key="index+'_'+attrr.code+'_prg'" prepend-icon="title" v-model="!attrr.value && attrr.value != ''? attrr.value = attrr.default_value : attrr.value" :label="attrr.code"></v-switch>
-                                                            </div>
-                                                            <div v-else>
-                                                                <div v-if="attrr.size == 'short'">
-                                                                    <v-text-field :disabled="attrr.custom" :key="index+'_'+attrr.code+'_prg'" v-model="!attrr.value && attrr.value != ''? attrr.value = attrr.default_value : attrr.value" prepend-icon="library_books" name="title" :label="attrr.code" type="text"></v-text-field>
-                                                                </div>
-                                                                <div v-else-if="attrr.size == 'medium'">
-                                                                    <v-textarea :disabled="attrr.custom" :key="index+'_'+attrr.code+'_prg'" v-model="!attrr.value && attrr.value != ''? attrr.value = attrr.default_value : attrr.value" prepend-icon="library_books" height="77px" name="mediumText" :label="attrr.code"></v-textarea>
-                                                                </div>
-                                                                <div v-else>
-                                                                    <v-textarea :disabled="attrr.custom" :key="index+'_'+attrr.code+'_prg'" v-model="!attrr.value && attrr.value != ''? attrr.value = attrr.default_value : attrr.value" prepend-icon="library_books" height="135px" name="mediumText" :label="attrr.code"></v-textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </v-layout>
-                                        </div>
-                                    </v-flex>
                                 </v-layout>
                             </div><br>
                              <v-layout row wrap>
@@ -236,8 +205,8 @@
                                             </v-flex>        
                                         </v-layout>
                                         <v-layout row wrap v-if="attributes">
-                                            <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code">
-                                                <div v-if="attr.visible && attr.code != 'photo'" && !attr.custom>
+                                            <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" v-if="(attr.hasOwnProperty('custom') && !attr.custom)">
+                                                <div v-if="attr.visible && attr.code != 'photo'">
                                                     <div v-if="attr.options && attr.options.length > 0">
                                                         <v-flex xs12 md12>
                                                             <v-combobox :disabled="attr.custom" @change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
@@ -330,8 +299,8 @@
                                             <v-flex xs12 md12>
                                                 <div v-if="sc.viewAtt">
                                                     <v-layout row wrap>
-                                                        <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code" class="row col-md-8">
-                                                            <div v-if="attr.visible && attr.code != 'photo' && !attr.custom">
+                                                        <div v-for="(attr, index) in sc.attributes" :key="index+'_'+attr.code" class="row col-md-8" v-if="(attr.hasOwnProperty('custom') && !attr.custom)">
+                                                            <div v-if="attr.visible && attr.code != 'photo'">
                                                                 <div v-if="attr.options && attr.options.length > 0">
                                                                     <v-combobox @change="findPrice('p', sh.index, sc.index)" :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-combobox>
                                                                 </div>
