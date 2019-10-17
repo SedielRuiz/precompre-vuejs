@@ -36,7 +36,7 @@
                                 </v-flex>        
                             </v-layout>
                             <v-layout row wrap>
-                                <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code+'_other'" v-if="(!attr.custom)">
+                                <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code+'_other'" v-if="(attr.hasOwnProperty('custom') && !attr.custom)">
                                     <div v-if="attr.visible && attr.code != 'photo'">
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
