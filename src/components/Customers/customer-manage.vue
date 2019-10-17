@@ -349,7 +349,7 @@
             this.customer.telephones = this.formatPhones();
             this.customer.id_type = this.customer.id_type && this.customer.id_type.value ? this.customer.id_type.value : this.customer.id_type;
             this.customer.gender = this.customer.gender && this.customer.gender.value ? this.customer.gender.value : this.customer.gender;
-            this.customer.store_id = this.customer.store_id && this.customer.store_id.value ? this.customer.store_id.value : this.customer.store_id;
+            this.customer.store_id = this.customer.store_id.value;
             if(this.edit){
               this.customer.status = this.customer.status && this.customer.status.value ? this.customer.status.value : this.customer.status;
             }else{
