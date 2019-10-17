@@ -238,7 +238,7 @@
                                 <v-btn style="width:100%" :disabled="productsCart.length == 0 ? true : false" color="primary" @click="addArray('cart')">Agregar pre orden</v-btn>
                             </v-layout><br>
                         </v-card><br>
-                        <div v-show="false">
+                        <div v-if="shoppingCart && shoppingCart.length > 0">
                             <h2>Pre ordenes</h2><hr><br>
                             <div v-for="(sh, index) in shoppingCart" :key="index">
                                 <v-card class="pa-2" outlined tile >
@@ -1019,7 +1019,6 @@
                         this.deliveryPlace = "";
                         this.preOrder.hour = "";
                         this.productsCart = [];
-                        this.processPreOrder();
                         break;
                 }
             }
