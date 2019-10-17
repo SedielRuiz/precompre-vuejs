@@ -55,7 +55,7 @@
           <td>
              <div v-for="(attr, attr_index) in props.item.item.attributes[0]" :key="attr_index+1">
               <div v-for="(att, att_index) in attrs" :key="`att_index${att_index}`">
-                <div v-if="attr.attribute == att._id && custom(attr.attribute, props.item.item.product.attributes[0])">
+                <div v-if="attr.attribute == att._id && custom(attr.attribute, props.item.item.product.attributes)">
                   <label style="font-size: 12px;">
                     <div v-if="attr.value && att.visible && att.code != 'photo'">
                       {{att.code.charAt(0).toUpperCase() + att.code.slice(1)}}: {{attr.value.charAt(0).toUpperCase() + attr.value.slice(1)}}
