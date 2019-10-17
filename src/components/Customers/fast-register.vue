@@ -101,6 +101,7 @@
         buildCustomer(){
             this.customer.telephones = [{number:this.phone, main:true}]
             this.customer.campaign_code = this.campaigCode && this.campaigCode.value ? this.campaigCode.value : this.campaigCode;
+            this.customer.store_id = this.customer.store_id && this.customer.store_id.value ? this.customer.store_id.value : this.customer.store_id;
             if(this.deliveryCode){
               this.customer.code_delivery_place = this.deliveryCode && this.deliveryCode.value ? this.deliveryCode.value : this.deliveryCode;
             }
