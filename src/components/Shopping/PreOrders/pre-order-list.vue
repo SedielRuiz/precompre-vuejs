@@ -17,7 +17,7 @@
         class="elevation-1">
         <template v-slot:items="props">
           <td>{{ props.item.name }}</td>
-          <td>{{ props.item.date }}</td>
+          <td>{{ props.item.date }} <br> {{ props.item.hour }}</td>
           <td>{{ props.item.delivery}}</td>
           <td>{{ props.item.customer }}</td>
           <td>
@@ -44,7 +44,7 @@
         headers: [
             {text:"Nombre", value:"name"},
             {text:"Fecha creación", value:"delivery_date"},
-            {text:"Lugar de estrega", value:"delivery_place"},
+            {text:"Lugar de entrega", value:"delivery_place"},
             {text:"Cliente", value:"customer"},
             {text:"Acciones", value:"actons"}
         ],
@@ -65,6 +65,7 @@
               customer:val[s].pre_orders[0].customer.name +" "+val[s].pre_orders[0].customer.last_name,
               customer_id:val[s].pre_orders[0].customer._id,
               date:dt,
+              hour: this.getHour(val[s].pre_orders[0].created_at),
               name:val[s].pre_orders[0].group_name,
               preOrders:val[s],
             });
@@ -82,6 +83,10 @@
         deletes: 'preOrder/deletes',
         setWarning: 'setWarning',
       }),
+      getHour(date){
+        var dt = new Date(date);
+        return (dt.getHours() < 10 ? "0"+dt.getHours() : dt.getHours())+":"+(dt.getMinutes() < 10 ? "0"+dt.getMinutes() : dt.getMinutes())+":"+(dt.getSeconds() < 10 ? "0"+dt.getSeconds() :dt.getSeconds());
+      },
       deletePreOrders(obj){
         var preOrdersDelete = [];
         for(var r = 0; r < obj.preOrders.pre_orders.length; r++){
