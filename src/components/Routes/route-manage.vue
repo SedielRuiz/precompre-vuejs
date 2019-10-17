@@ -29,8 +29,12 @@
                 <h2>Edificios <v-icon medium @click="addBuilding ? addBuilding = false : addBuilding = true">keyboard_arrow_down</v-icon></h2><br>
                 <div v-if="addBuilding" class="row col-md-8">
                     <v-card style="height: 100%;width: 84%; padding: 31px;">
+                        <v-card-title>
+                            <v-spacer></v-spacer>
+                            <v-text-field v-model="search" append-icon="search" label="Nombre" single-line hide-details></v-text-field>
+                        </v-card-title>
                     <!--EDIFICIOS-->
-                    <v-data-table v-model="buildingsSelected" :headers="headers" :items="places" :pagination.sync="pagination" select-all item-key="address" class="elevation-1">
+                    <v-data-table v-model="buildingsSelected" :headers="headers" :search="search" :items="places" :pagination.sync="pagination" select-all item-key="address" class="elevation-1">
                         <template v-slot:headers="props">
                             <tr>
                                 <th>
@@ -74,24 +78,25 @@
     
     name: 'route-manage',
     data () {
-      return {
-        pagination: {
-            sortBy: 'name'
-        },
-        headers: [
-            {text:"Nombre", value:"name"},
-            {text:"Dirección", value:"address"},
-        ],
-        route: {},
-        building:"",
-        addBuilding:false,
-        buildings: [],
-        buildingsSelected: [],
-        schedule:"",
-        schedules:[],
-        edit:"",
-        titleText:""
-      }
+        return {
+            search:"",
+            pagination: {
+                sortBy: 'name'
+            },
+            headers: [
+                {text:"Nombre", value:"name"},
+                {text:"Dirección", value:"address"},
+            ],
+            route: {},
+            building:"",
+            addBuilding:false,
+            buildings: [],
+            buildingsSelected: [],
+            schedule:"",
+            schedules:[],
+            edit:"",
+            titleText:""
+        }
     },
     watch:{
         sto(val){
