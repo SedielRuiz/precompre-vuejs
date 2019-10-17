@@ -53,7 +53,7 @@
           <td>{{ props.item.delivery_place ? props.item.delivery_place.place_name : "" }}</td>
           <td>{{ props.item.item.product ? props.item.item.product.name : "" }}</td>
           <td>
-             <div v-for="(attr, attr_index) in props.item.item.attributes[0]" :key="attr_index+1">
+             <div v-for="(attr, attr_index) in props.item.item.attributes[0]" :key="attr_index+1" v-if="props.item.item.hasOwnProperty('pivot')">
               <div v-for="(att, att_index) in attrs" :key="`att_index${att_index}`">
                 <div v-if="attr.attribute == att._id">
                   <label style="font-size: 12px;">
