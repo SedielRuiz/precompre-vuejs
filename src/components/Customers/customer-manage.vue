@@ -359,22 +359,23 @@
             return this.customer;
         },
         processCustomer () {
-            this.customer = this.buildCustomer();
+            let data = this.buildCustomer();
+            this.customer = {};
             if(this.edit){
-                this.update(this.customer).then(
+                this.update(data).then(
                     data => {
-                        this.setWarning(data, { root: true }).then(()=>{
-                            this.$router.push('/customerDetail/'+this.edit)
-                        })
+                      this.setWarning(data, { root: true }).then(()=>{
+                        this.$router.push('/customerDetail/'+this.edit)
+                      })
                     },
                     error => {
                 })
             }else{
-                this.create(this.customer).then(
+                this.create(data).then(
                     data => {
-                        this.setWarning(data, { root: true }).then(()=>{
-                            this.$router.push('/customerList')
-                        })
+                      this.setWarning(data, { root: true }).then(()=>{
+                        this.$router.push('/customerList')
+                      })
                     },
                     error => {
                 })
