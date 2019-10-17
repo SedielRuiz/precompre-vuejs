@@ -14,7 +14,7 @@
                         <v-combobox prepend-icon="filter_list" v-model="customer_id" :items="customers" label="Cliente"></v-combobox>
                         <v-card v-if="customer_id" class="pa-2" outlined tile>
                             <h3>Datos pre orden</h3>
-                            <v-text-field :disabled="preOrder.finish" v-model="preOrder.name" prepend-icon="library_books" name="title" label="Nombre" type="text"></v-text-field>
+                            <v-text-field :disabled="preOrder.finish" v-model="preOrder.name" placeholder="NF-PR" prepend-icon="library_books" name="title" label="Nombre" type="text"></v-text-field>
                             <v-layout row wrap>
                                 <v-flex xs12 md6>
                                     <v-combobox prepend-icon="filter_list" autocomplete="off" :disabled="preOrder.finish" v-model="deliveryPlace" :items="formatListD(customer.delivery_places, 'place_name', 'cluster_title', 'unit_u', 'id', '_id')" label="Lugares de entrega"></v-combobox>
