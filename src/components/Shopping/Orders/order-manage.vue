@@ -16,10 +16,10 @@
                             <h3>Datos orden</h3>
                             <v-layout row wrap>
                                 <v-flex xs12 md6>
-                                    <v-combobox prepend-icon="filter_list" v-model="order.deliveryPlace" :items="formatList(customer.delivery_places, 'name', '_id', 'unit_u')" label="Lugares de entrega"></v-combobox>
+                                    <v-combobox prepend-icon="filter_list" autocomplete="off" v-model="deliveryPlace" :items="formatListD(customer.delivery_places, 'place_name', 'cluster_title', 'unit_u', 'id', '_id')" label="Lugares de entrega"></v-combobox>
                                 </v-flex>
                                 <v-flex xs12 md6>
-                                    <v-combobox prepend-icon="filter_list" v-model="order.hour" :items="hours" label="Hora"></v-combobox>
+                                    <v-combobox prepend-icon="filter_list" autocomplete="off" v-model="order.hour" :items="schedules" label="Hora"></v-combobox>
                                 </v-flex>
                             </v-layout><br>
                             <h3>Producto orden</h3>
@@ -142,6 +142,8 @@
                 {text:"06:00 AM", value:"06:00"},
             ],
             order:{},
+            deliveryPlace:"",
+            schedules:[],
             customers:[],
             productsCart:[],
             group_name:"",
@@ -188,9 +190,15 @@
                 if(val.hour)
                     this.buildName(val.hour.text);;
             }
+        },
+        deliveryPlace(val){
+            if(val){
+                this.getHours(val);
+            }
         }
     },
     mounted () {
+        this.fetchRoutes({page_size:-1});
         this.buildName("");
         this.fetchProducts();
         this.fetchCustomers({"page_size":-1});
@@ -200,11 +208,35 @@
         ...mapActions({
             create: 'order/create',
             delete: 'order/delete',
+            fetchRoutes: 'route/fetchRoutes',
             fetchProducts: 'product/fetchProducts',
             fetchCustomers: 'customer/fetchCustomers',
             getCustomer: 'customer/getCustomer', 
             setWarning: 'setWarning',
         }),
+        getHours(val){
+            this.schedules = [];
+            for(var s = 0; s < this.routes.length; s++){
+                var route = this.routes[s].delivery_places.find(element=>{return element == val.id});
+                if(route){
+                    for(var r = 0; r < this.routes[s].schedule.length; r++){
+                        this.schedules.push({text: this.routes[s].schedule[r], value: this.routes[s].schedule[r]});
+                    }
+                }
+            }
+        },
+        formatListD(list, name, cluster, secondName, code, code2){
+            var lst = [];
+            if(list){
+                for(var s = 0; s < list.length; s++){
+                    var text = list[s][name];
+                    if(cluster && (list[s][name] != list[s][cluster]))text+= " "+list[s][cluster];
+                    if(secondName!="")text+= " "+list[s][secondName];
+                    lst.push({"text":text, "value":list[s][code2], "id":list[s][code]});
+                }
+            }
+            return lst;
+        },
         formatMoney (n) {
             var num = String(n).replace(/\./g,'');
             if(!isNaN(num)){
@@ -374,11 +406,11 @@
             }
             var date = new Date();
             date.setDate(date.getDate() + 1);
-            var place = this.order.deliveryPlace && this.order.deliveryPlace.value ? this.order.deliveryPlace.value : this.order.deliveryPlace;
+            var place = this.deliveryPlace && this.deliveryPlace.value ? this.deliveryPlace.value : this.deliveryPlace;
             json = {
                 "customer":this.customer_id && this.customer_id.value ? this.customer_id.value : this.customer_id,
                 "state":"cart",
-                "delivery_date": date.getFullYear()+"-"+((date.getMonth()+1) < 10 ? "0"+(date.getMonth()+1) : (date.getMonth()+1))+"-"+(date.getDate() < 10 ? "0"+date.getDate(): date.getDate()),
+                "delivery_date": date.getFullYear()+"-"+((date.getMonth()+1) < 10 ? "0"+(date.getMonth()+1) : (date.getMonth()+1))+"-"+(date.getDate() < 10 ? "0"+date.getDate(): date.getDate()) +"T"+this.order.hour.value+"Z",
                 "delivery_place":place, 
                 "items":items, 
             };
@@ -410,9 +442,10 @@
             warning: state => state.warning,
             customer: state => state.customer.customer,
             cutms: state => state.customer.customers,
+            routes: state => state.route.routes,
         }),
         trySend(){
-            if(this.order && this.order.hour && this.order.deliveryPlace){
+            if(this.order && this.order.hour && this.deliveryPlace){
                 return false; 
             }
             return true;
