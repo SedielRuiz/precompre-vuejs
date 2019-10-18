@@ -717,23 +717,25 @@
             formatAttributes(arr){
                 var lst = [];
                 for(var s = 0; s < this[arr].length; s++){
-                    var opc = []
-                    if(this[arr][s].attribute[0].options){
-                        for(var r = 0; r < this[arr][s].attribute[0].options.length; r++){
-                            opc.push({"text":this[arr][s].attribute[0].options[r].code.charAt(0).toUpperCase() + this[arr][s].attribute[0].options[r].code.slice(1), "value":this[arr][s].attribute[0].options[r].code});
+                    if(this[arr][s].attribute.length > 0){
+                        var opc = []
+                        if(this[arr][s].attribute[0].options){
+                            for(var r = 0; r < this[arr][s].attribute[0].options.length; r++){
+                                opc.push({"text":this[arr][s].attribute[0].options[r].code.charAt(0).toUpperCase() + this[arr][s].attribute[0].options[r].code.slice(1), "value":this[arr][s].attribute[0].options[r].code});
+                            }
+                            this[arr][s].attribute[0].options = opc;
                         }
-                        this[arr][s].attribute[0].options = opc;
+                        if(arr == "attributesCustomisable"){
+                            this[arr][s].attribute[0].pivot = this[arr][s].pivot;
+                        }else{
+                            this[arr][s].attribute[0].variable = this[arr][s].variable;
+                        }
+                        if(this[arr][s].attribute[0].array){
+                            this[arr][s].attribute[0].fillArray = [];
+                        }
+                        this[arr][s].attribute[0].idx = s;
+                        lst.push(this[arr][s].attribute[0]);
                     }
-                    if(arr == "attributesCustomisable"){
-                        this[arr][s].attribute[0].pivot = this[arr][s].pivot;
-                    }else{
-                        this[arr][s].attribute[0].variable = this[arr][s].variable;
-                    }
-                    if(this[arr][s].attribute[0].array){
-                        this[arr][s].attribute[0].fillArray = [];
-                    }
-                    this[arr][s].attribute[0].idx = s;
-                    lst.push(this[arr][s].attribute[0]);
                 }
                 this[arr] = lst;
             },
