@@ -25,9 +25,9 @@
                         </div>
                     </div>    
                 </div><hr><br>
-                <div v-if="order_attributes">
+                <!--div v-if="order_attributes">
                     <v-chip v-for="(attrc, index) in order_attributes" :key="index">{{attrc.name.charAt(0).toUpperCase() + attrc.name.slice(1)}} - {{attrc.value.charAt(0).toUpperCase() + attrc.value.slice(1)}}</v-chip>
-                </div><hr><br>
+                </div><hr><br-->
                 <h2>Sub productos</h2><br>
                 <div v-if="subProducts"> 
                     <div row wrap>
