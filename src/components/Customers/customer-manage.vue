@@ -62,6 +62,9 @@
                       <td>
                         <v-icon medium>{{props.item.verified ? "check_circle_outline" : "" }}</v-icon> 
                       </td>
+                      <td>
+                        <v-icon style="color:#bf1526;" medium @click="removePhone(props.index)">delete</v-icon>
+                      </td>
                     </template>
                   </v-data-table>
                 </div>  
@@ -182,6 +185,7 @@
           {text:"Numero", value:"number"},
           {text:"Codigo", value:"verification_code"},
           {text:"Verificado", value:"verified"},
+          {text:"Acciones", value:"actions"}
         ],
         headers_places: [
           {text:"Nombre", value:"name"},
