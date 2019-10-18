@@ -40,7 +40,7 @@
             <p>
               <span style="display: inline-block">{{ props.item.created_at.substring(0,10) }}</span>
               <br>
-              {{ props.item.created_at.substring(11,16) }} <br> {{getHour(props.item.created_at)}}
+              {{getHour(props.item.created_at)}}
             </p>
           </td>
           <td> 
