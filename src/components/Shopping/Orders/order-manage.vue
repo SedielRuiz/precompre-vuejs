@@ -93,6 +93,7 @@
                                 <div v-for="(prd, index) in productsCart" :key="index">
                                     <v-layout align-center row wrap>
                                         <v-flex xs6 md4>
+                                        {{prd.attributes}}
                                             <label>{{prd.name}}</label>
                                         </v-flex>
                                         <v-flex xs6 md2>

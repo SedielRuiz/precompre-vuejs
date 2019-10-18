@@ -63,7 +63,7 @@
                         <v-icon medium>{{props.item.verified ? "check_circle_outline" : "" }}</v-icon> 
                       </td>
                       <td>
-                        <v-icon style="color:#bf1526;" medium @click="removePhone(props.index)">delete</v-icon>
+                        <v-icon v-if="!props.item.main" style="color:#bf1526;" medium @click="removePhone(props.index)">delete</v-icon>
                       </td>
                     </template>
                   </v-data-table>
