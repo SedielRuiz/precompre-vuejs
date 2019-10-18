@@ -25,9 +25,9 @@
                         </div>
                     </div>    
                 </div><hr><br>
-                <div v-if="order_attributes">
+                <!--div v-if="order_attributes">
                     <v-chip v-for="(attrc, index) in order_attributes" :key="index">{{attrc.name.charAt(0).toUpperCase() + attrc.name.slice(1)}} - {{attrc.value.charAt(0).toUpperCase() + attrc.value.slice(1)}}</v-chip>
-                </div><hr><br>
+                </div><hr><br-->
                 <h2>Sub productos</h2><br>
                 <div v-if="subProducts"> 
                     <div row wrap>
@@ -155,9 +155,10 @@
                     this.formatAttributes("order_attributes", val.attributes);
                     var att = this.product.product_class.order_attributes;
                     att = att.concat(this.product.product_class.attributes);
-                    var s = att.find(element=>{return element.attribute[0].code == "price" });
-                    var atp = val.attributes.find(element=>{return element.code == s.attribute[0]._id });
-                    this.product.price = atp.value;
+                    var s = att.find(element=>{return (element.attribute.length > 0 ? element.attribute[0].code : "") == "price" });
+                    var atp = val.attributes.find(element=>{return element.code == (s.attribute.length > 0 ? s.attribute[0]._id : "") });
+                    if(atp)
+                        this.product.price = atp.value;
                     if(this.inputs){
                         this.formatInputs();
                         this.subProducts = this.detailSubProducts(val.sub_products, att);
@@ -278,8 +279,8 @@
                 var attrs = [];
                 for(var s = 0; s < arr.length; s++){
                     for(var r = 0; r < this.product.product_class[varArr].length; r++){
-                        if(arr[s].code == this.product.product_class[varArr][r].attribute[0]._id && this.product.product_class[varArr][r].attribute[0].visible){
-                            if(this.product.product_class[varArr][r].variable){
+                        if(this.product.product_class[varArr][r].attribute.length > 0 && arr[s].code == this.product.product_class[varArr][r].attribute[0]._id && this.product.product_class[varArr][r].attribute[0].visible){
+                            if(!this.product.product_class[varArr][r].variable){
                                 var val = arr[s].value;
                                 if(this.product.product_class[varArr][r].attribute[0].type == "boolean")
                                     val = val ? 'Si' : 'No';

@@ -33,7 +33,7 @@
                 <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
-                    <div v-if="attr.visible && attr.code != 'price' && attr.variable">
+                    <div v-if="attr.visible && attr.code != 'price' && (attr.hasOwnProperty('variable') && !attr.variable)">
                         <!--ATRIBUTOS-->
                         <v-alert :value="attr.msgError ? true : false" type="error">{{attr.msgError}}</v-alert>
                         <div v-if="attr.options.length > 0">
@@ -717,23 +717,25 @@
             formatAttributes(arr){
                 var lst = [];
                 for(var s = 0; s < this[arr].length; s++){
-                    var opc = []
-                    if(this[arr][s].attribute[0].options){
-                        for(var r = 0; r < this[arr][s].attribute[0].options.length; r++){
-                            opc.push({"text":this[arr][s].attribute[0].options[r].code.charAt(0).toUpperCase() + this[arr][s].attribute[0].options[r].code.slice(1), "value":this[arr][s].attribute[0].options[r].code});
+                    if(this[arr][s].attribute.length > 0){
+                        var opc = []
+                        if(this[arr][s].attribute[0].options){
+                            for(var r = 0; r < this[arr][s].attribute[0].options.length; r++){
+                                opc.push({"text":this[arr][s].attribute[0].options[r].code.charAt(0).toUpperCase() + this[arr][s].attribute[0].options[r].code.slice(1), "value":this[arr][s].attribute[0].options[r].code});
+                            }
+                            this[arr][s].attribute[0].options = opc;
                         }
-                        this[arr][s].attribute[0].options = opc;
+                        if(arr == "attributesCustomisable"){
+                            this[arr][s].attribute[0].pivot = this[arr][s].pivot;
+                        }else{
+                            this[arr][s].attribute[0].variable = this[arr][s].variable;
+                        }
+                        if(this[arr][s].attribute[0].array){
+                            this[arr][s].attribute[0].fillArray = [];
+                        }
+                        this[arr][s].attribute[0].idx = s;
+                        lst.push(this[arr][s].attribute[0]);
                     }
-                    if(arr == "attributesCustomisable"){
-                        this[arr][s].attribute[0].pivot = this[arr][s].pivot;
-                    }else{
-                        this[arr][s].attribute[0].variable = this[arr][s].variable;
-                    }
-                    if(this[arr][s].attribute[0].array){
-                        this[arr][s].attribute[0].fillArray = [];
-                    }
-                    this[arr][s].attribute[0].idx = s;
-                    lst.push(this[arr][s].attribute[0]);
                 }
                 this[arr] = lst;
             },
@@ -779,9 +781,10 @@
                                 val.push({ value: this[attr][s].fillArray[r].text, extend: this[attr][s].fillArray[r].extend });
                             }
                         }
-                        if( !this[attr][s].variable || (this[attr][s].required && this.valAttrRequired(val)) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){
+                        if( (!this[attr][s].variable || this[attr][s].variable) || (this[attr][s].required && this.valAttrRequired(val)) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){
                             val = this[attr][s].code == "price" ? this.product.default_price : val;
                             this[attr][s].msgError = "";
+                            console.log("llegue");
                             obj = {};
                             obj.code = this[attr][s]._id;
                             obj.value = val;

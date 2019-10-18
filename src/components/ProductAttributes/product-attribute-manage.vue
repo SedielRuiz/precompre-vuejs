@@ -140,8 +140,16 @@
             this.options.splice(idx,1);
             this.option = {};
         },
+        pos(min, max, r){
+          var p = Math.floor(Math.random() * (max - min)) + min;
+          return p-r;
+        },
         buildAttribute(){
-          this.attribute.sku = this.attribute.code.substring(0, 3);
+          var t = this.attribute.code.length;1
+          var sku = this.attribute.code.substring(0, 2);
+          sku += this.attribute.code.substr(-4);
+          console.log("sku "+ sku);
+          this.attribute.sku = sku;
           this.attribute.title = this.attribute.code;
           this.attribute.code = this.attribute.code.toLowerCase().split(" ").join("_");
           this.attribute.options = this.options;

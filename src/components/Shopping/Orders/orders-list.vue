@@ -40,7 +40,7 @@
             <p>
               <span style="display: inline-block">{{ props.item.created_at.substring(0,10) }}</span>
               <br>
-              {{ props.item.created_at.substring(11,16) }}
+              {{getHour(props.item.created_at)}}
             </p>
           </td>
           <td> 
@@ -55,7 +55,7 @@
           <td>
              <div v-for="(attr, attr_index) in props.item.item.attributes[0]" :key="attr_index+1">
               <div v-for="(att, att_index) in attrs" :key="`att_index${att_index}`">
-                <div v-if="attr.attribute == att._id">
+                <div v-if="attr.attribute == att._id && custom(attr.attribute, props.item.item.product.attributes)">
                   <label style="font-size: 12px;">
                     <div v-if="attr.value && att.visible && att.code != 'photo'">
                       {{att.code.charAt(0).toUpperCase() + att.code.slice(1)}}: {{attr.value.charAt(0).toUpperCase() + attr.value.slice(1)}}
@@ -141,6 +141,7 @@
       this.filter.date_start = date;
       this.filter.date_end = date;
       this.fetchCustomers({"page_size":-1});
+      this.rows = [];
     },
     methods: {
       ...mapActions({
@@ -150,6 +151,17 @@
         setWarning: 'setWarning',
         fetchAttributes: 'productAttribute/fetchAttributes',
       }),
+      custom(id, attrs){
+        var r = attrs.find(element=>{return element.code == id})
+        if(r)
+          return r.customizable;
+        else
+          return false;
+      },
+      getHour(date){
+        var dt = new Date(date);
+        return (dt.getHours() < 10 ? "0"+dt.getHours() : dt.getHours())+":"+(dt.getMinutes() < 10 ? "0"+dt.getMinutes() : dt.getMinutes())+":"+(dt.getSeconds() < 10 ? "0"+dt.getSeconds() :dt.getSeconds());
+      },
       getState(state){
         var name = "";
         switch(state){

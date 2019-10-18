@@ -302,7 +302,7 @@
       <router-view></router-view>
     </v-content>
     <v-footer color="indigo" app>
-      <span class="white--text">&copy; v0.0.51</span>
+      <span class="white--text">&copy; v0.0.53</span>
     </v-footer>
   </v-app>
 </template>
