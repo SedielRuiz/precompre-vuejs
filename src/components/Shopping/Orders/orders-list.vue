@@ -97,6 +97,7 @@
         filter:{},
         customer_id:"",
         headers: [
+            {text:"Código", value:"code_order"},
             {text:"Fecha creación", value:"delivery_date"},
             {text:"Fecha entrega", value:"delivery_date"},
             {text:"Lugar de entrega", value:"delivery_place"},
