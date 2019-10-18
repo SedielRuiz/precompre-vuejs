@@ -12,8 +12,9 @@
                     <h2>{{info[0].text}}</h2><hr><br>
                     <v-text-field v-model="info[0].quantity" name="quantity" label="Cantidad" type="number"></v-text-field><br>
                     
-                    <div v-for="(attr, index) in info[0].attributes" :key="index+'_'+attr.code">
-                        <div v-if="attr.code != 'photo' && !attr.custom">
+                    <div v-for="(attr, index) in info[0].attributes" :key="index+'_'+attr.code"
+                        v-if="attr.hasOwnProperty('custom') && !attr.custom || (attr.custom && attr.variable)">
+                        <div v-if="attr.code != 'photo'">
                             <div v-if="attr.options && attr.options.length > 0">
                                 <v-flex xs12 md12>
                                     <v-combobox  :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = attr.default_value : attr.value" :items="formatList(attr.options, 'code', '', '', '', 'code')" :label="attr.code"></v-combobox>
