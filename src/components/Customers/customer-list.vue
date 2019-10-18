@@ -181,7 +181,6 @@ import Vue from 'vue'
           if(val && this.places && this.places.length > 0){
             this.customers = [];
             this.formatCustomers(val);
-            console.log(this.customers);
           }
         }
     },

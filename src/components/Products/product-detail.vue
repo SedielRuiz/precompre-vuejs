@@ -157,7 +157,8 @@
                     att = att.concat(this.product.product_class.attributes);
                     var s = att.find(element=>{return (element.attribute.length > 0 ? element.attribute[0].code : "") == "price" });
                     var atp = val.attributes.find(element=>{return element.code == (s.attribute.length > 0 ? s.attribute[0]._id : "") });
-                    this.product.price = atp.value;
+                    if(atp)
+                        this.product.price = atp.value;
                     if(this.inputs){
                         this.formatInputs();
                         this.subProducts = this.detailSubProducts(val.sub_products, att);
@@ -279,7 +280,7 @@
                 for(var s = 0; s < arr.length; s++){
                     for(var r = 0; r < this.product.product_class[varArr].length; r++){
                         if(this.product.product_class[varArr][r].attribute.length > 0 && arr[s].code == this.product.product_class[varArr][r].attribute[0]._id && this.product.product_class[varArr][r].attribute[0].visible){
-                            if(this.product.product_class[varArr][r].variable){
+                            if(!this.product.product_class[varArr][r].variable){
                                 var val = arr[s].value;
                                 if(this.product.product_class[varArr][r].attribute[0].type == "boolean")
                                     val = val ? 'Si' : 'No';

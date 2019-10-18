@@ -35,33 +35,34 @@
                                 </v-flex>        
                             </v-layout>
                             <v-layout row wrap>
-                                <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code+'_other'" v-if="(attr.hasOwnProperty('custom') && !attr.custom)">
+                                <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code+'_other'" 
+                                    v-if="attr.hasOwnProperty('custom') && !attr.custom || (attr.custom && attr.variable)">
                                     <div v-if="attr.visible && attr.code != 'photo'">
                                         <div v-if="attr.options && attr.options.length > 0">
                                             <v-flex xs12 md12>
-                                                <v-select :disabled="attr.custom" @input="findPrice('g')" v-on:change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-select>
+                                                <v-select @input="findPrice('g')" v-on:change="findPrice('g')" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :items="formatList(attr.options, 'code', 'code')" prepend-icon="filter_list" :label="attr.code"></v-select>
                                             </v-flex>
                                         </div>
                                         <div v-else>
                                             <div v-if="attr.type == 'boolean'">
                                                 <v-flex xs12 md12>
-                                                    <v-switch :disabled="attr.custom" :key="index+'_'+attr.code" prepend-icon="title" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :label="attr.code"></v-switch>
+                                                    <v-switch :key="index+'_'+attr.code" prepend-icon="title" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" :label="attr.code"></v-switch>
                                                 </v-flex>
                                             </div>
                                             <div v-else>
                                                 <div v-if="attr.size == 'short'">
                                                     <v-flex xs12 md12>
-                                                        <v-text-field :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" prepend-icon="library_books" name="title" :label="attr.code" :type="attr.type"></v-text-field>
+                                                        <v-text-field :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" prepend-icon="library_books" name="title" :label="attr.code" :type="attr.type"></v-text-field>
                                                     </v-flex>
                                                 </div>
                                                 <div v-else-if="attr.size == 'medium'">
                                                     <v-flex xs12 md12>
-                                                        <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" prepend-icon="library_books" height="77px" name="mediumText" :label="attr.code"></v-textarea>
+                                                        <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" prepend-icon="library_books" height="77px" name="mediumText" :label="attr.code"></v-textarea>
                                                     </v-flex>
                                                 </div>
                                                 <div v-else>
                                                     <v-flex xs12 md12>
-                                                        <v-textarea :disabled="attr.custom" :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" prepend-icon="library_books" height="135px" name="mediumText" :label="attr.code"></v-textarea>
+                                                        <v-textarea :key="index+'_'+attr.code" v-model="!attr.value && attr.value != ''? attr.value = (attr.default_value ? attr.default_value : ' ') : attr.value" prepend-icon="library_books" height="135px" name="mediumText" :label="attr.code"></v-textarea>
                                                     </v-flex>
                                                 </div>
                                             </div>

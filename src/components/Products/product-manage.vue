@@ -781,9 +781,10 @@
                                 val.push({ value: this[attr][s].fillArray[r].text, extend: this[attr][s].fillArray[r].extend });
                             }
                         }
-                        if( !this[attr][s].variable || (this[attr][s].required && this.valAttrRequired(val)) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){
+                        if( (!this[attr][s].variable || this[attr][s].variable) || (this[attr][s].required && this.valAttrRequired(val)) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){
                             val = this[attr][s].code == "price" ? this.product.default_price : val;
                             this[attr][s].msgError = "";
+                            console.log("llegue");
                             obj = {};
                             obj.code = this[attr][s]._id;
                             obj.value = val;
