@@ -60,8 +60,12 @@
           for(var s = 0; s < val.length; s++){
             d = val[s].pre_orders[0].created_at.split("T")[0].split("-");
             dt = d[2]+"/"+d[1]+"/"+d[0];
+            var delivery = "";
+            if(val[s].pre_orders[0].delivery_place){
+              delivery = val[s].pre_orders[0].delivery_place.place_name+" "+val[s].pre_orders[0].delivery_place.cluster_title+" - "+val[s].pre_orders[0].delivery_place.unit_u;
+            }
             lst.push({
-              delivery:val[s].pre_orders[0].delivery_place.place_name+" "+val[s].pre_orders[0].delivery_place.cluster_title+" - "+val[s].pre_orders[0].delivery_place.unit_u,
+              delivery: delivery,
               customer:val[s].pre_orders[0].customer.name +" "+val[s].pre_orders[0].customer.last_name,
               customer_id:val[s].pre_orders[0].customer._id,
               date:dt,
