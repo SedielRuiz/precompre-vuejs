@@ -36,6 +36,7 @@
         hide-actions disable-initial-sort
         class="elevation-1">
         <template v-slot:items="props">
+          <td>{{ props.item.code_order ? props.item.code_order : "" }}</td>
           <td> 
             <p>
               <span style="display: inline-block">{{ props.item.created_at.substring(0,10) }}</span>
@@ -97,6 +98,7 @@
         filter:{},
         customer_id:"",
         headers: [
+            {text:"Código", value:"code_order"},
             {text:"Fecha creación", value:"delivery_date"},
             {text:"Fecha entrega", value:"delivery_date"},
             {text:"Lugar de entrega", value:"delivery_place"},
