@@ -36,6 +36,7 @@
         hide-actions disable-initial-sort
         class="elevation-1">
         <template v-slot:items="props">
+          <td>{{ props.item.code_order ? props.item.code_order : "" }}</td>
           <td> 
             <p>
               <span style="display: inline-block">{{ props.item.created_at.substring(0,10) }}</span>
