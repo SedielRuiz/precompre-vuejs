@@ -18,6 +18,7 @@
         <template v-slot:items="props">
           <td>{{ props.item.name }}</td>
           <td>{{ props.item.date }} <br> {{ props.item.hour }}</td>
+          <td>{{ props.item.date_delivery }} <br> {{ props.item.hour_delivery }}</td>
           <td>{{ props.item.delivery}}</td>
           <td>{{ props.item.customer }}</td>
           <td>
@@ -43,7 +44,8 @@
       return {
         headers: [
             {text:"Nombre", value:"name"},
-            {text:"Fecha creación", value:"delivery_date"},
+            {text:"Fecha creación", value:"created_at"},
+            {text:"Fecha de entrega", value:"delivery_date"},
             {text:"Lugar de entrega", value:"delivery_place"},
             {text:"Cliente", value:"customer"},
             {text:"Acciones", value:"actons"}
@@ -56,10 +58,13 @@
         if(val){
           var lst = [];
           var dt = "";
+          var dtd = "";
           var d;
           for(var s = 0; s < val.length; s++){
             d = val[s].pre_orders[0].created_at.split("T")[0].split("-");
             dt = d[2]+"/"+d[1]+"/"+d[0];
+            d = val[s].pre_orders[0].date.split("T")[0].split("-");
+            dtd = d[2]+"/"+d[1]+"/"+d[0];
             var delivery = "";
             if(val[s].pre_orders[0].delivery_place){
               delivery = val[s].pre_orders[0].delivery_place.place_name+" "+val[s].pre_orders[0].delivery_place.cluster_title+" - "+val[s].pre_orders[0].delivery_place.unit_u;
@@ -69,7 +74,9 @@
               customer:val[s].pre_orders[0].customer.name +" "+val[s].pre_orders[0].customer.last_name,
               customer_id:val[s].pre_orders[0].customer._id,
               date:dt,
-              hour: this.getHour(val[s].pre_orders[0].created_at),
+              hour:this.getHour(val[s].pre_orders[0].created_at),
+              date_delivery:dtd,
+              hour_delivery:this.getHour(val[s].pre_orders[0].date),
               name:val[s].pre_orders[0].group_name,
               preOrders:val[s],
             });
