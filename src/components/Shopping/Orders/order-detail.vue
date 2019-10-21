@@ -45,11 +45,14 @@
                             </v-layout>
                             <br>
                             <v-layout row wrap>
-                              <v-flex xs12 md6>
-                                <v-combobox prepend-icon="filter_list" v-model="order.deliveryPlace" :items="formatListD(customer.delivery_places, 'place_name', 'cluster_title', 'unit_u', 'id', '_id')"  label="Lugar de entrega"></v-combobox>
+                              <v-flex class="pr-2" xs12 sm6>
+                                <v-combobox v-model="order.deliveryPlace" :items="formatListD(customer.delivery_places, 'place_name', 'cluster_title', 'unit_u', 'id', '_id')"  label="Lugar de entrega"></v-combobox>
                               </v-flex>
-                              <v-flex xs12 md6>
+                              <v-flex class="pr-2" xs12 md2>
                                 <v-combobox v-model="order.hour" :items="schedules" label="Hora"></v-combobox>
+                              </v-flex>
+                               <v-flex class="pr-2" xs12 md4>
+                                <v-select v-model="order.state" :items="state_options" label="Estado"></v-select>
                               </v-flex>
                             </v-layout><br>
                             <h2>Productos <v-icon medium @click="addProduct=!addProduct">add</v-icon></h2><hr><br>
@@ -192,7 +195,7 @@
     }
 </style>
 <script>
-  import {mapActions,mapState} from 'vuex';
+  import {mapActions,mapState, mapMutations} from 'vuex';
 
   export default {
     name: 'order',
@@ -218,7 +221,14 @@
               {text:"Acciones", value:"actions"},
             ],
             order_date: "",
-            addProduct: false
+            addProduct: false,
+            state_options: [
+              { text: "Carrito", value: "cart" },
+              { text: "Pendiente", value: "pendiente" },
+              { text: "Entregado", value: "entregado" },
+              { text: "Pago", value: "pago" },
+              { text: "Pago y Entregado", value: "pago y entregado" },
+            ]
         }
     },
     watch:{
@@ -297,9 +307,13 @@
             getCustomer: 'customer/getCustomer', 
             setWarning: 'setWarning',            
             fetchAttributes: 'productAttribute/fetchAttributes',
+            fetchOrders: 'order/fetchOrders',
             getOrder: 'order/getOrder',
             setWarning: 'setWarning',
             fetchRoutes: 'route/fetchRoutes',
+        }),
+        ...mapMutations({
+          setOrders: "order/setOrders"
         }),
         next(id, arr, classs){
             console.log("aca ghonorrea");
@@ -524,16 +538,15 @@
             }
             var date = new Date();
             date.setDate(date.getDate() + 1);
-            console.log(this.order.delivery_place)
             var place = this.order.deliveryPlace && this.order.deliveryPlace.value ? this.order.deliveryPlace.value : this.order.deliveryPlace;
             json = {
                 "customer":this.order.customer._id,
-                "state":"cart",
+                "state":this.order.state,
                 "delivery_date": this.order_date + "T" + this.order.hour.value + ":00.000Z",
                 "delivery_place":place, 
                 "items":items, 
-                _id: this.order._id
-            };console.log(json)
+                _id: this.order._id,
+            }; 
             return json;
         },
         processOrder () {
@@ -542,6 +555,7 @@
                     this.setWarning(data, { root: true }).then(()=>{
                         //this.fetchPreOrdersCustomer(this.customer_id);
                         this.$router.push('/ordersList')
+                        this.fetchOrders();
                     })
                 },
                 error => {
@@ -573,6 +587,7 @@
             cutms: state => state.customer.customers,
             warning: state => state.warning,
             ord: state => state.order.order,
+            orders: state => state.order.orders,
             page_size: state => state.order.page_size,
             total_items: state => state.order.total_items,
             total_pages: state => state.order.total_pages,

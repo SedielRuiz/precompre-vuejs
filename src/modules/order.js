@@ -132,9 +132,9 @@ const getters = {
 const mutations = {
     setOrders: (state, list) => {
         state.orders = list.result_set;
-        state.page_size = list.page_size;
-        state.total_pages = list.total_pages;
-        state.total_items = list.total_items;
+        if(list.page_size) state.page_size = list.page_size;
+        if(list.total_pages) state.total_pages = list.total_pages;
+        if(list.total_items) state.total_items = list.total_items;
     },
     setBills: (state, list) => {
         state.bills = list.result_set;
