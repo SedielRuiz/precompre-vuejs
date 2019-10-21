@@ -143,11 +143,11 @@
             products:[],
             attributes:[],
             headers:[
-              { text: "asd", value:"asd" },
-              { text: "asd", value:"asd" },
-              { text: "asd", value:"asd" },
-              { text: "asd", value:"asd" },
-              { text: "asd", value:"asd" }
+              { text: "Producto", value:"name" },
+              { text: "Cantidad", value:"quantity" },
+              { text: "Atributos", value:"attributes" },
+              { text: "Precio", value:"price" },
+              { text: "Acciones", value:"actions" }
             ]
         }
     },
