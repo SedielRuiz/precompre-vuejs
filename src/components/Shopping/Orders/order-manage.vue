@@ -76,36 +76,26 @@
                             </v-layout><br>
                             <h2>Vista previa</h2><hr><br>
                             <div v-if="productsCart.length > 0">
-                                <v-layout align-center row wrap>
-                                    <v-flex xs12 md4>
-                                        <label class="text">Producto</label>
-                                    </v-flex>
-                                    <v-flex xs12 md2>
-                                        <label class="text">Cantidad</label>
-                                    </v-flex> 
-                                    <v-flex xs12 md3>
-                                        <label class="text">Precio</label>
-                                    </v-flex>
-                                    <v-flex xs12 md2>
-                                        <label class="text">Eliminar</label>
-                                    </v-flex>
-                                </v-layout><br>
-                                <div v-for="(prd, index) in productsCart" :key="index">
-                                    <v-layout align-center row wrap>
-                                        <v-flex xs6 md4>
-                                            <label>{{prd.name}}</label>
-                                        </v-flex>
-                                        <v-flex xs6 md2>
-                                            <label>{{prd.quantity}}</label>
-                                        </v-flex> 
-                                        <v-flex xs6 md3>
-                                            <label>$ {{formatMoney(prd.price)}}</label>
-                                        </v-flex>
-                                        <v-flex xs6 md2>
-                                            <v-icon medium @click="removeArray('p', index)">delete</v-icon>
-                                        </v-flex>
-                                    </v-layout><br>
-                                </div>
+                              <v-data-table
+                                :headers="headers"
+                                :items="productsCart"
+                                hide-actions disable-initial-sort
+                                class="elevation-1">
+                                <template v-slot:items="props">
+                                  <td>{{ props.item.name}}</td>
+                                  <td>{{ props.item.quantity}}</td>
+                                  <td>
+                                    <div v-for="(attr, index) in props.item.attributes" :key="index+'_'+attr.code+'_other'" 
+                                      v-if="attr.hasOwnProperty('custom') && !attr.custom || (attr.custom && attr.variable) && (attr.visible && attr.code != 'photo')">
+                                      {{attr.code}}: {{attr.value}}
+                                    </div>
+                                  </td>
+                                  <td>$ {{formatMoney(props.item.price)}}</td>
+                                  <td>
+                                    <v-icon medium @click="removeArray('p', props.index)">delete</v-icon>
+                                  </td>
+                                </template>
+                              </v-data-table>
                             </div>
                         </v-card><br>
                     </v-form>   
@@ -152,6 +142,13 @@
             product:"",
             products:[],
             attributes:[],
+            headers:[
+              { text: "asd", value:"asd" },
+              { text: "asd", value:"asd" },
+              { text: "asd", value:"asd" },
+              { text: "asd", value:"asd" },
+              { text: "asd", value:"asd" }
+            ]
         }
     },
     watch:{

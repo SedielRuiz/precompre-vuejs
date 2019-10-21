@@ -10,7 +10,7 @@
         hide-actions disable-initial-sort
         class="elevation-1">
         <template v-slot:items="props">
-          <td>{{ props.item.info.code }}</td>
+          <td>{{ props.item.info ? props.item.info.code : ""}}</td>
           <td>{{ props.item[headers[1].value] ? 'Si' : 'No' }}</td>
         </template>
       </v-data-table>
