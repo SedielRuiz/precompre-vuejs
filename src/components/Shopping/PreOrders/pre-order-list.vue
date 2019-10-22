@@ -18,7 +18,7 @@
         <template v-slot:items="props">
           <td>{{ props.item.name }}</td>
           <td>{{ props.item.date }} <br> {{ props.item.hour }}</td>
-          <td>{{ props.item.date_delivery }} <br> {{ props.item.hour_delivery }}</td>
+          <td>{{ props.item.hour_delivery }}</td>
           <td>{{ props.item.delivery}}</td>
           <td>{{ props.item.customer }}</td>
           <td>
@@ -45,7 +45,7 @@
         headers: [
             {text:"Nombre", value:"name"},
             {text:"Fecha creación", value:"created_at"},
-            {text:"Fecha de entrega", value:"delivery_date"},
+            {text:"Hora de entrega", value:"delivery_date"},
             {text:"Lugar de entrega", value:"delivery_place"},
             {text:"Cliente", value:"customer"},
             {text:"Acciones", value:"actons"}
