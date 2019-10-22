@@ -614,7 +614,7 @@
                             s++;
                         }
                     }
-                }while(newFormat.length<6)
+                }while(newFormat.length<7)
                 pre = newFormat;
             }
             obj.preOrders = pre;
