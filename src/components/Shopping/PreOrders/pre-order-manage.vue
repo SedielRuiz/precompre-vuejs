@@ -14,15 +14,15 @@
                         <v-combobox prepend-icon="filter_list" v-model="customer_id" :items="customers" label="Cliente"></v-combobox>
                         <v-card v-if="customer_id" class="pa-2" outlined tile>
                             <h3>Datos pre orden</h3>
-                            <v-text-field :disabled="preOrder.finish" v-model="preOrder.name" placeholder="NF-PR" prepend-icon="library_books" name="title" label="Nombre" type="text"></v-text-field>
                             <v-layout row wrap>
                                 <v-flex xs12 md6>
                                     <v-combobox prepend-icon="filter_list" autocomplete="off" :disabled="preOrder.finish" v-model="deliveryPlace" :items="formatListD(customer.delivery_places, 'place_name', 'cluster_title', 'unit_u', 'id', '_id')" label="Lugares de entrega"></v-combobox>
                                 </v-flex>
                                 <v-flex xs12 md6>
-                                    <v-combobox prepend-icon="filter_list" autocomplete="off" :disabled="preOrder.finish" v-model="preOrder.hour" :items="schedules" label="Hora"></v-combobox>
+                                    <v-combobox prepend-icon="filter_list" autocomplete="off" :disabled="preOrder.finish" v-model="hour" :items="schedules" label="Hora"></v-combobox>
                                 </v-flex>
                             </v-layout><br>
+                            <v-text-field :disabled="preOrder.finish" v-model="preOrder.name" placeholder="NF-PR" prepend-icon="library_books" name="title" label="Nombre" type="text"></v-text-field>
                             <h3>Productos pre orden</h3>
                             <v-layout row wrap>
                                 <v-flex xs12 md4>
@@ -73,7 +73,7 @@
                             </v-layout>
                             <v-layout row wrap>
                                 <v-spacer></v-spacer>
-                                <v-btn color="primary" :disabled="preOrder.name && deliveryPlace && preOrder.hour ? false : true" @click="addArray('p')">Agregar producto</v-btn>
+                                <v-btn color="primary" :disabled="preOrder.name && deliveryPlace && hour ? false : true" @click="addArray('p')">Agregar producto</v-btn>
                             </v-layout><br>
                             <h3 v-if="productsCart.length > 0">Programa tu semana</h3><br>
                             <div v-for="(sc, index) in productsCart">
@@ -456,6 +456,7 @@
             attributes:[],
             detail:false,
             info:"",
+            hour:"",
         }
     },
     watch:{
@@ -520,17 +521,23 @@
                 if(place){
                     this.deliveryPlace = place;
                     this.getHours(place);
-                    this.preOrder.hour = this.schedules[0];
+                    this.hour = this.schedules[0];
                     this.preOrder.name = place.text;
-                    this.preOrder.name += this.preOrder.hour && this.preOrder.hour.text ? " - "+this.preOrder.hour.text : "";
+                    this.preOrder.name += this.hour && this.hour.text ? " - "+this.hour.text : "";
                 }
             }
         },
         deliveryPlace(val){
             if(val){
                 this.getHours(val);
+                this.buildName();
             }
-        }
+        },  
+        hour(val){
+            if(val){
+                this.buildName();
+            }
+        },
     },
     mounted () {
         this.fetchRoutes({page_size:-1});
@@ -552,6 +559,10 @@
             getCustomer: 'customer/getCustomer', 
             setWarning: 'setWarning',
         }),
+        buildName(){
+            this.preOrder.name = "NF-PR: "+this.deliveryPlace.text;
+            this.preOrder.name += this.hour && this.hour.text ? " - "+this.hour.text : "";
+        },
         getHours(val){
             this.schedules = [];
             for(var s = 0; s < this.routes.length; s++){
@@ -943,10 +954,10 @@
                         var date = new Date();
                         date.setDate(date.getDate() + 1);
                         var dt = date.getFullYear()+"-"+((date.getMonth()+1) < 10 ? "0"+(date.getMonth()+1) : (date.getMonth()+1))+"-"+(date.getDate() < 10 ? "0"+date.getDate(): date.getDate())
-                        dt = dt+"T"+this.preOrder.hour.value+"Z";
+                        dt = dt+"T"+this.hour.value+"Z";
 
                         this.shoppingCart.push({
-                            "index":idxp, "name":this.preOrder.name, "date":dt, "delivery_place":this.deliveryPlace, "hour":this.preOrder.hour,
+                            "index":idxp, "name":this.preOrder.name, "date":dt, "delivery_place":this.deliveryPlace, "hour":this.hour,
                             "productsCart":prdsT, "addProduct":false
                         });
                         var idxp = this.shoppingCart.length == 1 ? 0 : this.shoppingCart.length - 1;
@@ -954,7 +965,7 @@
                         this.preOrder.finish = false;
                         this.preOrder.name = "";
                         this.deliveryPlace = "";
-                        this.preOrder.hour = "";
+                        this.hour = "";
                         this.productsCart = [];
                         break;
                 }
