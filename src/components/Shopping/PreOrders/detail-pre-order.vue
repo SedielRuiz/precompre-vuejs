@@ -42,6 +42,10 @@
                         <v-flex xs12 md12>
                             <v-layout justify-center row wrap>
                                 <v-flex>
+                                    <label class="title">D</label>
+                                    <v-checkbox color="primary" v-model="info[0].domingo"></v-checkbox>
+                                </v-flex>
+                                <v-flex>
                                     <label class="title">L</label>
                                     <v-checkbox color="primary" v-model="info[0].lunes"></v-checkbox>
                                 </v-flex>
@@ -64,10 +68,6 @@
                                 <v-flex>
                                     <label class="title">S</label>
                                     <v-checkbox color="primary" v-model="info[0].sabado"></v-checkbox>
-                                </v-flex>
-                                <v-flex>
-                                    <label class="title">D</label>
-                                    <v-checkbox color="primary" v-model="info[0].domingo"></v-checkbox>
                                 </v-flex>
                             </v-layout>
                         </v-flex>
