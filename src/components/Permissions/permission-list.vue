@@ -2,7 +2,7 @@
   <v-container>
     <v-layout row wrap>
       <v-flex xs12 sm12 md2>
-        <h1>Insumos</h1>
+        <h1>Permisos</h1>
       </v-flex>
       <v-flex xs12 sm12 md10>
         <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>

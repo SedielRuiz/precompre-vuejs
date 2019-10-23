@@ -15,10 +15,10 @@
             <v-btn color="success" v-show="false" click="redirect('pre')">Pre ordenes</v-btn>
             <v-btn color="success" v-show="false" @click="redirect('order')">Ordenes</v-btn>
             <v-btn color="success" v-show="false" @click="redirect('bill')">Facturas</v-btn>
-          </v-toolbar>
-          <div style="text-align:right;">
             <v-btn color="success" @click="resetPass()">Recuperar contraseña</v-btn>
             <v-btn color="success" @click="redirect('edit')">Editar</v-btn>
+          </v-toolbar>
+          <div style="text-align:right;">
           </div>
           <v-card-text>
             <v-form style="">
