@@ -168,6 +168,20 @@
         delete this.user.password;
         return this.user;
       },
+      processUpdate(user){
+        this.update(user).then(
+          data => {
+            this.setWarning(data, { root: true }).then(()=>{
+              if(this.edit == 1){
+                this.$router.push('/');
+              }else{
+                this.$router.push('/userDetail/'+this.edit);
+              }
+            });
+          },
+          error => {
+        });
+      },
       processUser () {
         this.user = this.buildUser();
         if(this.edit){
@@ -177,19 +191,10 @@
               }else{
                 this.next = false;
                 this.user.password = this.password;
-                this.update(this.user).then(
-                  data => {
-                      this.setWarning(data, { root: true }).then(()=>{
-                        if(this.edit == 1){
-                          this.$router.push('/');
-                        }else{
-                          this.$router.push('/userDetail/'+this.edit);
-                        }
-                      })
-                  },
-                  error => {
-                });
+                this.processUpdate(this.user);
               }
+            }else{
+              this.processUpdate(this.user);
             }
         }else{
             this.create(this.user).then(
