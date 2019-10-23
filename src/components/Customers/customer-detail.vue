@@ -167,6 +167,9 @@
             if(val.id_type){
               this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
             }
+            if(val.birth_date){
+              this.customer.birth_date = val.birth_date.split("T")[0];
+            }
             this.phones = val.telephones;
             this.deliveryPlaces = val.delivery_places;
         },

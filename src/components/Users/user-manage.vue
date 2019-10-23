@@ -27,10 +27,9 @@
             </v-flex>
           </v-layout>
           <v-text-field v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
-          <v-combobox class="col-xs-12 col-sm-12 col-md-12" v-model="user.role_id" prepend-icon="account_box" :items="roles" label="Rol"></v-combobox>
-          <v-text-field v-model="user.birth_date" prepend-icon="email" name="birth_date" label="Fecha de nacimiento" type="date"></v-text-field>
-          <v-combobox v-if="edit!=''" v-model="user.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-          <!--v-text-field v-if="edit==''" v-model="user.password" prepend-icon="lock" name="password" label="Contraseña" type="password"></v-text-field-->
+          <v-combobox v-if="edit != 1 && usr.role == 'super user'" class="col-xs-12 col-sm-12 col-md-12" v-model="user.role_id" prepend-icon="account_box" :items="roles" label="Rol"></v-combobox>
+          <v-combobox v-if="edit!='' && edit != 1 && usr.role == 'super user'" v-model="user.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
+          <v-text-field v-if="edit==1" v-model="user.password" prepend-icon="lock" name="password" label="Contraseña" type="password"></v-text-field>
           <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
           <div v-if="phones.length > 0">
             <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
@@ -104,17 +103,25 @@
           for(var s = 0; s < val.length; s++){
             this.roles.push({"text":val[s].title, "value":val[s]._id});
           }
-        }
+        },
     },
     mounted () {
-      this.fetchRoles();
-      this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
-      if(this.edit!=""){
-          this.titleText="Editar usuario"
-          this.getUser(this.edit);
-      }else{
-        this.titleText="Nuevo usuario"
-      }
+      this.fetchRoles().then(data=>{
+        this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
+        console.log(this.usr);
+        if(this.edit!=""){
+            if(this.edit == 1){
+              this.getUser(this.usr._id);
+              this.titleText="Perfil"
+            }
+            else{
+              this.titleText="Editar usuario"
+              this.getUser(this.edit);
+            }
+        }else{
+          this.titleText="Nuevo usuario"
+        }
+      },error=>{});
     },
     methods: {
       ...mapActions({
@@ -150,8 +157,9 @@
         this.user.telephones = this.formatPhones();
         this.user.id_type = this.user.id_type && this.user.id_type.value ? this.user.id_type.value : this.user.id_type;
         this.user.role_id = this.user.role_id && this.user.role_id.value ? this.user.role_id.value : this.user.role_id;
-        if(this.edit)
+        if(this.edit && this.edit != 1){
           this.user.status = this.user.status.value;
+        }
         return this.user;
       },
       processUser () {
@@ -161,7 +169,11 @@
             this.update(this.user).then(
                 data => {
                     this.setWarning(data, { root: true }).then(()=>{
-                        this.$router.push('/userDetail/'+this.edit)
+                      if(this.edit == 1){
+                        this.$router.push('/');
+                      }else{
+                        this.$router.push('/userDetail/'+this.edit);
+                      }
                     })
                 },
                 error => {
@@ -194,6 +206,7 @@
         warning: state => state.warning,
         logged: state => state.auth.logged,
         us: state => state.user.user, 
+        usr: state => state.auth.user, 
         rls: state => state.role.roles,
       }),
       trySend(){

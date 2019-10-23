@@ -60,7 +60,7 @@ const mutations = {
       const token = window.localStorage.getItem('_token');
       const jwtDecode = require('jwt-decode');
       state.user = jwtDecode(token);
-      state.user = state.user.data.user
+      state.user = state.user.data.customer
       state.logged = true;
     } else {
       state.logged = false;
