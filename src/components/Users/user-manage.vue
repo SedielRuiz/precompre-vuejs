@@ -6,7 +6,7 @@
           <v-toolbar dark color="primary">
             <v-toolbar-title>{{titleText}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn v-if="edit != ''" color="error" @click="redirect(true)">Cancelar</v-btn>
+            <v-btn v-if="edit != '' && edit != 1" color="error" @click="redirect(true)">Cancelar</v-btn>
             <v-btn v-if="edit == 0" color="error" @click="redirect(false)">Cancelar</v-btn>
           </v-toolbar>
           <v-card-text>
@@ -27,11 +27,14 @@
             </v-flex>
           </v-layout>
           <v-text-field v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
+          <h2 v-if="edit==1">Cambiar contraseña <v-icon medium @click="addPass ? addPass = false : addPass = true">add</v-icon></h2>
+          <div v-if="addPass && edit==1" class="row col-md-8"><br>
+            <v-alert :value="next" type="info">Las contraseñas no coinciden.</v-alert>
+            <v-text-field v-if="edit==1" v-model="password" prepend-icon="lock" name="password" label="Nueva contraseña" type="password"></v-text-field>
+            <v-text-field v-if="edit==1" v-model="confirmPassword" prepend-icon="lock" name="password" label="Confirma contraseña" type="password"></v-text-field>
+          </div>
           <v-combobox v-if="edit != 1 && usr.role == 'super user'" class="col-xs-12 col-sm-12 col-md-12" v-model="user.role_id" prepend-icon="account_box" :items="roles" label="Rol"></v-combobox>
           <v-combobox v-if="edit!='' && edit != 1 && usr.role == 'super user'" v-model="user.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-          <v-alert :value="next" type="info">Las contraseñas no coinciden.</v-alert>
-          <v-text-field v-if="edit==1" v-model="password" prepend-icon="lock" name="password" label="Nueva contraseña" type="password"></v-text-field>
-          <v-text-field v-if="edit==1" v-model="confirmPassword" prepend-icon="lock" name="password" label="Confirma contraseña" type="password"></v-text-field>
           <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
           <div v-if="phones.length > 0">
             <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
@@ -73,6 +76,7 @@
         phones:[],
         roles:[],
         addNumber:false,
+        addPass:false,
         typesPhone: [
           {text: 'Movil', value:'movil'},
           {text: 'Hogar', value:'home'}
