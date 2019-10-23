@@ -19,7 +19,7 @@
                                     <v-combobox prepend-icon="filter_list" autocomplete="off" :disabled="preOrder.finish" v-model="deliveryPlace" :items="formatListD(customer.delivery_places, 'place_name', 'cluster_title', 'unit_u', 'id', '_id')" label="Lugares de entrega"></v-combobox>
                                 </v-flex>
                                 <v-flex xs12 md6>
-                                    <v-combobox prepend-icon="filter_list" autocomplete="off" :disabled="preOrder.finish" v-model="hour" :items="schedules" label="Hora"></v-combobox>
+                                    <v-select prepend-icon="filter_list" autocomplete="off" :disabled="preOrder.finish" v-model="hour" :items="schedules" label="Hora"></v-select>
                                 </v-flex>
                             </v-layout><br>
                             <v-text-field :disabled="preOrder.finish" v-model="preOrder.name" placeholder="NF-PR" prepend-icon="library_books" name="title" label="Nombre" type="text"></v-text-field>
