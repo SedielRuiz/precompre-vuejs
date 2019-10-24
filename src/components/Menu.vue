@@ -240,7 +240,7 @@
                 <v-icon>assignment</v-icon>
                 </v-list-tile-action>
                 <v-list-tile-content>
-                <v-list-tile-title>Logística de distrubición</v-list-tile-title>
+                <v-list-tile-title>Logística de distribución</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
 

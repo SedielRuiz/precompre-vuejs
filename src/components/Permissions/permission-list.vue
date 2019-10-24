@@ -5,7 +5,7 @@
         <h1>Permisos</h1>
       </v-flex>
       <v-flex xs12 sm12 md10>
-        <v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn>
+        <!--v-btn color="success" @click="redirect(false, 0)">Nuevo</v-btn-->
         <v-btn color="success"><v-icon medium @click="search({page_size:10})"tooltip="Detalle">refresh</v-icon></v-btn>
       </v-flex>
     </v-layout>
@@ -17,8 +17,6 @@
         class="elevation-1">
         <template v-slot:items="props">
         <td>{{ props.item.title }}</td>
-        <td>{{ props.item.code }}</td>
-        <td>{{ props.item.description }}</td>
         <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo" }}</td>
         <td><v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon></td>
         </template>
@@ -46,8 +44,6 @@
         manage: false,
         headers: [
             {text:"Titulo", value:"title"},
-            {text:"Código", value:"code"},
-            {text:"Descripción", value:"description"},
             {text:"Estado", value:"status"},
             {text:"Acciones", value:"actons"}
         ],

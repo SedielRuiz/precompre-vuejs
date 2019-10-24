@@ -7,7 +7,7 @@
             <v-icon large @click="redirect(true)">keyboard_backspace</v-icon>
             <v-toolbar-title>Detalle permiso</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn color="success" @click="redirect(false)">Editar</v-btn>
+            <!--v-btn color="success" @click="redirect(false)">Editar</v-btn-->
           </v-toolbar>
           <v-card-text>
             <v-form>

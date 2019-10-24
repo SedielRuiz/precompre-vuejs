@@ -16,6 +16,7 @@
         hide-actions disable-initial-sort
         class="elevation-1">
         <template v-slot:items="props">
+          <td>{{ props.item.code }}</td>
           <td>{{ props.item.name }}</td>
           <td>{{ props.item.date }} <br> {{ props.item.hour }}</td>
           <td>{{ props.item.hour_delivery }}</td>
@@ -43,12 +44,13 @@
     data () {
       return {
         headers: [
-            {text:"Nombre", value:"name"},
-            {text:"Fecha creación", value:"created_at"},
-            {text:"Hora de entrega", value:"delivery_date"},
-            {text:"Lugar de entrega", value:"delivery_place"},
-            {text:"Cliente", value:"customer"},
-            {text:"Acciones", value:"actons"}
+          {text:"Código", value:"code_pre_order"},
+          {text:"Nombre", value:"name"},
+          {text:"Fecha creación", value:"created_at"},
+          {text:"Hora de entrega", value:"delivery_date"},
+          {text:"Lugar de entrega", value:"delivery_place"},
+          {text:"Cliente", value:"customer"},
+          {text:"Acciones", value:"actons"}
         ],
         preOrders:[],
       }
@@ -76,9 +78,10 @@
               date:dt,
               hour:this.getHour(val[s].pre_orders[0].created_at),
               date_delivery:dtd,
-              hour_delivery:this.getHour(val[s].pre_orders[0].date),
+              hour_delivery:val[s].pre_orders[0].date.split("T")[1].split(":")[0]+":"+val[s].pre_orders[0].date.split("T")[1].split(":")[1],
               name:val[s].pre_orders[0].group_name,
               preOrders:val[s],
+              code: val[s].pre_orders[0].code_pre_order,
             });
           }
           this.preOrders = lst;
