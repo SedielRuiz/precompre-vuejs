@@ -124,7 +124,7 @@
                   <v-list-tile-action>
                   </v-list-tile-action>
                   <v-list-tile-content>
-                  <v-list-tile-title>Filtros de productos</v-list-tile-title>
+                  <v-list-tile-title>Filtro de productos</v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
             </v-list-group>
