@@ -364,7 +364,7 @@
                                                 <div v-for="prd in day.pre_orders">
                                                     <div v-if="prd.hasOwnProperty('item')">
                                                         <label class="txt">Nombre: {{prd.item.product.name}}</label><br>
-                                                        <label class="txt">Precio: $ {{formatMoney(prd.item.attributes, prd.item.quantity)}} </label><br>
+                                                        <label class="txt">Precio: $ {{formatMoney(prd.item, prd.item.quantity)}} </label><br>
                                                         <label class="txt">Cantidad: {{prd.item.quantity}}</label><br><br>
                                                         <div style="text-align:right">
                                                             <!--label v-if="prd.delivery_place">Lugar de entrega : {{prd.delivery_place.place_name}} - {{prd.delivery_place.cluster_title}} - {{prd.delivery_place.unit_u}}</label><br-->
@@ -635,8 +635,11 @@
             var num
             var p = this.attrs.find(element=>{return element.code == "price" });
             if(p){
-                n = n.find(element=>{return element.attribute[0]._id == p._id}).value;
-                if(!n)n=0; 
+                var sub = n.product.sub_products.find(element=>{return element._id == n.sub_product});
+                if(sub){
+                    sub = sub.options;
+                    n = sub.find(element=>{return element.pivot == p._id}).option;
+                }                if(!n)n=0; 
                 //this.total += n*qty; 
                 num = String(n*qty).replace(/\./g,'');
                 if(!isNaN(num)){
