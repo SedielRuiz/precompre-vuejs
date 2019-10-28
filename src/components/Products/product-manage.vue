@@ -390,7 +390,7 @@
                     if(val.store_id)
                         this.product.store_id = this.stores.find(element=>{return element.value == val.store_id });
                         
-                    if(vl.status)
+                    if(val.status)
                       this.product.status = this.status.find(element=>{return element.value == val.status });
                     this.class_id = {"text":val.product_class.code, "value":val.product_class._id};
                     this.attributesP = val.attributes;
