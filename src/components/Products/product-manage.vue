@@ -30,7 +30,7 @@
                         <v-combobox v-model="class_id" :items="classes" prepend-icon="featured_play_list" label="Clase de producto"></v-combobox>
                     </v-flex>
                 </v-layout>
-                <v-combobox v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
+                <v-combobox v-if="edit!=''" v-model="product.status" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <v-alert :value="msgError" type="info">Por favor llene los atributos requeridos</v-alert> <br>
                 <div v-for="(attr, index) in attributes" :key="index+'_'+attr.code" class="row col-md-8">
                     <div v-if="attr.visible && attr.code != 'price' && (attr.hasOwnProperty('variable') && !attr.variable || attr.code == 'photo')">
@@ -371,7 +371,7 @@
                 attributesP:[],
                 categories:[],
                 status:[
-                    {text: 'Activo', value:'enabled'},
+                    {text: 'Activo', value:'enable'},
                     {text: 'Inactivo', value:'disabled'},
                 ],
                 edit:"",
@@ -386,6 +386,9 @@
                     this.product = val;
                     if(val.store_id)
                         this.product.store_id = this.stores.find(element=>{return element.value == val.store_id });
+                        
+                    if(vl.status)
+                      this.product.status = this.status.find(element=>{return element.value == val.status });
                     this.class_id = {"text":val.product_class.code, "value":val.product_class._id};
                     this.attributesP = val.attributes;
                     this.categories = val.categories;

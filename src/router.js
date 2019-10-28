@@ -80,6 +80,10 @@ import StoreDetail from '@/components/Stores/store-detail';
 import RouteList from '@/components/Routes/route-list';
 import RouteManage from '@/components/Routes/route-manage';
 import RouteDetail from '@/components/Routes/route-detail';
+/**Rutas**/
+import TransactionList from '@/components/Transactions/transaction-list';
+import TransactionManage from '@/components/Transactions/transaction-manage';
+import TransactionDetail from '@/components/Transactions/transaction-detail';
 
 const router = new Router({
   routes: [
@@ -525,7 +529,32 @@ const router = new Router({
         component: RouteManage,
         meta: { Auth: true, title: 'Editar ruta' },
     },
-    
+    /**Transacciones
+     * **/
+    {
+      path: '/transactionList',
+      name: 'transactionList',
+      component: TransactionList,
+      meta: { Auth: true, title: 'Rutas' },
+    },
+    {
+        path: '/transactionDetail/:id',
+        name: 'transactionDetail',
+        component: TransactionDetail,
+        meta: { Auth: true, title: 'Ruta' },
+    },
+    {
+        path: '/transactionManage/',
+        name: 'transactionManageCreate',
+        component: TransactionManage,
+        meta: { Auth: true, title: 'Crear ruta' },
+    },
+    {
+        path: '/transactionManage/:id/',
+        name: 'transactionManageUpdate',
+        component: TransactionManage,
+        meta: { Auth: true, title: 'Editar ruta' },
+    },
   ]
 })
 
