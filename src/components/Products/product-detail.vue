@@ -28,7 +28,9 @@
                             </div>
                         </div>  
                         <div v-else> 
-                            <v-text-field  readonly v-model="attr.value.charAt(0).toUpperCase() + attr.value.slice(1)" prepend-icon="person" name="name" :label="attr.name.charAt(0).toUpperCase() + attr.name.slice(1)" type="text"></v-text-field>
+                            <div v-if="attr && attr.value">
+                                <v-text-field  readonly v-model="attr.value.charAt(0).toUpperCase() + attr.value.slice(1)" prepend-icon="person" name="name" :label="attr.name.charAt(0).toUpperCase() + attr.name.slice(1)" type="text"></v-text-field>
+                            </diV>
                         </div>
                     </div>    
                 </div><hr><br>
