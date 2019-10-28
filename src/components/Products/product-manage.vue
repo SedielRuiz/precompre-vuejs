@@ -709,10 +709,9 @@
 
                             if(this[arr1][s].array){
                                 var arr = [];
-                                console.log(this.attributesP[r].value);
+                                arr = [];
                                 for(var g = 0; g < this.attributesP[r].value.length; g++){
-                                    arr = [];
-                                    arr.push({text:this.attributesP[r].value[g].value, extend: this.attributesP[r].value[g].extend});
+                                    arr.push({text:this.attributesP[r].value[g].value, extend: this.attributesP[r].value[g].extend, main:this.attributesP[r].value[g].main});
                                 }
                                 this[arr1][s].fillArray = arr;
                             }else{
