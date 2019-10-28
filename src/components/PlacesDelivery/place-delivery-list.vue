@@ -73,7 +73,7 @@
       }
     },
     mounted () {
-        this.fetchPlaceDelivery();
+      this.fetchPlaceDelivery();
     },
     methods: {
       ...mapActions({

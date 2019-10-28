@@ -18,7 +18,10 @@
         <template v-slot:items="props">
           <td>{{ props.item.title }}</td>
           <td>{{ props.item.status == 'enable' ? "Activo" : "Inactivo"}}</td>
-          <td><v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon></td>
+          <td>
+            <v-icon medium @click="redirect(true, props.item._id)"tooltip="Detalle">more_vert</v-icon>
+            <v-icon style="color:#bf1526;" medium @click="deleteRole(props.item._id)">delete</v-icon>
+          </td>
         </template>
     </v-data-table>
     <pagination @search="search" :total_pages="total_pages" :total_items="total_items" :page_size="page_size"></pagination>
@@ -48,9 +51,23 @@
     },
     methods: {
       ...mapActions({
+        delete: 'role/delete',
         fetchRoles: 'role/fetchRoles',
         setWarning: 'setWarning',
       }),
+      deleteRole(id){
+        if(confirm("¿ Seguro que desea eliminar este registro ? ")){
+          this.delete(id).then(
+            data => {
+              this.setWarning(data, { root: true }).then(()=>{
+                this.fetchRoles();
+              })
+            },
+            error => {
+              console.log(error);
+            });
+        }
+      },
       search(pagination){
         this.fetchRoles(pagination);
       },

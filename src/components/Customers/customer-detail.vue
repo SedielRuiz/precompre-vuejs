@@ -15,10 +15,10 @@
             <v-btn color="success" v-show="false" click="redirect('pre')">Pre ordenes</v-btn>
             <v-btn color="success" v-show="false" @click="redirect('order')">Ordenes</v-btn>
             <v-btn color="success" v-show="false" @click="redirect('bill')">Facturas</v-btn>
-          </v-toolbar>
-          <div style="text-align:right;">
             <v-btn color="success" @click="resetPass()">Recuperar contraseña</v-btn>
             <v-btn color="success" @click="redirect('edit')">Editar</v-btn>
+          </v-toolbar>
+          <div style="text-align:right;">
           </div>
           <v-card-text>
             <v-form style="">
@@ -166,6 +166,9 @@
               this.customer.status = this.status.find(element=>{return element.value == val.status });
             if(val.id_type){
               this.customer.id_type = this.typesIdentification.find(element=>{return element.value == val.id_type }).text;
+            }
+            if(val.birth_date){
+              this.customer.birth_date = val.birth_date.split("T")[0];
             }
             this.phones = val.telephones;
             this.deliveryPlaces = val.delivery_places;

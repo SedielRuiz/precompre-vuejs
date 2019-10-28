@@ -65,7 +65,7 @@
                                                                 <v-btn color="error" @click="viewPhoto('c', attr.idx)">Cerrar</v-btn>
                                                             </v-toolbar>
                                                             <v-card-text>
-                                                                <h2>Seleccione la imagenes a heredar</h2>
+                                                                <h2>Seleccione la imagenes</h2>
                                                                 <div v-for="(opc, index) in attr.fillArray" :key="index">
                                                                     <v-card class="elevation-4">
                                                                          <v-layout align-center row wrap>
@@ -73,9 +73,12 @@
                                                                                 <img :src="opc.text" style="width: 30%;height: 45%;"/><br>
                                                                             </v-flex>
                                                                             <v-flex xs12 md2>
-                                                                                <v-checkbox style="margin-top:27px;" v-model="opc.extend"></v-checkbox>
+                                                                                <v-checkbox label="Heredar" style="margin-top:27px;" v-model="opc.extend"></v-checkbox>
                                                                             </v-flex>
-                                                                            <v-flex xs12 md4>
+                                                                            <v-flex xs12 md2>
+                                                                                <v-checkbox label="Principal" style="margin-top:27px;" v-model="opc.main" @change="photoMain(attr.idx, index)"></v-checkbox>
+                                                                            </v-flex>
+                                                                            <v-flex xs12 md2>
                                                                                 <v-icon medium @click="removeArray('a', attr.idx, index)">close</v-icon>
                                                                             </v-flex>
                                                                         </v-layout>
@@ -642,8 +645,9 @@
                         }
                         break;
                     case "a":
-                        this.attributes[idx].fillArray.push({ text: this.attributes[idx].value, extend:false });
+                        this.attributes[idx].fillArray.push({ text: this.attributes[idx].value, extend:false, main:false });
                         this.attributes[idx].value = "";
+                        this.attributes[idx].view_photo = true;
                         this.attributes[idx].default_value = "";
                         this.attributes.push();
                         break;
@@ -655,6 +659,15 @@
                         this.subProductsAttribute.push();
                         break;
                 }
+            },
+            photoMain(idxa, idx){
+                for(var g = 0; g < this.attributes[idxa].fillArray.length; g++){
+                    if(g == idx)
+                        this.attributes[idxa].fillArray[g].main = true;
+                    else
+                        this.attributes[idxa].fillArray[g].main = false;
+                }
+                this.attributes.push();
             },
             removeArray(arr, idx, gn = false, ){
                 switch(arr) {
@@ -699,10 +712,9 @@
 
                             if(this[arr1][s].array){
                                 var arr = [];
-                                console.log(this.attributesP[r].value);
+                                arr = [];
                                 for(var g = 0; g < this.attributesP[r].value.length; g++){
-                                    arr = [];
-                                    arr.push({text:this.attributesP[r].value[g].value, extend: this.attributesP[r].value[g].extend});
+                                    arr.push({text:this.attributesP[r].value[g].value, extend: this.attributesP[r].value[g].extend, main:this.attributesP[r].value[g].main});
                                 }
                                 this[arr1][s].fillArray = arr;
                             }else{
@@ -781,7 +793,7 @@
                         if(this[attr][s].array){
                             val = [];
                             for(var r = 0; r < this[attr][s].fillArray.length; r++){
-                                val.push({ value: this[attr][s].fillArray[r].text, extend: this[attr][s].fillArray[r].extend });
+                                val.push({ value: this[attr][s].fillArray[r].text, extend: this[attr][s].fillArray[r].extend, main: this[attr][s].fillArray[r].main});
                             }
                         }
                         if( (!this[attr][s].variable || this[attr][s].variable) || (this[attr][s].required && this.valAttrRequired(val)) || (!this[attr][s].required && this.valAttrNoRequired(val)) || !this[attr][s].visible ){

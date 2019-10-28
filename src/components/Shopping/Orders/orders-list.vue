@@ -25,6 +25,11 @@
       </v-flex>
     </v-layout>
     <v-layout row wrap>
+      <v-flex xs12 sm12 md3>
+        <v-select v-model="filter.delivery" prepend-icon="account_box" :items="deliveryPlaces" label="Lugar de entrega"></v-select>
+      </v-flex>
+    </v-layout>
+    <v-layout row wrap>
       <v-spacer></v-spacer>
       <v-btn color="success" @click="search(filter)"><v-icon medium>search</v-icon></v-btn>
       <v-btn color="success" @click="clearFilter()"><v-icon medium>delete</v-icon></v-btn>
@@ -95,6 +100,7 @@
           {text:"Carrito", value:"cart"},
           {text:"Pendiente", value:"pending"},
         ],
+        deliveryPlaces:[],
         filter:{},
         customer_id:"",
         headers: [
@@ -134,8 +140,16 @@
           }
         }
       },
+      dls(val){
+        if(val){
+          for(var j = 0; j < val.length; j++){
+            this.deliveryPlaces.push({text:val[j].name, value:val[j]._id});
+          }
+        }
+      }
     },
     mounted () {
+      this.fetchPlaceDelivery({page_size:-1});
       this.fetchAttributes({page_size:-1});
       var date = new Date();
       date = date.getFullYear()+"-"+((date.getMonth()+1) < 10 ? "0"+(date.getMonth()+1) : (date.getMonth()+1))+"-"+(date.getDate() < 10 ? "0"+date.getDate(): date.getDate());
@@ -148,6 +162,7 @@
         delete: 'order/delete',
         fetchOrders: 'order/fetchOrders',
         fetchCustomers: 'customer/fetchCustomers',
+        fetchPlaceDelivery: 'placeDelivery/fetchPlaces',
         setWarning: 'setWarning',
         fetchAttributes: 'productAttribute/fetchAttributes',
       }),
@@ -181,6 +196,7 @@
         this.filter.date_start = date_start != "" ? date_start : date;
         this.filter.date_end = date_end != "" ? date_end : date;
         this.filter.state = state != "" ? state : "pending";
+        delete this.filter.delivery;
         this.fetchOrders(this.filter);
         delete this.filter.state;
         
@@ -205,6 +221,7 @@
         total_pages: state => state.order.total_pages,
         cutms: state => state.customer.customers,
         attrs: state => state.productAttribute.attributes,
+        dls: state => state.placeDelivery.places,
       }),
     },
   }

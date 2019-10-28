@@ -6,7 +6,7 @@
           <v-toolbar dark color="primary">
             <v-toolbar-title>{{titleText}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn v-if="edit != ''" color="error" @click="redirect(true)">Cancelar</v-btn>
+            <v-btn v-if="edit != '' && edit != 1" color="error" @click="redirect(true)">Cancelar</v-btn>
             <v-btn v-if="edit == 0" color="error" @click="redirect(false)">Cancelar</v-btn>
           </v-toolbar>
           <v-card-text>
@@ -27,10 +27,14 @@
             </v-flex>
           </v-layout>
           <v-text-field v-model="user.email" prepend-icon="email" name="email" label="Correo" type="text"></v-text-field>
-          <v-combobox class="col-xs-12 col-sm-12 col-md-12" v-model="user.role_id" prepend-icon="account_box" :items="roles" label="Rol"></v-combobox>
-          <v-text-field v-model="user.birth_date" prepend-icon="email" name="birth_date" label="Fecha de nacimiento" type="date"></v-text-field>
-          <v-combobox v-if="edit!=''" v-model="user.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
-          <!--v-text-field v-if="edit==''" v-model="user.password" prepend-icon="lock" name="password" label="Contraseña" type="password"></v-text-field-->
+          <h2 v-if="edit==1">Cambiar contraseña <v-icon medium @click="addPass ? addPass = false : addPass = true">add</v-icon></h2>
+          <div v-if="addPass && edit==1" class="row col-md-8"><br>
+            <v-alert :value="next" type="info">Las contraseñas no coinciden.</v-alert>
+            <v-text-field v-if="edit==1" v-model="password" prepend-icon="lock" name="password" label="Nueva contraseña" type="password"></v-text-field>
+            <v-text-field v-if="edit==1" v-model="confirmPassword" prepend-icon="lock" name="password" label="Confirma contraseña" type="password"></v-text-field>
+          </div>
+          <v-combobox v-if="edit != 1 && usr.role == 'super user'" class="col-xs-12 col-sm-12 col-md-12" v-model="user.role_id" prepend-icon="account_box" :items="roles" label="Rol"></v-combobox>
+          <v-select v-if="edit!='' && edit != 1 && usr.role == 'super user'" v-model="user.status" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-select>
           <h2>Teléfonos <v-icon medium @click="addNumber ? addNumber = false : addNumber = true">add</v-icon></h2><br>
           <div v-if="phones.length > 0">
             <v-chip v-for="(p, index) in phones" :key="index">{{p.number}} <v-icon medium @click="removePhone(index)">close</v-icon></v-chip>
@@ -72,6 +76,7 @@
         phones:[],
         roles:[],
         addNumber:false,
+        addPass:false,
         typesPhone: [
           {text: 'Movil', value:'movil'},
           {text: 'Hogar', value:'home'}
@@ -82,11 +87,14 @@
           {text: 'Cedula de extranjeria', value:'ce'}
         ],
         status:[
-          {text: 'Activo', value:'enabled'},
+          {text: 'Activo', value:'enable'},
           {text: 'Inactivo', value:'disabled'},
         ],
         edit:"",
-        titleText:""
+        titleText:"",
+        password:"",
+        confirmPassword:"",
+        next:false,
       }
     },
     watch:{
@@ -97,6 +105,9 @@
             if(val.role_id){
               this.user.role_id = this.roles.find(element=>{return element.value == val.role_id });
             }
+            if(val.status){
+              this.user.status = this.status.find(element=>{return element.value == val.status });
+            }
             this.phones = val.telephones;
           }
         },
@@ -104,17 +115,25 @@
           for(var s = 0; s < val.length; s++){
             this.roles.push({"text":val[s].title, "value":val[s]._id});
           }
-        }
+        },
     },
     mounted () {
-      this.fetchRoles();
-      this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
-      if(this.edit!=""){
-          this.titleText="Editar usuario"
-          this.getUser(this.edit);
-      }else{
-        this.titleText="Nuevo usuario"
-      }
+      this.fetchRoles().then(data=>{
+        this.edit = this.$route.params.id == undefined ? 0 : this.$route.params.id;
+        console.log(this.usr);
+        if(this.edit!=""){
+            if(this.edit == 1){
+              this.getUser(this.usr._id);
+              this.titleText="Perfil"
+            }
+            else{
+              this.titleText="Editar usuario"
+              this.getUser(this.edit);
+            }
+        }else{
+          this.titleText="Nuevo usuario"
+        }
+      },error=>{});
     },
     methods: {
       ...mapActions({
@@ -150,22 +169,40 @@
         this.user.telephones = this.formatPhones();
         this.user.id_type = this.user.id_type && this.user.id_type.value ? this.user.id_type.value : this.user.id_type;
         this.user.role_id = this.user.role_id && this.user.role_id.value ? this.user.role_id.value : this.user.role_id;
-        if(this.edit)
+        if(this.edit && this.edit != 1){
           this.user.status = this.user.status.value;
+        }
+        delete this.user.password;
         return this.user;
+      },
+      processUpdate(user){
+        this.update(user).then(
+          data => {
+            this.setWarning(data, { root: true }).then(()=>{
+              if(this.edit == 1){
+                this.$router.push('/');
+              }else{
+                this.$router.push('/userDetail/'+this.edit);
+              }
+            });
+          },
+          error => {
+        });
       },
       processUser () {
         this.user = this.buildUser();
-        console.log(this.user);
         if(this.edit){
-            this.update(this.user).then(
-                data => {
-                    this.setWarning(data, { root: true }).then(()=>{
-                        this.$router.push('/userDetail/'+this.edit)
-                    })
-                },
-                error => {
-            })
+            if(this.password){
+              if(this.password != this.confirmPassword){
+                this.next = true;
+              }else{
+                this.next = false;
+                this.user.password = this.password;
+                this.processUpdate(this.user);
+              }
+            }else{
+              this.processUpdate(this.user);
+            }
         }else{
             this.create(this.user).then(
                 data => {
@@ -194,10 +231,11 @@
         warning: state => state.warning,
         logged: state => state.auth.logged,
         us: state => state.user.user, 
+        usr: state => state.auth.user, 
         rls: state => state.role.roles,
       }),
       trySend(){
-        if(this.user && this.user.id_type && this.user.id_description && this.user.email && this.user.name){
+        if(this.user && this.user.id_type && this.user.id_description && this.user.email && this.user.name && this.user.role_id){
           return false; 
         }
         return true;

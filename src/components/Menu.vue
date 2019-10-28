@@ -15,6 +15,14 @@
                 <v-list-tile-title>Inicio</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
+            <v-list-tile @click="dirigir('/userManage/1')">
+                <v-list-tile-action>
+                <v-icon>assignment</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                <v-list-tile-title>Mi perfil</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
             <v-divider></v-divider>
             <v-list-tile @click="dirigir('/storeList')">
                 <v-list-tile-action>
@@ -116,7 +124,7 @@
                   <v-list-tile-action>
                   </v-list-tile-action>
                   <v-list-tile-content>
-                  <v-list-tile-title>Filtros de productos</v-list-tile-title>
+                  <v-list-tile-title>Filtro de productos</v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
             </v-list-group>
@@ -232,7 +240,7 @@
                 <v-icon>assignment</v-icon>
                 </v-list-tile-action>
                 <v-list-tile-content>
-                <v-list-tile-title>Logística de distrubición</v-list-tile-title>
+                <v-list-tile-title>Logística de distribución</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
 
@@ -302,7 +310,7 @@
       <router-view></router-view>
     </v-content>
     <v-footer color="indigo" app>
-      <span class="white--text">&copy; v0.0.53</span>
+      <span class="white--text">&copy; v0.0.54</span>
     </v-footer>
   </v-app>
 </template>

@@ -204,7 +204,7 @@
             sto: state => state.route.route, 
         }),
         trySend(){
-            if(this.route && this.route.name && this.route.sector){
+            if(this.route && this.route.name && this.route.sector && this.buildingsSelected.length > 0 && this.schedules.length > 0){
                 return false; 
             }
             return true;
