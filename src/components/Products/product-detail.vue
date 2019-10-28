@@ -16,9 +16,16 @@
                 <v-text-field readonly v-model="product.price" prepend-icon="featured_play_list" name="price" label="Precio" type="number"></v-text-field>
                 <v-combobox readonly v-if="edit!=''" v-model="product.status == 'enable' ? 'Activo' : 'Inactivo'" :items="status" prepend-icon="check_circle_outline" label="Estado"></v-combobox>
                 <div v-if="attributes"> 
-                    <div v-for="(attr, index) in attributes" :key="index"> 
-                        <div v-if="attr.name == 'photo'" style="text-align:center;"> 
-                            <img v-for="pt in attr.value" :src="pt.value ? pt.value : 'No hay foto' "/>
+                    <div v-for="(attr, index) in attributes" :key="index">
+                        <div v-if="attr.name == 'photo'" style="text-align:center;">
+                            <div v-if="attr.value.length > 1">
+                                <v-carousel hide-delimiters>
+                                    <v-carousel-item v-for="(pt, i) in attr.value" :key="i" :src="pt.value"></v-carousel-item>
+                                </v-carousel>
+                            </div>  
+                            <div v-else> 
+                                <img v-for="pt in attr.value" :src="pt.value ? pt.value : 'No hay foto' "/>
+                            </div>
                         </div>  
                         <div v-else> 
                             <v-text-field  readonly v-model="attr.value.charAt(0).toUpperCase() + attr.value.slice(1)" prepend-icon="person" name="name" :label="attr.name.charAt(0).toUpperCase() + attr.name.slice(1)" type="text"></v-text-field>
@@ -280,7 +287,7 @@
                 for(var s = 0; s < arr.length; s++){
                     for(var r = 0; r < this.product.product_class[varArr].length; r++){
                         if(this.product.product_class[varArr][r].attribute.length > 0 && arr[s].code == this.product.product_class[varArr][r].attribute[0]._id && this.product.product_class[varArr][r].attribute[0].visible){
-                            if(!this.product.product_class[varArr][r].variable){
+                            if(!this.product.product_class[varArr][r].variable || this.product.product_class[varArr][r].attribute[0].code == "photo"){
                                 var val = arr[s].value;
                                 if(this.product.product_class[varArr][r].attribute[0].type == "boolean")
                                     val = val ? 'Si' : 'No';
