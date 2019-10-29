@@ -52,7 +52,7 @@
     <hr>
     <v-layout>
       <v-spacer></v-spacer>
-      <strong style="font-size:19px;margin-right:5px;">Total: {{customersExcel.length}}</strong>
+      <strong style="font-size:19px;margin-right:5px;">Total: {{customers.length}}</strong>
     </v-layout>
     <v-data-table
         :headers="headers"
