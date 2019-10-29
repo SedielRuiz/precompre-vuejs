@@ -85,6 +85,9 @@
                 hide-actions disable-initial-sort
                 class="elevation-1">
                 <template v-slot:items="props">
+                  <td>
+                        <v-icon medium>{{props.item.main ? "check" : "" }}</v-icon> 
+                    </td>
                   <td> {{props.item.name}} </td>
                   <td> {{props.item.place_name}} </td>
                   <td> {{props.item.cluster_title}} </td>
@@ -146,12 +149,13 @@
             {text:"Verificado", value:"verified"},
         ],
         headers_places: [
-            {text:"Nombre", value:"name"},
-            {text:"Lugar", value:"place"},
-            {text:"Agrupación", value:"cluster"},
-            {text:"Tipo", value:"type"},
-            {text:"Piso", value:"floor"},
-            {text:"Unidad", value:"unit"},
+          {text:"Principal", value:"code"},
+          {text:"Nombre", value:"name"},
+          {text:"Lugar", value:"place"},
+          {text:"Agrupación", value:"cluster"},
+          {text:"Tipo", value:"type"},
+          {text:"Piso", value:"floor"},
+          {text:"Unidad", value:"unit"},
         ],
       }
     },
