@@ -357,6 +357,7 @@
             this.customer.gender = this.customer.gender && this.customer.gender.value ? this.customer.gender.value : this.customer.gender;
             this.customer.store_id = this.customer.store_id && this.customer.store_id.value ? this.customer.store_id.value : this.customer.store_id;
             if(this.edit){
+              delete this.customer.observations;
               this.customer.status = this.customer.status && this.customer.status.value ? this.customer.status.value : this.customer.status;
             }else{
               this.customer.status = "interested";
