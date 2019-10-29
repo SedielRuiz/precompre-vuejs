@@ -90,13 +90,16 @@
                   hide-actions disable-initial-sort
                   class="elevation-1">
                   <template v-slot:items="props">
+                    <td>
+                      <v-icon medium>{{props.item.main ? "check" : "" }}</v-icon> 
+                    </td>
                     <td> {{props.item.name}} </td>
                     <td> {{props.item.place_name}} </td>
                     <td> {{props.item.cluster_title}} </td>
                     <td> {{props.item._type}} </td>
                     <td>{{ props.item.unit_u}}</td>
                     <td>
-                      <v-icon style="color:#bf1526;" medium @click="removePlace(props.index)">delete</v-icon>
+                      <v-icon v-if="!props.item.main" style="color:#bf1526;" medium @click="removePlace(props.index)">delete</v-icon>
                     </td>
                   </template>
                 </v-data-table>
@@ -116,6 +119,9 @@
                     </v-flex>
                   </v-layout>
                   <v-combobox v-if="units.length > 0" v-model="place.unit" :items="units" prepend-icon="create" label="Unidad"></v-combobox>
+                  
+                  <v-switch v-model="placesSelected.length == 0 ? place.main = true : place.main" :label="'Principal'"></v-switch>
+                  <label v-if="placesSelected.length > 0">Recuerde que si selecciona este como principal se anularan los anteriores como principal.</label>
                   <v-btn color="primary" @click="selectedPlace()">Agregar</v-btn>
                   <!--LUGARES DE ENTREGA-->
                 </v-card><br>
@@ -188,6 +194,7 @@
           {text:"Acciones", value:"actions"}
         ],
         headers_places: [
+          {text:"Principal", value:"code"},
           {text:"Nombre", value:"name"},
           {text:"Lugar", value:"place"},
           {text:"Agrupación", value:"cluster"},
@@ -313,20 +320,25 @@
             this.typeSeleted = "";
         },
         selectedPlace(){
-            this.place.id = this.placeDelivery.value;
-            this.place.place_name = this.placeDelivery.text;
-            this.place._type = this.typeSeleted.value;
-            this.place.floor = this.place.unit.floor;
-            this.place.unit_u = this.place.unit.text;
-            this.place.unit = this.place.unit.value;
-            this.place.cluster = this.cluster.id;
-            this.place.cluster_title = this.cluster.text;
-            this.place.name = this.place.name && this.place.name.value ? this.place.name.value : this.place.name;
-            this.placesSelected.push(this.place);
-            this.place = {};
-            this.typeSeleted = "";
-            this.addPlace = false;
-            this.placesSelected.push();
+          for(var s = 0; s < this.placesSelected.length; s++){
+            if(this.place.main == true && this.places[s].main == true){
+              this.placesSelected[s].main = false;
+            }
+          }
+          this.place.id = this.placeDelivery.value;
+          this.place.place_name = this.placeDelivery.text;
+          this.place._type = this.typeSeleted.value;
+          this.place.floor = this.place.unit.floor;
+          this.place.unit_u = this.place.unit.text;
+          this.place.unit = this.place.unit.value;
+          this.place.cluster = this.cluster.id;
+          this.place.cluster_title = this.cluster.text;
+          this.place.name = this.place.name && this.place.name.value ? this.place.name.value : this.place.name;
+          this.placesSelected.push(this.place);
+          this.place = {};
+          this.typeSeleted = "";
+          this.addPlace = false;
+          this.placesSelected.push();
         },
         addPhone(){
           if(this.phone.number){
