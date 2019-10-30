@@ -41,6 +41,7 @@
               </div>
               <div v-else-if="place.input_type == 'google'">
                 <v-text-field readonly v-model="place.address" prepend-icon="email" name="address" label="Dirección" type="text"></v-text-field>
+                <v-text-field readonly v-model="place.correspondence_address" prepend-icon="email" name="correspondence_address" label="Dirección correspondencia" type="text"></v-text-field>
                 <gmap-map v-if="place.coords"
                     :center="center" :zoom="12"
                     style="width:100%;  height: 400px;">

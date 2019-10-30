@@ -28,7 +28,10 @@
                 </v-flex>
               </v-layout>
               <v-select v-model="place.input_type" prepend-icon="email" :items="locationTypes" label="Tipo de localización"></v-select>
-              <div v-if="place.input_type == 'manual'">
+              <div v-if="place.input_type == 'google'">
+                <div v-if="(edit && place && place.address) || (!edit)"><google-map ref="maps" :title="'Dirección'" :direct="place.address" :coords="place.coords" @setAddress="setAddress"/></div><br><!--v-icon medium style="font-size:25px;">email</v-icon-->
+              </div>
+              <div v-else>
                 <v-text-field v-model="place.address" prepend-icon="email" name="address" label="Dirección" type="text"></v-text-field>
                 <v-layout row wrap>
                   <v-flex xs12 sm12 md6>
@@ -38,9 +41,6 @@
                     <v-text-field v-model="place.coords.long" prepend-icon="email" name="long" label="Longitud" type="text"></v-text-field>
                   </v-flex>
                 </v-layout>
-              </div>
-              <div v-else-if="place.input_type == 'google'">
-                <div v-if="(edit && place && place.address) || (!edit)"><google-map :title="'Dirección'" :direct="place.address" :coords="place.coords" @setAddress="setAddress"/></div><br><!--v-icon medium style="font-size:25px;">email</v-icon-->
               </div>
               <h2>Administración</h2><hr><br>
               <v-layout row wrap>
@@ -209,6 +209,9 @@
               this.units = val.clusters;
               this.formatUnits();
             }
+            if(!val.input_type){
+              this.place.input_type = "google";
+            }
             /*for(var s = 0; s < val.unities.length; s++){
               if(val.unities[s].list.length > 0){
                 for(var r = 0; r < val.unities[s].list.length; r++){
@@ -235,10 +238,14 @@
       this.place.coords = {lat:"", long:""};
       this.place.administration = {name:"", phone:""};
       if(this.edit!=""){
-          this.titleText="Editar lugar de entrega"
-          this.getPlace(this.edit);
+          this.titleText="Editar lugar de entrega";
+          this.getPlace(this.edit).then(data=>{
+              if(this.place.correspondence_address)
+                this.$refs.maps.getCorres(this.place.correspondence_address);
+        },error=>{});;
       }else{
-        this.titleText="Nuevo lugar de entrega"
+        this.titleText="Nuevo lugar de entrega";
+        this.place.input_type = "google";
       }
       this.place.country = this.countries.find(element=>{return element.value == "colombia"});
       this.place.city = this.cities.find(element=>{return element.value == "bogota"});
@@ -611,10 +618,13 @@
       },
       buildPlace(){
         this.buildUnities();
-          console.log(this.units);
         this.place.clusters = this.units;
         this.place.country = this.place.country.value;
         this.place.city = this.place.city.value;
+        this.place.correspondence_address = this.$refs.maps.correspondence_address;
+        if(this.place.input_type == "manual"){
+          this.place.correspondence_address = this.place.address;
+        }
         if(this.edit)
           this.place.welcome_code = this.place.welcome_code.toLowerCase().split(" ").join("_");
         return this.place;

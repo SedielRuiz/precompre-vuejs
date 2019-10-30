@@ -17,7 +17,7 @@
         class="elevation-1">
         <template v-slot:items="props">
             <td>{{ props.item.name }}</td>
-            <td>{{ props.item.address }}</td>
+            <td>{{ props.item.correspondence_address }}</td>
             <td>{{ props.item.city }}</td>
             <td>
               <v-btn

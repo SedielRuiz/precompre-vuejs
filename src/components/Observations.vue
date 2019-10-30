@@ -87,14 +87,11 @@
             },
             sendObservation(){
                 var obj = { description: this.observation };
-                console.log(this.last);
-                console.log(this.last_cont);
                 if(this.last)
                     obj.last_contact = this.last_cont;
-                this.observations.push(obj);
                 var data = {
                     _id: this.id,
-                    observations: this.observations,
+                    observation: obj,
                 };
                 Vue.http.post(this.routeEdit, data).then(
                     response =>{

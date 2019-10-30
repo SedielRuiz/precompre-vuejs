@@ -5,7 +5,7 @@
             <label>
                 <gmap-autocomplete v-model="placeDir != '' ? placeDir : placeDir" class="form-control" @place_changed="setPlace" @change="addMarker"
                 :options="autocompleteOptions" ></gmap-autocomplete>
-                <!--v-text-field v-model="place.name" prepend-icon="email" name="name" label="Dirección" type="text"></v-text-field-->
+                <v-text-field v-model="correspondence_address" name="name" label="Dirección correspondencia" type="text"></v-text-field>
             </label>
             <br/>
         </div>
@@ -28,6 +28,7 @@ export default {
     props:['title', 'direct', 'coords'],
     data() {
         return {
+            correspondence_address:"",
             center: {},
             marker: {},
             places: [],
@@ -47,6 +48,10 @@ export default {
             if(val && val.data){
                 this.placeDir = val.data;
             }
+        },
+        correspondence_address(val){
+            console.log("aquio gonorre");
+            console.log(val);
         }
     },
     mounted() {
@@ -64,12 +69,18 @@ export default {
             }
             this.$emit("setAddress", obj);
         }
-        if(this.direct)
+        if(this.direct){
             this.placeDir = this.direct;
+        }
     },
     methods: {
+        getCorres(val){
+            console.log(val);
+            if(val){
+                this.correspondence_address = val;
+            }
+        },
         setPlace(place) {
-                console.log("aca lugar "+place);
             this.currentPlace = place;
             this.addMarker();
         },
@@ -94,6 +105,7 @@ export default {
                     "position":marker
                 }
                 this.placeDir = this.currentPlace.name;
+                this.correspondence_address = this.currentPlace.name;
                 this.currentPlace = null;
                 this.$emit("setAddress", obj);
             }
