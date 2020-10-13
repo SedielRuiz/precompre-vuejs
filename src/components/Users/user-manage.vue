@@ -113,7 +113,7 @@
         },
         rls(val){
           for(var s = 0; s < val.length; s++){
-            this.roles.push({"text":val[s].title, "value":val[s]._id});
+            this.roles.push({"text":val[s].name, "value":val[s]._id});
           }
         },
     },
